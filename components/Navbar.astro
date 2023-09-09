@@ -1,0 +1,26 @@
+---
+import { Image } from 'astro:assets'
+import { Icon } from 'astro-icon'
+
+import Logomark from '../public/logomark.svg'
+---
+
+<div>
+    <Image src={Logomark} alt="Atlas logomark" />
+    <div>
+        <a href="https://forum.atlasos.net" target="_blank" rel="noreferrer noopener">Forums</a>
+        <a href="https://docs.atlasos.net" target="_blank" rel="noreferrer noopener">Documentation</a>
+        <a href="https://www.patreon.com/atlasos" target="_blank" rel="noreferrer noopener">Support us</a>
+    </div>
+    <div>
+        <Icon name="cib:github" height="26" />
+        <Icon name="cib:discord" height="26" class="icon" />
+        <Icon name="twitter-x" height="26" style="fill: rgba(250, 250, 250, 0.4)" />
+    </div>
+</div>
+
+<style>
+    .icon {
+        fill: rgba(250, 250, 250, 0.4);
+    }
+</style>
