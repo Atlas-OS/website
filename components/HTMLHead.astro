@@ -1,0 +1,47 @@
+---
+import { GoogleFontsOptimizer } from 'astro-google-fonts-optimizer'
+
+interface Props {
+    title: string
+    description: string
+}
+
+const { title, description } = Astro.props
+---
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width" />
+<meta name="generator" content={Astro.generator} />
+<link rel="canonical" href={Astro.url} />
+<link rel="sitemap" href="/sitemap-index.xml" />
+
+<title>{title} - AtlasOS</title>
+<meta name="title" content=`${title} - AtlasOS` />
+<meta name="description" content={description} />
+<meta name="author" content="AtlasOS" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
+<link rel="manifest" href="/favicon/site.webmanifest" />
+<link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#1A91FF" />
+<meta name="msapplication-TileColor" content="#1A91FF" />
+<meta name="theme-color" content="#1A91FF" />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="atlasos.net" />
+<meta property="og:title" content={title} />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content="https://atlasos.net/meta/defaultimg.png" />
+<meta property="og:image:alt" content="A preview of the AtlasOS landing page" />
+
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:site_name" content="atlasos.net" />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content="https://atlasos.net/meta/defaultimg.png" />
+<meta property="twitter:image:alt" content="A preview of the AtlasOS landing page" />
+
+<GoogleFontsOptimizer url="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" />
