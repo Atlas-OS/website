@@ -1,6 +1,26 @@
 ---
 import Navbar from '../../components/Navbar.astro'
+import HTMLHead from '../../components/HTMLHead.astro'
+import '../assets/scss/main.scss'
+import '../assets/scss/variables.scss'
+import '../assets/scss/reset.scss'
+
+interface Props {
+    title: string
+    description: string
+}
+
+const { title, description } = Astro.props
 ---
 
-<Navbar />
-<slot />
+<html lang="en">
+    <head>
+        <HTMLHead title={title} description={description} />
+    </head>
+    <body>
+        <div class="container navbar">
+            <Navbar />
+        </div>
+        <slot />
+    </body>
+</html>
