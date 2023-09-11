@@ -5,22 +5,72 @@ import { Icon } from 'astro-icon'
 import Logomark from '../public/logomark.svg'
 ---
 
-<div>
-    <Image src={Logomark} alt="Atlas logomark" />
-    <div class="links">
-        <a href="https://forum.atlasos.net" target="_blank" rel="noreferrer noopener">Forums</a>
-        <a href="https://docs.atlasos.net" target="_blank" rel="noreferrer noopener">Documentation</a>
-        <a href="https://www.patreon.com/atlasos" target="_blank" rel="noreferrer noopener">Support us</a>
-    </div>
-    <div class="social-links">
-        <Icon name="github-logo" height="26" class="icon" />
-        <Icon name="discord-logo" height="26" class="icon" />
-        <Icon name="x-logo" height="26" class="icon" />
-    </div>
+<div class="navbar-wrapper">
+    <navbar class="navbar">
+        <a href="/">
+            <Image src={Logomark} alt="Atlas logomark" />
+        </a>
+        <div class="links">
+            <a href="https://forum.atlasos.net" target="_blank">Forums</a>
+            <a href="https://docs.atlasos.net" target="_blank">Documentation</a>
+            <a href="https://patreon.com/atlasos" target="_blank" rel="noreferrer noopener">Support us</a>
+        </div>
+        <div class="social-links">
+            <a href="https://github.com/atlas-os/atlas" target="_blank" rel="noreferrer noopener" aria-label="Visit our GitHub repository">
+                <Icon name="github-logo" height="26" class="icon" />
+            </a>
+            <a href="https://discord.com/servers/atlas-795710270000332800" target="_blank" rel="noreferrer noopener" aria-label="Join our Discord community">
+                <Icon name="discord-logo" height="22" class="icon" />
+            </a>
+            <a href="https://x.com/atlasos" target="_blank" rel="noreferrer noopener" aria-label="Visit our X account, maybe follow?">
+                <Icon name="x-logo" height="25" class="icon" />
+            </a>
+        </div>
+    </navbar>
 </div>
 
-<style>
-    .icon {
-        fill: rgba(0, 0, 0, 0.4);
+<style lang="scss">
+    .navbar-wrapper {
+        position: relative;
+    }
+
+    .navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 50px 0 25px;
+        position: absolute;
+        width: 100%;
+
+        .links {
+            display: flex;
+            align-items: center;
+            gap: 100px;
+
+            a {
+                color: hsla(0, 0%, 98%, 0.8);
+                font-weight: 500;
+                transition: color 0.2s ease-in-out;
+            }
+
+            a:hover {
+                color: hsla(0, 0%, 98%, 1);
+            }
+        }
+
+        .social-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+
+            .icon {
+                fill: rgba(250, 250, 250, 0.4);
+                transition: fill 0.2s ease-in-out;
+            }
+
+            .icon:hover {
+                fill: rgba(250, 250, 250, 0.8);
+            }
+        }
     }
 </style>
