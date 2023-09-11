@@ -1,0 +1,83 @@
+body {
+    background-color: var(--bg-color);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 500;
+    color: var(--color-white);
+    margin: 0;
+}
+
+p,
+a,
+span,
+li,
+input,
+textarea,
+button {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    color: var(--color-white);
+    margin: 0;
+}
+
+html::-webkit-scrollbar {
+    width: 10px;
+}
+
+html::-webkit-scrollbar-track {
+    background-color: hsl(225, 30%, 20%);
+}
+
+html::-webkit-scrollbar-thumb {
+    background: hsl(200, 15%, 40%);
+}
+
+.container {
+    margin: 0 auto;
+    padding: 0 10px;
+
+    &.navbar {
+        max-width: 1420px;
+    }
+
+    &.main {
+        max-width: 1320px;
+    }
+}
+
+.button {
+    display: flex;
+    padding: 13px 35px;
+    gap: 10px;
+    align-items: center;
+
+    &.primary {
+        background-color: var(--color-primary);
+        transition: background-color 0.2s ease-in-out;
+
+        &:hover {
+            background-color: var(--color-primary-dark);
+        }
+    }
+
+    &.secondary {
+        color: var(--color-primary);
+        border: 1.5px solid var(--color-primary);
+        transition: background-color 0.2s ease-in-out;
+
+        &:hover {
+            background-color: hsla(209, 100%, 55%, 0.18);
+        }
+    }
+}
+
+a {
+    text-decoration: none;
+}
