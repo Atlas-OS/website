@@ -1,19 +1,164 @@
 ---
 import MainLayout from '../layouts/main-layout.astro'
+import Wallpaper from '../assets/img/atlas-wallpaper.webp'
+import PCGuide from '../assets/img/pcguide-logomark.svg'
+import ItsFoss from '../assets/img/itsfoss-logomark.svg'
+import WePC from '../assets/img/wepc-logomark.svg'
+import TechSpot from '../assets/img/techspot-logomark.svg'
+
+import { Icon } from 'astro-icon'
+import { Image } from 'astro:assets'
 ---
 
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <meta name="viewport" content="width=device-width" />
-        <meta name="generator" content={Astro.generator} />
-        <title>Astro</title>
-    </head>
-    <body>
-        <MainLayout>
-            <h1>Hello, world!</h1>
-            <p>Welcome to your Astro site.</p>
-        </MainLayout>
-    </body>
-</html>
+<MainLayout
+    title="Astro"
+    description="Astro is a fresh but familiar approach to building websites. Astro combines decades of proven performance best practices with the DX improvements of the component-oriented era. Use your favorite JavaScript framework and automatically ship the bare-minimum amount of JavaScript—by default."
+>
+    <main>
+        <div class="radial-bg">
+            <div class="container main">
+                <div class="hero">
+                    <a href="https://docs.atlasos.net/getting-started/installation" target="_blank" class="tagline">
+                        <Icon name="book-open-icon" height="15px" class="icon" />
+                        <span>View our detailed documentation for installing <span class="arrow">--></span></span>
+                    </a>
+                    <h1>A modification of Windows, designed for gamers.</h1>
+                    <p>It’s time to experience a new Windows experience. Designed for gamers, with improved in-game framerates and lowered latency.</p>
+                    <div class="buttons">
+                        <a class="button primary" href="/">AME Wizard -></a>
+                        <a class="button secondary" href="/">Atlas Playbook -></a>
+                    </div>
+                </div>
+                <div class="wallpaper-wrapper">
+                    <Image src={Wallpaper} class="wallpaper" alt="atlas os wallpaper" />
+                </div>
+                <div class="brand-list">
+                    <a href="https://pcguide.com/software/atlasos/" rel="noreferrer nooopener" target="_blank">
+                        <Image src={PCGuide} alt="pc guide logomark" class="logomark" />
+                    </a>
+                    <a href="https://news.itsfoss.com/atlas-os/" rel="noreferrer nooopener" target="_blank">
+                        <Image src={ItsFoss} alt="its foss logomark" class="logomark" />
+                    </a>
+                    <a href="https://wepc.com/tips/is-atlas-os-worth-it/" rel="noreferrer nooopener" target="_blank">
+                        <Image src={WePC} alt="we pc logomark" class="logomark" />
+                    </a>
+                    <a href="https://techspot.com/news/97095-check-out-atlasos-redesigned-windows-10-version-gamers.html" rel="noreferrer nooopener" target="_blank">
+                        <Image src={TechSpot} alt="tech spot logomark" class="logomark" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+</MainLayout>
+
+<style lang="scss">
+    .hero {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding-top: 220px;
+
+        .tagline {
+            display: inline-flex;
+            padding: 8px 35px;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            border-radius: 50px;
+            border: 1px solid hsla(205, 100%, 98%, 0.2);
+            background-color: hsla(205, 100%, 98%, 0.05);
+            transition: background-color 0.2s ease-in-out;
+
+            .arrow {
+                position: relative;
+                transition: left 0.2s ease-in-out;
+                left: 3px;
+            }
+
+            &:hover {
+                background-color: hsla(205, 100%, 98%, 0.1);
+
+                .arrow {
+                    left: 8px;
+                }
+            }
+
+            .icon {
+                stroke: hsl(0, 0%, 60%);
+                fill: transparent;
+            }
+        }
+
+        h1 {
+            font-size: 64px;
+            text-align: center;
+            max-width: 886px;
+            background: linear-gradient(180deg, #fafafa 0%, rgba(250, 250, 250, 0.6) 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 30px;
+        }
+
+        p {
+            max-width: 628px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+        }
+    }
+
+    .radial-bg {
+        background: url('/radial-hero.svg') no-repeat;
+        background-position: top center;
+        background-size: cover;
+    }
+
+    .wallpaper-wrapper {
+        .wallpaper {
+            max-width: 1320px;
+            max-height: 449px;
+            margin-top: 70px;
+            animation: fade-up 1s ease-out;
+        }
+    }
+
+    .brand-list {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 80px;
+    }
+
+    @keyframes fade-up {
+        from {
+            margin-top: 100px;
+            opacity: 0;
+            margin-bottom: -30px;
+        }
+
+        to {
+            margin-top: 70px;
+            margin-bottom: 0px;
+            opacity: 1;
+        }
+    }
+
+    @media screen and (min-width: 2000px) {
+        .wallpaper-wrapper {
+            margin-top: 50px;
+        }
+    }
+
+    @media screen and (min-width: 2400px) {
+        .wallpaper-wrapper {
+            margin-top: 100px;
+        }
+    }
+</style>
