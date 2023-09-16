@@ -76,6 +76,27 @@ html::-webkit-scrollbar-thumb {
             background-color: hsla(209, 100%, 55%, 0.18);
         }
     }
+
+    &.tertiary {
+        color: hsl(0, 0%, 90%);
+        font-weight: 500;
+        display: flex;
+        padding: 0;
+        gap: 10px;
+        align-items: center;
+
+        .arrow {
+            position: relative;
+            transition: left 0.2s ease-in-out;
+            left: 1px;
+        }
+
+        &:hover {
+            .arrow {
+                left: 5px;
+            }
+        }
+    }
 }
 
 a {
