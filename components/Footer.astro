@@ -1,0 +1,148 @@
+---
+import Logomark from '../public/logomark.svg'
+
+import { Image } from 'astro:assets'
+import { Icon } from 'astro-icon'
+---
+
+<div class="footer-wrapper">
+    <div class="footer">
+        <div class="left-section">
+            <a class="logomark" href="/">
+                <Image src={Logomark} alt="Atlas logomark" />
+            </a>
+            <p>Atlas is Designed for gamers, with improved in-game framerates and lowered latency.</p>
+            <div class="social-icons">
+                <a href="https://x.com/atlasos" target="_blank" rel="noreferrer">
+                    <Icon name="x-logo" alt="Twitter logo" class="icons" height="25px" width="25px" />
+                </a>
+                <a href="https://discord.atlasos.net" target="_blank" rel="noreferrer">
+                    <Icon name="discord-logo" alt="Discord logo" class="icons" height="25px" width="25px" />
+                </a>
+                <a href="https://github.com/atlas-os/atlas" target="_blank" rel="noreferrer">
+                    <Icon name="github-logo" alt="GitHub logo" class="icons" height="25px" width="25px" />
+                </a>
+                <a href="https://patreon.com/atlasos" target="_blank" rel="noreferrer">
+                    <Icon name="patreon-logo" alt="Patreon logo" class="icons" height="25px" width="25px" />
+                </a>
+                <a href="https://trustpilot.atlasos.net" target="_blank" rel="noreferrer">
+                    <Icon name="trustpilot-logo-mono" alt="Trustpilot logo" class="icons" height="25px" width="25px" />
+                </a>
+            </div>
+            <span class="copyright">Copyright © 2023 AtlasOS. All rights reserved.</span>
+        </div>
+        <div class="links">
+            <div class="column">
+                <span>Sitemap</span>
+                <a href="/">Home</a>
+                <a href="/downloads">Downloads</a>
+                <a href="/faq">FAQ</a>
+            </div>
+            <div class="column">
+                <span>Community</span>
+                <a href="https://forum.atlasos.net" rel="noreferrer" target="_blank">Forum</a>
+                <a href="https://docs.atlasos.net" rel="noreferrer" target="_blank">Documentation</a>
+                <a href="https://github.com/atlas-os/atlas" rel="noreferrer" target="_blank">GitHub</a>
+                <a href="https://discord.atlasos.net" rel="noreferrer" target="_blank">Discord</a>
+                <a href="https://twitter.com/atlasos" rel="noreferrer" target="_blank">Twitter</a>
+                <a href="https://trustpilot.atlasos.net" rel="noreferrer" target="_blank">Trustpilot</a>
+            </div>
+            <div class="column">
+                <span>Donations</span>
+                <a href="https://patreon.com/atlasos" rel="noreferrer" target="_blank">Patreon</a>
+                <a href="https://forum.atlasos.net/access-portal" rel="noreferrer" target="_blank">Forum donate</a>
+                <a href="https://buymeacoffee.com/atlasos" rel="noreferrer" target="_blank">Buy Me a Coffee</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style lang="scss">
+    .footer-wrapper {
+        padding: 70px 0px;
+        background-color: hsl(225, 62%, 12%);
+        border-top: 1px solid rgba(5, 11, 29, 0.3);
+
+        .footer {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0px 20px;
+            display: flex;
+            justify-content: space-between;
+
+            .left-section {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+
+                .logomark {
+                    width: 200px;
+                    height: 44px;
+
+                    img {
+                        width: 200px;
+                        height: 44px;
+                    }
+                }
+
+                p {
+                    margin-top: -10px;
+                    max-width: 325px;
+                }
+
+                .social-icons {
+                    display: flex;
+                    gap: 20px;
+
+                    a {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+
+                    .icons {
+                        fill: rgba(243, 250, 255, 0.8);
+                        transition: all 0.1s ease-in-out;
+
+                        &:hover {
+                            fill: rgba(255, 250, 255, 1);
+                            filter: brightness(1.4);
+                        }
+                    }
+                }
+
+                .copyright {
+                    font-weight: 400;
+                    font-size: 14px;
+                    color: hsla(205, 100%, 98%, 0.6);
+                }
+            }
+
+            .links {
+                display: flex;
+                gap: 150px;
+
+                span {
+                    font-weight: 500;
+                    font-size: 18px;
+                }
+
+                a {
+                    color: rgba(243, 250, 255, 0.8);
+                    font-weight: 400;
+                    transition: color 0.1s ease-in-out;
+
+                    &:hover {
+                        color: rgba(255, 250, 255, 1);
+                    }
+                }
+
+                .column {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 20px;
+                }
+            }
+        }
+    }
+</style>
