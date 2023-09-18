@@ -104,30 +104,36 @@ import { Image } from 'astro:assets'
                 </div>
                 <div class="cards hide">
                     <div class="card">
-                        <div class="card-title">
-                            <Icon name="cpu-icon" class="icon" height="28px" alt="processes cpu icon" />
-                            <h3>Processes</h3>
+                        <div class="content-wrapper">
+                            <div class="card-title">
+                                <Icon name="cpu-icon" class="icon" height="28px" alt="processes cpu icon" />
+                                <h3>Processes</h3>
+                            </div>
+                            <p>Atlas strips out a bunch, significantly reducing Windows' bloated process count from 145 to just 35.</p>
+                            <span>145 -> 35~</span>
                         </div>
-                        <p>Atlas strips out a bunch, significantly reducing Windows' bloated process count from 145 to just 35.</p>
-                        <span>145 -> 35~</span>
                     </div>
                     <Image src={Splitter} alt="Section splitter" />
                     <div class="card">
-                        <div class="card-title">
-                            <Icon name="bolt-icon" class="icon" height="32px" alt="bolt memory icon" />
-                            <h3>Ram usage</h3>
+                        <div class="content-wrapper">
+                            <div class="card-title">
+                                <Icon name="bolt-icon" class="icon" height="32px" alt="bolt memory icon" />
+                                <h3>Ram usage</h3>
+                            </div>
+                            <p>Thanks to Atlas we've freed up 1.4GB of RAM usage from boot, which can then be allocated to other tasks.</p>
+                            <span>2.3GB -> 900MB~</span>
                         </div>
-                        <p>Thanks to Atlas we've freed up 1.4GB of RAM usage from boot, which can then be allocated to other tasks.</p>
-                        <span>2.3GB -> 900MB~</span>
                     </div>
                     <Image src={Splitter} alt="Section splitter" />
                     <div class="card">
-                        <div class="card-title">
-                            <Icon name="rocket-icon" class="icon" height="28px" alt="rocket fps icon" />
-                            <h3>1% FPS</h3>
+                        <div class="content-wrapper">
+                            <div class="card-title">
+                                <Icon name="rocket-icon" class="icon" height="28px" alt="rocket fps icon" />
+                                <h3>1% FPS</h3>
+                            </div>
+                            <p>We saw a significant improvement in FPS lows. With an increase from 289 on Windows to 394 FPS with Atlas.</p>
+                            <span>289 FPS -> 394 FPS</span>
                         </div>
-                        <p>We saw a significant improvement in FPS lows. With an increase from 289 on Windows to 394 FPS with Atlas.</p>
-                        <span>289 FPS -> 394 FPS</span>
                     </div>
                 </div>
                 <!-- <div class="benchmark-link">
@@ -383,7 +389,7 @@ import { Image } from 'astro:assets'
             max-width: 1300px;
             max-height: 470px;
             margin-top: 70px;
-            animation: fade-up 1s ease-out;
+            animation: wallpaper-fade-up 1s ease-out;
         }
     }
 
@@ -392,6 +398,27 @@ import { Image } from 'astro:assets'
         justify-content: space-between;
         align-items: center;
         margin-top: 80px;
+
+        a {
+            animation: fadeup ease-out;
+            animation-timeline: view();
+        }
+
+        a:nth-child(1) {
+            animation-range: entry -10% exit -900%;
+        }
+
+        a:nth-child(2) {
+            animation-range: entry -10% exit -800%;
+        }
+
+        a:nth-child(3) {
+            animation-range: entry -10% exit -500%;
+        }
+
+        a:nth-child(4) {
+            animation-range: entry -10% exit -400%;
+        }
 
         .logomark {
             transition: all 0.2s ease-in-out;
@@ -403,7 +430,7 @@ import { Image } from 'astro:assets'
         }
     }
 
-    @keyframes fade-up {
+    @keyframes wallpaper-fade-up {
         from {
             margin-top: 100px;
             opacity: 0;
@@ -457,24 +484,20 @@ import { Image } from 'astro:assets'
             gap: 35px;
             margin-top: 75px;
 
+            animation: fadeup ease-out;
+            animation-timeline: view();
+            animation-range: entry 0% exit -100%;
+
             .dark {
                 background: linear-gradient(180deg, #0c1633 0%, #2d5ace 100%);
                 border: 1px solid rgba(43, 86, 195, 1);
-                transition: box-shadow 0.1s ease-in;
-
-                &:hover {
-                    box-shadow: 0px 4px 35px -5px rgba(43, 86, 195, 0.2);
-                }
+                transition: scale 0.2s ease-in;
             }
 
             .light {
                 background: linear-gradient(180deg, #0c1633 0%, #6f8cd8 100%);
                 border: 1px solid rgba(111, 140, 216, 1);
-                transition: box-shadow 0.1s ease-in;
-
-                &:hover {
-                    box-shadow: 0px 4px 35px -5px rgba(111, 140, 216, 0.2);
-                }
+                transition: scale 0.2s ease-in;
             }
 
             .card {
@@ -590,30 +613,38 @@ import { Image } from 'astro:assets'
                 display: flex;
                 width: 33.3%;
                 flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                text-align: center;
-                gap: 35px;
                 padding: 70px 60px;
 
-                .card-title {
+                .content-wrapper {
                     display: flex;
+                    gap: 35px;
+                    flex-direction: column;
+                    animation: fadeup ease-out;
+                    animation-timeline: view();
+                    animation-range: entry -80% exit -200%;
                     align-items: center;
-                    gap: 20px;
+                    justify-content: center;
+                    text-align: center;
 
-                    .icon {
-                        stroke: var(--icon-white);
-                        fill: transparent;
-                    }
+                    .card-title {
+                        display: flex;
+                        align-items: center;
+                        gap: 20px;
 
-                    img {
-                        width: 28px;
-                        height: 28px;
-                    }
+                        .icon {
+                            stroke: var(--icon-white);
+                            fill: transparent;
+                        }
 
-                    h3 {
-                        font-size: 36px;
-                        font-weight: 600;
+                        img {
+                            width: 28px;
+                            height: 28px;
+                        }
+
+                        h3 {
+                            font-size: 36px;
+                            font-weight: 600;
+                        }
                     }
                 }
 
@@ -676,6 +707,9 @@ import { Image } from 'astro:assets'
             width: fit-content;
             margin-left: auto;
             z-index: -1;
+            animation: slide-in-right ease-out;
+            animation-timeline: view();
+            animation-range: entry 0% exit -100%;
 
             .review-img {
                 width: 587px;
@@ -802,6 +836,9 @@ import { Image } from 'astro:assets'
             position: relative;
             width: 587px;
             height: 339;
+            animation: slide-in-left ease-out;
+            animation-timeline: view();
+            animation-range: entry 0% exit -100%;
 
             .gh-stars {
                 position: absolute;
@@ -1055,6 +1092,45 @@ import { Image } from 'astro:assets'
         .buttons {
             display: flex;
             gap: 50px;
+            animation: fadeup ease-out;
+            animation-timeline: view();
+            animation-range: entry -50% exit -1000%;
+        }
+    }
+
+    @keyframes fadeup {
+        0% {
+            transform: translateY(200px);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes slide-in-left {
+        0% {
+            transform: translate(-200px);
+            opacity: 0;
+        }
+
+        to {
+            transform: translate(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes slide-in-right {
+        0% {
+            transform: translate(200px);
+            opacity: 0;
+        }
+
+        to {
+            transform: translate(0);
+            opacity: 1;
         }
     }
 </style>
