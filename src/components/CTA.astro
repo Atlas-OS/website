@@ -1,0 +1,48 @@
+<div class="footer-radial">
+    <div class="community-section">
+        <h3>Join our community of 30,000+</h3>
+        <p>Join a welcoming community, full of passionate tech enthusiasts. Talk to like-minded individuals and seek advice from experts on everything Atlas.</p>
+        <div class="buttons">
+            <a class="button primary" href="/">Join our community -></a>
+            <a class="button tertiary" href="/">Star us on GitHub <span class="arrow">--></span></a>
+        </div>
+    </div>
+</div>
+
+<style lang="scss">
+    .footer-radial {
+        background: url('/footer-radial.svg') no-repeat;
+        background-position: bottom center;
+        background-size: cover;
+    }
+
+    .community-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 40px;
+        padding-top: 250px;
+        padding-bottom: 190px;
+        margin-top: 10px;
+
+        p {
+            text-align: center;
+            margin-bottom: 10px;
+            max-width: 758px;
+        }
+
+        h3 {
+            font-size: 48px;
+            font-weight: 600;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 50px;
+            animation: fadeup ease-out;
+            animation-timeline: view();
+            animation-range: entry -50% exit -1000%;
+        }
+    }
+</style>

@@ -1,0 +1,285 @@
+---
+import { Image } from 'astro:assets'
+
+import GitHub from '../assets/img/github-overview.png'
+import Chevron from '../assets/img/chevron.svg'
+import GitHubStar from '../assets/img/github-star.svg'
+import GPLLogo from '../assets/img/gpl3-logo.svg'
+---
+
+<div class="open-source-section">
+    <div class="github-image">
+        <Image src={GitHub} alt="GitHub repository" />
+        <div class="gh-stars" id="gh-stars-wrap">
+            <div class="gh-stars-info">
+                <div class="content">
+                    <div class="star">
+                        <Image src={GitHubStar} alt="GitHub star" />
+                    </div>
+                    <p>Starred</p>
+                    <span class="star-count" id="star-amount-badge">ERROR</span>
+                </div>
+                <div class="line"></div>
+                <div class="content">
+                    <button class="chevron-img" id="toggle-star-list-btn">
+                        <Image class="chevron-img" src={Chevron} alt="Chevron" />
+                    </button>
+                </div>
+            </div>
+            <div class="gh-recent-stars" id="gh-star-list">
+                <div class="content-wrap" id="gh-star-list-items"></div>
+            </div>
+        </div>
+    </div>
+    <div class="gpl-info">
+        <h2>An open-source, <span class="highlight">GPL-3.0</span> project</h2>
+        <p>We are an open-source project, licensed under GPL-3.0 and our GitHub repository has many stargazers. We would greatly appreciate it if you check it out and, if interested, consider contributing to our vision.</p>
+        <div class="stargazer-count">
+            <div class="stargazers">
+                <div class="star">
+                    <Image src={GitHubStar} alt="GitHub star" />
+                </div>
+                <p>
+                    <span id="star-amount-tag">ERROR</span> stargazers on <a href="https://github.com/atlas-os/atlas" target="_blank" rel="noreferrer"> GitHub -></a>
+                </p>
+            </div>
+            <Image src={GPLLogo} alt="GPL logo" />
+        </div>
+    </div>
+</div>
+
+<script lang="ts">
+const toggleStarBtn = document.getElementById('toggle-star-list-btn')
+const starList = document.getElementById('gh-star-list')
+const starWrapper = document.getElementById('gh-stars-wrap')
+const starListItems = document.getElementById('gh-star-list-items')
+
+if (!toggleStarBtn) throw new Error('Element toggle-star-list-btn missing')
+if (!starList) throw new Error('Element gh-star-list missing')
+if (!starWrapper) throw new Error('Element gh-stars-wrap missing')
+
+toggleStarBtn.addEventListener('click', () => {
+    toggleStarBtn.classList.toggle('toggled')
+    starList.classList.toggle('show')
+    starWrapper.classList.toggle('toggled')
+})
+
+async function updateStars() {
+    if (!starListItems) throw new Error('Element gh-star-list-items missing')
+
+    // let resp = await fetch('https://api.atlasos.net/stars')
+    // let json = await resp.json()
+    // let starCount = json.count
+
+    // document.getElementById('star-amount-tag').innerText = starCount
+    // document.getElementById('star-amount-badge').innerText = (starCount / 1000).toFixed(1) + 'k'
+
+    // resp = await fetch('https://api.atlasos.net/recent-stars')
+    // json = await resp.json()
+    // let recentStars = json.data
+    // recentStars = recentStars.slice(0, 4)
+
+    const recentStars = [
+        {
+            avatar: 'https://avatars.githubusercontent.com/u/25649238?v=4',
+            username: 'driesxyz'
+        }
+    ]
+
+    recentStars.forEach((star) => {
+        const starElement = document.createElement('div')
+        starElement.classList.add('content')
+        starListItems.append(starElement)
+
+        const userImgElement = document.createElement('img')
+        userImgElement.alt = 'GitHub user avatar'
+        userImgElement.src = star.avatar
+
+        starElement.append(userImgElement)
+
+        const userNameElement = document.createElement('p')
+        userNameElement.innerText = star.username
+
+        starElement.append(userNameElement)
+    })
+}
+
+// if (import.meta.env.VITE_ENVIRONMENT === 'PRODUCTION') {
+updateStars()
+// }
+
+let benchmarkElements
+let benchmarkElementsOffset = 0
+
+let starcountElements
+let starcountElementsOffset = 0
+
+// benchmarkElements = benchmarkElements.offsetTop
+// starcountElements = starcountElements.offsetTop
+</script>
+
+<style lang="scss">
+    .open-source-section {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 360px;
+
+        .gpl-info {
+            text-align: end;
+            max-width: 587px;
+
+            .stargazer-count {
+                display: flex;
+                align-items: center;
+                justify-content: end;
+                gap: 30px;
+                margin-top: 40px;
+
+                .gpl-logo {
+                    width: 127px;
+                    height: 63px;
+                }
+
+                .stargazers {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+
+                    .star img {
+                        width: 19px;
+                        height: 19px;
+                    }
+                }
+
+                span {
+                    color: hsl(41, 68%, 55%);
+                }
+
+                p {
+                    color: hsla(205, 100%, 98%, 0.5);
+                }
+
+                a {
+                    color: hsla(205, 100%, 98%, 0.8);
+                    text-decoration: underline;
+                }
+            }
+
+            h2 {
+                margin-bottom: 30px;
+                font-size: 60px;
+                font-weight: 600;
+            }
+        }
+
+        .github-image {
+            position: relative;
+            width: 587px;
+            height: 339;
+            animation: slide-in-left ease-out;
+            animation-timeline: view();
+            animation-range: entry 0% exit -100%;
+
+            .gh-stars {
+                position: absolute;
+                bottom: -7px;
+                right: -60px;
+                background-color: hsl(214, 13%, 25%);
+                border: 1px solid hsl(212, 11%, 31%);
+                border-radius: 5px;
+                color: hsl(203, 23%, 71%);
+                width: 270px;
+
+                &.toggled {
+                    border-radius: 5px 5px 0 0;
+                }
+
+                hr {
+                    border: 1px solid hsl(212, 11%, 31%);
+                }
+
+                .gh-stars-info {
+                    width: 270px;
+                    display: flex;
+                    justify-content: center;
+
+                    .content {
+                        display: flex;
+                        align-items: center;
+                        padding: 8px 18px;
+
+                        .chevron-img {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            transition: all 0.1s ease-in-out;
+                            width: 15px;
+                            height: 8px;
+
+                            &.toggled {
+                                transform: rotate(180deg);
+                            }
+                        }
+
+                        .star {
+                            width: 19px;
+                            height: 19px;
+                        }
+                    }
+                }
+
+                .gh-recent-stars {
+                    position: absolute;
+                    width: 270px;
+                    margin-left: -1px;
+                    border-radius: 0 0 5px 5px;
+                    height: 0px;
+                    overflow: hidden;
+                    transition: height 0.3s ease-in-out;
+
+                    &.show {
+                        height: 262px;
+                    }
+
+                    .content-wrap {
+                        padding: 20px;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 20px;
+                        background-color: hsl(214, 13%, 25%);
+                        border: 1px solid hsl(212, 11%, 31%);
+                    }
+
+                    .content {
+                        display: flex;
+                        gap: 10px;
+                        align-items: center;
+
+                        img {
+                            width: 40px;
+                            border-radius: 90%;
+                        }
+                    }
+                }
+
+                .star {
+                    margin-right: 15px;
+                }
+
+                .star-count {
+                    background-color: hsl(213, 12%, 30%);
+                    border-radius: 15px;
+                    font-size: 14px;
+                    padding: 8px 14px;
+                    margin-left: 30px;
+                    margin-right: 2px;
+                }
+
+                .line {
+                    width: 1px;
+                    background-color: hsl(212, 11%, 31%);
+                }
+            }
+        }
+    }
+</style>

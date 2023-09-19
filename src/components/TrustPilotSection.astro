@@ -1,0 +1,166 @@
+---
+import { Image } from 'astro:assets'
+
+import Review from '../assets/img/review.svg'
+import TrustPilotStar from '../assets/img/trustpilot-logo-color.svg'
+import TrustPilotStars from '../assets/img/trustpilot-stars.svg'
+import Logo from '../assets/img/logo.svg'
+import Verified from '../assets/img/verified.svg'
+---
+
+<div class="trustpilot-section">
+    <div class="community-info">
+        <h2>What does our <span class="highlight">community</span> think?</h2>
+        <p>Our community is fantastic and reviews us with a significant amount of positive feedback. We take great pride in our Trustpilot rating, which reflects our commitment for improving Atlas.</p>
+        <div class="review-star">
+            <Image src={TrustPilotStars} alt="Trustpilot star" />
+            <p>
+                <span>4.8 out of 5</span> on <a href="https://trustpilot.atlasos.net" target="_blank" rel="noreferrer"> Trustpilot -></a>
+            </p>
+        </div>
+    </div>
+    <div class="review-item">
+        <div class="review-img">
+            <Image src={Review} alt="Review" />
+        </div>
+        <div class="trustpilot-box">
+            <Image src={Logo} alt="Atlas logo" />
+            <div class="info">
+                <span>atlasos.net</span>
+                <p class="review-count">Reviews 44 - Excellent</p>
+                <div class="stars">
+                    <Image src={TrustPilotStars} alt="Truspilot stars" />
+                </div>
+                <div class="verified-company">
+                    <Image src={Verified} alt="Verified" />
+                    <p>VERIFIED COMPANY</p>
+                </div>
+            </div>
+            <Image src={TrustPilotStar} alt="Trustpilot star" class="tp-star" />
+        </div>
+    </div>
+</div>
+
+<style lang="scss">
+    .trustpilot-section {
+        display: flex;
+
+        h2 {
+            margin-bottom: 30px;
+        }
+
+        & > div {
+            width: 50%;
+        }
+
+        .review-star {
+            margin-top: 40px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            color: rgba(243, 250, 255, 0.5);
+
+            span {
+                color: hsl(149, 71%, 82%);
+            }
+
+            a {
+                color: rgba(243, 250, 255, 0.8);
+                text-decoration: underline;
+            }
+
+            img {
+                width: 166px;
+                height: 30px;
+            }
+        }
+
+        .community-info {
+            p {
+                max-width: 570px;
+            }
+
+            h2 {
+                font-size: 60px;
+                font-weight: 600;
+                margin-bottom: 30px;
+            }
+        }
+
+        .review-item {
+            position: relative;
+            width: fit-content;
+            margin-left: auto;
+            z-index: -1;
+            animation: slide-in-right ease-out;
+            animation-timeline: view();
+            animation-range: entry 0% exit -100%;
+
+            .review-img {
+                width: 587px;
+                height: 330px;
+            }
+
+            .trustpilot-box .logo {
+                width: 106px;
+                height: 94px;
+            }
+
+            .trustpilot-box {
+                position: absolute;
+                bottom: -60px;
+                left: -60px;
+                background-color: var(--bg-card-color);
+                display: flex;
+                align-items: center;
+                padding: 20px 40px;
+                gap: 30px;
+                border-radius: 5px;
+                width: min(500px, 100%);
+
+                .tp-star {
+                    position: absolute;
+                    top: -45px;
+                    right: -45px;
+                }
+
+                .info {
+                    p {
+                        font-size: 12px;
+                        color: hsla(205, 100%, 98%, 50%);
+                    }
+
+                    .review-count {
+                        margin-bottom: 5px;
+                    }
+
+                    span {
+                        font-size: 20px;
+                        font-weight: bold;
+                        margin-bottom: 5px;
+                    }
+
+                    .verified-company {
+                        margin-top: 10px;
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        background-color: hsl(149, 71%, 82%);
+                        padding: 6px 12px;
+
+                        p {
+                            color: black;
+                            font-size: 12px;
+                            font-weight: 600;
+                        }
+
+                        img {
+                            width: 16px;
+                            height: 16px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+</style>

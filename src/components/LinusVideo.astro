@@ -1,0 +1,70 @@
+---
+import { Image } from 'astro:assets'
+
+import PlayButton from '../assets/img/play-button.svg'
+---
+
+<div class="linus-section">
+    <div class="heading">
+        <h3><span class="darken">“</span>If you can run Windows with <span class="highlight">this kind of performance</span>... Jeepers Creepers.<span class="darken">”</span></h3>
+        <p>— Linus Sebastian</p>
+    </div>
+    <a href="https://www.youtube.com/watch?v=dc7CIkZcWYE" target="_blank" rel="noreferrer" class="linus-video">
+        <div class="preview-image">
+            <div class="circle">
+                <Image src={PlayButton} alt="Video play button" />
+            </div>
+        </div>
+    </a>
+</div>
+
+<style lang="scss">
+    .linus-section {
+        margin-top: 300px;
+
+        .preview-image {
+            background-image: url('/linus-thumbnail.webp');
+            background-size: cover;
+            background-position: center;
+            height: 546px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            border-radius: 14px 14px 0px 0px;
+        }
+
+        .circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.3);
+            font-size: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            img {
+                width: 40px;
+                height: 40px;
+                margin-left: 8px;
+            }
+        }
+
+        .heading {
+            text-align: center;
+            margin-bottom: 100px;
+
+            h3 {
+                font-style: italic;
+                font-size: 64px;
+            }
+
+            p {
+                font-size: 24px;
+                margin-top: 40px;
+                color: hsla(205, 100%, 100%, 45%);
+            }
+        }
+    }
+</style>

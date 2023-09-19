@@ -1,0 +1,153 @@
+---
+import Icon from 'astro-icon'
+import { Image } from 'astro:assets'
+
+import Splitter from '../assets/img/splitter.svg'
+---
+
+<div class="windows-comparison">
+    <div class="heading">
+        <h2>
+            <span class="highlight">Atlas</span> vs. <span class="darken"> Windows</span>
+        </h2>
+        <p>With reduced processes, lower RAM usage, and improved in-game framerates, why wouldn't you consider making the switch?</p>
+    </div>
+    <div class="cards hide">
+        <div class="card">
+            <div class="content-wrapper">
+                <div class="card-title">
+                    <Icon name="cpu-icon" class="icon" height="28px" alt="processes cpu icon" />
+                    <h3>Processes</h3>
+                </div>
+                <p>Atlas strips out a bunch, significantly reducing Windows' bloated process count from 145 to just 35.</p>
+                <span>145 -> 35~</span>
+            </div>
+        </div>
+        <Image src={Splitter} alt="Section splitter" />
+        <div class="card">
+            <div class="content-wrapper">
+                <div class="card-title">
+                    <Icon name="bolt-icon" class="icon" height="32px" alt="bolt memory icon" />
+                    <h3>Ram usage</h3>
+                </div>
+                <p>Thanks to Atlas we've freed up 1.4GB of RAM usage from boot, which can then be allocated to other tasks.</p>
+                <span>2.3GB -> 900MB~</span>
+            </div>
+        </div>
+        <Image src={Splitter} alt="Section splitter" />
+        <div class="card">
+            <div class="content-wrapper">
+                <div class="card-title">
+                    <Icon name="rocket-icon" class="icon" height="28px" alt="rocket fps icon" />
+                    <h3>1% FPS</h3>
+                </div>
+                <p>We saw a significant improvement in FPS lows. With an increase from 289 on Windows to 394 FPS with Atlas.</p>
+                <span>289 FPS -> 394 FPS</span>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="benchmark-link">
+                <a href="/">View detailed benchmarks -></a>
+            </div> -->
+</div>
+
+<style lang="scss">
+    .windows-comparison {
+        margin-top: 300px;
+        margin-bottom: 300px;
+
+        .benchmark-link {
+            text-align: center;
+            text-decoration: underline;
+            display: flex;
+            margin: 65px auto;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+
+            a {
+                color: rgba(255, 255, 255, 0.7);
+            }
+        }
+
+        .heading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+
+            p {
+                max-width: 544px;
+                margin-top: 30px;
+            }
+
+            h2 {
+                font-size: 60px;
+                font-weight: 600;
+            }
+
+            span {
+                font-weight: 600;
+            }
+        }
+
+        .cards {
+            display: flex;
+            margin-top: 75px;
+            background-color: var(--bg-card-color);
+            border-radius: 5px;
+            align-items: center;
+
+            .splitter {
+                width: 2px;
+                height: 300px;
+            }
+
+            .card {
+                display: flex;
+                width: 33.3%;
+                flex-direction: column;
+                padding: 70px 60px;
+
+                .content-wrapper {
+                    display: flex;
+                    gap: 35px;
+                    flex-direction: column;
+                    animation: fadeup ease-out;
+                    animation-timeline: view();
+                    animation-range: entry -80% exit -200%;
+                    align-items: center;
+                    justify-content: center;
+                    text-align: center;
+
+                    .card-title {
+                        display: flex;
+                        align-items: center;
+                        gap: 20px;
+
+                        .icon {
+                            stroke: var(--icon-white);
+                            fill: transparent;
+                        }
+
+                        img {
+                            width: 28px;
+                            height: 28px;
+                        }
+
+                        h3 {
+                            font-size: 36px;
+                            font-weight: 600;
+                        }
+                    }
+                }
+
+                span {
+                    color: rgba(26, 145, 255, 1);
+                    font-weight: 600;
+                    font-size: 20px;
+                }
+            }
+        }
+    }
+</style>

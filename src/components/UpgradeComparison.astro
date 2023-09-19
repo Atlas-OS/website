@@ -1,0 +1,134 @@
+---
+import Icon from 'astro-icon'
+---
+
+<div class="upgrade-comparison">
+    <div class="heading">
+        <h2>
+            <span class="darken">F**k Windows</span> Upgrade to <span class="highlight">Atlas</span>
+        </h2>
+        <p>
+            Windows is slow, clunky and unreliable. Atlas brings life back to your Windows system, designed to maximize performance and minimize latency. You will experience a smoother and more responsive Windows, and higher framerates over using
+            standard Windows.
+        </p>
+    </div>
+    <div class="cards">
+        <div class="card dark">
+            <div class="title">
+                <Icon name="fire-icon" class="icon" height="20px" alt="performance fire icon" />
+                <h3>Performance</h3>
+            </div>
+            <p>By Removing unnecessary components, disabling power-saving features, and optimizing services.</p>
+        </div>
+        <div class="card light">
+            <div class="title">
+                <Icon name="latency-icon" class="icon" height="16px" alt="latency icon" />
+                <h3>Latency</h3>
+            </div>
+            <p>By fine-tuning processes, implementing an efficient power plan, and optimizing networking, you'll feel a difference.</p>
+        </div>
+        <div class="card dark">
+            <div class="title">
+                <Icon name="fingerprint-icon" class="icon" height="20px" alt="privacy fingerprint icon" />
+                <h3>Privacy</h3>
+            </div>
+            <p>By eliminating Microsoft's notorious tracking, pre-installed apps, and bloatware, you can feel confident when using Atlas.</p>
+        </div>
+    </div>
+</div>
+
+<style lang="scss">
+    .upgrade-comparison {
+        margin-top: 320px;
+
+        .heading {
+            display: flex;
+            align-items: flex-end;
+            gap: 100px;
+
+            h2 {
+                max-width: 465px;
+                font-size: 60px;
+                font-weight: 600;
+            }
+
+            span {
+                font-weight: 600;
+            }
+
+            P {
+                max-width: 544px;
+            }
+        }
+
+        .cards {
+            display: flex;
+            gap: 35px;
+            margin-top: 75px;
+
+            animation: fadeup ease-out;
+            animation-timeline: view();
+            animation-range: entry 0% exit -100%;
+
+            .dark {
+                background: linear-gradient(180deg, #0c1633 0%, #2d5ace 100%);
+                border: 1px solid rgba(43, 86, 195, 1);
+                transition: scale 0.2s ease-in;
+            }
+
+            .light {
+                background: linear-gradient(180deg, #0c1633 0%, #6f8cd8 100%);
+                border: 1px solid rgba(111, 140, 216, 1);
+                transition: scale 0.2s ease-in;
+            }
+
+            .card {
+                padding: 40px 50px;
+                border-radius: 5px;
+
+                p {
+                    font-size: 14px;
+                }
+
+                .title {
+                    display: flex;
+                    align-items: center;
+                    font-size: 24px;
+                    gap: 10px;
+                    margin-bottom: 20px;
+
+                    .icon {
+                        stroke: var(--icon-white);
+                        fill: transparent;
+                    }
+
+                    h3 {
+                        font-family: 'Inter', sans-serif;
+                        font-weight: 600;
+                        font-size: 24px;
+                    }
+
+                    img {
+                        width: 26px;
+                        height: 20px;
+                    }
+
+                    .fire {
+                        width: 24px;
+                        height: 22px;
+                    }
+
+                    .latency {
+                        width: 26px;
+                        height: 20px;
+                    }
+
+                    .fingerprint {
+                        width: 24px;
+                        height: 20px;
+                    }
+                }
+            }
+        }
+    }
+</style>
