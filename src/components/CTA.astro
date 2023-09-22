@@ -1,19 +1,19 @@
 <div class="footer-radial">
-    <div class="community-section">
-        <h3>Join our community of 30,000+</h3>
-        <p>Join a welcoming community, full of passionate tech enthusiasts. Talk to like-minded individuals and seek advice from experts on everything Atlas.</p>
-        <div class="buttons">
-            <a class="button primary" href="/">Join our community -></a>
-            <a class="button tertiary" href="/">Star us on GitHub <span class="arrow">--></span></a>
+    <div class="container main">
+        <div class="community-section">
+            <h3>Join our community of 30,000+</h3>
+            <p>Join a welcoming community, full of passionate tech enthusiasts. Talk to like-minded individuals and seek advice from experts on everything Atlas.</p>
+            <div class="buttons">
+                <a class="button primary" href="/">Join our community -></a>
+                <a class="button tertiary" href="/">Star us on GitHub <span class="arrow">--></span></a>
+            </div>
         </div>
     </div>
 </div>
 
 <style lang="scss">
     .footer-radial {
-        background: url('/footer-radial.svg') no-repeat;
-        background-position: bottom center;
-        background-size: cover;
+        background: radial-gradient(70.81% 168.07% at 49.97% 178.07%, rgba(0, 78, 150, 0.3) 0%, rgba(2, 24, 45, 0) 100%);
     }
 
     .community-section {
@@ -42,7 +42,35 @@
             gap: 50px;
             animation: fadeup ease-out;
             animation-timeline: view();
-            animation-range: entry -50% exit -1000%;
+            animation-range: entry 0% exit -1200%;
+        }
+    }
+
+    @media screen and (max-width: 810px) {
+        .community-section {
+            h3 {
+                text-align: center;
+            }
+        }
+    }
+
+    @media screen and (max-width: 500px) {
+        .community-section {
+            padding-top: 150px;
+            padding-bottom: 150px;
+            gap: 30px;
+
+            h3 {
+                font-size: 36px;
+            }
+
+            p {
+                max-width: 90%;
+            }
+
+            .buttons {
+                gap: 20px;
+            }
         }
     }
 </style>
