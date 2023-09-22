@@ -20,15 +20,18 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
             <p>It’s time to experience a new Windows experience. Designed for gamers, with improved in-game framerates and lowered latency.</p>
             <div class="buttons">
                 <a class="button primary" href="/">AME Wizard -></a>
-                <a class="button secondary" href="/">Atlas Playbook -></a>
+                <button class="button secondary" id="playbook-dl-btn">Atlas Playbook -></button>
             </div>
-        </div>
-        <div class="wallpaper-wrapper">
-            <Image src={Wallpaper} class="wallpaper" alt="atlas os wallpaper" />
+            <span id="download-count" class="download-count"></span>
         </div>
     </div>
 </div>
 <div class="container main">
+    <div class="wallpaper-wrapper">
+        <Image src={Wallpaper} loading="eager" class="wallpaper" alt="atlas os wallpaper" />
+    </div>
+    <div class="linear-section"></div>
+
     <div class="brand-list">
         <a href="https://pcguide.com/software/atlasos/" rel="noreferrer nooopener" target="_blank">
             <Image src={PCGuide} alt="pc guide logomark" class="logomark" />
@@ -45,6 +48,34 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
     </div>
 </div>
 
+<script lang="ts">
+const playbookDlBtn = document.getElementById('playbook-dl-btn')
+const downloadCount = document.getElementById('download-count')
+
+playbookDlBtn.addEventListener('click', () => {
+    playbookDlBtn.innerText = 'Downloading...'
+    downloadCount.innerText = ''
+    window.open('https://github.com/Atlas-OS/Atlas/releases/latest/download/Atlas_W10-22H2.zip', '_blank')
+
+    const downloaded = localStorage.getItem(`downloaded`)
+
+    if (!downloaded) {
+        localStorage.setItem(`downloaded`, 'true')
+        fetch(`https://api.atlasos.net/w10_22h2/increment`, { method: 'POST' })
+    }
+
+    fetch(`https://api.atlasos.net/`).then(async (res) => {
+        const body = await res.json()
+        const count = body.data.find((download) => download.id == 4).count
+        downloadCount.innerText = `Atlas has been downloaded ${count.toLocaleString('en-US')} times.`
+    })
+
+    setTimeout(() => {
+        playbookDlBtn.innerText = 'Atlas Playbook ->'
+    }, 3000)
+})
+</script>
+
 <style lang="scss">
     .hero {
         display: flex;
@@ -52,6 +83,7 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
         align-items: center;
         justify-content: center;
         padding-top: 210px;
+        padding-bottom: 350px;
 
         .tagline {
             display: inline-flex;
@@ -108,10 +140,18 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
         }
     }
 
+    .download-count {
+        text-align: center;
+        font-size: 14px;
+        font-weight: 400;
+        color: #ffffff80;
+        margin-bottom: 100px;
+    }
+
     .radial-bg {
-        background: url('/radial-hero.svg') no-repeat;
-        background-position: top center;
-        background-size: cover;
+        background: radial-gradient(45.1% 50% at 50% 50%, rgba(12, 57, 99, 0.5) 0%, rgba(12, 57, 99, 0) 100%);
+        -webkit-animation: glow 2.5s alternate infinite;
+        animation: glow 2.5s alternate infinite;
     }
 
     .wallpaper-wrapper {
@@ -119,13 +159,23 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
         justify-content: center;
         flex-direction: column;
         align-items: center;
+        margin-top: -400px;
 
         .wallpaper {
-            max-width: 1300px;
-            max-height: 470px;
+            max-width: 100%;
+            max-height: 488px;
             margin-top: 70px;
             animation: wallpaper-fade-up 1s ease-out;
+            border-radius: 20px;
+            z-index: -1;
         }
+    }
+
+    .linear-section {
+        margin-top: -320px;
+        height: 350px;
+        width: 100%;
+        background: linear-gradient(180deg, transparent 0%, rgba(5, 12, 31, 0.9) 75%, rgb(5, 12, 31) 85%, rgb(5, 12, 31) 100%);
     }
 
     .brand-list {
@@ -133,27 +183,7 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
         justify-content: space-between;
         align-items: center;
         margin-top: 80px;
-
-        a {
-            animation: fadeup ease-out;
-            animation-timeline: view();
-        }
-
-        a:nth-child(1) {
-            animation-range: entry -10% exit -900%;
-        }
-
-        a:nth-child(2) {
-            animation-range: entry -10% exit -800%;
-        }
-
-        a:nth-child(3) {
-            animation-range: entry -10% exit -500%;
-        }
-
-        a:nth-child(4) {
-            animation-range: entry -10% exit -400%;
-        }
+        margin-bottom: 250px;
 
         .logomark {
             transition: all 0.2s ease-in-out;
@@ -161,7 +191,10 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
 
         .logomark:hover {
             filter: brightness(1.3);
-            transform: scale(1.01);
+
+            @media screen and (min-width: 1000px) {
+                transform: scale(1.01);
+            }
         }
     }
 
@@ -179,15 +212,70 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
         }
     }
 
-    @media screen and (min-width: 2000px) {
-        .wallpaper-wrapper {
-            margin-top: 50px;
+    @-webkit-keyframes glow {
+        0% {
+            -webkit-filter: brightness(1);
+            filter: brightness(1);
+        }
+        100% {
+            -webkit-filter: brightness(1.5);
+            filter: brightness(1.5);
         }
     }
 
-    @media screen and (min-width: 2400px) {
+    @keyframes glow {
+        0% {
+            -webkit-filter: brightness(1);
+            filter: brightness(1);
+        }
+        100% {
+            -webkit-filter: brightness(1.5);
+            filter: brightness(1.5);
+        }
+    }
+
+    @media screen and (max-width: 1000px) {
+        .hero {
+            padding-bottom: 350px;
+        }
+
         .wallpaper-wrapper {
-            margin-top: 100px;
+            display: none;
+        }
+
+        .brand-list {
+            display: none;
+        }
+    }
+
+    @media screen and (max-width: 810px) {
+        .hero {
+            padding-bottom: 150px;
+        }
+    }
+
+    @media screen and (max-width: 500px) {
+        .hero {
+            padding-top: 150px;
+            padding-bottom: 0px;
+
+            h1 {
+                font-size: 42px;
+            }
+
+            .tagline {
+                font-size: 12px;
+            }
+        }
+
+        .brand-list {
+            a {
+                transform: scale(0.5);
+
+                .logomark {
+                    width: 200px;
+                }
+            }
         }
     }
 </style>
