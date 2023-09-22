@@ -16,6 +16,9 @@ import PlayButton from '../assets/img/play-button.svg'
             </div>
         </div>
     </a>
+    <a href="https://www.youtube.com/watch?v=dc7CIkZcWYE" target="_blank" rel="noreferrer" aria-label="Click to watch the video on what Linus said about Atlas OS">
+        <div class="linear-section"></div>
+    </a>
 </div>
 
 <style lang="scss">
@@ -27,11 +30,13 @@ import PlayButton from '../assets/img/play-button.svg'
             background-size: cover;
             background-position: center;
             height: 546px;
+            max-width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto;
             border-radius: 14px 14px 0px 0px;
+            z-index: -1;
         }
 
         .circle {
@@ -51,6 +56,13 @@ import PlayButton from '../assets/img/play-button.svg'
             }
         }
 
+        .linear-section {
+            margin-top: -320px;
+            height: 350px;
+            width: 100%;
+            background: linear-gradient(180deg, transparent 0%, rgba(5, 12, 31, 0.9) 75%, rgb(5, 12, 31) 85%, rgb(5, 12, 31) 100%);
+        }
+
         .heading {
             text-align: center;
             margin-bottom: 100px;
@@ -64,6 +76,35 @@ import PlayButton from '../assets/img/play-button.svg'
                 font-size: 24px;
                 margin-top: 40px;
                 color: hsla(205, 100%, 100%, 45%);
+            }
+        }
+    }
+
+    @media screen and (max-width: 810px) {
+        .linus-section {
+            .heading {
+                display: flex;
+                align-items: center;
+                text-align: center;
+                flex-direction: column;
+                gap: 10px;
+
+                p {
+                    max-width: 90%;
+                }
+            }
+        }
+    }
+
+    @media screen and (max-width: 500px) {
+        .linus-section {
+            margin-top: 150px;
+
+            .heading {
+                h3 {
+                    font-size: 36px;
+                    max-width: 90%;
+                }
             }
         }
     }
