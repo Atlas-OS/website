@@ -39,8 +39,6 @@ import Icon from 'astro-icon'
 
 <style lang="scss">
     .upgrade-comparison {
-        margin-top: 320px;
-
         .heading {
             display: flex;
             align-items: flex-end;
@@ -127,6 +125,50 @@ import Icon from 'astro-icon'
                         width: 24px;
                         height: 20px;
                     }
+                }
+            }
+        }
+    }
+
+    @media screen and (max-width: 1080px) {
+        .upgrade-comparison {
+            .heading {
+                align-items: center;
+                gap: 30px;
+            }
+        }
+    }
+
+    @media screen and (max-width: 810px) {
+        .upgrade-comparison {
+            .heading {
+                align-items: center;
+                text-align: center;
+                flex-direction: column;
+                gap: 50px;
+
+                p {
+                    max-width: 90%;
+                }
+            }
+
+            .cards {
+                margin-top: 50px;
+                flex-direction: column;
+            }
+        }
+    }
+
+    @media screen and (max-width: 500px) {
+        .upgrade-comparison {
+            margin-top: 50px;
+
+            .heading {
+                gap: 30px;
+
+                h2 {
+                    font-size: 36px;
+                    max-width: 90%;
                 }
             }
         }

@@ -39,86 +39,86 @@ import GPLLogo from '../assets/img/gpl3-logo.svg'
                 <div class="star">
                     <Image src={GitHubStar} alt="GitHub star" />
                 </div>
-                <p>
+                <span>
                     <span id="star-amount-tag">ERROR</span> stargazers on <a href="https://github.com/atlas-os/atlas" target="_blank" rel="noreferrer"> GitHub -></a>
-                </p>
+                </span>
             </div>
-            <Image src={GPLLogo} alt="GPL logo" />
+            <Image src={GPLLogo} class="gpl-logomark" alt="GPL logo" />
         </div>
     </div>
 </div>
 
-<script lang="ts">
-const toggleStarBtn = document.getElementById('toggle-star-list-btn')
-const starList = document.getElementById('gh-star-list')
-const starWrapper = document.getElementById('gh-stars-wrap')
-const starListItems = document.getElementById('gh-star-list-items')
+<script>
+    const toggleStarBtn = document.getElementById('toggle-star-list-btn')
+    const starList = document.getElementById('gh-star-list')
+    const starWrapper = document.getElementById('gh-stars-wrap')
+    const starListItems = document.getElementById('gh-star-list-items')
 
-if (!toggleStarBtn) throw new Error('Element toggle-star-list-btn missing')
-if (!starList) throw new Error('Element gh-star-list missing')
-if (!starWrapper) throw new Error('Element gh-stars-wrap missing')
+    if (!toggleStarBtn) throw new Error('Element toggle-star-list-btn missing')
+    if (!starList) throw new Error('Element gh-star-list missing')
+    if (!starWrapper) throw new Error('Element gh-stars-wrap missing')
 
-toggleStarBtn.addEventListener('click', () => {
-    toggleStarBtn.classList.toggle('toggled')
-    starList.classList.toggle('show')
-    starWrapper.classList.toggle('toggled')
-})
-
-async function updateStars() {
-    if (!starListItems) throw new Error('Element gh-star-list-items missing')
-
-    // let resp = await fetch('https://api.atlasos.net/stars')
-    // let json = await resp.json()
-    // let starCount = json.count
-
-    // document.getElementById('star-amount-tag').innerText = starCount
-    // document.getElementById('star-amount-badge').innerText = (starCount / 1000).toFixed(1) + 'k'
-
-    // resp = await fetch('https://api.atlasos.net/recent-stars')
-    // json = await resp.json()
-    // let recentStars = json.data
-    // recentStars = recentStars.slice(0, 4)
-
-    const recentStars = [
-        {
-            avatar: 'https://avatars.githubusercontent.com/u/25649238?v=4',
-            username: 'driesxyz'
-        }
-    ]
-
-    recentStars.forEach((star) => {
-        const starElement = document.createElement('div')
-        starElement.classList.add('content')
-        starListItems.append(starElement)
-
-        const userImgElement = document.createElement('img')
-        userImgElement.alt = 'GitHub user avatar'
-        userImgElement.src = star.avatar
-
-        starElement.append(userImgElement)
-
-        const userNameElement = document.createElement('p')
-        userNameElement.innerText = star.username
-
-        starElement.append(userNameElement)
+    toggleStarBtn.addEventListener('click', () => {
+        toggleStarBtn.classList.toggle('toggled')
+        starList.classList.toggle('show')
+        starWrapper.classList.toggle('toggled')
     })
-}
 
-// if (import.meta.env.VITE_ENVIRONMENT === 'PRODUCTION') {
-updateStars()
-// }
+    async function updateStars() {
+        if (!starListItems) throw new Error('Element gh-star-list-items missing')
 
-let benchmarkElements
-let benchmarkElementsOffset = 0
+        // let resp = await fetch('https://api.atlasos.net/stars')
+        // let json = await resp.json()
+        // let starCount = json.count
 
-let starcountElements
-let starcountElementsOffset = 0
+        // document.getElementById('star-amount-tag').innerText = starCount
+        // document.getElementById('star-amount-badge').innerText = (starCount / 1000).toFixed(1) + 'k'
 
-// benchmarkElements = benchmarkElements.offsetTop
-// starcountElements = starcountElements.offsetTop
+        // resp = await fetch('https://api.atlasos.net/recent-stars')
+        // json = await resp.json()
+        // let recentStars = json.data
+        // recentStars = recentStars.slice(0, 4)
+
+        const recentStars = [
+            {
+                avatar: 'https://avatars.githubusercontent.com/u/25649238?v=4',
+                username: 'driesxyz'
+            }
+        ]
+
+        recentStars.forEach((star) => {
+            const starElement = document.createElement('div')
+            starElement.classList.add('content')
+            starListItems.append(starElement)
+
+            const userImgElement = document.createElement('img')
+            userImgElement.alt = 'GitHub user avatar'
+            userImgElement.src = star.avatar
+
+            starElement.append(userImgElement)
+
+            const userNameElement = document.createElement('p')
+            userNameElement.innerText = star.username
+
+            starElement.append(userNameElement)
+        })
+    }
+
+    // if (import.meta.env.VITE_ENVIRONMENT === 'PRODUCTION') {
+    updateStars()
+    // }
+
+    let benchmarkElements
+    let benchmarkElementsOffset = 0
+
+    let starcountElements
+    let starcountElementsOffset = 0
+
+    // benchmarkElements = benchmarkElements.offsetTop
+    // starcountElements = starcountElements.offsetTop
 </script>
 
-<style lang="scss">
+<style lang="scss" is:global>
     .open-source-section {
         display: flex;
         justify-content: space-between;
@@ -278,6 +278,41 @@ let starcountElementsOffset = 0
                 .line {
                     width: 1px;
                     background-color: hsl(212, 11%, 31%);
+                }
+            }
+        }
+    }
+
+    @media screen and (max-width: 1080px) {
+        .open-source-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+
+            .gpl-info {
+                max-width: 95%;
+            }
+
+            .github-image {
+                display: none;
+            }
+        }
+    }
+
+    @media screen and (max-width: 500px) {
+        .open-source-section {
+            margin-top: 150px;
+
+            .gpl-info {
+                h2 {
+                    font-size: 36px;
+                    margin-bottom: 20px;
+                }
+
+                .stargazer-count {
+                    .gpl-logomark {
+                        max-width: 90px;
+                    }
                 }
             }
         }

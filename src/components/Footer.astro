@@ -145,4 +145,33 @@ import { Icon } from 'astro-icon'
             }
         }
     }
+
+    @media (max-width: 983px) {
+        .footer {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 80px;
+
+            .left-section {
+                align-items: center;
+                gap: 40px;
+            }
+        }
+    }
+
+    @media (max-width: 983px) and (min-width: 550px) {
+        .footer {
+            .links {
+                flex-wrap: wrap;
+            }
+        }
+    }
+
+    @media screen and (max-width: 675px) {
+        .footer-wrapper .footer .links {
+            flex-direction: column;
+            gap: 50px;
+        }
+    }
 </style>

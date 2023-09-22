@@ -23,7 +23,7 @@ import Splitter from '../assets/img/splitter.svg'
                 <span>145 -> 35~</span>
             </div>
         </div>
-        <Image src={Splitter} alt="Section splitter" />
+        <Image src={Splitter} class="splitter" alt="Section splitter" />
         <div class="card">
             <div class="content-wrapper">
                 <div class="card-title">
@@ -34,7 +34,7 @@ import Splitter from '../assets/img/splitter.svg'
                 <span>2.3GB -> 900MB~</span>
             </div>
         </div>
-        <Image src={Splitter} alt="Section splitter" />
+        <Image src={Splitter} class="splitter" alt="Section splitter" />
         <div class="card">
             <div class="content-wrapper">
                 <div class="card-title">
@@ -100,7 +100,7 @@ import Splitter from '../assets/img/splitter.svg'
 
             .splitter {
                 width: 2px;
-                height: 300px;
+                height: 215px;
             }
 
             .card {
@@ -146,6 +146,53 @@ import Splitter from '../assets/img/splitter.svg'
                     color: rgba(26, 145, 255, 1);
                     font-weight: 600;
                     font-size: 20px;
+                }
+            }
+        }
+    }
+
+    @media screen and (max-width: 1080px) {
+        .windows-comparison .cards .card .content-wrapper .card-title {
+            h3 {
+                font-size: 28px;
+            }
+        }
+    }
+
+    @media screen and (max-width: 810px) {
+        .windows-comparison {
+            p {
+                max-width: 90%;
+            }
+
+            .cards {
+                flex-direction: column;
+
+                .splitter {
+                    display: none;
+                }
+
+                .card {
+                    width: 100%;
+                    padding: 50px 50px;
+                }
+            }
+        }
+    }
+
+    @media screen and (max-width: 500px) {
+        .windows-comparison {
+            margin-top: 150px;
+            margin-bottom: 150px;
+
+            .heading {
+                h2 {
+                    font-size: 36px;
+                }
+
+                p {
+                    max-width: 90%;
+                    margin-top: 20px;
                 }
             }
         }
