@@ -57,6 +57,7 @@ html::-webkit-scrollbar-thumb {
     padding: 13px 35px;
     gap: 10px;
     align-items: center;
+    cursor: pointer;
 
     &.primary {
         background-color: var(--color-primary);
@@ -71,6 +72,7 @@ html::-webkit-scrollbar-thumb {
         color: var(--color-primary);
         border: 1.5px solid var(--color-primary);
         transition: background-color 0.2s ease-in-out;
+        background-color: hsla(209, 100%, 55%, 0.05);
 
         &:hover {
             background-color: hsla(209, 100%, 55%, 0.18);
@@ -84,6 +86,7 @@ html::-webkit-scrollbar-thumb {
         padding: 0;
         gap: 10px;
         align-items: center;
+        transition: color 0.2s ease-in-out;
 
         .arrow {
             position: relative;
@@ -92,6 +95,8 @@ html::-webkit-scrollbar-thumb {
         }
 
         &:hover {
+            color: hsl(0, 0%, 100%);
+
             .arrow {
                 left: 5px;
             }
@@ -145,5 +150,19 @@ a {
     to {
         transform: translate(0);
         opacity: 1;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .buttons {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+
+        .button {
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
     }
 }
