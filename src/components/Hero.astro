@@ -9,21 +9,22 @@ import WePC from '../assets/img/wepc-logomark.svg'
 import TechSpot from '../assets/img/techspot-logomark.svg'
 ---
 
-<div class="radial-bg">
-    <div class="container main">
-        <div class="hero">
-            <a href="https://docs.atlasos.net/getting-started/installation" target="_blank" class="tagline">
-                <Icon name="book-open-icon" height="15px" class="icon" />
-                <span>View our detailed documentation for installing <span class="arrow">--></span></span>
-            </a>
-            <h1>A modification of Windows, designed for gamers.</h1>
-            <p>It’s time to experience a new Windows experience. Designed for gamers, with improved in-game framerates and lowered latency.</p>
-            <div class="buttons">
-                <a class="button primary" href="/">AME Wizard -></a>
-                <button class="button secondary" id="playbook-dl-btn">Atlas Playbook -></button>
-            </div>
-            <span id="download-count" class="download-count"></span>
+<div class="radial-wrapper">
+    <div class="radial-bg"></div>
+</div>
+<div class="container main">
+    <div class="hero">
+        <a href="https://docs.atlasos.net/getting-started/installation" target="_blank" class="tagline">
+            <Icon name="book-open-icon" height="15px" class="icon" />
+            <span>View our detailed documentation for installing <span class="arrow">--></span></span>
+        </a>
+        <h1>A modification of Windows, designed for gamers.</h1>
+        <p>It’s time to experience a new Windows experience. Designed for gamers, with improved in-game framerates and lowered latency.</p>
+        <div class="buttons">
+            <a class="button primary" href="/">AME Wizard -></a>
+            <button class="button secondary" id="playbook-dl-btn">Atlas Playbook -></button>
         </div>
+        <span id="download-count" class="download-count"></span>
     </div>
 </div>
 <div class="container main">
@@ -78,12 +79,14 @@ playbookDlBtn.addEventListener('click', () => {
 
 <style lang="scss">
     .hero {
+        position: relative;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         padding-top: 210px;
         padding-bottom: 300px;
+        margin-top: -800px;
 
         .tagline {
             display: inline-flex;
@@ -101,6 +104,7 @@ playbookDlBtn.addEventListener('click', () => {
                 position: relative;
                 transition: left 0.2s ease-in-out;
                 left: 3px;
+                white-space: nowrap;
             }
 
             &:hover {
@@ -148,13 +152,21 @@ playbookDlBtn.addEventListener('click', () => {
         margin-bottom: 100px;
     }
 
-    .radial-bg {
-        background: radial-gradient(45.1% 50% at 50% 50%, rgba(12, 57, 99, 0.5) 0%, rgba(12, 57, 99, 0) 100%);
-        -webkit-animation: glow 2.5s alternate infinite;
-        animation: glow 2.5s alternate infinite;
+    .radial-wrapper {
+        overflow: hidden;
+
+        .radial-bg {
+            position: relative;
+            background: radial-gradient(45.1% 50% at 50% 50%, rgba(13, 58, 99, 0.5) 0%, rgba(12, 57, 99, 0) 100%);
+            -webkit-animation: glow 2.5s alternate infinite;
+            animation: glow 2.5s alternate infinite;
+            height: 800px;
+            z-index: -1;
+        }
     }
 
     .wallpaper-wrapper {
+        position: relative;
         display: flex;
         justify-content: center;
         flex-direction: column;
@@ -234,9 +246,21 @@ playbookDlBtn.addEventListener('click', () => {
         }
     }
 
+    @media (max-width: 1080px) {
+        .radial-bg {
+            left: -50%;
+            right: -50%;
+            width: 200vw;
+        }
+    }
+
     @media screen and (max-width: 1000px) {
         .hero {
             padding-bottom: 350px;
+        }
+
+        .linear-section {
+            display: none;
         }
 
         .wallpaper-wrapper {
@@ -265,6 +289,7 @@ playbookDlBtn.addEventListener('click', () => {
 
             .tagline {
                 font-size: 12px;
+                padding: 8px 10px;
             }
         }
 

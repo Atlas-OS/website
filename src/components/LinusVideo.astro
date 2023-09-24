@@ -66,6 +66,7 @@ import PlayButton from '../assets/img/play-button.svg'
         .heading {
             text-align: center;
             margin-bottom: 100px;
+            word-break: keep-all;
 
             h3 {
                 font-style: italic;
@@ -96,14 +97,28 @@ import PlayButton from '../assets/img/play-button.svg'
         }
     }
 
-    @media screen and (max-width: 500px) {
+    @media (max-width: 500px) {
         .linus-section {
             margin-top: 150px;
+
+            .preview-image {
+                height: 250px;
+            }
 
             .heading {
                 h3 {
                     font-size: 36px;
                     max-width: 90%;
+                }
+            }
+        }
+    }
+
+    @media (max-width: 285px) {
+        .linus-section {
+            .heading {
+                h3 {
+                    font-size: 28px;
                 }
             }
         }
