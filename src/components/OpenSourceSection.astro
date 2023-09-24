@@ -67,26 +67,29 @@ import GPLLogo from '../assets/img/gpl3-logo.svg'
     async function updateStars() {
         if (!starListItems) throw new Error('Element gh-star-list-items missing')
 
-        // let resp = await fetch('https://api.atlasos.net/stars')
-        // let json = await resp.json()
-        // let starCount = json.count
+        let resp = await fetch('https://api.atlasos.net/stars')
+        let json = await resp.json()
+        let starCount = json.count
 
-        // document.getElementById('star-amount-tag').innerText = starCount
-        // document.getElementById('star-amount-badge').innerText = (starCount / 1000).toFixed(1) + 'k'
+        const starCountElement = document.getElementById('star-amount-tag')
+        const starBadgeElement = document.getElementById('star-amount-badge')
 
-        // resp = await fetch('https://api.atlasos.net/recent-stars')
-        // json = await resp.json()
-        // let recentStars = json.data
-        // recentStars = recentStars.slice(0, 4)
+        if (!starCountElement || !starBadgeElement) throw new Error('Missing elements')
 
-        const recentStars = [
-            {
-                avatar: 'https://avatars.githubusercontent.com/u/25649238?v=4',
-                username: 'driesxyz'
-            }
-        ]
+        starCountElement.innerText = starCount
+        starBadgeElement.innerText = (starCount / 1000).toFixed(1) + 'k'
 
-        recentStars.forEach((star) => {
+        resp = await fetch('https://api.atlasos.net/recent-stars')
+        json = await resp.json()
+        let recentStars = json.data
+        recentStars = recentStars.slice(0, 4)
+
+        type Star = {
+            username: string
+            avatar: string
+        }
+
+        recentStars.forEach((star: Star) => {
             const starElement = document.createElement('div')
             starElement.classList.add('content')
             starListItems.append(starElement)
@@ -104,18 +107,9 @@ import GPLLogo from '../assets/img/gpl3-logo.svg'
         })
     }
 
-    // if (import.meta.env.VITE_ENVIRONMENT === 'PRODUCTION') {
-    updateStars()
-    // }
-
-    let benchmarkElements
-    let benchmarkElementsOffset = 0
-
-    let starcountElements
-    let starcountElementsOffset = 0
-
-    // benchmarkElements = benchmarkElements.offsetTop
-    // starcountElements = starcountElements.offsetTop
+    if (import.meta.env.VITE_ENVIRONMENT === 'PRODUCTION') {
+        updateStars()
+    }
 </script>
 
 <style lang="scss" is:global>
