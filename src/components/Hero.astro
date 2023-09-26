@@ -32,7 +32,6 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
         <Image src={Wallpaper} loading="eager" class="wallpaper" alt="atlas os wallpaper" />
     </div>
     <div class="linear-section"></div>
-
     <div class="brand-list">
         <a href="https://pcguide.com/software/atlasos/" rel="noreferrer nooopener" target="_blank">
             <Image src={PCGuide} alt="pc guide logomark" class="logomark" />
@@ -153,7 +152,6 @@ playbookDlBtn.addEventListener('click', () => {
     }
 
     .radial-wrapper {
-        overflow: hidden;
         filter: blur(100px);
 
         .radial-bg {
@@ -162,7 +160,7 @@ playbookDlBtn.addEventListener('click', () => {
             -webkit-animation: glow 2.5s alternate infinite;
             animation: glow 2.5s alternate infinite;
             height: 1000px;
-            z-index: -1;
+            z-index: -99;
         }
     }
 
@@ -180,15 +178,16 @@ playbookDlBtn.addEventListener('click', () => {
             margin-top: 70px;
             animation: wallpaper-fade-up 1s ease-out;
             border-radius: 20px;
-            z-index: -1;
         }
     }
 
     .linear-section {
+        position: relative;
         margin-top: -320px;
         height: 350px;
         width: 100%;
         background: linear-gradient(180deg, transparent 0%, rgba(5, 12, 31, 0.9) 75%, rgb(5, 12, 31) 85%, rgb(5, 12, 31) 100%);
+        z-index: 1;
     }
 
     .brand-list {
