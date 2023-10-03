@@ -55,10 +55,11 @@ html::-webkit-scrollbar-thumb {
 
 .button {
     display: flex;
-    padding: 13px 35px;
+    padding: 12px 35px;
     gap: 10px;
     align-items: center;
     cursor: pointer;
+    font-weight: 500;
 
     &.primary {
         background-color: var(--color-primary);
@@ -70,13 +71,12 @@ html::-webkit-scrollbar-thumb {
     }
 
     &.secondary {
-        color: var(--color-primary);
-        border: 1.5px solid var(--color-primary);
+        color: hsl(209, 100%, 55%);
+        border: 1.5px solid hsl(209, 100%, 55%);
         transition: background-color 0.2s ease-in-out;
-        background-color: hsla(209, 100%, 55%, 0.05);
 
         &:hover {
-            background-color: hsla(209, 100%, 55%, 0.18);
+            background-color: hsl(209, 100%, 20%);
         }
     }
 
