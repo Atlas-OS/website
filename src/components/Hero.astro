@@ -61,12 +61,12 @@ playbookDlBtn.addEventListener('click', () => {
 
     if (!downloaded) {
         localStorage.setItem(`downloaded`, 'true')
-        fetch(`https://api.atlasos.net/w10_22h2/increment`, { method: 'POST' })
+        fetch(`https://api.atlasos.net/atlas/increment`, { method: 'POST' })
     }
 
     fetch(`https://api.atlasos.net/`).then(async (res) => {
         const body = await res.json()
-        const count = body.data.find((download) => download.id == 4).count
+        const count = body.data.find((download) => download.name == 'atlas').count
         downloadCount.innerText = `Atlas has been downloaded ${count.toLocaleString('en-US')} times.`
     })
 
