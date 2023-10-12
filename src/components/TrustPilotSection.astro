@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets'
+import { Picture } from 'astro:assets'
 
 import Review from '../assets/img/review.svg'
 import TrustPilotStar from '../assets/img/trustpilot-logo-color.svg'
@@ -13,7 +13,7 @@ import Verified from '../assets/img/verified.svg'
         <h2>What does our <span class="highlight">community</span> think?</h2>
         <p>Our community is fantastic and reviews us with a significant amount of positive feedback. We take great pride in our Trustpilot rating, which reflects our commitment for improving Atlas.</p>
         <div class="review-star">
-            <Image src={TrustPilotStars} alt="Trustpilot star" />
+            <Picture src={TrustPilotStars} alt="Trustpilot star" />
             <p>
                 <span>4.8 out of 5</span> on <a href="https://trustpilot.atlasos.net" target="_blank" rel="noreferrer"> Trustpilot -></a>
             </p>
@@ -21,22 +21,22 @@ import Verified from '../assets/img/verified.svg'
     </div>
     <div class="review-item">
         <div class="review-img">
-            <Image src={Review} alt="Review" />
+            <Picture src={Review} alt="Review" />
         </div>
         <div class="trustpilot-box">
-            <Image src={Logo} alt="Atlas logo" />
+            <Picture src={Logo} alt="Atlas logo" />
             <div class="info">
                 <span>atlasos.net</span>
                 <p class="review-count">Reviews 44 - Excellent</p>
                 <div class="stars">
-                    <Image src={TrustPilotStars} alt="Truspilot stars" />
+                    <Picture src={TrustPilotStars} alt="Truspilot stars" />
                 </div>
                 <div class="verified-company">
-                    <Image src={Verified} alt="Verified" />
+                    <Picture src={Verified} alt="Verified" />
                     <p>VERIFIED COMPANY</p>
                 </div>
             </div>
-            <Image src={TrustPilotStar} alt="Trustpilot star" class="tp-star" />
+            <Picture src={TrustPilotStar} alt="Trustpilot star" class="tp-star" />
         </div>
     </div>
 </div>

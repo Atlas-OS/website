@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets'
+import { Picture } from 'astro:assets'
 
 import GitHub from '../assets/img/github-overview.png'
 import Chevron from '../assets/img/chevron.svg'
@@ -9,12 +9,12 @@ import GPLLogo from '../assets/img/gpl3-logo.svg'
 
 <div class="open-source-section">
     <div class="github-image">
-        <Image src={GitHub} alt="GitHub repository" />
+        <Picture src={GitHub} alt="GitHub repository" />
         <div class="gh-stars" id="gh-stars-wrap">
             <div class="gh-stars-info">
                 <div class="content">
                     <div class="star">
-                        <Image src={GitHubStar} alt="GitHub star" />
+                        <Picture src={GitHubStar} alt="GitHub star" />
                     </div>
                     <p>Starred</p>
                     <span class="star-count" id="star-amount-badge">ERROR</span>
@@ -22,7 +22,7 @@ import GPLLogo from '../assets/img/gpl3-logo.svg'
                 <div class="line"></div>
                 <div class="content">
                     <button class="chevron-img" id="toggle-star-list-btn">
-                        <Image class="chevron-img" src={Chevron} alt="Chevron" />
+                        <Picture class="chevron-img" src={Chevron} alt="Chevron" />
                     </button>
                 </div>
             </div>
@@ -37,13 +37,13 @@ import GPLLogo from '../assets/img/gpl3-logo.svg'
         <div class="stargazer-count">
             <div class="stargazers">
                 <div class="star">
-                    <Image src={GitHubStar} alt="GitHub star" />
+                    <Picture src={GitHubStar} alt="GitHub star" />
                 </div>
                 <span>
                     <span id="star-amount-tag">ERROR</span> stargazers on <a href="https://github.com/atlas-os/atlas" target="_blank" rel="noreferrer"> GitHub -></a>
                 </span>
             </div>
-            <Image src={GPLLogo} class="gpl-logomark" alt="GPL logo" />
+            <Picture src={GPLLogo} class="gpl-logomark" alt="GPL logo" />
         </div>
     </div>
 </div>

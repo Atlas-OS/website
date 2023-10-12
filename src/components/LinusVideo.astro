@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets'
+import { Picture } from 'astro:assets'
 
 import PlayButton from '../assets/img/play-button.svg'
 ---
@@ -12,7 +12,7 @@ import PlayButton from '../assets/img/play-button.svg'
     <a href="https://www.youtube.com/watch?v=dc7CIkZcWYE" target="_blank" rel="noreferrer" class="linus-video">
         <div class="preview-image">
             <div class="circle">
-                <Image src={PlayButton} alt="Video play button" />
+                <Picture src={PlayButton} alt="Video play button" />
             </div>
         </div>
     </a>
@@ -53,6 +53,7 @@ import PlayButton from '../assets/img/play-button.svg'
                 width: 40px;
                 height: 40px;
                 margin-left: 8px;
+                border-radius: 5px;
             }
         }
 

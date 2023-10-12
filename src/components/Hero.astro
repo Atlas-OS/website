@@ -1,6 +1,6 @@
 ---
 import Icon from 'astro-icon'
-import { Image } from 'astro:assets'
+import { Picture } from 'astro:assets'
 
 import Wallpaper from '../assets/img/atlas-wallpaper.webp'
 import PCGuide from '../assets/img/pcguide-logomark.svg'
@@ -30,7 +30,7 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
 <div class="container main">
     <div class="wallpaper-fade-in">
         <div class="wallpaper-wrapper">
-            <Image src={Wallpaper} loading="eager" class="wallpaper" alt="atlas os wallpaper" />
+            <Picture src={Wallpaper} loading="eager" class="wallpaper" alt="atlas os wallpaper" />
             <div class="wallpaper-animation">
                 <div class="wallpaper-animation-line"></div>
                 <div class="wallpaper-animation-line"></div>
@@ -40,16 +40,16 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
     <div class="linear-section"></div>
     <div class="brand-list">
         <a href="https://pcguide.com/software/atlasos/" rel="noreferrer nooopener" target="_blank">
-            <Image src={PCGuide} alt="pc guide logomark" class="logomark" />
+            <Picture src={PCGuide} alt="pc guide logomark" class="logomark" />
         </a>
         <a href="https://news.itsfoss.com/atlas-os/" rel="noreferrer nooopener" target="_blank">
-            <Image src={ItsFoss} alt="its foss logomark" class="logomark" />
+            <Picture src={ItsFoss} alt="its foss logomark" class="logomark" />
         </a>
         <a href="https://wepc.com/tips/is-atlas-os-worth-it/" rel="noreferrer nooopener" target="_blank">
-            <Image src={WePC} alt="we pc logomark" class="logomark" />
+            <Picture src={WePC} alt="we pc logomark" class="logomark" />
         </a>
         <a href="https://techspot.com/news/97095-check-out-atlasos-redesigned-windows-10-version-gamers.html" rel="noreferrer nooopener" target="_blank">
-            <Image src={TechSpot} alt="tech spot logomark" class="logomark" />
+            <Picture src={TechSpot} alt="tech spot logomark" class="logomark" />
         </a>
     </div>
 </div>
@@ -256,6 +256,7 @@ playbookDlBtn.addEventListener('click', () => {
                 max-width: 100%;
                 max-height: 490px;
                 border-radius: inherit;
+                border-radius: 18px 18px 0 0;
                 border: 2px solid hsl(225, 62%, 12%);
             }
         }
