@@ -28,8 +28,14 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
     </div>
 </div>
 <div class="container main">
-    <div class="wallpaper-wrapper">
-        <Image src={Wallpaper} loading="eager" class="wallpaper" alt="atlas os wallpaper" />
+    <div class="wallpaper-fade-in">
+        <div class="wallpaper-wrapper">
+            <Image src={Wallpaper} loading="eager" class="wallpaper" alt="atlas os wallpaper" />
+            <div class="wallpaper-animation">
+                <div class="wallpaper-animation-line"></div>
+                <div class="wallpaper-animation-line"></div>
+            </div>
+        </div>
     </div>
     <div class="linear-section"></div>
     <div class="brand-list">
@@ -164,20 +170,94 @@ playbookDlBtn.addEventListener('click', () => {
         }
     }
 
-    .wallpaper-wrapper {
-        position: relative;
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        align-items: center;
+    @keyframes hero-preview-animation-line {
+        0% {
+            transform: translateZ(0) translate(-150px);
+        }
+
+        20% {
+            transform: translateZ(0) translate(-150px, -470px);
+        }
+
+        21% {
+            transform: translateZ(0) translate(-150px, -470px) rotate(45deg);
+        }
+
+        30% {
+            transform: translateZ(0) translate(0px, -620px) rotate(90deg);
+        }
+
+        50% {
+            transform: translateZ(0) translate(500px, -620px) rotate(90deg);
+        }
+
+        70% {
+            transform: translateZ(0) translate(950px, -620px) rotate(90deg);
+        }
+
+        71% {
+            transform: translateZ(0) translate(1000px, -680px) rotate(135deg);
+        }
+
+        80% {
+            transform: translateZ(0) translate(1150px, -470px) rotate(180deg);
+        }
+
+        100% {
+            transform: translateZ(0) translate(1150px) rotate(180deg);
+        }
+    }
+
+    .wallpaper-fade-in {
         margin-top: -400px;
 
-        .wallpaper {
-            max-width: 100%;
-            max-height: 488px;
+        .wallpaper-wrapper {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            border-radius: 18px 18px 0 0;
             margin-top: 70px;
             animation: wallpaper-fade-up 1s ease-out;
-            border-radius: 20px;
+
+            .wallpaper-animation {
+                padding: 2px 2px 0;
+                -webkit-mask:
+                    linear-gradient(#fff 0 0) content-box,
+                    linear-gradient(#fff 0 0);
+                mask:
+                    linear-gradient(#fff 0 0) content-box,
+                    linear-gradient(#fff 0 0);
+                mask-composite: xor;
+                -webkit-mask-composite: xor;
+                mask-composite: exclude;
+                position: absolute;
+                inset: 0;
+                z-index: 1;
+                border-radius: inherit;
+
+                .wallpaper-animation-line {
+                    width: 300px;
+                    height: 300px;
+                    position: absolute;
+                    animation: hero-preview-animation-line 12s linear infinite;
+                    bottom: -300px;
+                    left: 0;
+                    background-image: linear-gradient(to top, rgba(109, 46, 255, 0), hsl(225, 62%, 12%), rgb(187, 194, 204), rgb(72, 167, 255) 99%, rgba(255, 189, 122, 0) 100%);
+                }
+
+                .wallpaper-animation-line:nth-child(1) {
+                    animation-delay: 6s;
+                }
+            }
+
+            .wallpaper {
+                max-width: 100%;
+                max-height: 488px;
+                border-radius: inherit;
+                border: 2px solid hsl(225, 62%, 12%);
+            }
         }
     }
 
@@ -187,7 +267,7 @@ playbookDlBtn.addEventListener('click', () => {
         height: 350px;
         width: 100%;
         background: linear-gradient(180deg, transparent 0%, rgba(5, 12, 31, 0.9) 75%, rgb(5, 12, 31) 85%, rgb(5, 12, 31) 100%);
-        z-index: 1;
+        z-index: 2;
     }
 
     .brand-list {
@@ -254,16 +334,16 @@ playbookDlBtn.addEventListener('click', () => {
         }
     }
 
-    @media screen and (max-width: 1000px) {
+    @media screen and (max-width: 1320px) {
         .hero {
-            padding-bottom: 350px;
+            padding-bottom: 200px;
         }
 
         .linear-section {
             display: none;
         }
 
-        .wallpaper-wrapper {
+        .wallpaper-fade-in {
             display: none;
         }
 
