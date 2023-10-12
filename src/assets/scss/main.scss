@@ -45,6 +45,22 @@ html::-webkit-scrollbar-thumb {
     background: hsl(200, 15%, 40%);
 }
 
+img {
+    -khtml-user-select: none;
+    -o-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+picture {
+    -khtml-user-select: none;
+    -o-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
 .container {
     margin: 0 auto;
     padding: 0 10px;
