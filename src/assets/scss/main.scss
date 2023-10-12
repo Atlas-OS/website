@@ -1,3 +1,8 @@
+* {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
 body {
     background-color: var(--bg-color);
     overflow-x: hidden;
