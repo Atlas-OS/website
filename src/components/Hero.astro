@@ -170,13 +170,13 @@ playbookDlBtn.addEventListener('click', () => {
         }
     }
 
-    @keyframes hero-preview-animation-line {
+    @keyframes wallpaper-animation-line {
         0% {
-            transform: translateZ(0) translate(-150px);
+            transform: translateZ(0) translate(-150px, 0px) rotate(0deg);
         }
 
         20% {
-            transform: translateZ(0) translate(-150px, -470px);
+            transform: translateZ(0) translate(-150px, -470px) rotate(0deg);
         }
 
         21% {
@@ -191,20 +191,20 @@ playbookDlBtn.addEventListener('click', () => {
             transform: translateZ(0) translate(500px, -620px) rotate(90deg);
         }
 
-        70% {
-            transform: translateZ(0) translate(950px, -620px) rotate(90deg);
+        68% {
+            transform: translateZ(0) translate(980px, -620px) rotate(90deg);
         }
 
         71% {
-            transform: translateZ(0) translate(1000px, -680px) rotate(135deg);
+            transform: translateZ(0) translate(1000px, -620px) rotate(135deg);
         }
 
         80% {
-            transform: translateZ(0) translate(1150px, -470px) rotate(180deg);
+            transform: translateZ(0) translate(1150px, -470px) rotate(180deg) !important;
         }
 
         100% {
-            transform: translateZ(0) translate(1150px) rotate(180deg);
+            transform: translateZ(0) translate(1150px, 0px) rotate(180deg);
         }
     }
 
@@ -234,17 +234,15 @@ playbookDlBtn.addEventListener('click', () => {
                 mask-composite: exclude;
                 position: absolute;
                 inset: 0;
-                z-index: 1;
                 border-radius: inherit;
 
                 .wallpaper-animation-line {
                     width: 300px;
                     height: 300px;
                     position: absolute;
-                    animation: hero-preview-animation-line 12s linear infinite;
+                    animation: wallpaper-animation-line 12s linear infinite;
                     bottom: -300px;
-                    left: 0;
-                    background-image: linear-gradient(to top, rgba(109, 46, 255, 0), hsl(225, 62%, 12%), rgb(187, 194, 204), rgb(72, 167, 255) 99%, rgba(255, 189, 122, 0) 100%);
+                    background-image: linear-gradient(to top, rgba(109, 46, 255, 0), rgb(12, 21, 50), rgb(187, 194, 204), rgb(72, 167, 255) 99%, rgba(12, 21, 50, 0) 100%);
                 }
 
                 .wallpaper-animation-line:nth-child(1) {
