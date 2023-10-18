@@ -1,8 +1,23 @@
 ---
 import { Picture } from 'astro:assets'
 import { Icon } from 'astro-icon'
+import ExternalLink from './ExternalLink.astro'
 
 import Logomark from '../../public/logomark.svg'
+
+interface Props {
+    links: {
+        documentation: string
+        forum: string
+        discord: string
+        github: string
+        faq: string
+        twitter: string
+        donate: string
+    }
+}
+
+const { links } = Astro.props
 ---
 
 <div class="navbar-wrapper">
@@ -11,19 +26,19 @@ import Logomark from '../../public/logomark.svg'
             <Picture src={Logomark} alt="Atlas logomark" />
         </a>
         <div class="links">
-            <a href="https://forum.atlasos.net" target="_blank">Forums</a>
-            <a href="https://docs.atlasos.net" target="_blank">Documentation</a>
-            <a href="https://docs.atlasos.net/faq" target="_blank">FAQ</a>
-            <a href="https://ko-fi.com/atlasos" target="_blank" rel="noreferrer noopener">Support us</a>
+            <ExternalLink href={links.forum} children="Forums" />
+            <ExternalLink href={links.documentation} children="Documentation" />
+            <ExternalLink href={links.faq} children="FAQ" />
+            <ExternalLink href={links.donate} children="Support us" />
         </div>
         <div class="social-links">
-            <a href="https://github.com/atlas-os/atlas" aria-label="Visit our GitHub repository" target="_blank" rel="noreferrer noopener">
+            <a href={links.github} aria-label="Visit our GitHub repository" target="_blank" rel="noreferrer noopener">
                 <Icon name="github-logo" height="26" class="icon" />
             </a>
-            <a href="https://discord.com/servers/atlas-795710270000332800" aria-label="Join our Discord community" target="_blank" rel="noreferrer noopener">
+            <a href={links.discord} aria-label="Join our Discord community" target="_blank" rel="noreferrer noopener">
                 <Icon name="discord-logo" height="22" class="icon" />
             </a>
-            <a href="https://x.com/atlasos" aria-label="Visit our X account, maybe follow?" target="_blank" rel="noreferrer noopener">
+            <a href={links.twitter} aria-label="Follow us on X" target="_blank" rel="noreferrer noopener">
                 <Icon name="x-logo" height="25" class="icon" />
             </a>
         </div>
@@ -74,10 +89,8 @@ import Logomark from '../../public/logomark.svg'
                 fill: hsla(0, 0%, 98%, 0.8);
             }
         }
-    }
 
-    @media screen and (max-width: 900px) {
-        .navbar {
+        @media (max-width: 900px) {
             padding: 25px 0;
 
             .social-links {
