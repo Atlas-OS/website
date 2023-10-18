@@ -1,11 +1,24 @@
+---
+import ExternalLink from './ExternalLink.astro'
+
+interface Props {
+    links: {
+        github: string
+        discord: string
+    }
+}
+
+const { links } = Astro.props
+---
+
 <div class="footer-radial">
     <div class="container main">
         <div class="community-section">
             <h3>Join our community of 30,000+</h3>
             <p>Join our community of passionate tech enthusiasts to connect with like-minded individuals and seek advice from experts.</p>
             <div class="buttons">
-                <a class="button primary" href="/">Join our community -></a>
-                <a class="button tertiary" href="/">Star us on GitHub <span class="arrow">--></span></a>
+                <ExternalLink style="button primary" href={links.discord} aria-label="Join our humble Discord community" children="Join our community ->" />
+                <a class="button tertiary" href={links.github} target="_blank" rel="noreferrer noopener" aria-label="Check out and star our GitHub page">Star us on GitHub <span class="arrow">--></span></a>
             </div>
         </div>
     </div>
@@ -44,18 +57,14 @@
             animation-timeline: view();
             animation-range: entry 0% exit -1200%;
         }
-    }
 
-    @media screen and (max-width: 810px) {
-        .community-section {
+        @media (max-width: 810px) {
             h3 {
                 text-align: center;
             }
         }
-    }
 
-    @media screen and (max-width: 500px) {
-        .community-section {
+        @media (max-width: 500px) {
             padding-top: 150px;
             padding-bottom: 150px;
             gap: 30px;
