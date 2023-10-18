@@ -1,11 +1,28 @@
 ---
 import Logomark from '../../public/logomark.svg'
+import ExternalLink from './ExternalLink.astro'
 
 import { Picture } from 'astro:assets'
 import { Icon } from 'astro-icon'
+
+interface Props {
+    links: {
+        documentation: string
+        forum: string
+        discord: string
+        github: string
+        faq: string
+        twitter: string
+        trustpilot: string
+        donate: string
+    }
+}
+
+const { links } = Astro.props
+const forumDonate = `${links.forum}/access-portal`
 ---
 
-<div class="footer-wrapper">
+<footer class="footer-wrapper">
     <div class="footer">
         <div class="left-section">
             <a class="logomark" href="/">
@@ -13,20 +30,20 @@ import { Icon } from 'astro-icon'
             </a>
             <p>Atlas is Designed for gamers, with improved in-game framerates and lowered latency.</p>
             <div class="social-icons">
-                <a href="https://x.com/atlasos" aria-label="Visit our X account, maybe follow?" target="_blank" rel="noreferrer">
-                    <Icon name="x-logo" alt="Twitter logo" class="icons" height="25px" width="25px" />
+                <a href={links.twitter} aria-label="Follow us on X">
+                    <Icon name="x-logo" class="icons" height="25px" width="25px" />
                 </a>
-                <a href="https://discord.atlasos.net" aria-label="Join our Discord community" target="_blank" rel="noreferrer">
-                    <Icon name="discord-logo" alt="Discord logo" class="icons" height="25px" width="25px" />
+                <a href={links.discord} aria-label="Join our Discord community">
+                    <Icon name="discord-logo" class="icons" height="25px" width="25px" />
                 </a>
-                <a href="https://github.com/atlas-os/atlas" aria-label="Visit our GitHub repository" target="_blank" rel="noreferrer">
-                    <Icon name="github-logo" alt="GitHub logo" class="icons" height="25px" width="25px" />
+                <a href={links.github} aria-label="Visit our GitHub repository">
+                    <Icon name="github-logo" class="icons" height="25px" width="25px" />
                 </a>
-                <a href="https://ko-fi.com/atlasos" aria-label="Visit our Ko-fi page" target="_blank" rel="noreferrer">
-                    <Icon name="ko-fi-logo" alt="Ko-fi logo" class="icons" height="25px" width="30px" />
+                <a href={links.donate} aria-label="Visit our Ko-fi page">
+                    <Icon name="ko-fi-logo" class="icons" height="25px" width="30px" />
                 </a>
-                <a href="https://trustpilot.atlasos.net" aria-label="Visit our TrustPilot, maybe leave a review?" target="_blank" rel="noreferrer">
-                    <Icon name="trustpilot-logo-mono" alt="Trustpilot logo" class="icons" height="25px" width="25px" />
+                <a href={links.trustpilot} aria-label="Visit our TrustPilot page">
+                    <Icon name="trustpilot-logo-mono" class="icons" height="25px" width="25px" />
                 </a>
             </div>
             <span class="copyright">Copyright © 2023 AtlasOS. All rights reserved.</span>
@@ -35,25 +52,25 @@ import { Icon } from 'astro-icon'
             <div class="column">
                 <span>Sitemap</span>
                 <a href="/">Home</a>
-                <a href="https://forum.atlasos.net" target="_blank">Forum</a>
-                <a href="https://docs.atlasos.net" target="_blank">Documentation</a>
-                <a href="https://docs.atlasos.net/troubleshooting/extended-faq/" target="_blank">FAQ</a>
+                <ExternalLink href={links.forum} children="Forum" />
+                <ExternalLink href={links.documentation} children="Documentation" />
+                <ExternalLink href={links.faq} children="FAQ" />
             </div>
             <div class="column">
                 <span>Community</span>
-                <a href="https://github.com/atlas-os/atlas" rel="noreferrer" target="_blank">GitHub</a>
-                <a href="https://discord.atlasos.net" rel="noreferrer" target="_blank">Discord</a>
-                <a href="https://twitter.com/atlasos" rel="noreferrer" target="_blank">Twitter</a>
-                <a href="https://trustpilot.atlasos.net" rel="noreferrer" target="_blank">Trustpilot</a>
+                <ExternalLink href={links.github} children="GitHub" />
+                <ExternalLink href={links.discord} children="Discord" />
+                <ExternalLink href={links.twitter} children="Twitter" />
+                <ExternalLink href={links.trustpilot} children="Trustpilot" />
             </div>
             <div class="column">
                 <span>Donations</span>
-                <a href="https://ko-fi/atlasos" rel="noreferrer" target="_blank">Ko-fi</a>
-                <a href="https://forum.atlasos.net/access-portal" rel="noreferrer" target="_blank">Forum donate</a>
+                <ExternalLink href={links.donate} children="Ko-fi" />
+                <ExternalLink href={forumDonate} children="Forum donate" />
             </div>
         </div>
     </div>
-</div>
+</footer>
 
 <style lang="scss">
     .footer-wrapper {
@@ -167,7 +184,7 @@ import { Icon } from 'astro-icon'
         }
     }
 
-    @media screen and (max-width: 675px) {
+    @media (max-width: 675px) {
         .footer-wrapper .footer .links {
             flex-direction: column;
             gap: 50px;
