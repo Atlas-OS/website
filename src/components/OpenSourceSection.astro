@@ -5,6 +5,15 @@ import GitHub from '../assets/img/github-overview.png'
 import Chevron from '../assets/img/chevron.svg'
 import GitHubStar from '../assets/img/github-star.svg'
 import GPLLogo from '../assets/img/gpl3-logo.svg'
+import ExternalLink from './ExternalLink.astro'
+
+interface Props {
+    links: {
+        github: string
+    }
+}
+
+const { links } = Astro.props
 ---
 
 <div class="open-source-section">
@@ -40,7 +49,7 @@ import GPLLogo from '../assets/img/gpl3-logo.svg'
                     <Picture src={GitHubStar} alt="GitHub star" />
                 </div>
                 <span>
-                    <span id="star-amount-tag">ERROR</span> stargazers on <a href="https://github.com/atlas-os/atlas" target="_blank" rel="noreferrer"> GitHub -></a>
+                    <span id="star-amount-tag">ERROR</span> stargazers on <ExternalLink href={links.github} children="GitHub ->" />
                 </span>
             </div>
             <Picture src={GPLLogo} class="gpl-logomark" alt="GPL logo" />
@@ -64,46 +73,61 @@ import GPLLogo from '../assets/img/gpl3-logo.svg'
         starWrapper.classList.toggle('toggled')
     })
 
-    async function updateStars() {
-        if (!starListItems) throw new Error('Element gh-star-list-items missing')
+    type Star = {
+        username: string
+        avatar: string
+    }
 
-        let resp = await fetch('https://api.atlasos.net/stars')
-        let json = await resp.json()
+    function createStarElement(star: Star) {
+        const starElement = document.createElement('div')
+        starElement.classList.add('content')
+
+        const userImgElement = document.createElement('img')
+        userImgElement.alt = 'GitHub user avatar'
+        userImgElement.src = star.avatar
+        starElement.append(userImgElement)
+
+        const userNameElement = document.createElement('p')
+        userNameElement.innerText = star.username
+        starElement.append(userNameElement)
+
+        return starElement
+    }
+
+    async function fetchData(url: string) {
+        const response = await fetch(url)
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`)
+        }
+        return await response.json()
+    }
+
+    async function updateStars() {
+        if (!starListItems) {
+            console.warn('Element gh-star-list-items missing')
+            return
+        }
+
+        let json = await fetchData('https://api.atlasos.net/stars')
         let starCount = json.count
 
         const starCountElement = document.getElementById('star-amount-tag')
         const starBadgeElement = document.getElementById('star-amount-badge')
 
-        if (!starCountElement || !starBadgeElement) throw new Error('Missing elements')
+        if (!starCountElement || !starBadgeElement) {
+            console.warn('Missing elements')
+            return
+        }
 
         starCountElement.innerText = starCount
         starBadgeElement.innerText = (starCount / 1000).toFixed(1) + 'k'
 
-        resp = await fetch('https://api.atlasos.net/recent-stars')
-        json = await resp.json()
-        let recentStars = json.data
-        recentStars = recentStars.slice(0, 4)
-
-        type Star = {
-            username: string
-            avatar: string
-        }
+        json = await fetchData('https://api.atlasos.net/recent-stars')
+        let recentStars = json.data.slice(0, 4)
 
         recentStars.forEach((star: Star) => {
-            const starElement = document.createElement('div')
-            starElement.classList.add('content')
+            const starElement = createStarElement(star)
             starListItems.append(starElement)
-
-            const userImgElement = document.createElement('img')
-            userImgElement.alt = 'GitHub user avatar'
-            userImgElement.src = star.avatar
-
-            starElement.append(userImgElement)
-
-            const userNameElement = document.createElement('p')
-            userNameElement.innerText = star.username
-
-            starElement.append(userNameElement)
         })
     }
 
@@ -277,10 +301,8 @@ import GPLLogo from '../assets/img/gpl3-logo.svg'
                 }
             }
         }
-    }
 
-    @media screen and (max-width: 1080px) {
-        .open-source-section {
+        @media (max-width: 1080px) {
             display: flex;
             flex-direction: column;
             align-items: flex-end;
@@ -293,10 +315,8 @@ import GPLLogo from '../assets/img/gpl3-logo.svg'
                 display: none;
             }
         }
-    }
 
-    @media screen and (max-width: 500px) {
-        .open-source-section {
+        @media (max-width: 500px) {
             margin-top: 150px;
 
             .gpl-info {
