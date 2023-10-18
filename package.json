@@ -11,10 +11,10 @@
     },
     "dependencies": {
         "@divriots/jampack": "^0.21.1",
-        "astro": "^3.3.0",
+        "astro": "^3.3.2",
         "astro-google-fonts-optimizer": "^0.2.2",
         "astro-icon": "^0.8.1",
-        "sass": "^1.69.3",
+        "sass": "^1.69.4",
         "sharp": "^0.32.6"
     },
     "devDependencies": {
