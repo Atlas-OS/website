@@ -7,16 +7,60 @@ import TrustPilotSection from '../components/TrustPilotSection.astro'
 import OpenSourceSection from '../components/OpenSourceSection.astro'
 import LinusVideo from '../components/LinusVideo.astro'
 import CTA from '../components/CTA.astro'
+
+interface Props {
+    title: string
+    description: string
+    links: {
+        documentation: string
+        forum: string
+        discord: string
+        github: string
+        faq: string
+        twitter: string
+        trustpilot: string
+        donate: string
+        linusvideo: string
+    }
+}
+
+type Links = {
+    documentation: string
+    forum: string
+    discord: string
+    github: string
+    faq: string
+    twitter: string
+    trustpilot: string
+    donate: string
+    linusvideo: string
+}
+
+const links: Links = {
+    documentation: 'https://docs.atlasos.net',
+    forum: 'https://forum.atlasos.net',
+    discord: 'https://discord.atlasos.net',
+    github: 'https://github.com/atlas-os/atlas',
+    faq: 'https://docs.atlasos.net/faq',
+    twitter: 'https://x.com/atlasos',
+    trustpilot: 'https://trustpilot.com/review/atlasos.net',
+    donate: 'https://donate.atlasos.net',
+    linusvideo: 'https://www.youtube.com/watch?v=dc7CIkZcWYE'
+}
 ---
 
-<MainLayout title="Atlas: An optimized modification of Windows, designed for gamers." description="Bring life back to Windows. We designed Atlas to maximize performance and minimize latency. Experience higher framerates over standard, slow Windows.">
+<MainLayout
+    links={links}
+    title="Atlas: An optimized modification of Windows, designed for gamers."
+    description="Bring life back to Windows. We designed Atlas to maximize performance and minimize latency. Experience higher framerates over standard, slow Windows."
+>
     <Hero />
     <div class="container main">
         <UpgradeComparison />
         <WindowsComparison />
-        <TrustPilotSection />
-        <OpenSourceSection />
-        <LinusVideo />
+        <TrustPilotSection {links} />
+        <OpenSourceSection {links} />
+        <LinusVideo {links} />
     </div>
-    <CTA />
+    <CTA {links} />
 </MainLayout>
