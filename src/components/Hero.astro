@@ -58,27 +58,38 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
 const playbookDlBtn = document.getElementById('playbook-dl-btn')
 const downloadCount = document.getElementById('download-count')
 
-playbookDlBtn.addEventListener('click', () => {
-    playbookDlBtn.innerText = 'Downloading...'
-    downloadCount.innerText = ''
-    window.open('https://github.com/Atlas-OS/Atlas/releases/latest/download/Atlas_W10-22H2.zip', '_blank')
-
-    const downloaded = localStorage.getItem(`downloaded`)
-
-    if (!downloaded) {
-        localStorage.setItem(`downloaded`, 'true')
-        fetch(`https://api.atlasos.net/atlas/increment`, { method: 'POST' })
+async function fetchDownloadCount() {
+    const res = await fetch(`https://api.atlasos.net/`)
+    if (!res.ok) {
+        throw new Error(`Failed to fetch download count. HTTP status: ${res.status}`)
     }
+    const body = await res.json()
+    return body.data.find((download) => download.name == 'atlas').count
+}
 
-    fetch(`https://api.atlasos.net/`).then(async (res) => {
-        const body = await res.json()
-        const count = body.data.find((download) => download.name == 'atlas').count
-        downloadCount.innerText = `Atlas has been downloaded ${count.toLocaleString('en-US')} times.`
-    })
+async function incrementDownloadCount() {
+    const res = await fetch(`https://api.atlasos.net/atlas/increment`, { method: 'POST' })
+    if (!res.ok) {
+        throw new Error(`Failed to increment download count. HTTP status: ${res.status}`)
+    }
+}
 
-    setTimeout(() => {
-        playbookDlBtn.innerText = 'Atlas Playbook ->'
-    }, 3000)
+playbookDlBtn.addEventListener('click', async (event) => {
+    try {
+        playbookDlBtn.textContent = 'Downloading...'
+        downloadCount.textContent = ''
+        window.open('https://github.com/Atlas-OS/Atlas/releases/latest/download/Atlas_W10-22H2.zip', '_blank')
+
+        await incrementDownloadCount()
+
+        const count = await fetchDownloadCount()
+        downloadCount.textContent = `Atlas has been downloaded ${count.toLocaleString('en-US')} times.`
+
+        playbookDlBtn.textContent = 'Atlas Playbook ->'
+    } catch (error) {
+        playbookDlBtn.textContent = 'An error occurred. Please try again.'
+        console.error('An error occurred:', error)
+    }
 })
 </script>
 
@@ -145,6 +156,7 @@ playbookDlBtn.addEventListener('click', () => {
 
         .buttons {
             display: flex;
+            justify-content: center;
             gap: 20px;
         }
     }
@@ -172,39 +184,39 @@ playbookDlBtn.addEventListener('click', () => {
 
     @keyframes wallpaper-animation-line {
         0% {
-            transform: translateZ(0) translate(-150px, 0px) rotate(0deg);
+            transform: matrix(1, 0, 0, 1, -150, 0);
         }
 
-        20% {
-            transform: translateZ(0) translate(-150px, -470px) rotate(0deg);
+        18% {
+            transform: matrix(1, 0, 0, 1, -150, -450);
         }
 
         21% {
-            transform: translateZ(0) translate(-150px, -470px) rotate(45deg);
+            transform: matrix(0.7071, 0.7071, -0.7071, 0.7071, -150, -500);
         }
 
         30% {
-            transform: translateZ(0) translate(0px, -620px) rotate(90deg);
+            transform: matrix(0, 1, -1, 0, 0, -620);
         }
 
         50% {
-            transform: translateZ(0) translate(500px, -620px) rotate(90deg);
+            transform: matrix(0, 1, -1, 0, 500, -620);
         }
 
         68% {
-            transform: translateZ(0) translate(980px, -620px) rotate(90deg);
+            transform: matrix(0, 1, -1, 0, 980, -620);
         }
 
         71% {
-            transform: translateZ(0) translate(1000px, -620px) rotate(135deg);
+            transform: matrix(-0.7071, 0.7071, -0.7071, -0.7071, 1000, -620);
         }
 
         80% {
-            transform: translateZ(0) translate(1150px, -470px) rotate(180deg) !important;
+            transform: matrix(-1, 0, 0, -1, 1150, -470);
         }
 
         100% {
-            transform: translateZ(0) translate(1150px, 0px) rotate(180deg);
+            transform: matrix(-1, 0, 0, -1, 1150, 0);
         }
     }
 
@@ -237,6 +249,7 @@ playbookDlBtn.addEventListener('click', () => {
                 border-radius: inherit;
 
                 .wallpaper-animation-line {
+                    will-change: transform;
                     width: 300px;
                     height: 300px;
                     position: absolute;
@@ -283,7 +296,7 @@ playbookDlBtn.addEventListener('click', () => {
         .logomark:hover {
             filter: brightness(1.3);
 
-            @media screen and (min-width: 1000px) {
+            @media (min-width: 1000px) {
                 transform: scale(1.01);
             }
         }
@@ -333,7 +346,7 @@ playbookDlBtn.addEventListener('click', () => {
         }
     }
 
-    @media screen and (max-width: 1320px) {
+    @media (max-width: 1320px) {
         .hero {
             padding-bottom: 200px;
         }
@@ -351,13 +364,13 @@ playbookDlBtn.addEventListener('click', () => {
         }
     }
 
-    @media screen and (max-width: 810px) {
+    @media (max-width: 810px) {
         .hero {
             padding-bottom: 150px;
         }
     }
 
-    @media screen and (max-width: 500px) {
+    @media (max-width: 500px) {
         .hero {
             padding-top: 150px;
             padding-bottom: 0px;
