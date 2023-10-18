@@ -2,6 +2,14 @@
 import { Picture } from 'astro:assets'
 
 import PlayButton from '../assets/img/play-button.svg'
+
+interface Props {
+    links: {
+        linusvideo: string
+    }
+}
+
+const { links } = Astro.props
 ---
 
 <div class="linus-section">
@@ -9,16 +17,14 @@ import PlayButton from '../assets/img/play-button.svg'
         <h3><span class="darken">“</span>If you can run Windows with <span class="highlight">this kind of performance</span>... Jeepers Creepers.<span class="darken">”</span></h3>
         <p>— Linus Sebastian</p>
     </div>
-    <a href="https://www.youtube.com/watch?v=dc7CIkZcWYE" target="_blank" rel="noreferrer" class="linus-video">
+    <a href={links.linusvideo} target="_blank" rel="noreferrer noopener" aria-label="Watch what Linus said about Atlas OS" class="linus-video">
         <div class="preview-image">
             <div class="circle">
                 <Picture src={PlayButton} alt="Video play button" />
             </div>
         </div>
     </a>
-    <a href="https://www.youtube.com/watch?v=dc7CIkZcWYE" target="_blank" rel="noreferrer" aria-label="Click to watch the video on what Linus said about Atlas OS">
-        <div class="linear-section"></div>
-    </a>
+    <div class="linear-section"></div>
 </div>
 
 <style lang="scss">
@@ -58,8 +64,8 @@ import PlayButton from '../assets/img/play-button.svg'
         }
 
         .linear-section {
-            margin-top: -320px;
-            height: 350px;
+            margin-top: -130px;
+            height: 150px;
             width: 100%;
             background: linear-gradient(180deg, transparent 0%, rgba(5, 12, 31, 0.9) 75%, rgb(5, 12, 31) 85%, rgb(5, 12, 31) 100%);
         }
@@ -79,12 +85,8 @@ import PlayButton from '../assets/img/play-button.svg'
                 margin-top: 40px;
                 color: hsla(205, 100%, 100%, 45%);
             }
-        }
-    }
 
-    @media screen and (max-width: 810px) {
-        .linus-section {
-            .heading {
+            @media (max-width: 810px) {
                 display: flex;
                 align-items: center;
                 text-align: center;
@@ -96,10 +98,8 @@ import PlayButton from '../assets/img/play-button.svg'
                 }
             }
         }
-    }
 
-    @media (max-width: 500px) {
-        .linus-section {
+        @media (max-width: 500px) {
             margin-top: 150px;
 
             .preview-image {
@@ -113,10 +113,8 @@ import PlayButton from '../assets/img/play-button.svg'
                 }
             }
         }
-    }
 
-    @media (max-width: 285px) {
-        .linus-section {
+        @media (max-width: 285px) {
             .heading {
                 h3 {
                     font-size: 28px;
