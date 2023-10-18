@@ -57,6 +57,22 @@ import Icon from 'astro-icon'
             P {
                 max-width: 544px;
             }
+
+            @media (max-width: 1080px) {
+                align-items: center;
+                gap: 30px;
+            }
+
+            @media (max-width: 810px) {
+                align-items: center;
+                text-align: center;
+                flex-direction: column;
+                gap: 50px;
+
+                p {
+                    max-width: 90%;
+                }
+            }
         }
 
         .cards {
@@ -67,6 +83,11 @@ import Icon from 'astro-icon'
             animation: fadeup ease-out;
             animation-timeline: view();
             animation-range: entry 0% exit -100%;
+
+            @media (max-width: 810px) {
+                margin-top: 50px;
+                flex-direction: column;
+            }
 
             .dark {
                 background: linear-gradient(180deg, rgb(12, 22, 51) 0%, rgb(45, 90, 206) 100%);
@@ -128,39 +149,7 @@ import Icon from 'astro-icon'
                 }
             }
         }
-    }
-
-    @media screen and (max-width: 1080px) {
-        .upgrade-comparison {
-            .heading {
-                align-items: center;
-                gap: 30px;
-            }
-        }
-    }
-
-    @media screen and (max-width: 810px) {
-        .upgrade-comparison {
-            .heading {
-                align-items: center;
-                text-align: center;
-                flex-direction: column;
-                gap: 50px;
-
-                p {
-                    max-width: 90%;
-                }
-            }
-
-            .cards {
-                margin-top: 50px;
-                flex-direction: column;
-            }
-        }
-    }
-
-    @media screen and (max-width: 500px) {
-        .upgrade-comparison {
+        @media (max-width: 500px) {
             margin-top: 50px;
 
             .heading {
