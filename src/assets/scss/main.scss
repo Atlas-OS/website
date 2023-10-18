@@ -128,6 +128,20 @@ picture {
     }
 }
 
+@media (max-width: 500px) {
+    .buttons {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+
+        .button {
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+    }
+}
+
 a {
     text-decoration: none;
 }
@@ -174,19 +188,5 @@ a {
     to {
         transform: translate(0);
         opacity: 1;
-    }
-}
-
-@media screen and (max-width: 500px) {
-    .buttons {
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-
-        .button {
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-        }
     }
 }
