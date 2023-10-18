@@ -6,22 +6,31 @@ import TrustPilotStar from '../assets/img/trustpilot-logo-color.svg'
 import TrustPilotStars from '../assets/img/trustpilot-stars.svg'
 import Logo from '../assets/img/logo.svg'
 import Verified from '../assets/img/verified.svg'
+import ExternalLink from './ExternalLink.astro'
+
+interface Props {
+    links: {
+        trustpilot: string
+    }
+}
+
+const { links } = Astro.props
 ---
 
 <div class="trustpilot-section">
-    <div class="community-info">
+    <section class="community-info">
         <h2>What does our <span class="highlight">community</span> think?</h2>
         <p>Our community is fantastic and reviews us with a significant amount of positive feedback. We take great pride in our Trustpilot rating, which reflects our commitment for improving Atlas.</p>
         <div class="review-star">
             <Picture src={TrustPilotStars} alt="Trustpilot star" />
             <p>
-                <span>4.8 out of 5</span> on <a href="https://trustpilot.atlasos.net" target="_blank" rel="noreferrer"> Trustpilot -></a>
+                <span>4.8 out of 5</span> on <ExternalLink href={links.trustpilot} aria-label="View our TrustPilot page" children="Trustpilot ->" />
             </p>
         </div>
-    </div>
+    </section>
     <div class="review-item">
         <div class="review-img">
-            <Picture src={Review} alt="Review" />
+            <Picture src={Review} alt="Atlas review" />
         </div>
         <div class="trustpilot-box">
             <Picture src={Logo} alt="Atlas logo" />
@@ -85,6 +94,13 @@ import Verified from '../assets/img/verified.svg'
                 font-size: 60px;
                 font-weight: 600;
                 margin-bottom: 30px;
+            }
+
+            @media (max-width: 500px) {
+                h2 {
+                    font-size: 36px;
+                    margin-bottom: 20px;
+                }
             }
         }
 
@@ -162,31 +178,16 @@ import Verified from '../assets/img/verified.svg'
                     }
                 }
             }
-        }
-    }
 
-    @media screen and (max-width: 1080px) {
-        .trustpilot-section {
-            .review-item {
+            @media (max-width: 1080px) {
                 display: none;
-            }
 
-            .community-info {
-                width: 100%;
+                .community-info {
+                    width: 100%;
 
-                p {
-                    max-width: 85%;
-                }
-            }
-        }
-    }
-
-    @media screen and (max-width: 500px) {
-        .trustpilot-section {
-            .community-info {
-                h2 {
-                    font-size: 36px;
-                    margin-bottom: 20px;
+                    p {
+                        max-width: 85%;
+                    }
                 }
             }
         }
