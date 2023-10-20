@@ -1,9 +1,9 @@
 ---
 import { Picture } from 'astro:assets'
 
-import Review from '../assets/img/review.svg'
-import TrustPilotStar from '../assets/img/trustpilot-logo-color.svg'
-import TrustPilotStars from '../assets/img/trustpilot-stars.svg'
+import Review from '../assets/img/review.webp'
+import ReviewStar from '../assets/img/review-star.svg'
+import ReviewStars from '../assets/img/review-stars.svg'
 import Logo from '../assets/img/logo.svg'
 import Verified from '../assets/img/verified.svg'
 import ExternalLink from './ExternalLink.astro'
@@ -17,12 +17,12 @@ interface Props {
 const { links } = Astro.props
 ---
 
-<div class="trustpilot-section">
+<div class="review-section">
     <section class="community-info">
         <h2>What does our <span class="highlight">community</span> think?</h2>
-        <p>Our community is fantastic and reviews us with a significant amount of positive feedback. We take great pride in our Trustpilot rating, which reflects our commitment for improving Atlas.</p>
+        <p>Our community is fantastic and reviews us with a significant amount of positive feedback. We take great pride in our high rating, which reflects our commitment for improving Atlas.</p>
         <div class="review-star">
-            <Picture src={TrustPilotStars} alt="Trustpilot star" />
+            <Picture src={ReviewStars} alt="Review star" />
             <p>
                 <span>4.8 out of 5</span> on <ExternalLink href={links.trustpilot} aria-label="View our TrustPilot page" children="Trustpilot ->" />
             </p>
@@ -32,26 +32,26 @@ const { links } = Astro.props
         <div class="review-img">
             <Picture src={Review} alt="Atlas review" />
         </div>
-        <div class="trustpilot-box">
+        <div class="review-box">
             <Picture src={Logo} alt="Atlas logo" />
             <div class="info">
                 <span>atlasos.net</span>
                 <p class="review-count">Reviews 44 - Excellent</p>
                 <div class="stars">
-                    <Picture src={TrustPilotStars} alt="Truspilot stars" />
+                    <Picture src={ReviewStars} alt="Review stars" />
                 </div>
                 <div class="verified-company">
                     <Picture src={Verified} alt="Verified" />
                     <p>VERIFIED COMPANY</p>
                 </div>
             </div>
-            <Picture src={TrustPilotStar} alt="Trustpilot star" class="tp-star" />
+            <Picture src={ReviewStar} alt="Review star" class="re-star" />
         </div>
     </div>
 </div>
 
 <style lang="scss">
-    .trustpilot-section {
+    .review-section {
         display: flex;
 
         h2 {
@@ -118,12 +118,12 @@ const { links } = Astro.props
                 height: 330px;
             }
 
-            .trustpilot-box .logo {
+            .review-box .logo {
                 width: 106px;
                 height: 94px;
             }
 
-            .trustpilot-box {
+            .review-box {
                 position: absolute;
                 bottom: -60px;
                 left: -60px;
@@ -135,10 +135,10 @@ const { links } = Astro.props
                 border-radius: 5px;
                 width: min(500px, 100%);
 
-                .tp-star {
+                .re-star {
                     position: absolute;
-                    top: -45px;
-                    right: -45px;
+                    top: -35px;
+                    right: -35px;
                 }
 
                 .info {
