@@ -3,7 +3,7 @@ import MainLayout from '../layouts/main-layout.astro'
 import Hero from '../components/Hero.astro'
 import WindowsComparison from '../components/WindowsComparison.astro'
 import UpgradeComparison from '../components/UpgradeComparison.astro'
-import TrustPilotSection from '../components/TrustPilotSection.astro'
+import ReviewSection from '../components/ReviewSection.astro'
 import OpenSourceSection from '../components/OpenSourceSection.astro'
 import LinusVideo from '../components/LinusVideo.astro'
 import CTA from '../components/CTA.astro'
@@ -58,7 +58,7 @@ const links: Links = {
     <div class="container main">
         <UpgradeComparison />
         <WindowsComparison />
-        <TrustPilotSection {links} />
+        <ReviewSection {links} />
         <OpenSourceSection {links} />
         <LinusVideo {links} />
     </div>
