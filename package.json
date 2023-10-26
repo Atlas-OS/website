@@ -11,14 +11,14 @@
     },
     "dependencies": {
         "@divriots/jampack": "^0.21.1",
-        "astro": "^3.3.2",
+        "astro": "^3.4.0",
         "astro-google-fonts-optimizer": "^0.2.2",
         "astro-icon": "^0.8.1",
-        "sass": "^1.69.4",
+        "sass": "^1.69.5",
         "sharp": "^0.32.6"
     },
     "devDependencies": {
         "prettier": "^3.0.3",
-        "prettier-plugin-astro": "^0.12.0"
+        "prettier-plugin-astro": "^0.12.1"
     }
 }
