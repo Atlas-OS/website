@@ -20,6 +20,7 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
         </a>
         <h1>A modification of Windows, designed for gamers.</h1>
         <p>It’s time to experience a new Windows experience. Designed for gamers, with improved in-game framerates and lowered latency.</p>
+        <span class="get-started-tag">To get started, download...</span>
         <div class="buttons">
             <a class="button primary" href="/">AME Wizard -></a>
             <button class="button secondary" id="playbook-dl-btn">Atlas Playbook -></button>
@@ -111,8 +112,8 @@ playbookDlBtn.addEventListener('click', async (event) => {
             align-items: center;
             gap: 12px;
             margin-bottom: 40px;
-            border-radius: 50px;
-            border: 1px solid hsla(205, 100%, 98%, 0.2);
+            border-radius: 100px;
+            border: 1px solid hsla(216, 25%, 67%, 0.3);
             background-color: hsla(205, 100%, 98%, 0.05);
             transition: background-color 0.2s ease-in-out;
 
@@ -132,7 +133,7 @@ playbookDlBtn.addEventListener('click', async (event) => {
             }
 
             .icon {
-                stroke: hsl(0, 0%, 90%);
+                stroke: hsl(216, 25%, 67%);
                 fill: transparent;
             }
         }
@@ -145,13 +146,20 @@ playbookDlBtn.addEventListener('click', async (event) => {
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
         p {
             max-width: 628px;
-            margin-bottom: 40px;
+            margin-bottom: 35px;
             text-align: center;
+        }
+
+        .get-started-tag {
+            font-size: 14px;
+            font-weight: 400;
+            color: hsl(213, 11%, 64%, 0.6);
+            margin-bottom: 20px;
         }
 
         .buttons {

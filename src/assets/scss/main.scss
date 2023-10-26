@@ -81,30 +81,39 @@ picture {
 
 .button {
     display: flex;
-    padding: 12px 35px;
+    padding: 8px 19px;
     gap: 10px;
     align-items: center;
     cursor: pointer;
-    font-weight: 500;
+    font-weight: 400;
 
     &.primary {
-        background-color: var(--color-primary);
-        transition: background-color 0.2s ease-in-out;
-        filter: drop-shadow(0 1px 2px rgba(0, 111, 214, 0.1)) drop-shadow(0 1px 1px rgba(0, 111, 214, 0.05));
+        border-radius: 7px;
+        border-top: 0.5px solid #2697ff;
+        background: linear-gradient(180deg, #005ec2 0%, #005ec2 40%, #004ebc 60%, #003ec3 100%);
+        transition: all 0.2s ease-in-out;
 
         &:hover {
-            background-color: var(--color-primary-dark);
+            box-shadow:
+                0 0 5px hsla(209, 100%, 57%, 0.2),
+                0 0 10px hsla(213, 76%, 47%, 0.2),
+                0 0 15px hsla(213, 84%, 39%, 0.1),
+                0 0 20px hsla(213, 87%, 32%, 0.1);
         }
     }
 
     &.secondary {
-        color: hsl(209, 100%, 55%);
-        border: 1.5px solid hsl(209, 100%, 55%);
-        transition: background-color 0.2s ease-in-out;
-        filter: drop-shadow(0 1px 2px rgba(0, 111, 214, 0.1)) drop-shadow(0 1px 1px rgba(0, 111, 214, 0.05));
+        border-radius: 7px;
+        border-top: 0.5px solid #95a6bf;
+        background: linear-gradient(180deg, #64748b 0%, #64748b 40%, #56677e 60%, #475569 100%);
+        transition: all 0.2s ease-in-out;
 
         &:hover {
-            background-color: hsl(209, 100%, 20%);
+            box-shadow:
+                0 0 5px hsla(220, 21%, 85%, 0.1),
+                0 0 10px hsla(220, 21%, 80%, 0.1),
+                0 0 15px hsla(220, 21%, 75%, 0.1),
+                0 0 20px hsla(220, 21%, 70%, 0.1);
         }
     }
 
