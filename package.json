@@ -14,6 +14,8 @@
         "astro": "^3.4.0",
         "astro-google-fonts-optimizer": "^0.2.2",
         "astro-icon": "^0.8.1",
+        "astro-purgecss": "^3.2.1",
+        "purgecss": "^5.0.0",
         "sass": "^1.69.5",
         "sharp": "^0.32.6"
     },
