@@ -20,11 +20,13 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
         </a>
         <h1>A modification of Windows, designed for gamers.</h1>
         <p>It’s time to experience a new Windows experience. Designed for gamers, with improved in-game framerates and lowered latency.</p>
-        <span class="get-started-tag">To get started, download...</span>
-        <div class="buttons">
+        <div class="warning-box">
+            <span class="get-started-tag">Atlas is currenty unavailable. For more information, check our <a href="https://discord.atlasos.net/" target="_blank">Discord announcements</a> channel...</span>
+        </div>
+        <!-- <div class="buttons">
             <a class="button primary" href="https://download.atlasos.net/AMEWizard.zip" rel="noreferrer noopener" target="_blank">AME Wizard -></a>
             <button class="button secondary" id="playbook-dl-btn">Atlas Playbook -></button>
-        </div>
+        </div> -->
         <span id="download-count" class="download-count"></span>
     </div>
 </div>
@@ -56,42 +58,42 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
 </div>
 
 <script lang="ts">
-const playbookDlBtn = document.getElementById('playbook-dl-btn')
-const downloadCount = document.getElementById('download-count')
+    const playbookDlBtn = document.getElementById('playbook-dl-btn')
+    const downloadCount = document.getElementById('download-count')
 
-async function fetchDownloadCount() {
-    const res = await fetch(`https://api.atlasos.net/`)
-    if (!res.ok) {
-        throw new Error(`Failed to fetch download count. HTTP status: ${res.status}`)
+    async function fetchDownloadCount() {
+        const res = await fetch(`https://api.atlasos.net/`)
+        if (!res.ok) {
+            throw new Error(`Failed to fetch download count. HTTP status: ${res.status}`)
+        }
+        const body = await res.json()
+        return body.data.find((download) => download.name == 'atlas').count
     }
-    const body = await res.json()
-    return body.data.find((download) => download.name == 'atlas').count
-}
 
-async function incrementDownloadCount() {
-    const res = await fetch(`https://api.atlasos.net/atlas/increment`, { method: 'POST' })
-    if (!res.ok) {
-        throw new Error(`Failed to increment download count. HTTP status: ${res.status}`)
+    async function incrementDownloadCount() {
+        const res = await fetch(`https://api.atlasos.net/atlas/increment`, { method: 'POST' })
+        if (!res.ok) {
+            throw new Error(`Failed to increment download count. HTTP status: ${res.status}`)
+        }
     }
-}
 
-playbookDlBtn.addEventListener('click', async (event) => {
-    try {
-        playbookDlBtn.textContent = 'Downloading...'
-        downloadCount.textContent = ''
-        window.open('https://cdn.jsdelivr.net/atlas/0.3.0/AtlasPlaybook_v0.3.0.zip', '_blank')
+    playbookDlBtn.addEventListener('click', async (event) => {
+        try {
+            playbookDlBtn.textContent = 'Downloading...'
+            downloadCount.textContent = ''
+            window.open('https://cdn.jsdelivr.net/atlas/0.3.0/AtlasPlaybook_v0.3.0.zip', '_blank')
 
-        await incrementDownloadCount()
+            await incrementDownloadCount()
 
-        const count = await fetchDownloadCount()
-        downloadCount.textContent = `Atlas has been downloaded ${count.toLocaleString('en-US')} times.`
+            const count = await fetchDownloadCount()
+            downloadCount.textContent = `Atlas has been downloaded ${count.toLocaleString('en-US')} times.`
 
-        playbookDlBtn.textContent = 'Atlas Playbook ->'
-    } catch (error) {
-        playbookDlBtn.textContent = 'An error occurred. Please try again.'
-        console.error('An error occurred:', error)
-    }
-})
+            playbookDlBtn.textContent = 'Atlas Playbook ->'
+        } catch (error) {
+            playbookDlBtn.textContent = 'An error occurred. Please try again.'
+            console.error('An error occurred:', error)
+        }
+    })
 </script>
 
 <style lang="scss">
@@ -155,11 +157,22 @@ playbookDlBtn.addEventListener('click', async (event) => {
             text-align: center;
         }
 
-        .get-started-tag {
-            font-size: 14px;
-            font-weight: 400;
-            color: hsl(213, 11%, 64%, 0.6);
-            margin-bottom: 20px;
+        .warning-box {
+            padding: 20px;
+            border-radius: 8px;
+            background-color: hsla(0, 0%, 100%, 0.05);
+            border: 1px solid hsla(0, 0%, 100%, 0.1);
+
+            .get-started-tag {
+                font-size: 14px;
+                font-weight: 400;
+                color: hsl(213, 11%, 64%, 0.6);
+                margin-bottom: 20px;
+
+                a {
+                    color: rgb(72, 167, 255);
+                }
+            }
         }
 
         .buttons {
