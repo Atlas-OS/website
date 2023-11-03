@@ -22,7 +22,7 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
         <p>It’s time to experience a new Windows experience. Designed for gamers, with improved in-game framerates and lowered latency.</p>
         <span class="get-started-tag">To get started, download...</span>
         <div class="buttons">
-            <a class="button primary" href="/">AME Wizard -></a>
+            <a class="button primary" href="https://download.atlasos.net/AMEWizard.zip" rel="noreferrer noopener" target="_blank">AME Wizard -></a>
             <button class="button secondary" id="playbook-dl-btn">Atlas Playbook -></button>
         </div>
         <span id="download-count" class="download-count"></span>
@@ -79,7 +79,7 @@ playbookDlBtn.addEventListener('click', async (event) => {
     try {
         playbookDlBtn.textContent = 'Downloading...'
         downloadCount.textContent = ''
-        window.open('https://github.com/Atlas-OS/Atlas/releases/latest/download/Atlas_W10-22H2.zip', '_blank')
+        window.open('https://github.com/Atlas-OS/Atlas/releases/latest/download/AtlasPlaybook_v0.3.0.zip', '_blank')
 
         await incrementDownloadCount()
 
