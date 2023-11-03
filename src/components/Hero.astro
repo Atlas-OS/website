@@ -79,7 +79,7 @@ playbookDlBtn.addEventListener('click', async (event) => {
     try {
         playbookDlBtn.textContent = 'Downloading...'
         downloadCount.textContent = ''
-        window.open('https://github.com/Atlas-OS/Atlas/releases/latest/download/AtlasPlaybook_v0.3.0.zip', '_blank')
+        window.open('https://cdn.jsdelivr.net/atlas/0.3.0/AtlasPlaybook_v0.3.0.zip', '_blank')
 
         await incrementDownloadCount()
 
