@@ -78,21 +78,24 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
     }
 
     playbookDlBtn.addEventListener('click', async (event) => {
+        playbookDlBtn.textContent = 'Downloading...'
+        downloadCount.textContent = ''
+        window.open('https://cdn.jsdelivr.net/atlas/0.3.0/AtlasPlaybook_v0.3.0.zip', '_blank')
+
         try {
-            playbookDlBtn.textContent = 'Downloading...'
-            downloadCount.textContent = ''
-            window.open('https://cdn.jsdelivr.net/atlas/0.3.0/AtlasPlaybook_v0.3.0.zip', '_blank')
-
             await incrementDownloadCount()
+        } catch (error) {
+            console.error('Failed to increment donwload count:', error)
+        }
 
+        try {
             const count = await fetchDownloadCount()
             downloadCount.textContent = `Atlas has been downloaded ${count.toLocaleString('en-US')} times.`
-
-            playbookDlBtn.textContent = 'Atlas Playbook ->'
         } catch (error) {
-            playbookDlBtn.textContent = 'An error occurred. Please try again.'
-            console.error('An error occurred:', error)
+            console.error('Failed to refetch download count:', error)
         }
+
+        playbookDlBtn.textContent = 'Atlas Playbook ->'
     })
 </script>
 
