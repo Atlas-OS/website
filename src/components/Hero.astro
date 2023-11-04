@@ -67,7 +67,7 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
             throw new Error(`Failed to fetch download count. HTTP status: ${res.status}`)
         }
         const body = await res.json()
-        return body.data.find((download) => download.name == 'atlas').count
+        return body.find((download) => download.version == 'atlas').count
     }
 
     async function incrementDownloadCount() {

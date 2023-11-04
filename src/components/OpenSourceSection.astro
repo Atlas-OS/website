@@ -109,7 +109,7 @@ const { links } = Astro.props
         }
 
         let json = await fetchData('https://api.atlasos.net/stars')
-        let starCount = json.count
+        let starCount = json[0].count
 
         const starCountElement = document.getElementById('star-amount-tag')
         const starBadgeElement = document.getElementById('star-amount-badge')
