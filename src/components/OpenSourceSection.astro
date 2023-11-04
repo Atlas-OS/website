@@ -131,7 +131,7 @@ const { links } = Astro.props
         })
     }
 
-    if (import.meta.env.VITE_ENVIRONMENT === 'PRODUCTION') {
+    if (import.meta.env.MODE === 'production') {
         updateStars()
     }
 </script>
