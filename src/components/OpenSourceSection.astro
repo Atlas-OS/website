@@ -119,11 +119,11 @@ const { links } = Astro.props
             return
         }
 
-        starCountElement.innerText = starCount
+        starCountElement.innerText = starCount.toLocaleString()
         starBadgeElement.innerText = (starCount / 1000).toFixed(1) + 'k'
 
         json = await fetchData('https://api.atlasos.net/recent-stars')
-        let recentStars = json.data.slice(0, 4)
+        let recentStars = json.slice(0, 4)
 
         recentStars.forEach((star: Star) => {
             const starElement = createStarElement(star)
