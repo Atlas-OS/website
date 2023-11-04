@@ -50,7 +50,7 @@ const { links } = Astro.props
     </div>
 </div>
 
-<style lang="scss">
+<style lang="scss" is:global>
     .review-section {
         display: flex;
 
@@ -70,13 +70,13 @@ const { links } = Astro.props
             color: hsla(205, 100%, 98%, 0.5);
             flex-wrap: wrap;
 
-            span {
-                color: hsl(149, 71%, 82%);
-            }
-
             a {
                 color: hsla(205, 100%, 98%, 0.8);
                 text-decoration: underline;
+            }
+
+            span {
+                color: hsl(149, 71%, 82%);
             }
 
             img {

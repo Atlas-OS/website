@@ -48,9 +48,9 @@ const { links } = Astro.props
                 <div class="star">
                     <Picture src={GitHubStar} alt="GitHub star" />
                 </div>
-                <span>
-                    <span id="star-amount-tag">ERROR</span> stargazers on <ExternalLink href={links.github} children="GitHub ->" />
-                </span>
+                <p>
+                    <span id="star-amount-tag">ERROR</span><span> stargazers</span> on <ExternalLink href={links.github} children="GitHub ->" />
+                </p>
             </div>
             <Picture src={GPLLogo} class="gpl-logomark" alt="GPL logo" />
         </div>
@@ -173,10 +173,6 @@ const { links } = Astro.props
 
                 span {
                     color: hsl(41, 68%, 55%);
-                }
-
-                p {
-                    color: hsla(205, 100%, 98%, 0.5);
                 }
 
                 a {
