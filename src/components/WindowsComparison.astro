@@ -3,6 +3,7 @@ import Icon from 'astro-icon'
 import { Picture } from 'astro:assets'
 
 import Splitter from '../assets/img/splitter.svg'
+import ExternalLink from './ExternalLink.astro'
 ---
 
 <div class="windows-comparison">
@@ -16,11 +17,11 @@ import Splitter from '../assets/img/splitter.svg'
         <div class="card">
             <div class="content-wrapper">
                 <div class="card-title">
-                    <Icon name="cpu-icon" class="icon" height="28px" alt="Processes CPU icon" />
-                    <h3>Processes</h3>
+                    <Icon name="cpu-icon" class="icon" height="28px" alt="CPU usage icon" />
+                    <h3>CPU Usage</h3>
                 </div>
-                <p>Atlas strips out a bunch, significantly reducing Windows' bloated process count from 145 to just 35.</p>
-                <span>145 -> 35~</span>
+                <p>Atlas allows for less usage by default. Nothing that you don't need running in the background.</p>
+                <span>2-5% -> 0%</span>
             </div>
         </div>
         <Picture src={Splitter} class="splitter" alt="Section splitter" />
@@ -31,24 +32,24 @@ import Splitter from '../assets/img/splitter.svg'
                     <h3>Ram usage</h3>
                 </div>
                 <p>Thanks to Atlas we've freed up 1.4GB of RAM usage from boot, which can then be allocated to other tasks.</p>
-                <span>2.3GB -> 900MB~</span>
+                <span>2.3GB -> 1.2GB~</span>
             </div>
         </div>
         <Picture src={Splitter} class="splitter" alt="Section splitter" />
         <div class="card">
             <div class="content-wrapper">
                 <div class="card-title">
-                    <Icon name="rocket-icon" class="icon" height="28px" alt="Rocket fps icon" />
+                    <Icon name="rocket-icon" class="icon" height="28px" alt="Rocket FPS icon" />
                     <h3>1% FPS</h3>
                 </div>
-                <p>We saw a significant improvement in FPS lows. With an increase from 289 on Windows to 394 FPS with Atlas.</p>
-                <span>289 FPS -> 394 FPS</span>
+                <p>In VALORANT, we saw a significant improvement in FPS lows. Boasting a more stable, and higher framerate.</p>
+                <span>217.5 FPS -> 365.91 FPS</span>
             </div>
         </div>
     </div>
-    <!-- <div class="benchmark-link">
-                <a href="/">View detailed benchmarks -></a>
-            </div> -->
+    <div class="benchmark-link">
+        <ExternalLink href="https://forum.atlasos.net/d/763-atlas-v031-benchmark" aria-label="View our detailed benchmarks on Atlas" children="View detailed benchmarks ->" />
+    </div>
 </div>
 
 <style lang="scss">
@@ -60,14 +61,11 @@ import Splitter from '../assets/img/splitter.svg'
             text-align: center;
             text-decoration: underline;
             display: flex;
-            margin: 65px auto;
+            margin: 50px auto;
             align-items: center;
             gap: 10px;
             justify-content: center;
-
-            a {
-                color: hsla(0, 0%, 100%, 0.7);
-            }
+            text-decoration: none;
         }
 
         .heading {
