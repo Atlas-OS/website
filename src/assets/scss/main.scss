@@ -89,8 +89,8 @@ picture {
 
     &.primary {
         border-radius: 7px;
-        border-top: 0.5px solid #2697ff;
-        background: linear-gradient(180deg, #006fd6 0%, #006fd6 40%, #0068c9 60%, #004fd0 100%);
+        border-top: 0.5px solid hsl(209, 100%, 57%);
+        background: linear-gradient(180deg, rgb(0, 111, 214) 0%, rgb(0, 111, 214) 40%, rgb(0, 103, 199), rgb(0, 80, 209) 100%);
         transition: all 0.2s ease-in-out;
 
         &:hover {
@@ -104,8 +104,8 @@ picture {
 
     &.secondary {
         border-radius: 7px;
-        border-top: 0.5px solid #95a6bf;
-        background: linear-gradient(180deg, #64748b 0%, #64748b 40%, #56677e 60%, #475569 100%);
+        border-top: 0.5px solid hsl(216, 25%, 67%);
+        background: linear-gradient(180deg, rgb(102, 118, 140) 0%, rgb(102, 118, 140) 40%, rgb(87, 104, 127) 60%, rgb(71, 86, 107) 100%);
         transition: all 0.2s ease-in-out;
 
         &:hover {

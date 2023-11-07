@@ -3,7 +3,6 @@ import Icon from 'astro-icon'
 import { Picture } from 'astro:assets'
 
 import Splitter from '../assets/img/splitter.svg'
-import ExternalLink from './ExternalLink.astro'
 ---
 
 <div class="windows-comparison">
@@ -48,7 +47,7 @@ import ExternalLink from './ExternalLink.astro'
         </div>
     </div>
     <div class="benchmark-link">
-        <ExternalLink href="https://forum.atlasos.net/d/763-atlas-v031-benchmark" aria-label="View our detailed benchmarks on Atlas" children="View detailed benchmarks ->" />
+        <a href="https://forum.atlasos.net/d/763-atlas-v031-benchmark" class="button tertiary" aria-label="Open detailed benchmarks on Atlas" target="_blank">View detailed benchmarks<span class="arrow">--></span></a>
     </div>
 </div>
 

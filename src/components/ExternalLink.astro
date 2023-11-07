@@ -1,14 +1,15 @@
 ---
-const { href = '#', style = 'a', ariaLabel = 'External Link', children } = Astro.props
+const { href = '#', className = '', styling = '', ariaLabel = 'External Link', children } = Astro.props
 
 interface Props {
-    href?: string
-    style?: string
+    href: string
+    styling?: string
+    className?: string
     ariaLabel?: string
     children: any
 }
 ---
 
-<a class={style} href={href} aria-label={ariaLabel} target="_blank" rel="noreferrer noopener">
+<a style={styling} class={className} href={href} aria-label={ariaLabel} target="_blank" rel="noreferrer noopener">
     {children}
 </a>

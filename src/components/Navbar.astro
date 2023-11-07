@@ -26,10 +26,10 @@ const { links } = Astro.props
             <Picture src={Logomark} alt="Atlas logomark" />
         </a>
         <div class="links">
-            <ExternalLink href={links.forum} children="Forums" />
-            <ExternalLink href={links.documentation} children="Documentation" />
-            <ExternalLink href={links.faq} children="FAQ" />
-            <ExternalLink href={links.donate} children="Support us" />
+            <ExternalLink href={links.forum} ariaLabel="Open Forum" children="Forums" />
+            <ExternalLink href={links.documentation} ariaLabel="Open Documentation" children="Documentation" />
+            <ExternalLink href={links.faq} ariaLabel="Open FAQ" children="FAQ" />
+            <ExternalLink href={links.donate} ariaLabel="Open Ko-fi" children="Support us" />
         </div>
         <div class="social-links">
             <a href={links.github} aria-label="Visit our GitHub repository" target="_blank" rel="noreferrer noopener">
@@ -55,7 +55,7 @@ const { links } = Astro.props
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 50px 0 25px;
+        padding: 75px 0 25px;
         position: absolute;
         width: 100%;
 

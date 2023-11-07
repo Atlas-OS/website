@@ -20,13 +20,11 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
         </a>
         <h1>A modification of Windows, designed for gamers.</h1>
         <p>It’s time to experience a new Windows experience. Designed for gamers, with improved in-game framerates and lowered latency.</p>
-        <div class="warning-box">
-            <span class="get-started-tag">Atlas is currenty unavailable. For more information, check our <a href="https://discord.atlasos.net/" target="_blank">Discord announcements</a> channel.</span>
-        </div>
-        <!-- <div class="buttons">
-            <a class="button primary" href="https://download.atlasos.net/AMEWizard.zip" rel="noreferrer noopener" target="_blank">AME Wizard -></a>
+        <span class="get-started-tag">To get started, download...</span>
+        <div class="buttons">
+            <a class="button primary" href="https://download.ameliorated.io/AME%20Wizard%20Beta.zip" rel="noreferrer noopener" target="_blank">AME Wizard -></a>
             <button class="button secondary" id="playbook-dl-btn">Atlas Playbook -></button>
-        </div> -->
+        </div>
         <span id="download-count" class="download-count"></span>
     </div>
 </div>
@@ -57,9 +55,12 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
     </div>
 </div>
 
-<script lang="ts">
+<script>
     const playbookDlBtn = document.getElementById('playbook-dl-btn')
     const downloadCount = document.getElementById('download-count')
+
+    if (!playbookDlBtn) throw new Error('Element playbook-dl-btn missing')
+    if (!downloadCount) throw new Error('Element download-count missing')
 
     async function fetchDownloadCount() {
         const res = await fetch(`https://api.atlasos.net/`)
@@ -67,7 +68,7 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
             throw new Error(`Failed to fetch download count. HTTP status: ${res.status}`)
         }
         const body = await res.json()
-        return body.find((download) => download.version == 'atlas').count
+        return body.find((download: { version: string }) => download.version == 'atlas').count
     }
 
     async function incrementDownloadCount() {
@@ -77,10 +78,10 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
         }
     }
 
-    playbookDlBtn.addEventListener('click', async (event) => {
+    playbookDlBtn.addEventListener('click', async () => {
         playbookDlBtn.textContent = 'Downloading...'
         downloadCount.textContent = ''
-        window.open('https://cdn.jsdelivr.net/atlas/0.3.0/AtlasPlaybook_v0.3.0.zip', '_blank')
+        window.open('https://cdn.jsdelivr.net/atlas/0.3.1/AtlasPlaybook_v0.3.1.zip', '_blank')
 
         try {
             await incrementDownloadCount()
@@ -99,7 +100,7 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
     })
 </script>
 
-<style lang="scss">
+<style lang="scss" is:global>
     .hero {
         position: relative;
         display: flex;
@@ -160,23 +161,11 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
             text-align: center;
         }
 
-        .warning-box {
-            padding: 20px;
-            border-radius: 8px;
-            background-color: hsla(0, 0%, 100%, 0.05);
-            border: 1px solid hsla(0, 0%, 100%, 0.1);
-            text-align: center;
-
-            .get-started-tag {
-                font-size: 14px;
-                font-weight: 400;
-                color: hsl(213, 11%, 64%, 0.6);
-                margin-bottom: 20px;
-
-                a {
-                    color: rgb(72, 167, 255);
-                }
-            }
+        .get-started-tag {
+            font-size: 14px;
+            font-weight: 400;
+            color: hsl(213, 11%, 64%, 0.6);
+            margin-bottom: 20px;
         }
 
         .buttons {

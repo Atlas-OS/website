@@ -52,21 +52,21 @@ const forumDonate = `${links.forum}/access-portal`
             <div class="column">
                 <span>Sitemap</span>
                 <a href="/">Home</a>
-                <ExternalLink href={links.forum} children="Forum" />
-                <ExternalLink href={links.documentation} children="Documentation" />
-                <ExternalLink href={links.faq} children="FAQ" />
+                <ExternalLink href={links.forum} ariaLabel="Open Forum" children="Forum" />
+                <ExternalLink href={links.documentation} ariaLabel="Open documentation" children="Documentation" />
+                <ExternalLink href={links.faq} ariaLabel="Open documentation" children="FAQ" />
             </div>
             <div class="column">
                 <span>Community</span>
-                <ExternalLink href={links.github} children="GitHub" />
-                <ExternalLink href={links.discord} children="Discord" />
-                <ExternalLink href={links.twitter} children="Twitter" />
-                <ExternalLink href={links.trustpilot} children="Trustpilot" />
+                <ExternalLink href={links.github} ariaLabel="Open GitHub" children="GitHub" />
+                <ExternalLink href={links.discord} ariaLabel="Open Discord" children="Discord" />
+                <ExternalLink href={links.twitter} ariaLabel="Open X / Twitter" children="X / Twitter" />
+                <ExternalLink href={links.trustpilot} ariaLabel="Open Trustpilot" children="Trustpilot" />
             </div>
             <div class="column">
                 <span>Donations</span>
-                <ExternalLink href={links.donate} children="Ko-fi" />
-                <ExternalLink href={forumDonate} children="Forum donate" />
+                <ExternalLink href={links.donate} ariaLabel="Open Ko-fi" children="Ko-fi" />
+                <ExternalLink href={forumDonate} ariaLabel="Open Forum donate" children="Forum donate" />
             </div>
         </div>
     </div>

@@ -1,0 +1,32 @@
+---
+import ExternalLink from './ExternalLink.astro'
+---
+
+<div class="announce-bar">
+    <span>🎉 Atlas v0.3.1 has been released! View our <ExternalLink href="" styling="color: hsl(0, 0%, 98%); font-weight: 700; text-decoration: underline;" children="post on x.com" /> about it.</span>
+</div>
+
+<style lang="scss">
+    .announce-bar {
+        background-color: hsla(205, 100%, 98%, 0.05);
+        border-bottom: 1px solid hsla(216, 25%, 67%, 0.3);
+        color: hsl(0, 0%, 98%);
+        padding: 10px 0;
+        text-align: center;
+        font-size: 14px;
+        position: relative;
+        z-index: 999;
+        font-weight: 600;
+        margin-bottom: -30px;
+
+        span {
+            font-weight: 500;
+        }
+    }
+
+    @media (max-width: 900px) {
+        .announce-bar {
+            margin-bottom: 10px;
+        }
+    }
+</style>
