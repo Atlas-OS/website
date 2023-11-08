@@ -11,7 +11,7 @@
     },
     "dependencies": {
         "@divriots/jampack": "^0.22.0",
-        "astro": "^3.4.3",
+        "astro": "^3.4.4",
         "astro-google-fonts-optimizer": "^0.2.2",
         "astro-icon": "^0.8.1",
         "astro-purgecss": "^3.2.1",
