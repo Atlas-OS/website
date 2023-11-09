@@ -82,7 +82,7 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
     playbookDlBtn.addEventListener('click', async () => {
         playbookDlBtn.textContent = 'Downloading...'
         downloadCount.textContent = ''
-        window.open(`https://cdn.jsdelivr.net/atlas/${atlasVersion}/AtlasPlaybook_v${atlasVersion}.zip`, '_blank')
+        window.open(`https://github.com/Atlas-OS/Atlas/releases/download/v0.3.2/AtlasPlaybook_v0.3.2.zip`, '_blank')
 
         try {
             await incrementDownloadCount()
