@@ -187,14 +187,15 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
     }
 
     .radial-wrapper {
-        filter: blur(100px);
         overflow-x: hidden;
 
         .radial-bg {
             position: relative;
-            background: radial-gradient(45.1% 50% at 50% 50%, rgba(13, 58, 99, 0.5) 0%, rgba(12, 57, 99, 0) 100%);
+            background: rgb(13, 58, 99);
             -webkit-animation: glow 2s alternate infinite;
             animation: glow 2s alternate infinite;
+            -webkit-mask-image: radial-gradient(rgba(0, 0, 0, .45),transparent 70%);
+            mask-image: radial-gradient(rgba(0, 0, 0, .45),transparent 70%);
             height: 1000px;
             z-index: -99;
         }
