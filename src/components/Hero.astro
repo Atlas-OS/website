@@ -20,7 +20,7 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
         </a>
         <h1>A modification of Windows, designed for gamers.</h1>
         <p>It’s time to experience a new Windows experience. Designed for gamers, with improved in-game framerates and lowered latency.</p>
-        <span class="get-started-tag">To get started, download...</span>
+        <span class="release-number">The latest version is <a href="https://github.com/Atlas-OS/Atlas/releases/latest" target="_blank" rel="noreferrer noopener">Atlas v0.3.2 (Nov 9 2023)</a></span>
         <div class="buttons">
             <button class="button primary" id="playbook-dl-btn">Atlas Playbook -></button>
             <a class="button secondary" href="https://download.ameliorated.io/AME%20Wizard%20Beta.zip" rel="noreferrer noopener" target="_blank">AME Wizard -></a>
@@ -162,11 +162,21 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
             text-align: center;
         }
 
-        .get-started-tag {
+        .release-number {
             font-size: 14px;
             font-weight: 400;
             color: hsl(213, 11%, 64%, 0.6);
             margin-bottom: 20px;
+
+            a {
+                color: hsl(213, 11%, 64%, 1);
+                transition: color 0.2s ease-in-out;
+                font-weight: 500;
+
+                &:hover {
+                    color: hsla(0, 0%, 100%, 0.7);
+                }
+            }
         }
 
         .buttons {
