@@ -1,6 +1,7 @@
 import { defineConfig } from 'astro/config'
-
 import purgecss from 'astro-purgecss'
+
+import icon from 'astro-icon'
 
 // https://astro.build/config
 export default defineConfig({
@@ -13,6 +14,9 @@ export default defineConfig({
             content: [
                 process.cwd() + '/src/**/*.{astro,vue}' // Watching astro and vue sources (for SSR, read the note below)
             ]
+        }),
+        icon({
+            iconDir: 'src/assets/icons'
         })
     ]
 })

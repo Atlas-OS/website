@@ -10,17 +10,17 @@
         "astro": "astro"
     },
     "dependencies": {
-        "@divriots/jampack": "^0.23.1",
-        "astro": "^4.0.6",
+        "@divriots/jampack": "^0.23.2",
+        "astro": "^4.1.1",
         "astro-google-fonts-optimizer": "^0.2.2",
-        "astro-icon": "^0.8.2",
+        "astro-icon": "^1.0.2",
         "astro-purgecss": "^4.0.0",
         "purgecss": "^5.0.0",
-        "sass": "^1.69.5",
-        "sharp": "^0.33.0"
+        "sass": "^1.69.7",
+        "sharp": "^0.33.1"
     },
     "devDependencies": {
         "prettier": "^3.1.1",
-        "prettier-plugin-astro": "^0.12.2"
+        "prettier-plugin-astro": "^0.12.3"
     }
 }

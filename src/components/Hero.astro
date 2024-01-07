@@ -1,5 +1,5 @@
 ---
-import Icon from 'astro-icon'
+import { Icon } from 'astro-icon/components'
 import { Picture } from 'astro:assets'
 
 import Wallpaper from '../assets/img/atlas-wallpaper.webp'
@@ -15,7 +15,7 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
 <div class="container main">
     <div class="hero">
         <a href="https://docs.atlasos.net/getting-started/installation" target="_blank" class="tagline">
-            <Icon name="book-open-icon" height="15px" class="icon" />
+            <Icon name="book-open-icon" height={15} class="icon" />
             <span>View our detailed documentation for installing <span class="arrow">--></span></span>
         </a>
         <h1>A modification of Windows, designed for gamers.</h1>
@@ -194,8 +194,8 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
             background: rgb(13, 58, 99);
             -webkit-animation: glow 2s alternate infinite;
             animation: glow 2s alternate infinite;
-            -webkit-mask-image: radial-gradient(rgba(0, 0, 0, .45),transparent 70%);
-            mask-image: radial-gradient(rgba(0, 0, 0, .45),transparent 70%);
+            -webkit-mask-image: radial-gradient(rgba(0, 0, 0, 0.45), transparent 70%);
+            mask-image: radial-gradient(rgba(0, 0, 0, 0.45), transparent 70%);
             height: 1000px;
             z-index: -99;
         }

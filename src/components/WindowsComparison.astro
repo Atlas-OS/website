@@ -1,5 +1,5 @@
 ---
-import Icon from 'astro-icon'
+import { Icon } from 'astro-icon/components'
 import { Picture } from 'astro:assets'
 
 import Splitter from '../assets/img/splitter.svg'
@@ -16,7 +16,7 @@ import Splitter from '../assets/img/splitter.svg'
         <div class="card">
             <div class="content-wrapper">
                 <div class="card-title">
-                    <Icon name="cpu-icon" class="icon" height="28px" alt="CPU usage icon" />
+                    <Icon name="cpu-icon" class="icon" height={28} />
                     <h3>CPU Usage</h3>
                 </div>
                 <p>We've reduced background CPU usage significantly. Nothing that you don't need will run in the background.</p>
@@ -27,7 +27,7 @@ import Splitter from '../assets/img/splitter.svg'
         <div class="card">
             <div class="content-wrapper">
                 <div class="card-title">
-                    <Icon name="bolt-icon" class="icon" height="32px" alt="Bolt RAM icon" />
+                    <Icon name="bolt-icon" class="icon" height={32} />
                     <h3>Ram usage</h3>
                 </div>
                 <p>Thanks to Atlas we've freed up 1.1GB of RAM usage from boot, which can then be allocated to other tasks.</p>
@@ -38,7 +38,7 @@ import Splitter from '../assets/img/splitter.svg'
         <div class="card">
             <div class="content-wrapper">
                 <div class="card-title">
-                    <Icon name="rocket-icon" class="icon" height="28px" alt="Rocket FPS icon" />
+                    <Icon name="rocket-icon" class="icon" height={28} />
                     <h3>1% FPS</h3>
                 </div>
                 <p>In VALORANT, we saw a significant improvement in FPS lows. Boasting a more stable, and higher framerate.</p>

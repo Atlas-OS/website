@@ -1,9 +1,9 @@
 ---
 import Logomark from '../../public/logomark.svg'
 import ExternalLink from './ExternalLink.astro'
+import { Icon } from 'astro-icon/components'
 
 import { Picture } from 'astro:assets'
-import { Icon } from 'astro-icon'
 
 interface Props {
     links: {
@@ -31,19 +31,19 @@ const forumDonate = `${links.forum}/access-portal`
             <p>Atlas is designed for gamers, with improved in-game framerates and lowered latency.</p>
             <div class="social-icons">
                 <a href={links.twitter} aria-label="Follow us on X">
-                    <Icon name="x-logo" class="icons" height="25px" width="25px" />
+                    <Icon name="x-logo" class="icons" height={25} width={25} />
                 </a>
                 <a href={links.discord} aria-label="Join our Discord community">
-                    <Icon name="discord-logo" class="icons" height="25px" width="25px" />
+                    <Icon name="discord-logo" class="icons" height={25} width={25} />
                 </a>
                 <a href={links.github} aria-label="Visit our GitHub repository">
-                    <Icon name="github-logo" class="icons" height="25px" width="25px" />
+                    <Icon name="github-logo" class="icons" height={25} width={25} />
                 </a>
                 <a href={links.donate} aria-label="Visit our Ko-fi page">
-                    <Icon name="ko-fi-logo" class="icons" height="25px" width="30px" />
+                    <Icon name="ko-fi-logo" class="icons" height={25} width={30} />
                 </a>
                 <a href={links.trustpilot} aria-label="Visit our TrustPilot page">
-                    <Icon name="trustpilot-logo-mono" class="icons" height="25px" width="25px" />
+                    <Icon name="trustpilot-logo-mono" class="icons" height={25} width={25} />
                 </a>
             </div>
             <span class="copyright">Copyright © 2024 AtlasOS. All rights reserved.</span>
