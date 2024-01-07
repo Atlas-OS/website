@@ -1,7 +1,8 @@
 import { defineConfig } from 'astro/config'
 import purgecss from 'astro-purgecss'
-
 import icon from 'astro-icon'
+
+import partytown from '@astrojs/partytown'
 
 // https://astro.build/config
 export default defineConfig({
@@ -17,6 +18,7 @@ export default defineConfig({
         }),
         icon({
             iconDir: 'src/assets/icons'
-        })
+        }),
+        partytown()
     ]
 })

@@ -1,5 +1,5 @@
 ---
-import { GoogleFontsOptimizer } from 'astro-google-fonts-optimizer'
+import { AstroFont } from 'astro-font'
 
 interface Props {
     title: string
@@ -17,7 +17,7 @@ const imageUrl = 'https://atlasos.net/defaultimg.png'
 <meta name="generator" content={Astro.generator} />
 <link rel="canonical" href="https://atlasos.net/" />
 <link rel="sitemap" href="/sitemap-index.xml" />
-<script defer data-domain={siteDomain} src="https://pla.atlasos.net/js/script.js"></script>
+<script type="text/partytown" defer data-domain={siteDomain} src="https://pla.atlasos.net/js/script.js"></script>
 
 <title>AtlasOS - {title}</title>
 <meta name="title" content=`AtlasOS: ${title}` />
@@ -41,4 +41,55 @@ const imageUrl = 'https://atlasos.net/defaultimg.png'
 
 <meta property="twitter:card" content="summary_large_image" />
 
-<GoogleFontsOptimizer url="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" />
+<AstroFont
+    config={[
+        {
+            name: 'Inter',
+            src: [
+                {
+                    style: 'normal',
+                    weight: '400',
+                    path: 'https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2'
+                },
+                {
+                    style: 'medium',
+                    weight: '500',
+                    path: 'https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2'
+                },
+                {
+                    style: 'semibold',
+                    weight: '600',
+                    path: 'https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2'
+                }
+            ],
+            preload: true,
+            display: 'swap',
+            selector: 'h1, h2, h3, h4, h5, h6',
+            fallback: 'sans-serif'
+        },
+        {
+            name: 'Archivo',
+            src: [
+                {
+                    style: 'medium',
+                    weight: '500',
+                    path: 'https://fonts.gstatic.com/s/archivo/v19/k3kPo8UDI-1M0wlSV9XAw6lQkqWY8Q82sLydOxI.woff2'
+                },
+                {
+                    style: 'semibold',
+                    weight: '600',
+                    path: 'https://fonts.gstatic.com/s/archivo/v19/k3kPo8UDI-1M0wlSV9XAw6lQkqWY8Q82sLydOxI.woff2'
+                },
+                {
+                    style: 'bold',
+                    weight: '700',
+                    path: 'https://fonts.gstatic.com/s/archivo/v19/k3kPo8UDI-1M0wlSV9XAw6lQkqWY8Q82sLydOxI.woff2'
+                }
+            ],
+            preload: true,
+            display: 'swap',
+            selector: 'body',
+            fallback: 'sans-serif'
+        }
+    ]}
+/>
