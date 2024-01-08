@@ -84,6 +84,7 @@ const { links } = Astro.props
 
         const userImgElement = document.createElement('img')
         userImgElement.alt = `${star.username}'s avatar`
+        userImgElement.loading = 'lazy'
         userImgElement.src = `https://github.com/${star.username}.png`
         starElement.append(userImgElement)
 
