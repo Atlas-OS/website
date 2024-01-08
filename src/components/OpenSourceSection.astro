@@ -193,6 +193,9 @@ const { links } = Astro.props
             position: relative;
             width: 587px;
             height: 330px;
+            animation: slide-in-left ease-out;
+            animation-timeline: view();
+            animation-range: entry 0% exit -100%;
 
             .gh-image {
                 border-radius: 5px;
