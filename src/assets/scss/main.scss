@@ -23,6 +23,7 @@ h5,
 h6 {
     font-family: 'Archivo', sans-serif;
     font-weight: 500;
+    font-display: swap;
     color: var(--color-white);
     margin: 0;
 }
@@ -41,6 +42,7 @@ textarea,
 button {
     font-family: 'Inter', sans-serif;
     font-weight: 400;
+    font-display: swap;
     color: var(--color-white);
     margin: 0;
 }
