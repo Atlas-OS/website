@@ -19,7 +19,6 @@ interface Props {
 }
 
 const { links } = Astro.props
-const forumDonate = `${links.forum}/access-portal`
 ---
 
 <footer class="footer-wrapper">
@@ -52,7 +51,7 @@ const forumDonate = `${links.forum}/access-portal`
             <div class="column">
                 <span>Sitemap</span>
                 <a href="/">Home</a>
-                <ExternalLink href={links.forum} ariaLabel="Open Forum" children="Forum" />
+                <ExternalLink href={links.forum} ariaLabel="Open GitHub Discussions" children="Discussions" />
                 <ExternalLink href={links.documentation} ariaLabel="Open documentation" children="Documentation" />
                 <ExternalLink href={links.faq} ariaLabel="Open documentation" children="FAQ" />
             </div>
@@ -66,7 +65,6 @@ const forumDonate = `${links.forum}/access-portal`
             <div class="column">
                 <span>Donations</span>
                 <ExternalLink href={links.donate} ariaLabel="Open Ko-fi" children="Ko-fi" />
-                <ExternalLink href={forumDonate} ariaLabel="Open Forum donate" children="Forum donate" />
             </div>
         </div>
     </div>
