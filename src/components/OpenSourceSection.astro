@@ -18,12 +18,12 @@ const { links } = Astro.props
 
 <div class="open-source-section">
     <div class="github-wrapper">
-        <Picture class="gh-image" src={GitHub} alt="GitHub repository" />
+        <Picture class="gh-image" src={GitHub} loading="lazy" alt="GitHub repository" />
         <div class="gh-stars" id="gh-stars-wrap">
             <div class="gh-stars-info">
                 <div class="content">
                     <div class="star">
-                        <Picture src={GitHubStar} alt="GitHub star" />
+                        <Picture src={GitHubStar} loading="lazy" alt="GitHub star" />
                     </div>
                     <p>Starred</p>
                     <span class="star-count" id="star-amount-badge">ERROR</span>
@@ -31,7 +31,7 @@ const { links } = Astro.props
                 <div class="line"></div>
                 <div class="content">
                     <button class="chevron-img" id="toggle-star-list-btn">
-                        <Picture class="chevron-img" src={Chevron} alt="Chevron" />
+                        <Picture class="chevron-img" loading="lazy" src={Chevron} alt="Chevron" />
                     </button>
                 </div>
             </div>
@@ -46,13 +46,13 @@ const { links } = Astro.props
         <div class="stargazer-count">
             <div class="stargazers">
                 <div class="star">
-                    <Picture src={GitHubStar} alt="GitHub star" />
+                    <Picture src={GitHubStar} loading="lazy" alt="GitHub star" />
                 </div>
                 <p>
                     <span id="star-amount-tag">ERROR</span><span> stargazers</span> on <ExternalLink href={links.github} ariaLabel="Open GitHub" children="GitHub ->" />
                 </p>
             </div>
-            <Picture src={GPLLogo} class="gpl-logomark" alt="GPL logo" />
+            <Picture src={GPLLogo} class="gpl-logomark" loading="lazy" alt="GPL logo" />
         </div>
     </div>
 </div>

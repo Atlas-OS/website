@@ -22,7 +22,7 @@ const { links } = Astro.props
         <h2>What does our <span class="highlight">community</span> think?</h2>
         <p>Our community is fantastic and reviews us with a significant amount of positive feedback. We take great pride in our high rating, which reflects our commitment for improving Atlas.</p>
         <div class="review-star">
-            <Picture src={ReviewStars} alt="Review star" />
+            <Picture src={ReviewStars} loading="lazy" alt="Review star" />
             <p>
                 <span>4.5 out of 5</span> on <ExternalLink href={links.trustpilot} aria-label="View our TrustPilot page" children="Trustpilot ->" />
             </p>
@@ -30,22 +30,22 @@ const { links } = Astro.props
     </section>
     <div class="review-item">
         <div class="review-img">
-            <Picture src={Review} alt="Atlas review" />
+            <Picture src={Review} loading="lazy" alt="Atlas review" />
         </div>
         <div class="review-box">
-            <Picture src={Logo} alt="Atlas logo" />
+            <Picture src={Logo} loading="lazy" alt="Atlas logo" />
             <div class="info">
                 <span>atlasos.net</span>
                 <p class="review-count">Reviews 151 - Excellent</p>
                 <div class="stars">
-                    <Picture src={ReviewStars} alt="Review stars" />
+                    <Picture src={ReviewStars} loading="lazy" alt="Review stars" />
                 </div>
                 <div class="verified-company">
-                    <Picture src={Verified} alt="Verified" />
+                    <Picture src={Verified} loading="lazy" alt="Verified" />
                     <p>VERIFIED COMPANY</p>
                 </div>
             </div>
-            <Picture src={ReviewStar} alt="Review star" class="re-star" />
+            <Picture src={ReviewStar} alt="Review star" loading="lazy" class="re-star" />
         </div>
     </div>
 </div>

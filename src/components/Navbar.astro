@@ -23,11 +23,11 @@ const { links } = Astro.props
 <div class="navbar-wrapper">
     <navbar class="navbar">
         <a href="/">
-            <Picture src={Logomark} alt="Atlas logomark" />
+            <Picture src={Logomark} loading="eager" alt="Atlas logomark" />
         </a>
         <div class="links">
-            <ExternalLink href={links.forum} ariaLabel="Open Forum" children="Forums" />
             <ExternalLink href={links.documentation} ariaLabel="Open Documentation" children="Documentation" />
+            <ExternalLink href={links.forum} ariaLabel="Open GitHub Discussions" children="Discussions" />
             <ExternalLink href={links.faq} ariaLabel="Open FAQ" children="FAQ" />
             <ExternalLink href={links.donate} ariaLabel="Open Ko-fi" children="Support us" />
         </div>

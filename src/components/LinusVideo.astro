@@ -20,7 +20,7 @@ const { links } = Astro.props
     <a href={links.linusvideo} target="_blank" rel="noreferrer noopener" aria-label="Watch what Linus said about Atlas OS" class="linus-video">
         <div class="preview-image">
             <div class="circle">
-                <Picture src={PlayButton} alt="Video play button" />
+                <Picture loading="lazy" src={PlayButton} alt="Video play button" />
             </div>
         </div>
     </a>
