@@ -11,15 +11,15 @@
   },
   "dependencies": {
     "@astrojs/partytown": "^2.1.1",
-    "astro": "^4.12.2",
-    "astro-compress": "2.2.17",
-    "astro-font": "^0.0.78",
+    "astro": "^4.13.3",
+    "astro-compress": "2.3.1",
+    "astro-font": "^0.1.81",
     "astro-icon": "^1.1.0",
     "sass": "^1.77.8",
     "sharp": "^0.33.4"
   },
   "devDependencies": {
     "prettier": "^3.3.3",
-    "prettier-plugin-astro": "^0.13.0"
+    "prettier-plugin-astro": "^0.14.1"
   }
 }
