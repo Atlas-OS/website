@@ -68,9 +68,11 @@ const { links } = Astro.props
     const atlasVersion = '0.4.0'
     const playbookDlBtn = document.getElementById('playbook-dl-btn')
     const downloadCount = document.getElementById('download-count')
+    const modalOpenBtn = document.getElementById('dl-modal-trigger')
 
     if (!playbookDlBtn) throw new Error('Element playbook-dl-btn missing')
     if (!downloadCount) throw new Error('Element download-count missing')
+    if (!modalOpenBtn) throw new Error('Element dl-modal-trigger missing')
 
     async function fetchDownloadCount() {
         const res = await fetch(`https://api.atlasos.net/`)
@@ -88,16 +90,6 @@ const { links } = Astro.props
         }
     }
 
-    window.addEventListener("load", async function () {
-        try {
-            const count = await fetchDownloadCount()
-            console.log("Download count fetched successfully:", count)
-            downloadCount.textContent = `Atlas has been downloaded ${count.toLocaleString('en-US')} times.`
-        } catch (error) {
-            console.error('Failed to fetch download count:', error)
-        }
-    })
-
     playbookDlBtn.addEventListener('click', async () => {
         playbookDlBtn.textContent = 'Downloading...'
         window.open(`https://cdn.jsdelivr.net/atlas/${atlasVersion}/AtlasPlaybook_v${atlasVersion}.zip`, '_self')
@@ -111,6 +103,15 @@ const { links } = Astro.props
         setTimeout(() => {
             playbookDlBtn.textContent = 'Atlas Playbook ->'
         }, 1000);
+    })
+
+    modalOpenBtn.addEventListener('click', async () => {
+        try {
+            const count = await fetchDownloadCount()
+            downloadCount.textContent = `Atlas has been downloaded ${count.toLocaleString('en-US')} times.`
+        } catch (error) {
+            console.error('Failed to refetch download count:', error)
+        }
     })
 </script>
 <style is:inline id="postDocsStyle" />
