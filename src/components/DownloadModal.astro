@@ -1,0 +1,174 @@
+---
+import { Icon } from 'astro-icon/components'
+
+interface Props {
+    links: {
+        faq: string
+        install: string
+    }
+}
+
+const { links } = Astro.props
+---
+
+<script is:inline>
+    function toggleModalPrePostDocs() {
+        const postDocsStyleId = 'postDocsStyle';
+        const preDocsStyleId = 'preDocsStyle';
+        const postDocsStyleElement = document.getElementById(postDocsStyleId);
+        const preDocsStyleElement = document.getElementById(preDocsStyleId);
+        const prePostToggle = document.getElementById('prePostDocToggle');
+        const styles = '.modalSlide {--tw-translate-x:'
+
+        // If pre-docs is hidden, show post-docs
+        if (preDocsStyleElement) {
+            const style = document.createElement('style');
+            style.id = postDocsStyleId;
+            style.innerHTML = `${styles}0%!important}`;
+            document.head.appendChild(style);
+            prePostToggle.textContent = '-> Already following the guide?'
+        } else {
+            postDocsStyleElement.remove();
+        }
+
+        // If post-docs is hidden, show pre-docs
+        if (postDocsStyleElement) {
+            const style = document.createElement('style');
+            style.id = preDocsStyleId;
+            style.innerHTML = `${styles}calc(-100% - 2.5rem)!important}`;
+            document.head.appendChild(style);
+            prePostToggle.textContent = '<- Back to the install guide'
+        } else {
+            preDocsStyleElement.remove();
+        }
+    }
+
+    function toggleModal(state) {
+        const modal = document.getElementById('modal')
+        if (!modal) throw new Error('Element modal missing')
+
+        if (state) {
+            modal.style.display = null
+            setTimeout(() => {
+                modal.style.visibility = 'visible'
+                modal.style.opacity = '1';
+            }, 0);
+            document.body.style.overflow = 'hidden'
+        } else {
+            modal.style.opacity = '0';
+            modal.style.visibility = 'hidden';
+            setTimeout(() => {
+                modal.style.display = 'none'
+            }, 350);
+            document.body.style.overflow = null
+        }
+    }
+</script>
+<script>
+    const atlasVersion = '0.4.0'
+    const playbookDlBtn = document.getElementById('playbook-dl-btn')
+    const downloadCount = document.getElementById('download-count')
+
+    if (!playbookDlBtn) throw new Error('Element playbook-dl-btn missing')
+    if (!downloadCount) throw new Error('Element download-count missing')
+
+    async function fetchDownloadCount() {
+        const res = await fetch(`https://api.atlasos.net/`)
+        if (!res.ok) {
+            throw new Error(`Failed to fetch download count. HTTP status: ${res.status}`)
+        }
+        const body = await res.json()
+        return body.find((download: { version: string }) => download.version == 'atlas').count
+    }
+
+    async function incrementDownloadCount() {
+        const res = await fetch(`https://api.atlasos.net/atlas/increment`, { method: 'POST' })
+        if (!res.ok) {
+            throw new Error(`Failed to increment download count. HTTP status: ${res.status}`)
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", async () => {
+        try {
+            const count = await fetchDownloadCount()
+            downloadCount.textContent = `Atlas has been downloaded ${count.toLocaleString('en-US')} times.`
+        } catch (error) {
+            console.error('Failed to refetch download count:', error)
+        }
+    })
+
+    playbookDlBtn.addEventListener('click', async () => {
+        playbookDlBtn.textContent = 'Downloading...'
+        window.open(`https://cdn.jsdelivr.net/atlas/${atlasVersion}/AtlasPlaybook_v${atlasVersion}.zip`, '_self')
+
+        try {
+            await incrementDownloadCount()
+        } catch (error) {
+            console.error('Failed to increment donwload count:', error)
+        }
+
+        setTimeout(() => {
+            playbookDlBtn.textContent = 'Atlas Playbook ->'
+        }, 1000);
+    })
+</script>
+<style is:inline id="postDocsStyle" />
+<style>.modalSlide { @apply transition-all duration-500 ease-in-out translate-x-0 }</style>
+
+<div
+    class='w-screen h-screen backdrop-blur-sm bg-opacity-35 bg-black inset-0 z-[9999] fixed p-2 transition-all duration-300'
+    style="opacity:0;visibility:hidden;display:none;"
+    id="modal"
+>
+    <div class="flex align-middle justify-center items-center min-h-full">
+        <div
+            class="border-gray-100/10 shadow-2xl border-[1px] max-w-xl w-full rounded-2xl relative ml-auto mr-auto flex flex-col overflow-x-hidden"
+            style="background: var(--bg-modal-gradient);"
+        >
+            <!-- Title & close -->
+            <div class='flex items-center place-content-between m-6 text-white'>
+                <div class="flex gap-3 items-center">
+                    <Icon name="download-icon" class="icons" size={25} width={25} />
+                    <h1 class="text-2xl">Installing Atlas</h1>
+                </div>
+                <button aria-label="Close" onclick='toggleModal(false)' class="opacity-45 hover:opacity-100 p-3 -m-3 transition-opacity">
+                    <Icon name="close" class="icons" size={25} width={25} />
+                </button>
+            </div>
+
+            <!-- Content -->
+            <div class="flex flex-col px-6 pb-6 gap-6">
+                <div class="min-w-full flex flex-row gap-10 modalSlide">
+                    <p class="preDocs min-w-full">
+                        To get started, you'll need to follow our installation guide below.
+                        We have made it as easy to follow as possible, with all the steps to get you up and running.
+                        Thank you for using Atlas! 😊
+                    </p>
+                    <p class="postDocs min-w-full">
+                        <strong>You should only download these when instructed to by the install guide.</strong> 
+                        If you aren't following the install guide, click the 'Back to the install guide' at the bottom of this pop-up to see more info. 💾
+                    </p>
+                </div>
+                
+                <div class="justify-center items-center align-middle flex flex-col gap-3">
+                    <p class="text-gray-400 text-sm" id="download-count">Fetching download count...</p>
+                    <div class="min-w-full flex flex-row gap-10 modalSlide">
+                        <div class="min-w-full gap-2 flex flex-col">
+                            <a class="button primary" href={links.install} target="_blank">Installation Guide -></a>
+                            <a class="button secondary" href={links.faq} target="_blank">Install FAQ -></a>
+                        </div>
+                        <div class="min-w-full gap-2 flex flex-col">
+                            <button class="button primary" id="playbook-dl-btn">Atlas Playbook -></button>
+                            <a class="button secondary" href="https://download.ameliorated.io/AME%20Wizard%20Beta.zip" rel="noreferrer noopener" target="_self">AME Wizard -></a>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="border-gray-600" />
+                <button class="text-sm transition-all" style="color: hsla(205, 100%, 98%, 0.8)" onclick="toggleModalPrePostDocs()" id="prePostDocToggle">
+                    -> Already following the guide?
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

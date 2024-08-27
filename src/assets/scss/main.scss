@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 * {
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
@@ -150,8 +154,10 @@ picture {
     padding: 8px 19px;
     gap: 10px;
     align-items: center;
+    justify-content: center;
     cursor: pointer;
     font-weight: 400;
+    line-height: 1.25;
 
     &.primary {
         border-radius: 7px;
@@ -204,20 +210,6 @@ picture {
             .arrow {
                 left: 5px;
             }
-        }
-    }
-}
-
-@media (max-width: 500px) {
-    .buttons {
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-
-        .button {
-            align-items: center;
-            justify-content: center;
-            width: 100%;
         }
     }
 }

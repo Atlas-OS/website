@@ -1,5 +1,4 @@
 ---
-import { Icon } from 'astro-icon/components'
 import { Picture } from 'astro:assets'
 
 import Wallpaper from '../assets/img/atlas-wallpaper.webp'
@@ -12,26 +11,19 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
 <div class="radial-wrapper">
     <div class="radial-bg"></div>
 </div>
+
 <div class="container main">
     <div class="hero">
-        <a href="https://docs.atlasos.net/getting-started/installation" target="_blank" class="tagline">
-            <Icon name="book-open-icon" size={15} class="icon" />
-            <span>See our guide on installing Atlas first <span class="arrow">--></span></span>
-        </a>
-        <h1>A modification of Windows, designed for enthusiasts.</h1>
+        <h1 class="leading-tight">A modification of Windows, designed for enthusiasts.</h1>
         <p>It's time for a new Windows experience. Designed for enthusiasts and gamers, Atlas improves privacy, usability, and performance.</p>
         <span class="release-number">The latest version is <a href="https://github.com/Atlas-OS/Atlas/releases/latest" target="_blank" rel="noreferrer noopener">Atlas v0.4.0 (April 6 2024)</a></span>
-        <div class="buttons">
-            <button class="button primary" id="playbook-dl-btn">Atlas Playbook -></button>
-            <a class="button secondary" href="https://download.ameliorated.io/AME%20Wizard%20Beta.zip" rel="noreferrer noopener" target="_blank">AME Wizard -></a>
-        </div>
-        <span id="download-count" class="download-count"></span>
+        <button class="min-w-full sm:min-w-72 button primary mb-[100px]" id="dl-modal-trigger" onclick="toggleModal(true)">Get started -></button>
     </div>
 </div>
 <div class="container main">
     <div class="wallpaper-fade-in">
         <div class="wallpaper-wrapper">
-            <Picture src={Wallpaper} loading="eager" class="wallpaper" alt="atlas os wallpaper" />
+            <Picture src={Wallpaper} loading="eager" class="wallpaper" alt="AtlasOS Wallpaper" />
             <div class="wallpaper-animation">
                 <div class="wallpaper-animation-line"></div>
                 <div class="wallpaper-animation-line"></div>
@@ -54,52 +46,6 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
         </a>
     </div>
 </div>
-
-<script>
-    const atlasVersion = '0.4.0'
-    const playbookDlBtn = document.getElementById('playbook-dl-btn')
-    const downloadCount = document.getElementById('download-count')
-
-    if (!playbookDlBtn) throw new Error('Element playbook-dl-btn missing')
-    if (!downloadCount) throw new Error('Element download-count missing')
-
-    async function fetchDownloadCount() {
-        const res = await fetch(`https://api.atlasos.net/`)
-        if (!res.ok) {
-            throw new Error(`Failed to fetch download count. HTTP status: ${res.status}`)
-        }
-        const body = await res.json()
-        return body.find((download: { version: string }) => download.version == 'atlas').count
-    }
-
-    async function incrementDownloadCount() {
-        const res = await fetch(`https://api.atlasos.net/atlas/increment`, { method: 'POST' })
-        if (!res.ok) {
-            throw new Error(`Failed to increment download count. HTTP status: ${res.status}`)
-        }
-    }
-
-    playbookDlBtn.addEventListener('click', async () => {
-        playbookDlBtn.textContent = 'Downloading...'
-        downloadCount.textContent = ''
-        window.open(`https://cdn.jsdelivr.net/atlas/${atlasVersion}/AtlasPlaybook_v${atlasVersion}.zip`, '_blank')
-
-        try {
-            await incrementDownloadCount()
-        } catch (error) {
-            console.error('Failed to increment donwload count:', error)
-        }
-
-        try {
-            const count = await fetchDownloadCount()
-            downloadCount.textContent = `Atlas has been downloaded ${count.toLocaleString('en-US')} times.`
-        } catch (error) {
-            console.error('Failed to refetch download count:', error)
-        }
-
-        playbookDlBtn.textContent = 'Atlas Playbook ->'
-    })
-</script>
 
 <style lang="scss" is:global>
     .hero {
@@ -178,23 +124,17 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
                 }
             }
         }
-
-        .buttons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
     }
 
-    .download-count {
-        text-align: center;
-        font-size: 14px;
-        font-weight: 400;
-        color: hsla(0, 0%, 100%, 0.5);
-        margin-bottom: 100px;
-        margin-top: 15px;
-        transition: all 0.2s ease-in-out;
-    }
+    // .download-count {
+    //     text-align: center;
+    //     font-size: 14px;
+    //     font-weight: 400;
+    //     color: hsla(0, 0%, 100%, 0.5);
+    //     margin-bottom: 100px;
+    //     margin-top: 15px;
+    //     transition: all 0.2s ease-in-out;
+    // }
 
     .radial-wrapper {
         overflow-x: hidden;
