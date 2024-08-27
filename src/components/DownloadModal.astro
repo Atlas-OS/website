@@ -88,12 +88,13 @@ const { links } = Astro.props
         }
     }
 
-    document.addEventListener("DOMContentLoaded", async () => {
+    window.addEventListener("load", async function () {
         try {
             const count = await fetchDownloadCount()
+            console.log("Download count fetched successfully:", count)
             downloadCount.textContent = `Atlas has been downloaded ${count.toLocaleString('en-US')} times.`
         } catch (error) {
-            console.error('Failed to refetch download count:', error)
+            console.error('Failed to fetch download count:', error)
         }
     })
 
