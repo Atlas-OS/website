@@ -11,7 +11,7 @@ interface Props {
 const { links } = Astro.props
 ---
 
-<style>.modalSlide { @apply transition-all duration-500 ease-in-out translate-x-0 }</style>
+<style>.modalSlide { @apply transition-all duration-500 ease-in-out translate-x-0 visible }</style>
 <div
     class='w-screen h-screen backdrop-blur-sm bg-opacity-35 bg-black inset-0 z-[9999] fixed p-2 transition-all duration-300 overflow-auto'
     style="opacity:0;visibility:hidden;display:none;"
