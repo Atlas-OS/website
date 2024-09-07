@@ -13,7 +13,7 @@ const { links } = Astro.props
 
 <style>.modalSlide { @apply transition-all duration-500 ease-in-out translate-x-0 }</style>
 <div
-    class='w-screen h-screen backdrop-blur-sm bg-opacity-35 bg-black inset-0 z-[9999] fixed p-2 transition-all duration-300'
+    class='w-screen h-screen backdrop-blur-sm bg-opacity-35 bg-black inset-0 z-[9999] fixed p-2 transition-all duration-300 overflow-auto'
     style="opacity:0;visibility:hidden;display:none;"
     id="modal-container"
 >
@@ -62,7 +62,7 @@ const { links } = Astro.props
                 </div>
 
                 <hr class="border-gray-600" />
-                <button class="text-sm transition-all" style="color: hsla(205, 100%, 98%, 0.8)" onclick="toggleModalPrePostDocs()" id="prePostDocToggle">
+                <button class="text-sm transition-all p-4 -m-4" style="color: hsla(205, 100%, 98%, 0.8)" id="prePostDocToggle">
                     -> Already following the guide?
                 </button>
             </div>
