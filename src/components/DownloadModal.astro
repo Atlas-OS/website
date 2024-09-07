@@ -133,7 +133,7 @@ const { links } = Astro.props
             document.body.style.paddingRight = `${scrollWidth}px`
 
             // Close on background click
-            window.onclick = function(event) {
+            document.onclick = function(event) {
                 if (event.target == modal) {
                     showModal(false);
                 }
@@ -149,7 +149,7 @@ const { links } = Astro.props
             document.body.style.paddingRight = ""
 
             // Remove close on background click
-            window.onclick = null
+            document.onclick = null
         }
     }
 
