@@ -292,7 +292,123 @@ const { links } = Astro.props
 <script>
     import { animateElement } from '../utils/animations'
 
+    interface StarData {
+        count: number
+    }
+
+    interface StargazerInfo {
+        username: string
+        avatar: string
+    }
+
+    class GitHubStarsManager {
+        private readonly starListItems: HTMLElement | null
+        private readonly starCountElement: HTMLElement | null
+        private readonly starBadgeElement: HTMLElement | null
+
+        constructor() {
+            this.starListItems = document.getElementById('gh-star-list-items')
+            this.starCountElement = document.getElementById('star-amount-tag')
+            this.starBadgeElement = document.getElementById('star-amount-badge')
+
+            this.initializeDropdown()
+
+            if (import.meta.env.MODE === 'production') {
+                this.updateStarInfo()
+            }
+        }
+
+        private initializeDropdown(): void {
+            const toggleButton = document.getElementById('toggle-star-list-btn')
+            const starList = document.getElementById('gh-star-list')
+            const starsWrapper = document.getElementById('gh-stars-wrap')
+
+            if (!toggleButton || !starList || !starsWrapper) {
+                console.error('Required DOM elements not found')
+                return
+            }
+
+            toggleButton.addEventListener('click', (e) => {
+                e.stopPropagation()
+                starList.classList.toggle('show')
+                starsWrapper.classList.toggle('toggled')
+                toggleButton.classList.toggle('toggled')
+            })
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (event) => {
+                const target = event.target as HTMLElement
+                if (!starsWrapper.contains(target)) {
+                    starList.classList.remove('show')
+                    starsWrapper.classList.remove('toggled')
+                    toggleButton.classList.remove('toggled')
+                }
+            })
+        }
+
+        private async fetchData<T>(url: string): Promise<T> {
+            try {
+                const response = await fetch(url)
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`)
+                }
+                return (await response.json()) as T
+            } catch (error) {
+                console.error(`Failed to fetch data from ${url}:`, error)
+                throw error
+            }
+        }
+
+        private createStarElement(star: StargazerInfo): HTMLDivElement {
+            const starElement = document.createElement('div')
+            starElement.classList.add('content')
+
+            const userImgElement = document.createElement('img')
+            userImgElement.alt = `${star.username}'s avatar`
+            userImgElement.loading = 'lazy'
+            userImgElement.src = `https://github.com/${star.username}.png`
+
+            const userNameElement = document.createElement('p')
+            userNameElement.textContent = star.username
+
+            starElement.append(userImgElement, userNameElement)
+            return starElement
+        }
+
+        private async updateStarInfo(): Promise<void> {
+            try {
+                // Fetch star count
+                const [starData] = await this.fetchData<StarData[]>('https://api.atlasos.net/stars')
+                const starCount = starData.count
+
+                // Update star count displays
+                if (this.starCountElement && this.starBadgeElement) {
+                    this.starCountElement.textContent = starCount.toLocaleString()
+                    this.starBadgeElement.textContent = `${(starCount / 1000).toFixed(1)}k`
+                }
+
+                // Fetch and display recent stargazers
+                if (this.starListItems) {
+                    const recentStars = await this.fetchData<StargazerInfo[]>('https://api.atlasos.net/recent-stars')
+                    const recentStarElements = recentStars.slice(0, 4).map((star) => this.createStarElement(star))
+
+                    this.starListItems.replaceChildren(...recentStarElements)
+                }
+            } catch (error) {
+                console.error('Failed to update star information:', error)
+                // Set fallback values
+                if (this.starCountElement) this.starCountElement.textContent = '---'
+                if (this.starBadgeElement) this.starBadgeElement.textContent = '---'
+            }
+        }
+    }
+
+    // Initialize everything when the DOM is loaded
     document.addEventListener('DOMContentLoaded', () => {
+        // Initialize the stars manager
+        new GitHubStarsManager()
+
+        // Initialize the animations
         const observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
@@ -321,30 +437,6 @@ const { links } = Astro.props
         const section = document.querySelector('.open-source-section')
         if (section) {
             observer.observe(section)
-        }
-
-        // Updated dropdown functionality
-        const toggleButton = document.getElementById('toggle-star-list-btn')
-        const starList = document.getElementById('gh-star-list')
-        const starsWrapper = document.getElementById('gh-stars-wrap')
-
-        if (toggleButton && starList && starsWrapper) {
-            toggleButton.addEventListener('click', (e) => {
-                e.stopPropagation()
-                starList.classList.toggle('show')
-                starsWrapper.classList.toggle('toggled')
-                toggleButton.classList.toggle('toggled')
-            })
-
-            // Close dropdown when clicking outside
-            document.addEventListener('click', (event) => {
-                const target = event.target as HTMLElement
-                if (!starsWrapper.contains(target)) {
-                    starList.classList.remove('show')
-                    starsWrapper.classList.remove('toggled')
-                    toggleButton.classList.remove('toggled')
-                }
-            })
         }
     })
 </script>
