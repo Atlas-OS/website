@@ -1,13 +1,13 @@
-import { defineConfig } from 'astro/config';
-import icon from 'astro-icon';
-import partytown from '@astrojs/partytown';
-import compress from 'astro-compress';
-
-import tailwind from "@astrojs/tailwind";
+import { defineConfig } from 'astro/config'
+import icon from 'astro-icon'
+import partytown from '@astrojs/partytown'
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [icon({
-    iconDir: 'src/assets/icons'
-  }), partytown(), compress(), tailwind()]
-});
+    integrations: [
+        icon({
+            iconDir: 'src/assets/icons'
+        }),
+        partytown()
+    ]
+})

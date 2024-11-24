@@ -28,23 +28,25 @@ interface Props {
         gap: 0.25rem;
         width: fit-content;
         max-width: fit-content;
-    }
 
-    .with-underline::after {
-        content: '';
-        position: absolute;
-        width: 100%;
-        height: 1px;
-        bottom: -2px;
-        left: 0;
-        background-color: currentColor;
-        transform: scaleX(0);
-        transform-origin: right;
-        transition: transform 0.3s ease;
-    }
+        &.with-underline {
+            &::after {
+                content: '';
+                position: absolute;
+                width: 100%;
+                height: 1px;
+                bottom: -2px;
+                left: 0;
+                background-color: currentColor;
+                transform: scaleX(0);
+                transform-origin: right;
+                transition: transform 0.3s ease;
+            }
 
-    .with-underline:hover::after {
-        transform: scaleX(1);
-        transform-origin: left;
+            &:hover::after {
+                transform: scaleX(1);
+                transform-origin: left;
+            }
+        }
     }
 </style>

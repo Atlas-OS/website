@@ -23,7 +23,7 @@ import { Icon } from 'astro-icon/components'
         </div>
         <div class="card light">
             <div class="title">
-                <Icon name="heart-line" class="icon" size={22} />
+                <Icon name="cursor-3-line" class="icon" size={22} />
                 <h3>Usability</h3>
             </div>
             <p>By removing Windows' advertising, and fixing general annoyances, you will have a more enjoyable Windows experience.</p>
@@ -49,14 +49,18 @@ import { Icon } from 'astro-icon/components'
                 max-width: 465px;
                 font-size: 60px;
                 font-weight: 600;
+                opacity: 0;
+                transform: translateY(30px);
             }
 
             span {
                 font-weight: 600;
             }
 
-            P {
+            p {
                 max-width: 544px;
+                opacity: 0;
+                transform: translateY(30px);
             }
 
             a {
@@ -86,33 +90,15 @@ import { Icon } from 'astro-icon/components'
             gap: 35px;
             margin-top: 75px;
 
-            animation: fadeup ease-out;
-            animation-timeline: view();
-            animation-range: entry 0% exit -100%;
-
-            @media (max-width: 810px) {
-                margin-top: 50px;
-                flex-direction: column;
-            }
-
-            .dark {
-                background: linear-gradient(180deg, rgb(12, 22, 51) 0%, rgb(45, 90, 206) 100%);
-                border: 1px solid hsl(223, 64%, 47%);
-                transition: scale 0.2s ease-in;
-            }
-
-            .light {
-                background: linear-gradient(180deg, rgb(12, 22, 51) 0%, rgb(111, 140, 216) 100%);
-                border: 1px solid hsl(223, 57%, 64%);
-                transition: scale 0.2s ease-in;
-            }
-
             .card {
                 padding: 40px 50px;
                 border-radius: 5px;
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
 
                 p {
                     font-size: 14px;
+                    opacity: 1;
                 }
 
                 .title {
@@ -121,14 +107,36 @@ import { Icon } from 'astro-icon/components'
                     font-size: 24px;
                     gap: 10px;
                     margin-bottom: 20px;
+                    opacity: 1;
+
+                    h3 {
+                        opacity: 1;
+                        color: hsl(0, 0%, 100%);
+                    }
 
                     .icon {
                         stroke-width: 1.5;
                         width: 24px;
                         height: 24px;
                         color: var(--icon-white);
+                        opacity: 1;
                     }
                 }
+
+                &.dark {
+                    background: linear-gradient(180deg, rgb(12, 22, 51) 0%, rgb(45, 90, 206) 100%);
+                    border: 1px solid hsl(223, 64%, 47%);
+                }
+
+                &.light {
+                    background: linear-gradient(180deg, rgb(12, 22, 51) 0%, rgb(111, 140, 216) 100%);
+                    border: 1px solid hsl(223, 57%, 64%);
+                }
+            }
+
+            @media (max-width: 810px) {
+                margin-top: 50px;
+                flex-direction: column;
             }
         }
 

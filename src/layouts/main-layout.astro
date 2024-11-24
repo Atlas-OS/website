@@ -1,11 +1,11 @@
 ---
 import HTMLHead from '../components/HTMLHead.astro'
+import AnnounceBar from '../components/AnnounceBar.astro'
 import Navbar from '../components/Navbar.astro'
 import Footer from '../components/Footer.astro'
 import '../styles/reset.css'
 import '../styles/variables.css'
 import '../styles/main.css'
-import AnnounceBar from '../components/AnnounceBar.astro'
 
 interface Props {
     title: string
@@ -38,3 +38,74 @@ const { title, description, links } = Astro.props
         <Footer links={links} />
     </body>
 </html>
+
+<script>
+    import { initializePageAnimations } from '../utils/pageAnimations'
+
+    document.addEventListener('DOMContentLoaded', () => {
+        document.body.classList.add('js')
+        document.dispatchEvent(new CustomEvent('startHeroAnimation'))
+        initializePageAnimations()
+    })
+</script>
+
+<style is:global>
+    /* Remove the body visibility toggle */
+    .upgrade-comparison,
+    .windows-comparison,
+    .review-section,
+    .open-source-section,
+    .linus-section,
+    .community-section {
+        /* Set initial opacity for animation targets */
+        opacity: 1;
+    }
+
+    /* Individual elements within sections will be animated */
+    .upgrade-comparison h2,
+    .upgrade-comparison p,
+    .upgrade-comparison .card,
+    .review-section h2,
+    .review-section .review-item,
+    .linus-section h3,
+    .linus-section .preview-image,
+    .community-section h3,
+    .community-section p,
+    .community-section .buttons {
+        opacity: 0;
+    }
+
+    /* Animation targets with will-change */
+    .upgrade-comparison h2,
+    .upgrade-comparison p,
+    .linus-section .heading h3,
+    .community-section h3 {
+        opacity: 0;
+        will-change: transform, opacity;
+    }
+
+    .upgrade-comparison .card,
+    .linus-section .preview-image {
+        opacity: 0;
+        will-change: transform, opacity, scale;
+    }
+
+    /* Add brand list to initial states */
+    .brand-list a {
+        opacity: 0;
+        will-change: transform, opacity, scale;
+    }
+
+    /* Add specific initial states for windows-comparison */
+    .windows-comparison .heading,
+    .windows-comparison .card {
+        opacity: 0;
+    }
+
+    /* Update upgrade-comparison initial states */
+    .upgrade-comparison .heading h2,
+    .upgrade-comparison .heading p,
+    .upgrade-comparison .card {
+        opacity: 0;
+    }
+</style>

@@ -17,7 +17,7 @@ import Splitter from '../assets/img/splitter.svg'
         <div class="card">
             <div class="content-wrapper">
                 <div class="card-title">
-                    <Icon name="chip-line" class="icon" size={26} />
+                    <Icon name="chip-line" class="icon" size={32} />
                     <h3>CPU Usage</h3>
                 </div>
                 <p>We've reduced background CPU spikes significantly. Nothing that you don't need will run in the background.</p>
@@ -28,7 +28,7 @@ import Splitter from '../assets/img/splitter.svg'
         <div class="card">
             <div class="content-wrapper">
                 <div class="card-title">
-                    <Icon name="dashboard-line" class="icon" size={30} />
+                    <Icon name="dashboard-line" class="icon" size={32} />
                     <h3>RAM Usage</h3>
                 </div>
                 <p>Thanks to Atlas we've seen ~1.5GB of RAM usage freed on boot, which can then be allocated to other tasks.</p>
@@ -39,7 +39,7 @@ import Splitter from '../assets/img/splitter.svg'
         <div class="card">
             <div class="content-wrapper">
                 <div class="card-title">
-                    <Icon name="rocket-line" class="icon" size={26} />
+                    <Icon name="rocket-line" class="icon" size={32} />
                     <h3>0.1% FPS</h3>
                 </div>
                 <p>In a VALORANT benchmark, we saw a significant improvement in FPS lows. Boasting a stable, higher framerate.</p>
@@ -74,6 +74,8 @@ import Splitter from '../assets/img/splitter.svg'
             flex-direction: column;
             align-items: center;
             text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
 
             p {
                 max-width: 544px;
@@ -107,14 +109,13 @@ import Splitter from '../assets/img/splitter.svg'
                 width: 33.3%;
                 flex-direction: column;
                 padding: 70px 60px;
+                opacity: 0;
+                transform: translateY(50px);
 
                 .content-wrapper {
                     display: flex;
                     gap: 35px;
                     flex-direction: column;
-                    animation: fadeup ease-out;
-                    animation-timeline: view();
-                    animation-range: entry -80% exit -200%;
                     align-items: center;
                     justify-content: center;
                     text-align: center;
@@ -145,18 +146,16 @@ import Splitter from '../assets/img/splitter.svg'
                 }
             }
         }
-    }
 
-    @media screen and (max-width: 1080px) {
-        .windows-comparison .cards .card .content-wrapper .card-title {
-            h3 {
-                font-size: 28px;
+        @media screen and (max-width: 1080px) {
+            .cards .card .content-wrapper .card-title {
+                h3 {
+                    font-size: 28px;
+                }
             }
         }
-    }
 
-    @media screen and (max-width: 810px) {
-        .windows-comparison {
+        @media screen and (max-width: 810px) {
             p {
                 max-width: 90%;
             }
@@ -174,10 +173,8 @@ import Splitter from '../assets/img/splitter.svg'
                 }
             }
         }
-    }
 
-    @media screen and (max-width: 500px) {
-        .windows-comparison {
+        @media screen and (max-width: 500px) {
             margin-top: 150px;
             margin-bottom: 150px;
 

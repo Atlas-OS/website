@@ -1,5 +1,5 @@
 ---
-import { Picture } from 'astro:assets'
+import { Image } from 'astro:assets'
 
 import GitHub from '../assets/img/github-overview.webp'
 import Chevron from '../assets/img/chevron.svg'
@@ -18,23 +18,25 @@ const { links } = Astro.props
 
 <div class="open-source-section">
     <div class="github-wrapper">
-        <Picture class="gh-image" src={GitHub} loading="lazy" alt="GitHub repository" />
+        <Image class="gh-image" src={GitHub} loading="lazy" alt="GitHub repository" />
         <div class="gh-stars" id="gh-stars-wrap">
-            <div class="gh-stars-info">
-                <div class="content">
-                    <div class="star">
-                        <Picture src={GitHubStar} loading="lazy" alt="GitHub star" />
+            <button type="button" class="gh-stars-button" id="toggle-star-list-btn">
+                <div class="gh-stars-info">
+                    <div class="content">
+                        <div class="star">
+                            <Image src={GitHubStar} loading="lazy" alt="GitHub star" />
+                        </div>
+                        <p>Starred</p>
+                        <span class="star-count" id="star-amount-badge">ERROR</span>
                     </div>
-                    <p>Starred</p>
-                    <span class="star-count" id="star-amount-badge">ERROR</span>
+                    <div class="line"></div>
+                    <div class="content">
+                        <div class="chevron-wrap">
+                            <Image src={Chevron} loading="lazy" alt="Chevron" width={15} height={8} />
+                        </div>
+                    </div>
                 </div>
-                <div class="line"></div>
-                <div class="content">
-                    <button class="chevron-img" id="toggle-star-list-btn">
-                        <Picture class="chevron-img" loading="lazy" src={Chevron} alt="Chevron" />
-                    </button>
-                </div>
-            </div>
+            </button>
             <div class="gh-recent-stars" id="gh-star-list">
                 <div class="content-wrap" id="gh-star-list-items"></div>
             </div>
@@ -46,96 +48,16 @@ const { links } = Astro.props
         <div class="stargazer-count">
             <div class="stargazers">
                 <div class="star">
-                    <Picture src={GitHubStar} loading="lazy" alt="GitHub star" />
+                    <Image src={GitHubStar} loading="lazy" alt="GitHub star" />
                 </div>
                 <p>
                     <span id="star-amount-tag">ERROR</span><span>stargazers</span> on <ExternalLink href={links.github} ariaLabel="Open GitHub" children="GitHub" />
                 </p>
             </div>
-            <Picture src={GPLLogo} class="gpl-logomark" loading="lazy" alt="GPL logo" />
+            <Image src={GPLLogo} class="gpl-logomark" loading="lazy" alt="GPL logo" />
         </div>
     </div>
 </div>
-
-<script>
-    const toggleStarBtn = document.getElementById('toggle-star-list-btn')
-    const starList = document.getElementById('gh-star-list')
-    const starWrapper = document.getElementById('gh-stars-wrap')
-    const starListItems = document.getElementById('gh-star-list-items')
-
-    if (!toggleStarBtn) throw new Error('Element toggle-star-list-btn missing')
-    if (!starList) throw new Error('Element gh-star-list missing')
-    if (!starWrapper) throw new Error('Element gh-stars-wrap missing')
-
-    toggleStarBtn.addEventListener('click', () => {
-        toggleStarBtn.classList.toggle('toggled')
-        starList.classList.toggle('show')
-        starWrapper.classList.toggle('toggled')
-    })
-
-    type Star = {
-        username: string
-        avatar: string
-    }
-
-    function createStarElement(star: Star) {
-        const starElement = document.createElement('div')
-        starElement.classList.add('content')
-
-        const userImgElement = document.createElement('img')
-        userImgElement.alt = `${star.username}'s avatar`
-        userImgElement.loading = 'lazy'
-        userImgElement.src = `https://github.com/${star.username}.png`
-        starElement.append(userImgElement)
-
-        const userNameElement = document.createElement('p')
-        userNameElement.innerText = star.username
-        starElement.append(userNameElement)
-
-        return starElement
-    }
-
-    async function fetchData(url: string) {
-        const response = await fetch(url)
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`)
-        }
-        return await response.json()
-    }
-
-    async function updateStars() {
-        if (!starListItems) {
-            console.warn('Element gh-star-list-items missing')
-            return
-        }
-
-        let json = await fetchData('https://api.atlasos.net/stars')
-        let starCount = json[0].count
-
-        const starCountElement = document.getElementById('star-amount-tag')
-        const starBadgeElement = document.getElementById('star-amount-badge')
-
-        if (!starCountElement || !starBadgeElement) {
-            console.warn('Missing elements')
-            return
-        }
-
-        starCountElement.innerText = starCount.toLocaleString()
-        starBadgeElement.innerText = (starCount / 1000).toFixed(1) + 'k'
-
-        json = await fetchData('https://api.atlasos.net/recent-stars')
-        let recentStars = json.slice(0, 4)
-
-        recentStars.forEach((star: Star) => {
-            const starElement = createStarElement(star)
-            starListItems.append(starElement)
-        })
-    }
-
-    if (import.meta.env.MODE === 'production') {
-        updateStars()
-    }
-</script>
 
 <style is:global>
     .open-source-section {
@@ -144,64 +66,63 @@ const { links } = Astro.props
         margin-top: 360px;
 
         .gpl-info {
+            opacity: 0;
             text-align: end;
             max-width: 587px;
-
-            .stargazer-count {
-                display: flex;
-                align-items: center;
-                justify-content: end;
-                gap: 30px;
-                margin-top: 40px;
-                flex-wrap: wrap;
-
-                .gpl-logo {
-                    width: 127px;
-                    height: 63px;
-                }
-
-                .stargazers {
-                    display: flex;
-                    align-items: center;
-                    gap: 8px;
-                    flex-wrap: wrap;
-
-                    .star img {
-                        width: 19px;
-                        height: 19px;
-                    }
-                }
-
-                span {
-                    color: hsl(41, 68%, 55%);
-                }
-
-                a {
-                    color: hsla(205, 100%, 98%, 0.8);
-                }
-
-                #star-amount-tag {
-                    margin-right: 4px;
-                }
-            }
 
             h2 {
                 margin-bottom: 30px;
                 font-size: 60px;
                 font-weight: 600;
             }
+
+            p {
+                max-width: 570px;
+            }
+
+            .stargazer-count {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                gap: 30px;
+                margin-top: 40px;
+
+                .stargazers {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+
+                    .star {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: 19px;
+                        height: 19px;
+                    }
+
+                    span {
+                        color: hsl(41, 68%, 55%);
+                        margin-right: 4px;
+                    }
+                }
+
+                .gpl-logomark {
+                    width: auto;
+                    height: 40px;
+                }
+            }
         }
 
         .github-wrapper {
+            opacity: 0;
             position: relative;
             width: 587px;
             height: 330px;
-            animation: slide-in-left ease-out;
-            animation-timeline: view();
-            animation-range: entry 0% exit -100%;
 
             .gh-image {
                 border-radius: 5px;
+                width: 100%;
+                height: auto;
             }
 
             .gh-stars {
@@ -213,13 +134,31 @@ const { links } = Astro.props
                 border-radius: 5px;
                 color: hsl(203, 23%, 71%);
                 width: 270px;
+                transition: border-radius 0.3s ease;
+                cursor: pointer;
 
                 &.toggled {
                     border-radius: 5px 5px 0 0;
                 }
 
-                hr {
-                    border: 1px solid hsl(212, 11%, 31%);
+                .gh-stars-button {
+                    width: 100%;
+                    background: none;
+                    border: none;
+                    padding: 0;
+                    color: inherit;
+                    cursor: pointer;
+                    text-align: left;
+
+                    &:hover {
+                        opacity: 0.9;
+                    }
+
+                    &.toggled {
+                        .chevron-wrap img {
+                            transform: rotate(180deg);
+                        }
+                    }
                 }
 
                 .gh-stars-info {
@@ -232,23 +171,41 @@ const { links } = Astro.props
                         align-items: center;
                         padding: 8px 18px;
 
-                        .chevron-img {
+                        .chevron-wrap {
                             display: flex;
                             align-items: center;
                             justify-content: center;
-                            transition: all 0.1s ease-in-out;
                             width: 15px;
                             height: 8px;
 
-                            &.toggled {
-                                transform: rotate(180deg);
+                            img {
+                                width: 15px;
+                                height: 8px;
+                                transition: transform 0.3s ease;
                             }
                         }
 
                         .star {
                             width: 19px;
                             height: 19px;
+                            margin-right: 15px;
                         }
+
+                        .star-count {
+                            background-color: hsl(213, 12%, 30%);
+                            border-radius: 15px;
+                            font-size: 14px;
+                            padding: 8px 14px;
+                            margin-left: 30px;
+                            margin-right: 2px;
+                        }
+                    }
+
+                    .line {
+                        width: 1px;
+                        height: auto;
+                        background-color: hsl(212, 11%, 31%);
+                        margin: 8px 0;
                     }
                 }
 
@@ -257,12 +214,15 @@ const { links } = Astro.props
                     width: 270px;
                     margin-left: -1px;
                     border-radius: 0 0 5px 5px;
-                    height: 0px;
+                    height: 0;
+                    opacity: 0;
                     overflow: hidden;
-                    transition: height 0.3s ease-in-out;
+                    transition: all 0.3s ease-in-out;
+                    z-index: 10;
 
                     &.show {
                         height: 262px;
+                        opacity: 1;
                     }
 
                     .content-wrap {
@@ -272,6 +232,7 @@ const { links } = Astro.props
                         gap: 20px;
                         background-color: hsl(214, 13%, 25%);
                         border: 1px solid hsl(212, 11%, 31%);
+                        border-top: none;
                     }
 
                     .content {
@@ -279,30 +240,19 @@ const { links } = Astro.props
                         gap: 10px;
                         align-items: center;
 
+                        &:hover {
+                            background-color: hsl(214, 13%, 28%);
+                            border-radius: 3px;
+                            cursor: pointer;
+                        }
+
                         img {
                             width: 40px;
                             height: 40px;
-                            border-radius: 90%;
+                            border-radius: 50%;
+                            object-fit: cover;
                         }
                     }
-                }
-
-                .star {
-                    margin-right: 15px;
-                }
-
-                .star-count {
-                    background-color: hsl(213, 12%, 30%);
-                    border-radius: 15px;
-                    font-size: 14px;
-                    padding: 8px 14px;
-                    margin-left: 30px;
-                    margin-right: 2px;
-                }
-
-                .line {
-                    width: 1px;
-                    background-color: hsl(212, 11%, 31%);
                 }
             }
         }
@@ -314,6 +264,11 @@ const { links } = Astro.props
 
             .gpl-info {
                 max-width: 95%;
+                text-align: right;
+
+                p {
+                    margin-left: auto;
+                }
             }
 
             .github-wrapper {
@@ -329,13 +284,67 @@ const { links } = Astro.props
                     font-size: 36px;
                     margin-bottom: 20px;
                 }
-
-                .stargazer-count {
-                    .gpl-logomark {
-                        max-width: 90px;
-                    }
-                }
             }
         }
     }
 </style>
+
+<script>
+    import { animateElement } from '../utils/animations'
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        // Animate gpl-info (coming from right and up)
+                        animateElement({
+                            selector: '.open-source-section .gpl-info',
+                            keyframes: { opacity: [0, 1], x: [30, 0], y: [30, 0] },
+                            options: { duration: 0.8 }
+                        })
+
+                        // Animate github-wrapper (coming from left and up)
+                        animateElement({
+                            selector: '.open-source-section .github-wrapper',
+                            keyframes: { opacity: [0, 1], x: [-30, 0], y: [30, 0] },
+                            options: { duration: 0.8 }
+                        })
+
+                        observer.disconnect()
+                    }
+                })
+            },
+            { threshold: 0.2 }
+        )
+
+        const section = document.querySelector('.open-source-section')
+        if (section) {
+            observer.observe(section)
+        }
+
+        // Updated dropdown functionality
+        const toggleButton = document.getElementById('toggle-star-list-btn')
+        const starList = document.getElementById('gh-star-list')
+        const starsWrapper = document.getElementById('gh-stars-wrap')
+
+        if (toggleButton && starList && starsWrapper) {
+            toggleButton.addEventListener('click', (e) => {
+                e.stopPropagation()
+                starList.classList.toggle('show')
+                starsWrapper.classList.toggle('toggled')
+                toggleButton.classList.toggle('toggled')
+            })
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (event) => {
+                const target = event.target as HTMLElement
+                if (!starsWrapper.contains(target)) {
+                    starList.classList.remove('show')
+                    starsWrapper.classList.remove('toggled')
+                    toggleButton.classList.remove('toggled')
+                }
+            })
+        }
+    })
+</script>

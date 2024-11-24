@@ -24,47 +24,51 @@ const { links } = Astro.props
 <footer class="footer-wrapper">
     <div class="footer">
         <div class="left-section">
-            <a class="logomark" href="/">
-                <Picture src={Logomark} alt="Atlas logomark" loading="lazy" />
-            </a>
-            <p>Atlas is designed for enthusiasts, and improves Windows' privacy, usability, and performance.</p>
-            <div class="social-icons">
-                <a href={links.twitter} aria-label="Follow us on X">
-                    <Icon name="x" class="icons" size={24} />
+            <div class="brand-section">
+                <a class="logomark" href="/">
+                    <Picture src={Logomark} alt="Atlas logomark" loading="lazy" />
                 </a>
-                <a href={links.discord} aria-label="Join our Discord community">
-                    <Icon name="discord" class="icons" size={24} />
-                </a>
-                <a href={links.github} aria-label="Visit our GitHub repository">
-                    <Icon name="github" class="icons" size={24} />
-                </a>
-                <a href={links.donate} aria-label="Visit our Ko-fi page">
-                    <Icon name="kofi" class="icons" size={24} />
-                </a>
-                <a href={links.trustpilot} aria-label="Visit our TrustPilot page">
-                    <Icon name="trustpilot" class="icons" size={24} />
-                </a>
+                <p>Atlas is designed for enthusiasts, and improves Windows' privacy, usability, and performance.</p>
             </div>
-            <a class="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="license noopener noreferrer">Website under CC BY-NC-ND 4.0</a>
+            <div class="social-section">
+                <div class="social-icons">
+                    <a href={links.twitter} aria-label="Follow us on X" class="social-link">
+                        <Icon name="x" class="icons" size={24} />
+                    </a>
+                    <a href={links.discord} aria-label="Join our Discord community" class="social-link">
+                        <Icon name="discord" class="icons" size={24} />
+                    </a>
+                    <a href={links.github} aria-label="Visit our GitHub repository" class="social-link">
+                        <Icon name="github" class="icons" size={24} />
+                    </a>
+                    <a href={links.donate} aria-label="Visit our Ko-fi page" class="social-link">
+                        <Icon name="kofi" class="icons" size={24} />
+                    </a>
+                    <a href={links.trustpilot} aria-label="Visit our TrustPilot page" class="social-link">
+                        <Icon name="trustpilot" class="icons" size={24} />
+                    </a>
+                </div>
+                <a class="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="license noopener noreferrer">Website under CC BY-NC-ND 4.0</a>
+            </div>
         </div>
         <div class="links">
             <div class="column">
-                <span>Sitemap</span>
+                <span class="column-title">Sitemap</span>
                 <a href="/">Home</a>
                 <ExternalLink href={links.forum} showUnderline={false} showIcon={false} ariaLabel="Open GitHub Discussions" children="Discussions" />
                 <ExternalLink href={links.documentation} showUnderline={false} showIcon={false} ariaLabel="Open documentation" children="Documentation" />
                 <ExternalLink href={links.faq} showUnderline={false} showIcon={false} ariaLabel="Open documentation" children="FAQ" />
             </div>
             <div class="column">
-                <span>Community</span>
+                <span class="column-title">Community</span>
                 <ExternalLink href={links.github} showUnderline={false} showIcon={false} ariaLabel="Open GitHub" children="GitHub" />
                 <ExternalLink href={links.discord} showUnderline={false} showIcon={false} ariaLabel="Open Discord" children="Discord" />
                 <ExternalLink href={links.twitter} showUnderline={false} showIcon={false} ariaLabel="Open X / Twitter" children="X / Twitter" />
                 <ExternalLink href={links.trustpilot} showUnderline={false} showIcon={false} ariaLabel="Open Trustpilot" children="Trustpilot" />
             </div>
             <div class="column">
-                <span>Donations</span>
-                <ExternalLink href={links.donate} showIcon={false} ariaLabel="Open Ko-fi" children="Ko-fi" />
+                <span class="column-title">Donations</span>
+                <ExternalLink href={links.donate} showUnderline={false} showIcon={false} ariaLabel="Open Ko-fi" children="Ko-fi" />
             </div>
         </div>
     </div>
@@ -72,92 +76,129 @@ const { links } = Astro.props
 
 <style>
     .footer-wrapper {
-        padding: 70px 0px;
-        background-color: hsl(225, 62%, 12%);
-        border-top: 1px solid hsla(225, 71%, 7%, 0.3);
+        padding: 48px 0px;
+        background: linear-gradient(90deg, rgba(37, 99, 235, 0.1) 0%, rgba(37, 99, 235, 0.05) 100%);
+        border-top: 1px solid rgba(59, 130, 246, 0.2);
+    }
 
-        .footer {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0px 20px;
+    .footer {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0px 24px;
+        display: flex;
+        justify-content: space-between;
+        gap: 60px;
+
+        .left-section {
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
+            gap: 40px;
+            max-width: 380px;
 
-            .left-section {
+            .brand-section {
                 display: flex;
                 flex-direction: column;
-                justify-content: space-between;
-                gap: 30px;
+                gap: 24px;
 
                 .logomark {
                     width: 200px;
                     height: 44px;
+                    transition: opacity 0.2s ease;
+
+                    &:hover {
+                        opacity: 0.9;
+                    }
 
                     img {
                         width: 200px;
                         height: 44px;
                     }
                 }
+            }
 
-                p {
-                    margin-top: -10px;
-                    max-width: 325px;
-                }
+            .social-section {
+                display: flex;
+                flex-direction: column;
+                gap: 24px;
 
                 .social-icons {
                     display: flex;
-                    gap: 20px;
+                    gap: 16px;
+                }
 
-                    a {
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                    }
+                .social-link {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 8px;
+                    border-radius: 8px;
+                    transition: background-color 0.2s ease;
 
-                    .icons {
-                        fill: hsla(205, 100%, 98%, 0.8);
-                        transition: all 0.1s ease-in-out;
+                    &:hover {
+                        background-color: hsla(225, 71%, 7%, 0.7);
 
-                        &:hover {
+                        .icons {
                             fill: hsl(300, 100%, 99%);
-                            filter: brightness(1.4);
                         }
                     }
                 }
 
+                .icons {
+                    fill: hsla(205, 100%, 98%, 0.8);
+                    transition: all 0.2s ease;
+                }
+
                 .license {
-                    font-weight: 400;
-                    font-size: 14px;
+                    font-size: 13px;
                     color: hsla(205, 100%, 98%, 0.6);
+                    transition: color 0.2s ease;
+
+                    &:hover {
+                        color: hsla(205, 100%, 98%, 0.8);
+                    }
                 }
             }
+        }
 
-            .links {
+        .links {
+            display: flex;
+            gap: 120px;
+
+            .column {
                 display: flex;
-                gap: 150px;
+                flex-direction: column;
+                gap: 16px;
+                min-width: 140px;
 
-                span {
-                    font-weight: 500;
-                    font-size: 18px;
+                .column-title {
+                    font-weight: 600;
+                    font-size: 16px;
+                    color: hsl(300, 100%, 99%);
+                    margin-bottom: 4px;
                 }
 
                 a {
                     color: hsla(205, 100%, 98%, 0.8);
+                    font-size: 0.95rem;
                     font-weight: 400;
-                    transition: color 0.1s ease-in-out;
+                    transition: all 0.2s ease;
+                    display: flex;
+                    align-items: center;
 
                     &:hover {
                         color: hsl(300, 100%, 99%);
                     }
                 }
-
-                .column {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 20px;
-                }
             }
         }
+    }
+
+    p {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        color: hsla(205, 100%, 98%, 0.9);
+        margin: 0;
     }
 
     @media (max-width: 983px) {
@@ -165,27 +206,42 @@ const { links } = Astro.props
             flex-direction: column;
             align-items: center;
             text-align: center;
-            gap: 80px;
+            gap: 60px;
 
             .left-section {
                 align-items: center;
-                gap: 40px;
             }
-        }
-    }
 
-    @media (max-width: 983px) and (min-width: 550px) {
-        .footer {
             .links {
-                flex-wrap: wrap;
+                gap: 80px;
+
+                .column {
+                    align-items: center;
+                }
+
+                a:hover {
+                    transform: translateY(-2px);
+                }
             }
         }
     }
 
     @media (max-width: 675px) {
-        .footer-wrapper .footer .links {
-            flex-direction: column;
+        .footer-wrapper {
+            padding: 60px 0px;
+        }
+
+        .footer {
             gap: 50px;
+
+            .links {
+                flex-direction: column;
+                gap: 40px;
+
+                .column {
+                    min-width: unset;
+                }
+            }
         }
     }
 </style>

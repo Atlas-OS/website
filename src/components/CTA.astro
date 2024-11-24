@@ -1,5 +1,4 @@
 ---
-import { Icon } from 'astro-icon/components'
 import ExternalLink from './ExternalLink.astro'
 
 interface Props {
@@ -44,19 +43,22 @@ const { links } = Astro.props
             text-align: center;
             margin-bottom: 10px;
             max-width: 630px;
+            opacity: 0;
+            transform: translateY(20px);
         }
 
         h3 {
             font-size: 48px;
             font-weight: 600;
+            opacity: 0;
+            transform: translateY(20px);
         }
 
         .buttons {
             display: flex;
             gap: 50px;
-            animation: fadeup ease-out;
-            animation-timeline: view();
-            animation-range: entry 0% exit -1200%;
+            opacity: 0;
+            transform: translateY(20px);
         }
 
         @media (max-width: 810px) {

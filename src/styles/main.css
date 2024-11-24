@@ -1,10 +1,7 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 * {
+    box-sizing: border-box;
     -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeSpeed;
+    text-rendering: optimizeLegibility;
 }
 
 /* archivo-latin-wght-normal */
@@ -71,18 +68,6 @@ button {
     margin: 0;
 }
 
-html::-webkit-scrollbar {
-    width: 10px;
-}
-
-html::-webkit-scrollbar-track {
-    background-color: hsl(225, 30%, 20%);
-}
-
-html::-webkit-scrollbar-thumb {
-    background: hsl(200, 15%, 40%);
-}
-
 img {
     -khtml-user-select: none;
     -o-user-select: none;
@@ -97,6 +82,11 @@ picture {
     -moz-user-select: none;
     -webkit-user-select: none;
     user-select: none;
+}
+
+p {
+    color: hsla(205, 100%, 98%, 0.8);
+    line-height: 1.6;
 }
 
 .container {
@@ -189,40 +179,4 @@ a {
     color: hsl(209, 100%, 55%);
     font-weight: 700;
     font-family: inherit;
-}
-
-@keyframes fadeup {
-    0% {
-        transform: translateY(200px);
-        opacity: 0;
-    }
-
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-@keyframes slide-in-left {
-    0% {
-        transform: translate(-200px);
-        opacity: 0;
-    }
-
-    to {
-        transform: translate(0);
-        opacity: 1;
-    }
-}
-
-@keyframes slide-in-right {
-    0% {
-        transform: translate(200px);
-        opacity: 0;
-    }
-
-    to {
-        transform: translate(0);
-        opacity: 1;
-    }
 }

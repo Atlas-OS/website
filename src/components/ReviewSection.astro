@@ -1,5 +1,5 @@
 ---
-import { Picture } from 'astro:assets'
+import { Image } from 'astro:assets'
 
 import Review from '../assets/img/review.webp'
 import ReviewStar from '../assets/img/review-star.svg'
@@ -22,7 +22,7 @@ const { links } = Astro.props
         <h2>What does our <span class="highlight">community</span> think?</h2>
         <p>Our community is fantastic and reviews us with a significant amount of positive feedback. We take great pride in our high rating, which reflects our commitment for improving Atlas.</p>
         <div class="review-star">
-            <Picture src={ReviewStars} loading="lazy" alt="Review star" />
+            <Image src={ReviewStars} loading="lazy" alt="Review star" />
             <p>
                 <span>4.5 out of 5</span> on <ExternalLink href={links.trustpilot} aria-label="View our TrustPilot page" children="Trustpilot" />
             </p>
@@ -30,22 +30,22 @@ const { links } = Astro.props
     </section>
     <div class="review-item">
         <div class="review-img">
-            <Picture src={Review} loading="lazy" alt="Atlas review" />
+            <Image src={Review} loading="lazy" alt="Atlas review" />
         </div>
         <div class="review-box">
-            <Picture src={Logo} loading="lazy" alt="Atlas logo" />
+            <Image src={Logo} loading="lazy" alt="Atlas logo" />
             <div class="info">
                 <span>atlasos.net</span>
                 <p class="review-count">Reviews 151 - Excellent</p>
                 <div class="stars">
-                    <Picture src={ReviewStars} loading="lazy" alt="Review stars" />
+                    <Image src={ReviewStars} loading="lazy" alt="Review stars" />
                 </div>
                 <div class="verified-company">
-                    <Picture src={Verified} loading="lazy" alt="Verified" />
+                    <Image src={Verified} loading="lazy" alt="Verified" />
                     <p>VERIFIED COMPANY</p>
                 </div>
             </div>
-            <Picture src={ReviewStar} alt="Review star" loading="lazy" class="re-star" />
+            <Image src={ReviewStar} alt="Review star" loading="lazy" class="re-star" />
         </div>
     </div>
 </div>
@@ -54,45 +54,38 @@ const { links } = Astro.props
     .review-section {
         display: flex;
 
-        h2 {
-            margin-bottom: 30px;
-        }
-
-        & > div {
-            width: 50%;
-        }
-
-        .review-star {
-            margin-top: 40px;
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            color: hsla(205, 100%, 98%, 0.5);
-            flex-wrap: wrap;
-
-            a {
-                color: hsla(205, 100%, 98%, 0.8);
-            }
-
-            span {
-                color: hsl(149, 71%, 82%);
-            }
-
-            img {
-                width: 166px;
-                height: 30px;
-            }
-        }
-
         .community-info {
-            p {
-                max-width: 570px;
-            }
+            opacity: 0;
 
             h2 {
+                opacity: 1;
+                margin-bottom: 30px;
                 font-size: 60px;
                 font-weight: 600;
-                margin-bottom: 30px;
+            }
+
+            p {
+                max-width: 570px;
+                color: hsla(205, 100%, 98%, 0.8);
+                line-height: 1.6;
+            }
+
+            .review-star {
+                margin-top: 40px;
+                display: flex;
+                gap: 20px;
+                align-items: center;
+                color: hsla(205, 100%, 98%, 0.5);
+                flex-wrap: wrap;
+
+                span {
+                    color: hsl(149, 71%, 82%);
+                }
+
+                img {
+                    width: 166px;
+                    height: 30px;
+                }
             }
 
             @media (max-width: 500px) {
@@ -104,22 +97,15 @@ const { links } = Astro.props
         }
 
         .review-item {
+            opacity: 0;
             position: relative;
             width: fit-content;
             margin-left: auto;
             z-index: -1;
-            animation: slide-in-right ease-out;
-            animation-timeline: view();
-            animation-range: entry 0% exit -100%;
 
             .review-img {
                 width: 587px;
                 height: 330px;
-            }
-
-            .review-box .logo {
-                width: 106px;
-                height: 94px;
             }
 
             .review-box {
@@ -133,6 +119,11 @@ const { links } = Astro.props
                 gap: 30px;
                 border-radius: 5px;
                 width: min(500px, 100%);
+
+                .logo {
+                    width: 106px;
+                    height: 94px;
+                }
 
                 .re-star {
                     position: absolute;
@@ -192,3 +183,39 @@ const { links } = Astro.props
         }
     }
 </style>
+
+<script>
+    import { animateElement } from '../utils/animations'
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        // Animate community info (coming from left and up)
+                        animateElement({
+                            selector: '.review-section .community-info',
+                            keyframes: { opacity: [0, 1], x: [-30, 0], y: [30, 0] },
+                            options: { duration: 0.8 }
+                        })
+
+                        // Animate review item (coming from right and up)
+                        animateElement({
+                            selector: '.review-section .review-item',
+                            keyframes: { opacity: [0, 1], x: [30, 0], y: [30, 0] },
+                            options: { duration: 0.8 }
+                        })
+
+                        observer.disconnect()
+                    }
+                })
+            },
+            { threshold: 0.2 }
+        )
+
+        const section = document.querySelector('.review-section')
+        if (section) {
+            observer.observe(section)
+        }
+    })
+</script>

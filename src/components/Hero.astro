@@ -1,11 +1,13 @@
 ---
-import { Picture } from 'astro:assets'
+import { Image } from 'astro:assets'
 
 import Wallpaper from '../assets/img/atlas-wallpaper.webp'
 import PCGuide from '../assets/img/pcguide-logomark.svg'
 import ItsFoss from '../assets/img/itsfoss-logomark.svg'
 import WePC from '../assets/img/wepc-logomark.svg'
 import TechSpot from '../assets/img/techspot-logomark.svg'
+import { Icon } from 'astro-icon/components'
+import DownloadModal from './DownloadModal.astro'
 ---
 
 <div class="radial-wrapper">
@@ -14,24 +16,26 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
 
 <div class="container main">
     <div class="hero">
-        <a href="https://docs.atlasos.net/getting-started/installation" target="_blank" class="tagline">
-            <Icon name="book-2-line" size={16} class="icon" />
-            <span>See our guide on installing Atlas first <Icon name="arrow-right-line" size={16} class="icon" /></span>
-        </a>
         <h1>A modification of Windows, designed for enthusiasts.</h1>
         <p>It's time for a new Windows experience. Designed for enthusiasts and gamers, Atlas improves privacy, usability, and performance.</p>
-        <span class="release-number">The latest version is <a href="https://github.com/Atlas-OS/Atlas/releases/latest" target="_blank" rel="noreferrer noopener">Atlas v0.4.0 (April 6 2024)</a></span>
+        <span class="release-number">The latest version is <a href="https://github.com/Atlas-OS/Atlas/releases/latest" target="_blank" rel="noreferrer noopener">Atlas v0.4.1 (October 9 2024)</a></span>
         <div class="buttons">
-            <button class="button primary" id="playbook-dl-btn">Atlas Playbook <Icon name="arrow-right-line" size={16} /></button>
-            <a class="button secondary" href="https://download.ameliorated.io/AME%20Wizard%20Beta.zip" rel="noreferrer noopener" target="_blank">AME Wizard <Icon name="arrow-right-line" size={16} /></a>
+            <button class="button primary" id="get-started">Get Started Now <Icon name="arrow-right-line" size={16} /></button>
         </div>
-        <span id="download-count" class="download-count"></span>
     </div>
 </div>
+
+<DownloadModal
+    links={{
+        faq: 'https://docs.atlasos.net/getting-started/installation-faq',
+        install: 'https://docs.atlasos.net/getting-started/installation'
+    }}
+/>
+
 <div class="container main">
     <div class="wallpaper-fade-in">
         <div class="wallpaper-wrapper">
-            <Picture src={Wallpaper} loading="eager" class="wallpaper" alt="AtlasOS Wallpaper" />
+            <Image src={Wallpaper} loading="eager" class="wallpaper" alt="AtlasOS Wallpaper" />
             <div class="wallpaper-animation">
                 <div class="wallpaper-animation-line"></div>
                 <div class="wallpaper-animation-line"></div>
@@ -41,63 +45,98 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
     <div class="linear-section"></div>
     <div class="brand-list">
         <a href="https://pcguide.com/software/atlasos/" rel="noreferrer nooopener" target="_blank">
-            <Picture src={PCGuide} loading="eager" alt="pc guide logomark" class="logomark" />
+            <Image src={PCGuide} loading="lazy" alt="pc guide logomark" class="logomark" />
         </a>
         <a href="https://news.itsfoss.com/atlas-os/" rel="noreferrer nooopener" target="_blank">
-            <Picture src={ItsFoss} loading="eager" alt="its foss logomark" class="logomark" />
+            <Image src={ItsFoss} loading="lazy" alt="its foss logomark" class="logomark" />
         </a>
         <a href="https://wepc.com/tips/is-atlas-os-worth-it/" rel="noreferrer nooopener" target="_blank">
-            <Picture src={WePC} loading="eager" alt="we pc logomark" class="logomark" />
+            <Image src={WePC} loading="lazy" alt="we pc logomark" class="logomark" />
         </a>
         <a href="https://techspot.com/news/97095-check-out-atlasos-redesigned-windows-10-version-gamers.html" rel="noreferrer nooopener" target="_blank">
-            <Picture src={TechSpot} loading="eager" alt="tech spot logomark" class="logomark" />
+            <Image src={TechSpot} loading="lazy" alt="tech spot logomark" class="logomark" />
         </a>
     </div>
 </div>
 
 <script>
-    const atlasVersion = '0.4.0'
-    const playbookDlBtn = document.getElementById('playbook-dl-btn')
-    const downloadCount = document.getElementById('download-count')
+    import { animateElement } from '../utils/animations'
 
-    if (!playbookDlBtn) throw new Error('Element playbook-dl-btn missing')
-    if (!downloadCount) throw new Error('Element download-count missing')
+    let hasAnimated = false
 
-    async function fetchDownloadCount() {
-        const res = await fetch(`https://api.atlasos.net/`)
-        if (!res.ok) {
-            throw new Error(`Failed to fetch download count. HTTP status: ${res.status}`)
+    document.addEventListener('startHeroAnimation', () => {
+        if (hasAnimated) return
+        hasAnimated = true
+
+        Promise.all([
+            // Background fade
+            animateElement({
+                selector: '.radial-bg',
+                keyframes: { opacity: [0, 0.45], scale: [1.2, 1] },
+                options: { duration: 1.2 }
+            }),
+
+            // Main content animations
+            animateElement({
+                selector: '.hero h1',
+                keyframes: { opacity: [0, 1], y: [20, 0] }
+            }),
+            animateElement({
+                selector: '.hero p',
+                keyframes: { opacity: [0, 1], y: [20, 0] },
+                options: { delay: 0.1 }
+            }),
+            animateElement({
+                selector: '.hero .buttons',
+                keyframes: { opacity: [0, 1], y: [20, 0] },
+                options: { delay: 0.2 }
+            }),
+            animateElement({
+                selector: '.hero .release-number',
+                keyframes: { opacity: [0, 1], y: [20, 0] },
+                options: { delay: 0.3 }
+            }),
+
+            // Secondary content animations
+            animateElement({
+                selector: '.wallpaper-wrapper',
+                keyframes: { opacity: [0, 1], y: [20, 0] },
+                options: { duration: 1, delay: 0.2 }
+            }),
+
+            // Brand list animations
+            animateElement({
+                selector: '.brand-list a',
+                keyframes: { opacity: [0, 1], scale: [0.9, 1] },
+                options: {
+                    stagger: { interval: 0.1, from: 'first' },
+                    duration: 0.6
+                }
+            })
+        ])
+    })
+
+    // Start animation immediately after DOM is ready
+    document.addEventListener('DOMContentLoaded', () => {
+        // Trigger animation immediately
+        document.dispatchEvent(new Event('startHeroAnimation'))
+
+        // Setup modal trigger
+        const getStartedBtn = document.getElementById('get-started')
+        if (getStartedBtn) {
+            getStartedBtn.addEventListener('click', () => {
+                document.dispatchEvent(
+                    new CustomEvent('showModal', {
+                        detail: { state: true }
+                    })
+                )
+            })
         }
-        const body = await res.json()
-        return body.find((download: { version: string }) => download.version == 'atlas').count
-    }
+    })
 
-    async function incrementDownloadCount() {
-        const res = await fetch(`https://api.atlasos.net/atlas/increment`, { method: 'POST' })
-        if (!res.ok) {
-            throw new Error(`Failed to increment download count. HTTP status: ${res.status}`)
-        }
-    }
-
-    playbookDlBtn.addEventListener('click', async () => {
-        playbookDlBtn.textContent = 'Downloading...'
-        downloadCount.textContent = ''
-        window.open(`https://cdn.jsdelivr.net/atlas/${atlasVersion}/AtlasPlaybook_v${atlasVersion}.zip`, '_blank')
-
-        try {
-            await incrementDownloadCount()
-        } catch (error) {
-            console.error('Failed to increment donwload count:', error)
-        }
-
-        try {
-            const count = await fetchDownloadCount()
-            downloadCount.textContent = `Atlas has been downloaded ${count.toLocaleString('en-US')} times.`
-        } catch (error) {
-            console.error('Failed to refetch download count:', error)
-        }
-
-        playbookDlBtn.textContent = 'Atlas Playbook'
+    // Cleanup on page navigation
+    document.addEventListener('astro:before-swap', () => {
+        hasAnimated = false
     })
 </script>
 
@@ -108,50 +147,9 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding-top: 210px;
+        padding-top: 60px;
         padding-bottom: 300px;
-        margin-top: -1000px;
-
-        .tagline {
-            display: inline-flex;
-            padding: 8px 35px;
-            justify-content: center;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 40px;
-            border-radius: 100px;
-            border: 1px solid hsla(216, 25%, 67%, 0.3);
-            background-color: hsla(205, 100%, 98%, 0.05);
-            transition: background-color 0.2s ease-in-out;
-
-            span {
-                display: flex;
-                align-items: center;
-                gap: 6px;
-            }
-
-            .icon {
-                display: flex;
-                align-items: center;
-                stroke: hsl(216, 25%, 67%);
-                fill: transparent;
-            }
-
-            .arrow {
-                position: relative;
-                transition: left 0.2s ease-in-out;
-                left: 3px;
-                white-space: nowrap;
-            }
-
-            &:hover {
-                background-color: hsla(205, 100%, 98%, 0.1);
-
-                .arrow {
-                    left: 8px;
-                }
-            }
-        }
+        z-index: 10;
 
         h1 {
             font-size: 64px;
@@ -162,6 +160,8 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 25px;
+            transform-origin: center;
+            will-change: transform, opacity;
         }
 
         p {
@@ -175,6 +175,9 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
             font-weight: 400;
             color: hsl(213, 11%, 64%, 0.6);
             margin-bottom: 20px;
+            opacity: 0;
+            transform: scale(0.9) translateY(10px);
+            will-change: transform, opacity, scale;
 
             a {
                 color: hsl(213, 11%, 64%, 1);
@@ -186,30 +189,41 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
                 }
             }
         }
+
+        .tagline,
+        h1,
+        p,
+        .buttons {
+            opacity: 0;
+            will-change: transform, opacity;
+        }
+
+        .wallpaper-wrapper {
+            opacity: 0;
+            will-change: transform, opacity, scale;
+        }
+
+        .buttons {
+            transform-origin: center;
+            will-change: transform, opacity;
+        }
     }
 
-    // .download-count {
-    //     text-align: center;
-    //     font-size: 14px;
-    //     font-weight: 400;
-    //     color: hsla(0, 0%, 100%, 0.5);
-    //     margin-bottom: 100px;
-    //     margin-top: 15px;
-    //     transition: all 0.2s ease-in-out;
-    // }
-
     .radial-wrapper {
-        overflow-x: hidden;
+        overflow: hidden;
+        position: relative;
+        width: 100%;
+        height: 1000px;
+        margin-bottom: -1000px;
 
         .radial-bg {
-            position: relative;
-            background: rgb(13, 58, 99);
-            -webkit-animation: glow 2s alternate infinite;
-            animation: glow 2s alternate infinite;
+            position: absolute;
+            inset: 0;
+            background: rgb(8, 85, 158);
+            opacity: 0;
+            will-change: transform, opacity;
             -webkit-mask-image: radial-gradient(rgba(0, 0, 0, 0.45), transparent 70%);
             mask-image: radial-gradient(rgba(0, 0, 0, 0.45), transparent 70%);
-            height: 1000px;
-            z-index: -99;
         }
     }
 
@@ -252,7 +266,9 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
     }
 
     .wallpaper-fade-in {
-        margin-top: -400px;
+        margin-top: -300px;
+        position: relative;
+        z-index: 1;
 
         .wallpaper-wrapper {
             position: relative;
@@ -287,10 +303,10 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
                     animation: wallpaper-animation-line 12s linear infinite;
                     bottom: -300px;
                     background-image: linear-gradient(to top, rgba(109, 46, 255, 0), rgb(12, 21, 50), rgb(187, 194, 204), rgb(72, 167, 255) 99%, rgba(12, 21, 50, 0) 100%);
-                }
 
-                .wallpaper-animation-line:nth-child(1) {
-                    animation-delay: 6s;
+                    &:nth-child(1) {
+                        animation-delay: 6s;
+                    }
                 }
             }
 
@@ -322,14 +338,19 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
 
         .logomark {
             transition: all 0.2s ease-in-out;
+
+            &:hover {
+                filter: brightness(1.3);
+
+                @media (min-width: 1000px) {
+                    transform: scale(1.01);
+                }
+            }
         }
 
-        .logomark:hover {
-            filter: brightness(1.3);
-
-            @media (min-width: 1000px) {
-                transform: scale(1.01);
-            }
+        a {
+            opacity: 0;
+            will-change: transform, opacity;
         }
     }
 
@@ -347,39 +368,9 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
         }
     }
 
-    @-webkit-keyframes glow {
-        0% {
-            -webkit-filter: brightness(1);
-            filter: brightness(1);
-        }
-        100% {
-            -webkit-filter: brightness(1.6);
-            filter: brightness(1.6);
-        }
-    }
-
-    @keyframes glow {
-        0% {
-            -webkit-filter: brightness(1);
-            filter: brightness(1);
-        }
-        100% {
-            -webkit-filter: brightness(1.6);
-            filter: brightness(1.6);
-        }
-    }
-
-    @media (max-width: 1080px) {
-        .radial-bg {
-            left: -50%;
-            right: -50%;
-            width: 200vw;
-        }
-    }
-
     @media (max-width: 1320px) {
         .hero {
-            padding-bottom: 200px;
+            padding-bottom: 150px;
         }
 
         .linear-section {
@@ -397,14 +388,14 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
 
     @media (max-width: 810px) {
         .hero {
-            padding-bottom: 150px;
+            padding-bottom: 100px;
         }
     }
 
     @media (max-width: 500px) {
         .hero {
             padding-top: 150px;
-            padding-bottom: 0px;
+            padding-bottom: 150px;
 
             h1 {
                 font-size: 42px;
@@ -424,6 +415,12 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
                     width: 200px;
                 }
             }
+        }
+    }
+
+    @media (max-width: 1080px) {
+        .radial-wrapper {
+            display: none;
         }
     }
 </style>
