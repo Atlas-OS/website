@@ -15,15 +15,15 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
 <div class="container main">
     <div class="hero">
         <a href="https://docs.atlasos.net/getting-started/installation" target="_blank" class="tagline">
-            <Icon name="book-open-icon" size={15} class="icon" />
-            <span>See our guide on installing Atlas first <span class="arrow">--></span></span>
+            <Icon name="book-2-line" size={16} class="icon" />
+            <span>See our guide on installing Atlas first <Icon name="arrow-right-line" size={16} class="icon" /></span>
         </a>
         <h1>A modification of Windows, designed for enthusiasts.</h1>
         <p>It's time for a new Windows experience. Designed for enthusiasts and gamers, Atlas improves privacy, usability, and performance.</p>
         <span class="release-number">The latest version is <a href="https://github.com/Atlas-OS/Atlas/releases/latest" target="_blank" rel="noreferrer noopener">Atlas v0.4.0 (April 6 2024)</a></span>
         <div class="buttons">
-            <button class="button primary" id="playbook-dl-btn">Atlas Playbook -></button>
-            <a class="button secondary" href="https://download.ameliorated.io/AME%20Wizard%20Beta.zip" rel="noreferrer noopener" target="_blank">AME Wizard -></a>
+            <button class="button primary" id="playbook-dl-btn">Atlas Playbook <Icon name="arrow-right-line" size={16} /></button>
+            <a class="button secondary" href="https://download.ameliorated.io/AME%20Wizard%20Beta.zip" rel="noreferrer noopener" target="_blank">AME Wizard <Icon name="arrow-right-line" size={16} /></a>
         </div>
         <span id="download-count" class="download-count"></span>
     </div>
@@ -97,11 +97,11 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
             console.error('Failed to refetch download count:', error)
         }
 
-        playbookDlBtn.textContent = 'Atlas Playbook ->'
+        playbookDlBtn.textContent = 'Atlas Playbook'
     })
 </script>
 
-<style lang="scss" is:global>
+<style is:global>
     .hero {
         position: relative;
         display: flex;
@@ -124,6 +124,19 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
             background-color: hsla(205, 100%, 98%, 0.05);
             transition: background-color 0.2s ease-in-out;
 
+            span {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+
+            .icon {
+                display: flex;
+                align-items: center;
+                stroke: hsl(216, 25%, 67%);
+                fill: transparent;
+            }
+
             .arrow {
                 position: relative;
                 transition: left 0.2s ease-in-out;
@@ -137,11 +150,6 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
                 .arrow {
                     left: 8px;
                 }
-            }
-
-            .icon {
-                stroke: hsl(216, 25%, 67%);
-                fill: transparent;
             }
         }
 

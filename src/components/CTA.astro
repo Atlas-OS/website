@@ -1,4 +1,5 @@
 ---
+import { Icon } from 'astro-icon/components'
 import ExternalLink from './ExternalLink.astro'
 
 interface Props {
@@ -17,14 +18,14 @@ const { links } = Astro.props
             <h3>Join our community of 45,000+</h3>
             <p>Join our community of passionate tech enthusiasts to connect with like-minded individuals and seek advice from experts.</p>
             <div class="buttons">
-                <ExternalLink className="button primary" href={links.discord} aria-label="Open Discord community" children="Join our Discord ->" />
-                <a class="button tertiary" href={links.github} target="_blank" rel="noreferrer noopener" aria-label="Open our GitHub page">Star us on GitHub <span class="arrow">--></span></a>
+                <ExternalLink className="button primary" href={links.discord} showUnderline={false} aria-label="Open Discord community" children="Join our Discord" />
+                <ExternalLink className="button tertiary" href={links.github} showUnderline={false} aria-label="Open our GitHub page" children="Star us on GitHub" />
             </div>
         </div>
     </div>
 </div>
 
-<style lang="scss">
+<style>
     .footer-radial {
         background: radial-gradient(70.81% 168.07% at 49.97% 178.07%, rgba(0, 78, 150, 0.3) 0%, rgba(2, 24, 45, 0) 100%);
     }

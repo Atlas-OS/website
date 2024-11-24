@@ -49,7 +49,7 @@ const { links } = Astro.props
                     <Picture src={GitHubStar} loading="lazy" alt="GitHub star" />
                 </div>
                 <p>
-                    <span id="star-amount-tag">ERROR</span><span> stargazers</span> on <ExternalLink href={links.github} ariaLabel="Open GitHub" children="GitHub ->" />
+                    <span id="star-amount-tag">ERROR</span><span>stargazers</span> on <ExternalLink href={links.github} ariaLabel="Open GitHub" children="GitHub" />
                 </p>
             </div>
             <Picture src={GPLLogo} class="gpl-logomark" loading="lazy" alt="GPL logo" />
@@ -137,7 +137,7 @@ const { links } = Astro.props
     }
 </script>
 
-<style lang="scss" is:global>
+<style is:global>
     .open-source-section {
         display: flex;
         justify-content: space-between;
@@ -178,7 +178,10 @@ const { links } = Astro.props
 
                 a {
                     color: hsla(205, 100%, 98%, 0.8);
-                    text-decoration: underline;
+                }
+
+                #star-amount-tag {
+                    margin-right: 4px;
                 }
             }
 

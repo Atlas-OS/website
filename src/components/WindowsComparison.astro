@@ -1,6 +1,7 @@
 ---
 import { Icon } from 'astro-icon/components'
 import { Picture } from 'astro:assets'
+import ExternalLink from './ExternalLink.astro'
 
 import Splitter from '../assets/img/splitter.svg'
 ---
@@ -16,55 +17,56 @@ import Splitter from '../assets/img/splitter.svg'
         <div class="card">
             <div class="content-wrapper">
                 <div class="card-title">
-                    <Icon name="cpu-icon" class="icon" size={26} />
+                    <Icon name="chip-line" class="icon" size={26} />
                     <h3>CPU Usage</h3>
                 </div>
                 <p>We've reduced background CPU spikes significantly. Nothing that you don't need will run in the background.</p>
-                <span>2-10% -> 0%</span>
+                <span>2-10% <Icon name="arrow-right-line" size={16} /> 0%</span>
             </div>
         </div>
         <Picture src={Splitter} class="splitter" loading="lazy" alt="Section splitter" />
         <div class="card">
             <div class="content-wrapper">
                 <div class="card-title">
-                    <Icon name="bolt-icon" class="icon" size={30} />
+                    <Icon name="dashboard-line" class="icon" size={30} />
                     <h3>RAM Usage</h3>
                 </div>
                 <p>Thanks to Atlas we've seen ~1.5GB of RAM usage freed on boot, which can then be allocated to other tasks.</p>
-                <span>2.9GB -> ~1.4GB</span>
+                <span>2.9GB <Icon name="arrow-right-line" size={16} /> ~1.4GB</span>
             </div>
         </div>
         <Picture src={Splitter} class="splitter" loading="lazy" alt="Section splitter" />
         <div class="card">
             <div class="content-wrapper">
                 <div class="card-title">
-                    <Icon name="rocket-icon" class="icon" size={26} />
+                    <Icon name="rocket-line" class="icon" size={26} />
                     <h3>0.1% FPS</h3>
                 </div>
                 <p>In a VALORANT benchmark, we saw a significant improvement in FPS lows. Boasting a stable, higher framerate.</p>
-                <span>217.5 FPS -> 365.91 FPS</span>
+                <span>217.5 FPS <Icon name="arrow-right-line" size={16} /> 365.91 FPS</span>
             </div>
         </div>
     </div>
     <div class="benchmark-link">
-        <a href="https://github.com/Atlas-OS/Atlas/discussions/1161" class="button tertiary" aria-label="Open detailed benchmarks on Atlas" target="_blank">View detailed benchmarks<span class="arrow">--></span></a>
+        <ExternalLink href="https://github.com/Atlas-OS/Atlas/discussions/1161" className="button tertiary" ariaLabel="Open detailed benchmarks on Atlas" children="View detailed benchmarks" />
     </div>
 </div>
 
-<style lang="scss">
+<style>
     .windows-comparison {
         margin-top: 300px;
         margin-bottom: 300px;
 
         .benchmark-link {
             text-align: center;
-            text-decoration: underline;
             display: flex;
             margin: 50px auto;
             align-items: center;
-            gap: 10px;
             justify-content: center;
-            text-decoration: none;
+
+            :global(.external-link) {
+                text-decoration: none;
+            }
         }
 
         .heading {
@@ -123,13 +125,10 @@ import Splitter from '../assets/img/splitter.svg'
                         gap: 20px;
 
                         .icon {
-                            stroke: var(--icon-white);
-                            fill: transparent;
-                        }
-
-                        img {
-                            width: 28px;
-                            height: 28px;
+                            stroke-width: 1.5;
+                            width: 24px;
+                            height: 24px;
+                            color: var(--icon-white);
                         }
 
                         h3 {

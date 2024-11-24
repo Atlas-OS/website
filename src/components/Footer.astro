@@ -30,49 +30,47 @@ const { links } = Astro.props
             <p>Atlas is designed for gamers, with improved in-game framerates and lowered latency.</p>
             <div class="social-icons">
                 <a href={links.twitter} aria-label="Follow us on X">
-                    <Icon name="x-logo" class="icons" size={25} width={25} />
+                    <Icon name="x" class="icons" size={24} />
                 </a>
                 <a href={links.discord} aria-label="Join our Discord community">
-                    <Icon name="discord-logo" class="icons" size={25} width={25} />
+                    <Icon name="discord" class="icons" size={24} />
                 </a>
                 <a href={links.github} aria-label="Visit our GitHub repository">
-                    <Icon name="github-logo" class="icons" size={25} width={25} />
+                    <Icon name="github" class="icons" size={24} />
                 </a>
                 <a href={links.donate} aria-label="Visit our Ko-fi page">
-                    <Icon name="ko-fi-logo" class="icons" size={25} width={30} />
+                    <Icon name="kofi" class="icons" size={24} />
                 </a>
                 <a href={links.trustpilot} aria-label="Visit our TrustPilot page">
-                    <Icon name="trustpilot-logo-mono" class="icons" size={25} width={25} />
+                    <Icon name="trustpilot" class="icons" size={24} />
                 </a>
             </div>
-            <a class="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="license noopener noreferrer">
-                Website under CC BY-NC-ND 4.0
-            </a>
+            <a class="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="license noopener noreferrer">Website under CC BY-NC-ND 4.0</a>
         </div>
         <div class="links">
             <div class="column">
                 <span>Sitemap</span>
                 <a href="/">Home</a>
-                <ExternalLink href={links.forum} ariaLabel="Open GitHub Discussions" children="Discussions" />
-                <ExternalLink href={links.documentation} ariaLabel="Open documentation" children="Documentation" />
-                <ExternalLink href={links.faq} ariaLabel="Open documentation" children="FAQ" />
+                <ExternalLink href={links.forum} showUnderline={false} showIcon={false} ariaLabel="Open GitHub Discussions" children="Discussions" />
+                <ExternalLink href={links.documentation} showUnderline={false} showIcon={false} ariaLabel="Open documentation" children="Documentation" />
+                <ExternalLink href={links.faq} showUnderline={false} showIcon={false} ariaLabel="Open documentation" children="FAQ" />
             </div>
             <div class="column">
                 <span>Community</span>
-                <ExternalLink href={links.github} ariaLabel="Open GitHub" children="GitHub" />
-                <ExternalLink href={links.discord} ariaLabel="Open Discord" children="Discord" />
-                <ExternalLink href={links.twitter} ariaLabel="Open X / Twitter" children="X / Twitter" />
-                <ExternalLink href={links.trustpilot} ariaLabel="Open Trustpilot" children="Trustpilot" />
+                <ExternalLink href={links.github} showUnderline={false} showIcon={false} ariaLabel="Open GitHub" children="GitHub" />
+                <ExternalLink href={links.discord} showUnderline={false} showIcon={false} ariaLabel="Open Discord" children="Discord" />
+                <ExternalLink href={links.twitter} showUnderline={false} showIcon={false} ariaLabel="Open X / Twitter" children="X / Twitter" />
+                <ExternalLink href={links.trustpilot} showUnderline={false} showIcon={false} ariaLabel="Open Trustpilot" children="Trustpilot" />
             </div>
             <div class="column">
                 <span>Donations</span>
-                <ExternalLink href={links.donate} ariaLabel="Open Ko-fi" children="Ko-fi" />
+                <ExternalLink href={links.donate} showIcon={false} ariaLabel="Open Ko-fi" children="Ko-fi" />
             </div>
         </div>
     </div>
 </footer>
 
-<style lang="scss">
+<style>
     .footer-wrapper {
         padding: 70px 0px;
         background-color: hsl(225, 62%, 12%);

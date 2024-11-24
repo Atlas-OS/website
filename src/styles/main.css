@@ -1,64 +1,27 @@
 * {
     -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
+    text-rendering: optimizeSpeed;
 }
 
-// @font-face {
-//     font-family: 'Archivo';
-//     font-style: normal;
-//     font-weight: 700;
-//     font-stretch: 100%;
-//     font-display: swap;
-//     src: url('../fonts/archivo/k3k6o8UDI-1M0wlSV9XAw6lQkqWY8Q82sJaRE-NWIDdgffTT0zRZ9xdp.woff2') format('woff2');
-//     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-// }
+/* archivo-latin-wght-normal */
+@font-face {
+    font-family: 'Archivo Variable';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 100 900;
+    src: url(@fontsource-variable/archivo/files/archivo-latin-wght-normal.woff2) format('woff2-variations');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 
-// @font-face {
-//     font-family: 'Archivo';
-//     font-style: normal;
-//     font-weight: 600;
-//     font-stretch: 100%;
-//     font-display: swap;
-//     src: url('../fonts/archivo/k3k6o8UDI-1M0wlSV9XAw6lQkqWY8Q82sJaRE-NWIDdgffTT6jRZ9xdp.woff2') format('woff2');
-//     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-// }
-
-// @font-face {
-//     font-family: 'Archivo';
-//     font-style: normal;
-//     font-weight: 500;
-//     font-stretch: 100%;
-//     font-display: swap;
-//     src: url('../fonts/archivo/k3k6o8UDI-1M0wlSV9XAw6lQkqWY8Q82sJaRE-NWIDdgffTTBjNZ9xdp.woff2') format('woff2');
-//     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-// }
-
-// @font-face {
-//     font-family: 'Inter';
-//     font-style: normal;
-//     font-weight: 400;
-//     font-display: swap;
-//     src: url('../fonts/inter/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2') format('woff2');
-//     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-// }
-
-// @font-face {
-//     font-family: 'Inter';
-//     font-style: normal;
-//     font-weight: 500;
-//     font-display: swap;
-//     src: url('../fonts/inter/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuI6fAZ9hiA.woff2') format('woff2');
-//     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-// }
-
-// @font-face {
-//     font-family: 'Inter';
-//     font-style: normal;
-//     font-weight: 600;
-//     font-display: swap;
-//     src: url('../fonts/inter/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuGKYAZ9hiA.woff2') format('woff2');
-//     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-// }
+/* inter-latin-wght-normal */
+@font-face {
+    font-family: 'Inter Variable';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 100 900;
+    src: url(@fontsource-variable/inter/files/inter-latin-wght-normal.woff2) format('woff2-variations');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 
 input,
 select,
@@ -78,7 +41,7 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: 'Archivo', sans-serif;
+    font-family: 'Archivo Variable', sans-serif;
     font-weight: 500;
     font-display: swap;
     color: var(--color-white);
@@ -97,7 +60,7 @@ li,
 input,
 textarea,
 button {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter Variable', sans-serif;
     font-weight: 400;
     font-display: swap;
     color: var(--color-white);

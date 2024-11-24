@@ -1,15 +1,50 @@
 ---
-const { href = '#', className = '', styling = '', ariaLabel = 'External Link', children } = Astro.props
+import { Icon } from 'astro-icon/components'
+
+const { href = '#', className = '', styling = '', ariaLabel = 'External Link', showIcon = true, showUnderline = true, children } = Astro.props
 
 interface Props {
     href: string
     styling?: string
     className?: string
     ariaLabel?: string
+    showIcon?: boolean
+    showUnderline?: boolean
     children: any
 }
 ---
 
-<a style={styling} class={className} href={href} aria-label={ariaLabel} target="_blank" rel="noreferrer noopener">
+<a style={styling} class={`external-link ${showUnderline ? 'with-underline' : ''} ${className}`} href={href} aria-label={ariaLabel} target="_blank" rel="noreferrer noopener">
     {children}
+    {showIcon && <Icon name="arrow-right-line" size={16} />}
 </a>
+
+<style>
+    .external-link {
+        position: relative;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        width: fit-content;
+        max-width: fit-content;
+    }
+
+    .with-underline::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 1px;
+        bottom: -2px;
+        left: 0;
+        background-color: currentColor;
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 0.3s ease;
+    }
+
+    .with-underline:hover::after {
+        transform: scaleX(1);
+        transform-origin: left;
+    }
+</style>

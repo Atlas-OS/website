@@ -24,7 +24,7 @@ const { links } = Astro.props
         <div class="review-star">
             <Picture src={ReviewStars} loading="lazy" alt="Review star" />
             <p>
-                <span>4.5 out of 5</span> on <ExternalLink href={links.trustpilot} aria-label="View our TrustPilot page" children="Trustpilot ->" />
+                <span>4.5 out of 5</span> on <ExternalLink href={links.trustpilot} aria-label="View our TrustPilot page" children="Trustpilot" />
             </p>
         </div>
     </section>
@@ -50,7 +50,7 @@ const { links } = Astro.props
     </div>
 </div>
 
-<style lang="scss" is:global>
+<style is:global>
     .review-section {
         display: flex;
 
@@ -72,7 +72,6 @@ const { links } = Astro.props
 
             a {
                 color: hsla(205, 100%, 98%, 0.8);
-                text-decoration: underline;
             }
 
             span {
