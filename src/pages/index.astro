@@ -7,6 +7,7 @@ import ReviewSection from '../components/ReviewSection.astro'
 import OpenSourceSection from '../components/OpenSourceSection.astro'
 import LinusVideo from '../components/LinusVideo.astro'
 import CTA from '../components/CTA.astro'
+import DownloadModal from '../components/DownloadModal.astro'
 
 interface Props {
     title: string
@@ -30,6 +31,7 @@ type Links = {
     discord: string
     github: string
     faq: string
+    install: string
     twitter: string
     trustpilot: string
     donate: string
@@ -42,6 +44,7 @@ const links: Links = {
     discord: 'https://discord.atlasos.net',
     github: 'https://github.com/Atlas-OS/Atlas',
     faq: 'https://docs.atlasos.net/install-faq/removed-features',
+    install: 'https://docs.atlasos.net/getting-started/installation',
     twitter: 'https://x.com/atlasos',
     trustpilot: 'https://trustpilot.com/review/atlasos.net',
     donate: 'https://donate.atlasos.net',
@@ -54,7 +57,8 @@ const links: Links = {
     title="An optimized modification of Windows, designed for enthusiasts."
     description="We designed Atlas for enthusiasts & gamers, improving privacy, usability, and performance. Have the best experience compared to stock, slow Windows."
 >
-    <Hero />
+    <DownloadModal {links} />
+    <Hero {links} />
     <div class="container main">
         <UpgradeComparison />
         <WindowsComparison />

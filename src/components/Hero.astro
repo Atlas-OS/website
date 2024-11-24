@@ -1,5 +1,4 @@
 ---
-import { Icon } from 'astro-icon/components'
 import { Picture } from 'astro:assets'
 
 import Wallpaper from '../assets/img/atlas-wallpaper.webp'
@@ -12,6 +11,7 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
 <div class="radial-wrapper">
     <div class="radial-bg"></div>
 </div>
+
 <div class="container main">
     <div class="hero">
         <a href="https://docs.atlasos.net/getting-started/installation" target="_blank" class="tagline">
@@ -31,7 +31,7 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
 <div class="container main">
     <div class="wallpaper-fade-in">
         <div class="wallpaper-wrapper">
-            <Picture src={Wallpaper} loading="eager" class="wallpaper" alt="atlas os wallpaper" />
+            <Picture src={Wallpaper} loading="eager" class="wallpaper" alt="AtlasOS Wallpaper" />
             <div class="wallpaper-animation">
                 <div class="wallpaper-animation-line"></div>
                 <div class="wallpaper-animation-line"></div>
@@ -186,23 +186,17 @@ import TechSpot from '../assets/img/techspot-logomark.svg'
                 }
             }
         }
-
-        .buttons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
     }
 
-    .download-count {
-        text-align: center;
-        font-size: 14px;
-        font-weight: 400;
-        color: hsla(0, 0%, 100%, 0.5);
-        margin-bottom: 100px;
-        margin-top: 15px;
-        transition: all 0.2s ease-in-out;
-    }
+    // .download-count {
+    //     text-align: center;
+    //     font-size: 14px;
+    //     font-weight: 400;
+    //     color: hsla(0, 0%, 100%, 0.5);
+    //     margin-bottom: 100px;
+    //     margin-top: 15px;
+    //     transition: all 0.2s ease-in-out;
+    // }
 
     .radial-wrapper {
         overflow-x: hidden;
