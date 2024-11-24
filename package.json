@@ -12,6 +12,8 @@
     "dependencies": {
         "@astrojs/partytown": "2.1.2",
         "@divriots/jampack": "^0.30.0",
+        "@fontsource-variable/archivo": "^5.1.0",
+        "@fontsource-variable/inter": "^5.1.0",
         "astro": "5.0.0-beta.10",
         "astro-icon": "^1.1.4",
         "motion": "^11.11.17",
