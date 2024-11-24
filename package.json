@@ -1,28 +1,4 @@
 {
-  "name": "atlasos",
-  "type": "module",
-  "version": "0.0.1",
-  "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
-  },
-  "dependencies": {
-    "@astrojs/partytown": "^2.1.1",
-    "@astrojs/tailwind": "^5.1.0",
-    "astro": "^4.13.3",
-    "astro-compress": "2.3.1",
-    "astro-font": "^0.1.81",
-    "astro-icon": "^1.1.0",
-    "sharp": "^0.33.4",
-    "tailwindcss": "^3.4.10"
-  },
-  "devDependencies": {
-    "prettier": "^3.3.3",
-    "prettier-plugin-astro": "^0.14.1"
-  }
     "name": "atlasos",
     "type": "module",
     "version": "0.0.1",
@@ -34,13 +10,14 @@
         "astro": "astro"
     },
     "dependencies": {
-        "@astrojs/partytown": "2.1.2",
-        "@fontsource-variable/archivo": "^5.1.0",
-        "@fontsource-variable/inter": "^5.1.0",
-        "astro": "5.0.0-beta.10",
-        "astro-compress": "2.3.5",
-        "astro-icon": "^1.1.4",
-        "sharp": "^0.33.5"
+        "@astrojs/partytown": "^2.1.1",
+        "@astrojs/tailwind": "^5.1.0",
+        "astro": "^4.13.3",
+        "astro-compress": "2.3.1",
+        "astro-font": "^0.1.81",
+        "astro-icon": "^1.1.0",
+        "sharp": "^0.33.4",
+        "tailwindcss": "^3.4.10"
     },
     "devDependencies": {
         "prettier": "^3.3.3",
