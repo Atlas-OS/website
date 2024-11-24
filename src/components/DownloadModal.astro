@@ -265,7 +265,7 @@ const { links } = Astro.props
         }
         private readonly downloadCount: HTMLElement
         private readonly atlasVersion = '0.4.1'
-        private readonly apiEndpoint = 'https://api.atlasos.net/atlas'
+        private readonly apiEndpoint = 'https://api.atlasos.net'
 
         constructor() {
             const elements = {
@@ -344,11 +344,13 @@ const { links } = Astro.props
 
         private async fetchDownloadCount(): Promise<number | null> {
             try {
-                const response = await fetch(`${this.apiEndpoint}/stats`)
+                const response = await fetch(this.apiEndpoint)
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
 
                 const data = await response.json()
-                return data.downloads || 0
+                const atlasDownload = data.find((download: { version: string }) => download.version === 'atlas')
+
+                return atlasDownload?.count || 0
             } catch (error) {
                 console.error('Error fetching download count:', error)
                 return null
@@ -357,9 +359,8 @@ const { links } = Astro.props
 
         private async incrementDownloadCount(): Promise<void> {
             try {
-                const response = await fetch(`${this.apiEndpoint}/increment`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' }
+                const response = await fetch(`${this.apiEndpoint}/atlas/increment`, {
+                    method: 'POST'
                 })
 
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
@@ -374,7 +375,11 @@ const { links } = Astro.props
 
             window.open(`https://cdn.jsdelivr.net/atlas/${this.atlasVersion}/AtlasPlaybook_v${this.atlasVersion}.zip`, '_self')
 
-            await this.incrementDownloadCount()
+            try {
+                await this.incrementDownloadCount()
+            } catch (error) {
+                console.error('Failed to increment download count:', error)
+            }
 
             setTimeout(() => {
                 this.buttons.playbook.innerHTML = originalContent
