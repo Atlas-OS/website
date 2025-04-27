@@ -21,7 +21,7 @@ const links = {
     />
     <div
       id="gh-stars-wrap"
-      class="bg-secondary/80 absolute right-[-60px] bottom-[-7px] w-[270px] cursor-pointer rounded-md border border-white/10 text-gray-400 backdrop-blur-md transition-[border-radius_0.3s]"
+      class="bg-secondary/80 absolute right-[-60px] bottom-[-7px] w-[300px] cursor-pointer rounded-md border border-white/10 text-gray-400 backdrop-blur-md transition-[border-radius_0.3s]"
     >
       <button
         id="toggle-star-list-btn"
@@ -30,7 +30,7 @@ const links = {
         class="w-full border-none bg-transparent p-0 text-left hover:opacity-90"
         type="button"
       >
-        <div class="flex w-[270px] cursor-pointer justify-center">
+        <div class="flex w-full cursor-pointer justify-between">
           <div class="flex items-center px-4 py-2">
             <div class="mr-4 h-[19px] w-[19px]">
               <Image
@@ -42,11 +42,16 @@ const links = {
               />
             </div>
             <p class="text-white">Starred</p>
-            <span id="star-amount-badge" class="bg-secondary/80 ml-8 rounded-full px-3 py-2 text-sm">--</span>
+            <span
+              id="star-amount-badge"
+              class="bg-secondary/80 ml-8 min-w-[50px] rounded-full px-3 py-2 text-center text-sm">--</span
+            >
           </div>
-          <div class="mx-2 w-px bg-white/10"></div>
-          <div class="flex items-center px-4 py-2">
-            <Icon name="tabler:chevron-down" class="h-5 w-5 transition-transform" />
+          <div class="flex items-center">
+            <div class="ml-2 h-full w-px bg-white/10"></div>
+            <div class="flex h-full items-center justify-center px-4 py-2">
+              <Icon name="tabler:chevron-down" class="h-5 w-5 transition-transform" />
+            </div>
           </div>
         </div>
       </button>
@@ -134,6 +139,19 @@ const links = {
       toggleBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         const isOpen = starList.classList.toggle('show');
+
+        if (isOpen) {
+          starList.style.height = 'auto';
+          starList.style.opacity = '1';
+          wrapper.style.borderBottomLeftRadius = '0';
+          wrapper.style.borderBottomRightRadius = '0';
+        } else {
+          starList.style.height = '0';
+          starList.style.opacity = '0';
+          wrapper.style.borderBottomLeftRadius = '';
+          wrapper.style.borderBottomRightRadius = '';
+        }
+
         wrapper.classList.toggle('toggled');
         toggleBtn.classList.toggle('toggled');
         const icon = toggleBtn.querySelector('svg');
@@ -145,6 +163,12 @@ const links = {
         const target = event.target as Node;
         if (!wrapper.contains(target)) {
           starList.classList.remove('show');
+
+          starList.style.height = '0';
+          starList.style.opacity = '0';
+          wrapper.style.borderBottomLeftRadius = '';
+          wrapper.style.borderBottomRightRadius = '';
+
           wrapper.classList.remove('toggled');
           toggleBtn.classList.remove('toggled');
           const icon = toggleBtn.querySelector('svg');
