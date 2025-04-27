@@ -119,12 +119,6 @@ const links = {
       this.starCountEl = document.getElementById('star-amount-tag');
       this.starBadgeEl = document.getElementById('star-amount-badge');
 
-      console.log('Debug elements:', {
-        starListItems: this.starListItems,
-        starCountEl: this.starCountEl,
-        starBadgeEl: this.starBadgeEl,
-      });
-
       this.initDropdown();
       this.updateStarInfo();
     }
@@ -216,11 +210,8 @@ const links = {
      * Loads star count and recent stargazers, updating the badge and list.
      */
     async updateStarInfo() {
-      console.log('Attempting to fetch star info...');
       try {
-        console.log('Fetching stars from https://api.atlasos.net/stars');
         const starsResponse = await this.fetchData('https://api.atlasos.net/stars');
-        console.log('Received star response:', starsResponse);
         const starData = starsResponse[0];
         if (!starData || typeof starData.count !== 'number') {
           throw new Error('Invalid star count data received');
@@ -234,9 +225,7 @@ const links = {
           this.starBadgeEl.textContent = `${(count / 1000).toFixed(1)}k`;
         }
 
-        console.log('Fetching recent stars from https://api.atlasos.net/recent-stars');
         const recentStars = await this.fetchData('https://api.atlasos.net/recent-stars');
-        console.log('Received recent stars response:', recentStars);
         if (!Array.isArray(recentStars)) {
           throw new Error('Invalid recent stars data received');
         }
@@ -249,7 +238,6 @@ const links = {
           this.starListItems.replaceChildren(...items);
         }
       } catch (err) {
-        console.error('Failed to update star information:', err);
         if (this.starCountEl) this.starCountEl.textContent = '--';
         if (this.starBadgeEl) this.starBadgeEl.textContent = '--';
         if (this.starListItems)
@@ -259,13 +247,10 @@ const links = {
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOMContentLoaded fired for OpenSource component');
     new GitHubStarsManager();
   });
 
-  // Fallback in case DOMContentLoaded already fired
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    console.log('DOM already loaded, initializing GitHubStarsManager directly');
     setTimeout(() => new GitHubStarsManager(), 1);
   }
 </script>
