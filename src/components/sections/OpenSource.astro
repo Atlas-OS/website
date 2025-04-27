@@ -113,9 +113,7 @@ const links = {
       this.starBadgeEl = document.getElementById('star-amount-badge');
 
       this.initDropdown();
-      if (import.meta.env.MODE === 'production') {
-        this.updateStarInfo();
-      }
+      this.updateStarInfo();
     }
 
     /**
@@ -186,18 +184,38 @@ const links = {
      */
     async updateStarInfo() {
       try {
-        const stars = await this.fetchData('https://api.atlasos.net/stars');
-        const data = stars[0] || {};
-        const count = data.count;
-        if (this.starCountEl) this.starCountEl.textContent = count.toLocaleString();
-        if (this.starBadgeEl) this.starBadgeEl.textContent = `${(count / 1000).toFixed(1)}k`;
-        const recent = await this.fetchData('https://api.atlasos.net/recent-stars');
-        const items = recent.slice(0, 4).map((s: { username: string; avatar: string }) => this.createStarElement(s));
-        if (this.starListItems) this.starListItems.replaceChildren(...items);
+        const starsResponse = await this.fetchData('https://api.atlasos.net/stars');
+        const starData = starsResponse[0];
+        if (!starData || typeof starData.count !== 'number') {
+          throw new Error('Invalid star count data received');
+        }
+        const count = starData.count;
+
+        if (this.starCountEl) {
+          this.starCountEl.textContent = count.toLocaleString();
+        }
+        if (this.starBadgeEl) {
+          this.starBadgeEl.textContent = `${(count / 1000).toFixed(1)}k`;
+        }
+
+        const recentStars = await this.fetchData('https://api.atlasos.net/recent-stars');
+        if (!Array.isArray(recentStars)) {
+          throw new Error('Invalid recent stars data received');
+        }
+
+        const items = recentStars
+          .slice(0, 4)
+          .map((stargazer: { username: string; avatar: string }) => this.createStarElement(stargazer));
+
+        if (this.starListItems) {
+          this.starListItems.replaceChildren(...items);
+        }
       } catch (err) {
         console.error('Failed to update star information:', err);
-        if (this.starCountEl) this.starCountEl.textContent = '---';
-        if (this.starBadgeEl) this.starBadgeEl.textContent = '---';
+        if (this.starCountEl) this.starCountEl.textContent = '--';
+        if (this.starBadgeEl) this.starBadgeEl.textContent = '--';
+        if (this.starListItems)
+          this.starListItems.innerHTML = '<p class="text-white/70 text-center">Could not load stargazers.</p>';
       }
     }
   }
