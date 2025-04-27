@@ -10,6 +10,7 @@ import '../styles/global.css';
 <!doctype html>
 <html lang="en">
   <head>
+    <script data-cfasync="false"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
@@ -60,7 +61,7 @@ import '../styles/global.css';
     <script is:inline type="text/partytown" src="https://pla.atlasos.net/js/script.js" data-domain="atlasos.net"
     ></script>
   </head>
-  <body>
+  <body class="overflow-x-hidden">
     <header>
       <a href="#main-content" class="sr-only focus:not-sr-only">Skip to main content</a>
       <Navbar />
