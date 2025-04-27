@@ -153,6 +153,7 @@ const links = {
      * @param {string} url - The endpoint to query.
      * @returns {Promise<any>} Parsed JSON response.
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async fetchData(url: string): Promise<any> {
       const res = await fetch(url);
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);

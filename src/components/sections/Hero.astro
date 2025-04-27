@@ -482,6 +482,7 @@ const links = {
 
     const wallpaperContainer = document.querySelector<HTMLElement>('.wallpaper-container');
     if (wallpaperContainer) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (animate as any)(
         wallpaperContainer,
         {
@@ -498,6 +499,7 @@ const links = {
 
     const revealElements = document.querySelectorAll<HTMLElement>('[data-reveal]');
     if (revealElements.length > 0) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (animate as any)(
         [...revealElements],
         {
