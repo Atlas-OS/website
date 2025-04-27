@@ -1,0 +1,63 @@
+---
+import { Icon } from 'astro-icon/components';
+import SectionTitle from '../common/SectionTitle.astro';
+---
+
+<section class="relative mx-auto mt-32 mb-32 max-w-7xl px-4">
+  <div class="mb-16 grid grid-cols-1 items-end gap-8 md:grid-cols-3 lg:gap-12">
+    <div class="md:col-span-1">
+      <SectionTitle>Invasive and slow</SectionTitle>
+      <h2 class="text-4xl font-semibold tracking-tight text-white md:text-5xl">
+        <span class="text-white/80">F**k Window</span> Upgrade to <span class="text-primary">Atlas</span>
+      </h2>
+    </div>
+    <div class="md:col-span-2">
+      <p class="leading-relaxed text-white/70">
+        Over time, Microsoft has made Windows sluggish, clunky and invasive. Atlas brings life back to Windows, designed
+        to maximize privacy, usability, and performance. We make Windows more responsive and less annoying, with many
+        users also claiming improved framerates, while being <a
+          href="https://docs.atlasos.net/getting-started/post-installation/atlas-folder/general-configuration/"
+          class="hover:text-primary underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          configurable and compatible</a
+        >.
+      </p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 gap-16 md:grid-cols-3 md:gap-20">
+    <div class="relative py-2">
+      <div class="flex h-12 w-12 items-center justify-center rounded-md bg-white/5">
+        <Icon name="tabler:gauge" class="h-6 w-6 text-white/80" />
+      </div>
+      <h3 class="mt-6 mb-2 text-xl font-semibold text-white">Performance</h3>
+      <p class="leading-relaxed text-white/70">
+        By removing unnecessary background processes, telemetry, optionally disabling power-saving features and more.
+      </p>
+    </div>
+
+    <div class="relative py-2">
+      <div class="flex h-12 w-12 items-center justify-center rounded-md bg-white/5">
+        <Icon name="tabler:thumb-up" class="h-6 w-6 text-white/80" />
+      </div>
+      <h3 class="mt-6 mb-2 text-xl font-semibold text-white">Usability</h3>
+      <p class="leading-relaxed text-white/70">
+        By removing Windows' advertising, and fixing general annoyances, you will have a more enjoyable Windows
+        experience.
+      </p>
+    </div>
+
+    <div class="relative py-2">
+      <div class="flex h-12 w-12 items-center justify-center rounded-md bg-white/5">
+        <Icon name="tabler:shield-lock" class="h-6 w-6 text-white/80" />
+      </div>
+      <h3 class="mt-6 mb-2 text-xl font-semibold text-white">Privacy</h3>
+      <p class="leading-relaxed text-white/70">
+        By eliminating most of Microsoft's notorious tracking, pre-installed apps, and bloatware, Atlas makes Windows
+        private.
+      </p>
+    </div>
+  </div>
+</section>

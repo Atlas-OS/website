@@ -1,0 +1,82 @@
+---
+import '@fontsource-variable/archivo';
+import '@fontsource-variable/fira-code';
+import '@fontsource-variable/inter';
+import Footer from '../components/layout/Footer.astro';
+import Navbar from '../components/layout/Navbar.astro';
+import '../styles/global.css';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="AtlasOS" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <title>AtlasOS - Optimized Windows, designed for enthusiasts.</title>
+    <meta
+      name="description"
+      content="AtlasOS is an optimized version of Windows, designed for enthusiasts and gamers."
+    />
+    <link rel="canonical" href="https://atlasos.net/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://atlasos.net/" />
+    <meta property="og:title" content="AtlasOS - Optimized Windows, designed for enthusiasts." />
+    <meta
+      property="og:description"
+      content="AtlasOS is an optimized version of Windows, designed for enthusiasts and gamers."
+    />
+    <meta property="og:image" content="/defaultimg.png" />
+    <meta property="og:site_name" content="AtlasOS" />
+
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://atlasos.net/" />
+    <meta property="twitter:title" content="AtlasOS - Optimized Windows, designed for enthusiasts." />
+    <meta
+      property="twitter:description"
+      content="AtlasOS is an optimized version of Windows, designed for enthusiasts and gamers."
+    />
+    <meta property="twitter:image" content="/defaultimg.png" />
+
+    <script type="application/ld+json" is:inline>
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "AtlasOS",
+        "url": "https://atlasos.net/",
+        "description": "AtlasOS is an optimized version of Windows, designed for enthusiasts and gamers.",
+        "image": "https://atlasos.net/defaultimg.png"
+      }
+    </script>
+
+    <script is:inline type="text/partytown" src="https://pla.atlasos.net/js/script.js" data-domain="atlasos.net"
+    ></script>
+  </head>
+  <body>
+    <header>
+      <a href="#main-content" class="sr-only focus:not-sr-only">Skip to main content</a>
+      <Navbar />
+    </header>
+    <main id="main-content" role="main">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  html,
+  body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+  }
+</style>

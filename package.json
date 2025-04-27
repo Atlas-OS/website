@@ -1,26 +1,58 @@
 {
-    "name": "atlasos",
-    "type": "module",
-    "version": "0.0.1",
-    "scripts": {
-        "dev": "astro dev",
-        "start": "astro dev",
-        "build": "astro build && jampack ./dist",
-        "preview": "astro preview",
-        "astro": "astro"
-    },
-    "dependencies": {
-        "@astrojs/partytown": "2.1.2",
-        "@divriots/jampack": "^0.30.0",
-        "@fontsource-variable/archivo": "^5.1.0",
-        "@fontsource-variable/inter": "^5.1.0",
-        "astro": "5.0.0-beta.10",
-        "astro-icon": "^1.1.4",
-        "motion": "^11.11.17",
-        "sharp": "^0.33.5"
-    },
-    "devDependencies": {
-        "prettier": "^3.3.3",
-        "prettier-plugin-astro": "^0.14.1"
-    }
+  "name": "website",
+  "version": "1.0.0",
+  "description": "AtlasOS website, created with love by the community.",
+  "type": "module",
+  "author": "AtlasOS",
+  "license": "MIT",
+  "contributors": ["AtlasOS Community <contact@atlasos.net>"],
+  "engines": {
+    "bun": ">=1.0.0",
+    "node": ">=18.0.0"
+  },
+  "homepage": "https://atlasos.net/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/atlas-os/website.git"
+  },
+  "bugs": {
+    "url": "https://github.com/atlas-os/website/issues"
+  },
+  "keywords": ["atlasos", "windows", "optimized", "performance", "gaming", "astro"],
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build && jampack ./dist",
+    "preview": "astro preview",
+    "astro": "astro",
+    "format": "prettier --write .",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx,.astro src/",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/partytown": "^2.1.4",
+    "@fontsource-variable/archivo": "^5.2.5",
+    "@fontsource-variable/fira-code": "^5.2.5",
+    "@fontsource-variable/inter": "^5.2.5",
+    "@iconify-json/tabler": "^1.2.17",
+    "@tailwindcss/vite": "^4.1.4",
+    "astro": "^5.7.5",
+    "astro-icon": "^1.1.5",
+    "motion": "^12.9.2",
+    "tailwindcss": "^4.1.4",
+    "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "@divriots/jampack": "0.30.1",
+    "@tailwindcss/typography": "^0.5.16",
+    "prettier": "^3.5.3",
+    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-astro-organize-imports": "^0.4.11",
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "eslint": "^9.25.1",
+    "eslint-config-prettier": "^10.1.2",
+    "eslint-plugin-astro": "^1.3.1",
+    "@typescript-eslint/parser": "^8.31.0",
+    "@typescript-eslint/eslint-plugin": "^8.31.0"
+  }
 }

@@ -1,0 +1,183 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  variant?: 'primary' | 'secondary' | 'tertiary';
+  size?: 'sm' | 'md' | 'lg';
+  fw?: boolean;
+  icon?: string;
+  iconPosition?: 'before' | 'after';
+  id?: string;
+  class?: string;
+  href?: string;
+  external?: boolean;
+  type?: 'button' | 'submit' | 'reset';
+  loading?: boolean;
+  disabled?: boolean;
+}
+
+const {
+  variant = 'primary',
+  size = 'md',
+  fw = false,
+  icon = '',
+  iconPosition = 'before',
+  id,
+  class: className = '',
+  href,
+  external = false,
+  type = 'button',
+  loading = false,
+  disabled = false,
+} = Astro.props;
+
+const isLink = !!href;
+
+const externalAttrs = external ? { target: '_blank', rel: 'noopener noreferrer' } : {};
+
+const baseClasses = [
+  'inline-flex items-center justify-center font-medium whitespace-nowrap relative box-border',
+  'focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black',
+  'transition-colors duration-200 transition-transform duration-100 ease-out',
+  'cursor-pointer',
+];
+
+const sizeClasses = {
+  sm: 'text-xs px-3 py-1 gap-1.5 rounded-md',
+  md: 'text-sm px-4 py-1.5 gap-2 md:text-xs md:px-4 md:py-1.5 rounded-md',
+  lg: 'text-sm px-5 py-2 gap-2 md:py-2 rounded-lg',
+};
+
+const variantClasses = {
+  primary: [
+    'relative isolate',
+    'text-white font-medium',
+    'button-gradient-border-primary',
+    'backdrop-blur-sm',
+    '!disabled:hover:bg-primary/80',
+    'shadow-sm shadow-primary/10',
+    'active:scale-98',
+  ],
+  secondary: [
+    'relative isolate',
+    'text-white font-medium',
+    'button-gradient-border-secondary',
+    'backdrop-blur-sm',
+    '!disabled:hover:bg-white/10',
+    'shadow-sm shadow-black/5',
+    'active:scale-98',
+  ],
+  tertiary: [
+    'py-0.5 px-0',
+    'relative',
+    'text-sm text-primary hover:text-primary focus-visible:text-primary',
+    'tertiary-link',
+    'after:bg-current',
+  ],
+};
+
+const iconSize = {
+  sm: 'h-3 w-3',
+  md: 'h-4 w-4',
+  lg: 'h-5 w-5',
+};
+
+const classes = [
+  ...baseClasses,
+  variant !== 'tertiary' ? sizeClasses[size] : '',
+  ...variantClasses[variant],
+  fw ? 'w-full' : '',
+  isLink && disabled ? 'disabled-link' : '',
+  className,
+].join(' ');
+---
+
+{
+  isLink ? (
+    <a href={href} class={classes} {...externalAttrs} aria-disabled={disabled ? 'true' : undefined} id={id}>
+      {icon && iconPosition === 'before' && <Icon name={icon} class={iconSize[size]} />}
+      <slot />
+
+      {icon && iconPosition === 'after' && <Icon name={icon} class={iconSize[size]} />}
+    </a>
+  ) : (
+    <button type={type} class={classes} disabled={disabled || loading} id={id}>
+      {loading ? (
+        <span class="loading-spinner" aria-hidden="true" />
+      ) : (
+        <>{icon && iconPosition === 'before' && <Icon name={icon} class={iconSize[size]} />}</>
+      )}
+
+      <slot />
+
+      {!loading && icon && iconPosition === 'after' && <Icon name={icon} class={iconSize[size]} />}
+    </button>
+  )
+}
+
+<style>
+  .button-gradient-border-primary {
+    position: relative;
+    background: linear-gradient(180deg, #2563eb 0%, #1e40af 100%);
+    box-shadow:
+      0 4px 6px -1px rgba(30, 64, 175, 0.1),
+      0 2px 4px -2px rgba(30, 64, 175, 0.1);
+    z-index: 0;
+  }
+
+  .button-gradient-border-secondary {
+    position: relative;
+    background: linear-gradient(0deg, hsla(0, 0%, 100%, 0), hsla(0, 0%, 100%, 0.09)), hsla(0, 0%, 100%, 0.12);
+    box-shadow:
+      0 1px 2px 0 rgba(0, 0, 0, 0.13),
+      inset 0 1px 0 0 hsla(0, 0%, 100%, 0.07);
+    z-index: 0;
+  }
+
+  .tertiary-link {
+    position: relative;
+  }
+
+  .tertiary-link::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.2s ease-out;
+    background: currentColor;
+  }
+
+  .tertiary-link:hover::after {
+    transform: scaleX(1);
+  }
+
+  .loading-spinner {
+    width: 1.2em;
+    height: 1.2em;
+    border: 2px solid currentColor;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    animation: spinner 0.75s linear infinite;
+  }
+
+  @keyframes spinner {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  button[disabled],
+  a[aria-disabled='true'] {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+</style>

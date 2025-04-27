@@ -1,0 +1,97 @@
+---
+import { Icon } from 'astro-icon/components';
+import SectionTitle from '../common/SectionTitle.astro';
+import Button from '../ui/Button.astro';
+---
+
+<section id="faq" class="relative mx-auto mt-32 mb-32 max-w-6xl px-4">
+  <div class="mb-12 text-center">
+    <SectionTitle>FAQ</SectionTitle>
+    <h2 class="mb-6 text-4xl font-semibold tracking-tight text-white md:text-5xl">Frequently asked questions</h2>
+  </div>
+
+  <div class="space-y-6">
+    <details class="group cursor-pointer rounded-lg border border-white/10 bg-white/5 transition hover:bg-white/10">
+      <summary class="flex w-full items-center justify-between px-6 py-5 text-lg font-semibold text-white select-none">
+        Which Windows versions are supported?
+        <Icon name="tabler:chevron-down" class="h-5 w-5 flex-shrink-0 transition-transform group-open:rotate-180" />
+      </summary>
+      <div class="px-6 pb-6">
+        <p class="leading-relaxed text-white/70">
+          AtlasOS officially supports <span class="font-semibold text-white">Windows 11</span> and
+          <span class="font-semibold text-white">Windows 10</span>. Due to the upcoming EOL (End of Life) for Windows
+          10, we do not recommend using Windows 10. We will be removing support for Windows 10 when Microsoft retires it
+          on <span class="whitespace-nowrap">14 October 2025</span>.
+        </p>
+      </div>
+    </details>
+
+    <details class="group cursor-pointer rounded-lg border border-white/10 bg-white/5 transition hover:bg-white/10">
+      <summary class="flex w-full items-center justify-between px-6 py-5 text-lg font-semibold text-white select-none">
+        Will my apps keep working?
+        <Icon name="tabler:chevron-down" class="h-5 w-5 flex-shrink-0 transition-transform group-open:rotate-180" />
+      </summary>
+      <div class="px-6 pb-6">
+        <p class="leading-relaxed text-white/70">
+          Yes! AtlasOS is the same as standard Windows, we support all functionality and all anti-cheats. There is
+          nothing stripped from AtlasOS, giving you the same experience as standard Windows.
+        </p>
+      </div>
+    </details>
+
+    <details class="group cursor-pointer rounded-lg border border-white/10 bg-white/5 transition hover:bg-white/10">
+      <summary class="flex w-full items-center justify-between px-6 py-5 text-lg font-semibold text-white select-none">
+        How do I install AtlasOS?
+        <Icon name="tabler:chevron-down" class="h-5 w-5 flex-shrink-0 transition-transform group-open:rotate-180" />
+      </summary>
+      <div class="px-6 pb-6">
+        <p class="leading-relaxed text-white/70">
+          It is required that everyone choosing to install AtlasOS follows our
+          <a
+            href="https://docs.atlasos.net/getting-started/installation/"
+            class="text-primary hover:text-primary"
+            target="_blank"
+            rel="noopener noreferrer">installation documentation</a
+          >. If you do not follow our
+          <a
+            href="https://docs.atlasos.net/getting-started/installation/"
+            class="text-primary hover:text-primary"
+            target="_blank"
+            rel="noopener noreferrer">installation documentation</a
+          > your installation of AtlasOS will be unsupported.
+        </p>
+      </div>
+    </details>
+
+    <details class="group cursor-pointer rounded-lg border border-white/10 bg-white/5 transition hover:bg-white/10">
+      <summary class="flex w-full items-center justify-between px-6 py-5 text-lg font-semibold text-white select-none">
+        Can I easily roll back to stock Windows?
+        <Icon name="tabler:chevron-down" class="h-5 w-5 flex-shrink-0 transition-transform group-open:rotate-180" />
+      </summary>
+      <div class="px-6 pb-6">
+        <p class="leading-relaxed text-white/70">
+          No, AtlasOS does not provide a rollback or recovery option. You will need to reinstall Windows, just the same
+          as you would need to reinstall Windows to install AtlasOS. We have a guide on how to do this in our
+          <a
+            href="https://docs.atlasos.net/getting-started/reverting-atlas/"
+            class="text-primary hover:text-primary"
+            target="_blank"
+            rel="noopener noreferrer">reverting AtlasOS documentation</a
+          >.
+        </p>
+      </div>
+    </details>
+  </div>
+  <div class="mt-8 text-center">
+    <Button
+      href="https://docs.atlasos.net/general-faq/atlas-and-security/"
+      icon="tabler:arrow-up-right"
+      iconPosition="after"
+      external
+      variant="tertiary"
+      size="lg"
+    >
+      View more FAQs in our documentation
+    </Button>
+  </div>
+</section>

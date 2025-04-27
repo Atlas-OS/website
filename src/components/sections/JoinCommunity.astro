@@ -1,0 +1,25 @@
+---
+import SectionTitle from '../common/SectionTitle.astro';
+import Button from '../ui/Button.astro';
+---
+
+<section class="relative mx-auto mt-32 mb-32 max-w-7xl px-4 text-center">
+  <SectionTitle>Join our community</SectionTitle>
+  <h2 class="mb-6 text-4xl font-semibold tracking-tight text-white md:text-5xl">
+    Be part of the <span class="text-primary">Atlas</span> community
+  </h2>
+  <p class="mx-auto mb-12 max-w-2xl text-white/70">
+    Join our thriving community of over 50,000 members and millions of AtlasOS users. <br /> Connect, share, and stay updated.
+  </p>
+  <div class="flex flex-col items-center justify-center gap-5 sm:flex-row">
+    <Button href="https://discord.com/invite/atlasos" variant="primary" size="lg" icon="tabler:brand-discord" external>
+      Join Discord
+    </Button>
+    <Button href="https://x.com/atlasos" variant="secondary" size="lg" icon="tabler:brand-x" external>
+      Follow us
+    </Button>
+  </div>
+  <div class="absolute left-1/2 -z-20 h-[4rem] w-full max-w-7xl -translate-x-1/2 opacity-50">
+    <div class="bg-primary h-full w-full rounded-full opacity-70 blur-[200px]"></div>
+  </div>
+</section>

@@ -1,11 +1,76 @@
 {
-	"useTabs": false,
-	"tabWidth": 4,
-	"singleQuote": true,
-	"semi": false,
-	"trailingComma": "none",
-	"printWidth": 250,
-	"plugins": ["prettier-plugin-astro"],
-	"pluginSearchDirs": ["."],
-	"overrides": [{ "files": "*.astro", "options": { "parser": "astro" } }]
+  "$schema": "http://json.schemastore.org/prettierrc",
+  "plugins": [
+    "prettier-plugin-astro",
+    "prettier-plugin-tailwindcss",
+    "prettier-plugin-astro-organize-imports"
+  ],
+  "printWidth": 100,
+  "tabWidth": 2,
+  "useTabs": false,
+  "semi": true,
+  "singleQuote": true,
+  "trailingComma": "es5",
+  "bracketSpacing": true,
+  "arrowParens": "always",
+  "endOfLine": "lf",
+  "tailwindFunctions": ["tw"],
+  "overrides": [
+    {
+      "files": ["*.{js,jsx,ts,tsx}"],
+      "options": {
+        "parser": "typescript",
+        "semi": true,
+        "tabWidth": 2,
+        "printWidth": 100,
+        "singleQuote": true,
+        "trailingComma": "all",
+        "bracketSpacing": true,
+        "arrowParens": "avoid",
+        "endOfLine": "auto"
+      }
+    },
+    {
+      "files": ["*.{json,jsonc,json5}"],
+      "options": {
+        "parser": "json",
+        "tabWidth": 2
+      }
+    },
+    {
+      "files": ["*.{yml,yaml}"],
+      "options": {
+        "parser": "yaml",
+        "tabWidth": 2,
+        "singleQuote": true
+      }
+    },
+    {
+      "files": ["*.mdx"],
+      "options": {
+        "parser": "mdx",
+        "proseWrap": "preserve"
+      }
+    },
+    {
+      "files": ["*.md"],
+      "options": {
+        "parser": "markdown",
+        "proseWrap": "preserve"
+      }
+    },
+    {
+      "files": ["*.svelte"],
+      "options": {
+        "parser": "svelte"
+      }
+    },
+    {
+      "files": ["*.astro"],
+      "options": {
+        "parser": "astro",
+        "printWidth": 120
+      }
+    }
+  ]
 }

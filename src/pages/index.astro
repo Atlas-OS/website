@@ -1,70 +1,38 @@
 ---
-import MainLayout from '../layouts/main-layout.astro'
-import Hero from '../components/Hero.astro'
-import WindowsComparison from '../components/WindowsComparison.astro'
-import UpgradeComparison from '../components/UpgradeComparison.astro'
-import ReviewSection from '../components/ReviewSection.astro'
-import OpenSourceSection from '../components/OpenSourceSection.astro'
-import LinusVideo from '../components/LinusVideo.astro'
-import CTA from '../components/CTA.astro'
-import DownloadModal from '../components/DownloadModal.astro'
+import SectionSeparator from '../components/common/SectionSeparator.astro';
+import Benchmarks from '../components/sections/Benchmarks.astro';
+import FAQ from '../components/sections/FAQ.astro';
+import Features from '../components/sections/Features.astro';
+import Hero from '../components/sections/Hero.astro';
+import JoinCommunity from '../components/sections/JoinCommunity.astro';
+import LinusTechTips from '../components/sections/LinusTechTips.astro';
+import OpenSource from '../components/sections/OpenSource.astro';
+import ProTestimonials from '../components/sections/ProTestimonials.astro';
+import Reviews from '../components/sections/Reviews.astro';
+import WhyAtlas from '../components/sections/WhyAtlas.astro';
+import DefaultLayout from '../layouts/DefaultLayout.astro';
 
-interface Props {
-    title: string
-    description: string
-    links: {
-        documentation: string
-        forum: string
-        discord: string
-        github: string
-        faq: string
-        twitter: string
-        trustpilot: string
-        donate: string
-        linusvideo: string
-    }
-}
-
-type Links = {
-    documentation: string
-    forum: string
-    discord: string
-    github: string
-    faq: string
-    install: string
-    twitter: string
-    trustpilot: string
-    donate: string
-    linusvideo: string
-}
-
-const links: Links = {
-    documentation: 'https://docs.atlasos.net',
-    forum: 'https://github.com/Atlas-OS/Atlas/discussions',
-    discord: 'https://discord.atlasos.net',
-    github: 'https://github.com/Atlas-OS/Atlas',
-    faq: 'https://docs.atlasos.net/install-faq/removed-features',
-    install: 'https://docs.atlasos.net/getting-started/installation',
-    twitter: 'https://x.com/atlasos',
-    trustpilot: 'https://trustpilot.com/review/atlasos.net',
-    donate: 'https://donate.atlasos.net',
-    linusvideo: 'https://www.youtube.com/watch?v=dc7CIkZcWYE'
-}
+const sections = [
+  Hero,
+  Features,
+  WhyAtlas,
+  Benchmarks,
+  ProTestimonials,
+  Reviews,
+  LinusTechTips,
+  OpenSource,
+  FAQ,
+  JoinCommunity,
+];
 ---
 
-<MainLayout
-    links={links}
-    title="An optimized modification of Windows, designed for enthusiasts."
-    description="We designed Atlas for enthusiasts & gamers, improving privacy, usability, and performance. Have the best experience compared to stock, slow Windows."
->
-    <DownloadModal {links} />
-    <Hero {links} />
-    <div class="container main">
-        <UpgradeComparison />
-        <WindowsComparison />
-        <ReviewSection {links} />
-        <OpenSourceSection {links} />
-        <LinusVideo {links} />
-    </div>
-    <CTA {links} />
-</MainLayout>
+<DefaultLayout>
+  {
+    sections.map((Section, index) => (
+      <>
+        <Section />
+        {index < sections.length - 1 && <SectionSeparator />}
+      </>
+    ))
+  }
+</DefaultLayout>

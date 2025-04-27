@@ -1,0 +1,79 @@
+---
+import { Icon } from 'astro-icon/components';
+import SectionTitle from '../common/SectionTitle.astro';
+import Button from '../ui/Button.astro';
+---
+
+<section class="relative mx-auto mt-32 mb-32 max-w-7xl px-4">
+  <div class="mb-8 text-center">
+    <SectionTitle>Benchmarks</SectionTitle>
+    <h2 class="mb-6 text-4xl font-semibold tracking-tight text-white md:text-5xl">
+      <span class="text-primary">AtlasOS</span> vs. <span class="text-white/70">Stock Windows</span>
+    </h2>
+    <p class="mx-auto max-w-2xl leading-relaxed text-white/70">
+      With reduced resource utilization, improved privacy, usability, and performance, why wouldn't you consider making
+      the switch?
+    </p>
+  </div>
+
+  <div class="mb-12 text-center">
+    <Button
+      href="https://github.com/orgs/Atlas-OS/discussions/1161"
+      icon="tabler:arrow-up-right"
+      iconPosition="after"
+      external
+      variant="primary"
+      size="lg"
+    >
+      View detailed benchmark
+    </Button>
+  </div>
+
+  <div class="grid grid-cols-1 gap-16 md:grid-cols-3 md:gap-20">
+    <div class="relative py-2">
+      <div class="flex h-12 w-12 items-center justify-center rounded-md bg-white/5">
+        <Icon name="tabler:cpu" class="h-6 w-6 text-white/80" />
+      </div>
+      <h3 class="mt-5 mb-3 text-xl font-semibold tracking-tight text-white">CPU usage</h3>
+      <p class="leading-relaxed text-white/70">
+        We've reduced background CPU spikes significantly. Nothing that you don't need will run in the background.
+      </p>
+      <div class="mt-4 flex items-baseline gap-2">
+        <span class="text-2xl font-semibold text-white/70">2‑10%</span>
+        <Icon name="tabler:arrow-narrow-right" class="h-5 w-5 text-white/70" aria-hidden="true" />
+        <span class="text-primary text-2xl font-semibold">0%</span>
+      </div>
+    </div>
+
+    <div class="relative py-2">
+      <div class="flex h-12 w-12 items-center justify-center rounded-md bg-white/5">
+        <Icon name="tabler:database" class="h-6 w-6 text-white/80" />
+      </div>
+      <h3 class="mt-5 mb-3 text-xl font-semibold tracking-tight text-white">RAM usage</h3>
+      <p class="leading-relaxed text-white/70">
+        Thanks to Atlas we've seen ~1.5 GB of RAM usage freed on boot, which can then be allocated to other tasks.
+      </p>
+      <div class="mt-4 flex items-baseline gap-2">
+        <span class="text-2xl font-semibold text-white/70">2.9 GB</span>
+        <Icon name="tabler:arrow-narrow-right" class="h-5 w-5 text-white/70" aria-hidden="true" />
+        <span class="text-primary text-2xl font-semibold">~1.4 GB</span>
+      </div>
+    </div>
+
+    <div class="relative py-2">
+      <div class="flex h-12 w-12 items-center justify-center rounded-md bg-white/5">
+        <Icon name="tabler:gauge" class="h-6 w-6 text-white/80" />
+      </div>
+      <h3 class="mt-5 mb-3 text-xl font-semibold tracking-tight text-white">Higher FPS in games</h3>
+      <p class="leading-relaxed text-white/70">
+        Higher average framerates observed in competitive titles like Valorant on Windows 11.
+      </p>
+      <p class="mt-2 text-sm leading-relaxed text-white/50">Ryzen 7 5800X3D, 16GB 3600MHz, RTX 2070 Super</p>
+      <div class="mt-4 flex items-baseline gap-2">
+        <span class="text-2xl font-semibold text-white/70">217.5 FPS</span>
+        <Icon name="tabler:arrow-narrow-right" class="h-5 w-5 text-white/70" aria-hidden="true" />
+        <span class="text-primary text-2xl font-semibold">365.91 FPS</span>
+      </div>
+    </div>
+  </div>
+</section>

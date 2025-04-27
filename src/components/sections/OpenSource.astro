@@ -1,0 +1,208 @@
+---
+import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+import GitHub from '../../assets/github-overview.webp';
+import GitHubStar from '../../assets/github-star.svg';
+import GPLLogo from '../../assets/gpl3-logo.svg';
+
+const links = {
+  github: 'https://github.com/Atlas-OS/Atlas',
+};
+---
+
+<section class="relative mx-auto mt-32 mb-32 flex max-w-7xl flex-col items-end px-4 lg:flex-row lg:justify-between">
+  <div class="github-wrapper relative hidden h-[330px] w-[587px] lg:block">
+    <Image
+      src={GitHub}
+      alt="GitHub repository"
+      class="h-auto w-full rounded-md select-none"
+      loading="lazy"
+      draggable={false}
+    />
+    <div
+      id="gh-stars-wrap"
+      class="bg-secondary/80 absolute right-[-60px] bottom-[-7px] w-[270px] cursor-pointer rounded-md border border-white/10 text-gray-400 backdrop-blur-md transition-[border-radius_0.3s]"
+    >
+      <button
+        id="toggle-star-list-btn"
+        aria-controls="gh-star-list"
+        aria-expanded="false"
+        class="w-full border-none bg-transparent p-0 text-left hover:opacity-90"
+        type="button"
+      >
+        <div class="flex w-[270px] cursor-pointer justify-center">
+          <div class="flex items-center px-4 py-2">
+            <div class="mr-4 h-[19px] w-[19px]">
+              <Image
+                src={GitHubStar}
+                alt="GitHub star"
+                class="h-full w-full select-none"
+                loading="lazy"
+                draggable={false}
+              />
+            </div>
+            <p class="text-white">Starred</p>
+            <span id="star-amount-badge" class="bg-secondary/80 ml-8 rounded-full px-3 py-2 text-sm">--</span>
+          </div>
+          <div class="mx-2 w-px bg-white/10"></div>
+          <div class="flex items-center px-4 py-2">
+            <Icon name="tabler:chevron-down" class="h-5 w-5 transition-transform" />
+          </div>
+        </div>
+      </button>
+      <div
+        id="gh-star-list"
+        class="absolute top-full left-0 z-10 h-0 overflow-hidden rounded-b-md border border-t-0 border-gray-700 opacity-0 transition-all duration-300 ease-in-out"
+      >
+        <div id="gh-star-list-items" class="flex flex-col gap-4 bg-gray-800 px-5 py-5"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-lg text-right">
+    <h2 class="mb-6 ml-auto max-w-md text-4xl font-semibold tracking-tight text-white md:text-5xl">
+      An open-source, <span class="text-primary">GPL-3.0</span> project
+    </h2>
+    <p class="max-w-lg leading-relaxed text-white/80">
+      We are an open-source, community-driven project, licensed under GPL-3.0. We would greatly appreciate it if you
+      check it out and, if interested, consider contributing to our vision.
+    </p>
+    <div class="mt-10 flex items-center justify-end gap-8">
+      <div class="flex items-center gap-2">
+        <div class="h-[19px] w-[19px]">
+          <Image
+            src={GitHubStar}
+            alt="GitHub star"
+            class="h-full w-full select-none"
+            loading="lazy"
+            draggable={false}
+          />
+        </div>
+        <p class="text-white">
+          <span id="star-amount-tag" class="mr-1 font-semibold text-yellow-400">--</span><span class="text-white/70">
+            stargazers on
+            <a
+              href={links.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-primary font-semibold hover:underline">GitHub</a
+            >
+          </span>
+        </p>
+      </div>
+      <Image src={GPLLogo} alt="GPL logo" class="h-10 w-auto select-none" loading="lazy" draggable={false} />
+    </div>
+  </div>
+</section>
+
+<script>
+  /**
+   * Manages fetching and displaying GitHub star count and recent stargazer list.
+   */
+  class GitHubStarsManager {
+    starListItems: HTMLElement | null;
+    starCountEl: HTMLElement | null;
+    starBadgeEl: HTMLElement | null;
+
+    /**
+     * Initializes the dropdown and loads star info in production.
+     */
+    constructor() {
+      this.starListItems = document.getElementById('gh-star-list-items');
+      this.starCountEl = document.getElementById('star-amount-tag');
+      this.starBadgeEl = document.getElementById('star-amount-badge');
+
+      this.initDropdown();
+      if (import.meta.env.MODE === 'production') {
+        this.updateStarInfo();
+      }
+    }
+
+    /**
+     * Sets up the interactive star dropdown and outside-click handling.
+     */
+    initDropdown() {
+      const toggleBtn = document.getElementById('toggle-star-list-btn');
+      const starList = document.getElementById('gh-star-list');
+      const wrapper = document.getElementById('gh-stars-wrap');
+      if (!toggleBtn || !starList || !wrapper) return;
+
+      toggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = starList.classList.toggle('show');
+        wrapper.classList.toggle('toggled');
+        toggleBtn.classList.toggle('toggled');
+        const icon = toggleBtn.querySelector('svg');
+        if (icon) icon.classList.toggle('rotate-180');
+        toggleBtn.setAttribute('aria-expanded', isOpen.toString());
+      });
+
+      document.addEventListener('click', (event: MouseEvent) => {
+        const target = event.target as Node;
+        if (!wrapper.contains(target)) {
+          starList.classList.remove('show');
+          wrapper.classList.remove('toggled');
+          toggleBtn.classList.remove('toggled');
+          const icon = toggleBtn.querySelector('svg');
+          if (icon) icon.classList.remove('rotate-180');
+          toggleBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
+    /**
+     * Fetches JSON data from a given URL.
+     * @param {string} url - The endpoint to query.
+     * @returns {Promise<any>} Parsed JSON response.
+     */
+    async fetchData(url: string): Promise<any> {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      return res.json();
+    }
+
+    /**
+     * Creates a DOM element for a stargazer entry.
+     * @param {{username: string, avatar: string}} star - The stargazer info.
+     * @returns {HTMLElement} A flex container with avatar and username.
+     */
+    createStarElement(star: { username: string; avatar: string }): HTMLElement {
+      const el = document.createElement('div');
+      el.className = 'flex items-center gap-2';
+      const img = document.createElement('img');
+      img.src = star.avatar;
+      img.alt = `${star.username} avatar`;
+      img.loading = 'lazy';
+      img.className = 'w-10 h-10 rounded-full object-cover';
+      const p = document.createElement('p');
+      p.textContent = star.username;
+      p.className = 'text-white';
+      el.append(img, p);
+      return el;
+    }
+
+    /**
+     * Loads star count and recent stargazers, updating the badge and list.
+     */
+    async updateStarInfo() {
+      try {
+        const stars = await this.fetchData('https://api.atlasos.net/stars');
+        const data = stars[0] || {};
+        const count = data.count;
+        if (this.starCountEl) this.starCountEl.textContent = count.toLocaleString();
+        if (this.starBadgeEl) this.starBadgeEl.textContent = `${(count / 1000).toFixed(1)}k`;
+        const recent = await this.fetchData('https://api.atlasos.net/recent-stars');
+        const items = recent.slice(0, 4).map((s: { username: string; avatar: string }) => this.createStarElement(s));
+        if (this.starListItems) this.starListItems.replaceChildren(...items);
+      } catch (err) {
+        console.error('Failed to update star information:', err);
+        if (this.starCountEl) this.starCountEl.textContent = '---';
+        if (this.starBadgeEl) this.starBadgeEl.textContent = '---';
+      }
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    new GitHubStarsManager();
+  });
+</script>

@@ -1,0 +1,64 @@
+---
+import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+import LinusThumbnail from '../../assets/linus-tech-tips-video-thumbnail.webp';
+import SectionTitle from '../common/SectionTitle.astro';
+
+const links = {
+  linusvideo: 'https://www.youtube.com/watch?v=dc7CIkZcWYE',
+};
+const videoTitle = "You don't need a new PC - AtlasOS E-Waste PC refresh";
+---
+
+<section class="relative mx-auto mt-32 mb-32 max-w-7xl px-4">
+  <div class="text-center">
+    <SectionTitle>Linus Tech Tips</SectionTitle>
+  </div>
+  <div class="mb-16 text-center">
+    <h3 class="mb-6 text-4xl font-semibold tracking-tight text-white italic md:text-5xl">
+      <span class="text-white/70">"</span>
+      If you can run Windows with <span class="text-primary">this kind of performance</span>... Jeepers Creepers.
+      <span class="text-white/70">"</span>
+    </h3>
+    <p class="mt-4 text-base text-white/45 md:text-lg">— Linus Sebastian</p>
+  </div>
+
+  <a
+    href={links.linusvideo}
+    target="_blank"
+    rel="noreferrer noopener"
+    aria-label="Watch what Linus said about Atlas OS"
+    class="group block"
+  >
+    <div class="relative mx-auto h-64 max-w-full overflow-hidden rounded-t-lg md:h-[546px]">
+      <div
+        class="relative h-full w-full transform transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_center,hsla(209,100%,42%,0)_0%,hsla(209,100%,42%,0)_50%,hsla(209,100%,12%,0.4)_100%)] before:opacity-0 before:transition-opacity before:duration-500 before:ease-[cubic-bezier(0.22,1,0.36,1)] before:content-[''] before:group-hover:opacity-100"
+      >
+        <Image
+          src={LinusThumbnail}
+          alt="Linus Tech Tips video thumbnail"
+          class="absolute inset-0 z-0 h-full w-full object-cover select-none"
+          loading="lazy"
+          draggable="false"
+        />
+        <div class="absolute inset-0 z-10 flex items-center justify-center">
+          <div
+            class="flex h-[120px] w-[120px] items-center justify-center rounded-full border border-white/20 bg-black/40 backdrop-blur-lg transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:border-white/30 group-hover:bg-black/50 group-hover:shadow-[0_8px_30px_rgba(0,0,0,0.4)]"
+          >
+            <Icon
+              name="tabler:player-play"
+              class="h-[45px] w-[45px] text-white/80 transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:text-white"
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        class="pointer-events-none absolute right-0 bottom-0 left-0 z-20 h-[30%] bg-gradient-to-t from-[var(--bg-primary)] to-transparent"
+      >
+      </div>
+    </div>
+  </a>
+  <div class="mt-4 text-center">
+    <p class="text-sm text-white/60 md:text-base">({videoTitle})</p>
+  </div>
+</section>

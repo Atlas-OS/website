@@ -1,0 +1,444 @@
+---
+import { Icon } from 'astro-icon/components';
+import Button from './Button.astro';
+
+interface Props {
+  links: {
+    faq: string;
+    install: string;
+  };
+}
+
+const { links } = Astro.props;
+---
+
+<dialog
+  id="download-modal"
+  class="m-auto max-h-screen max-w-screen border-none bg-transparent px-4 backdrop:bg-black/45 backdrop:backdrop-blur-md"
+>
+  <div
+    class="relative m-4 flex w-full max-w-lg flex-col overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-zinc-900/90 to-zinc-950/95"
+  >
+    <div class="flex items-center justify-between border-b border-white/10 bg-white/[0.02] p-5 md:p-6">
+      <div class="flex items-center gap-3">
+        <Icon name="tabler:download" class="text-white/70" size={22} />
+        <h1 class="text-xl font-semibold tracking-tight text-white">Installing AtlasOS</h1>
+      </div>
+      <button class="cursor-pointer rounded-md p-2 hover:bg-white/10" id="modal-close" aria-label="Close">
+        <Icon name="tabler:x" class="text-white/70" size={16} />
+      </button>
+    </div>
+
+    <div class="p-6">
+      <div id="docs-view" class="animate-fade flex flex-col gap-6">
+        <p class="text-base text-white/70">
+          To get started, you are required to follow our installation guide. <br />
+          <br />We have made it as easy to follow as possible, with all the steps to get you up and running.
+        </p>
+
+        <div class="flex flex-col gap-2.5">
+          <Button
+            href={links.install}
+            external
+            variant="primary"
+            icon="tabler:arrow-up-right"
+            iconPosition="after"
+            size="lg"
+            fw
+          >
+            Installation Guide
+          </Button>
+          <Button
+            href={links.faq}
+            external
+            variant="secondary"
+            icon="tabler:arrow-up-right"
+            iconPosition="after"
+            size="lg"
+            fw
+          >
+            Install FAQ
+          </Button>
+        </div>
+
+        <!-- Divider -->
+        <div class="relative mx-auto my-4 h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent">
+          <div class="absolute top-0 left-1/2 h-px w-[30px] -translate-x-1/2 bg-white/50"></div>
+        </div>
+
+        <button
+          id="show-downloads"
+          class="group focus-visible:outline-primary inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-md px-4 py-2 text-center text-sm font-medium text-white/70 transition-colors duration-200 hover:text-white focus-visible:outline focus-visible:outline-offset-2"
+        >
+          <span>I'm following the guide, show me the downloads</span>
+          <Icon
+            name="tabler:arrow-right"
+            class="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5"
+          />
+        </button>
+      </div>
+
+      <div id="downloads-view" class="animate-fade hidden flex-col gap-6">
+        <p class="text-base text-white/70">
+          <strong class="font-semibold text-white"
+            >Warning: You should only download these files when instructed to by the install guide.</strong
+          >
+          If you aren't following the guide, please go back and read it first.
+        </p>
+
+        <div class="flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.02] p-3">
+          <label class="relative flex cursor-pointer items-center">
+            <input type="checkbox" id="confirm-guide" class="peer sr-only" />
+            <div
+              class="peer-checked:border-primary peer-checked:bg-primary peer-focus:ring-primary h-4 w-4 rounded border border-white/20 bg-white/5 transition-colors peer-focus:ring-2 peer-focus:ring-offset-1 peer-focus:ring-offset-zinc-900"
+            >
+            </div>
+            <Icon
+              name="tabler:check"
+              class="absolute top-0 left-0 h-4 w-4 text-zinc-900 opacity-0 transition-opacity peer-checked:opacity-100"
+            />
+          </label>
+          <label for="confirm-guide" class="cursor-pointer text-sm text-white/70"
+            >I confirm I am following the <a
+              href={links.install}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-primary"
+            >
+              installation guide</a
+            >.</label
+          >
+        </div>
+
+        <p id="download-count" class="rounded-lg bg-white/[0.02] p-2 text-center text-sm text-white/50">
+          Fetching download count...
+        </p>
+
+        <div class="flex flex-col gap-2.5">
+          <Button
+            variant="primary"
+            id="playbook-dl-btn"
+            icon="tabler:download"
+            iconPosition="after"
+            size="lg"
+            fw
+            disabled
+          >
+            Download Atlas Playbook
+          </Button>
+          <Button
+            href="https://download.ameliorated.io/AME%20Wizard%20Beta.zip"
+            variant="secondary"
+            id="wizard-dl-btn"
+            icon="tabler:download"
+            iconPosition="after"
+            size="lg"
+            fw
+          >
+            Download AME Wizard
+          </Button>
+        </div>
+
+        <!-- Divider -->
+        <div class="relative mx-auto my-4 h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent">
+          <div class="absolute top-0 left-1/2 h-px w-[30px] -translate-x-1/2 bg-white/50"></div>
+        </div>
+
+        <button
+          id="show-docs"
+          class="group focus-visible:outline-primary inline-flex cursor-pointer items-center justify-center gap-2 rounded-md px-4 py-2 text-center text-sm font-medium text-white/70 transition-colors duration-200 hover:text-white focus-visible:outline focus-visible:outline-offset-2"
+        >
+          <Icon
+            name="tabler:arrow-left"
+            class="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-0.5"
+          />
+          <span>Back to the install guide</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<script>
+  /**
+   * Handles the download modal: view switching, fetching and tracking downloads.
+   */
+  class DownloadModal {
+    apiEndpoint: string;
+    atlasVersion: string;
+    modal: HTMLDialogElement;
+    views: { docs: HTMLElement; downloads: HTMLElement };
+    buttons: {
+      close: HTMLButtonElement;
+      showDownloads: HTMLButtonElement;
+      showDocs: HTMLButtonElement;
+      playbook: HTMLButtonElement;
+      wizard: HTMLButtonElement;
+      confirmGuide: HTMLInputElement;
+    };
+    downloadCountElement: HTMLElement;
+    currentView: 'docs' | 'downloads';
+
+    /**
+     * Initializes modal elements, API endpoint, and event listeners.
+     */
+    constructor() {
+      this.apiEndpoint = 'https://api.atlasos.net/';
+      this.atlasVersion = '0.4.1';
+
+      this.modal = this.getElement<HTMLDialogElement>('download-modal');
+      this.views = {
+        docs: this.getElement<HTMLElement>('docs-view'),
+        downloads: this.getElement<HTMLElement>('downloads-view'),
+      };
+      this.buttons = {
+        close: this.getElement<HTMLButtonElement>('modal-close'),
+        showDownloads: this.getElement<HTMLButtonElement>('show-downloads'),
+        showDocs: this.getElement<HTMLButtonElement>('show-docs'),
+        playbook: this.getElement<HTMLButtonElement>('playbook-dl-btn'),
+        wizard: this.getElement<HTMLButtonElement>('wizard-dl-btn'),
+        confirmGuide: this.getElement<HTMLInputElement>('confirm-guide'),
+      };
+      this.downloadCountElement = this.getElement<HTMLElement>('download-count');
+      this.currentView = 'docs';
+
+      this.setupEventListeners();
+      this.initializeViews();
+    }
+
+    /**
+     * Retrieves a DOM element by ID or throws if not found.
+     * @param {string} id - The element's ID.
+     * @returns {T} The found element.
+     */
+    getElement<T extends HTMLElement>(id: string): T {
+      const el = document.getElementById(id);
+      if (!el) throw new Error(`Element with ID '${id}' not found.`);
+      return el as T;
+    }
+
+    /**
+     * Attaches event listeners for opening, closing, and view controls.
+     */
+    setupEventListeners(): void {
+      document.addEventListener('showModal', () => {
+        this.modal.showModal();
+        document.body.classList.add('overflow-hidden');
+        this.updateDownloadCount();
+        this.initializeViews();
+      });
+
+      this.buttons.close.addEventListener('click', () => this.closeModal());
+
+      this.modal.addEventListener('click', (e: MouseEvent) => {
+        const rect = this.modal.getBoundingClientRect();
+        const isInDialog =
+          rect.top <= e.clientY &&
+          e.clientY <= rect.top + rect.height &&
+          rect.left <= e.clientX &&
+          e.clientX <= rect.left + rect.width;
+        if (!isInDialog) this.closeModal();
+      });
+
+      this.buttons.showDownloads.addEventListener('click', () => this.switchView('downloads'));
+      this.buttons.showDocs.addEventListener('click', () => this.switchView('docs'));
+      this.buttons.confirmGuide.addEventListener('change', () => this.updateConfirmState());
+      this.buttons.playbook.addEventListener('click', () => this.handleDownload());
+
+      this.modal.addEventListener('close', () => {
+        document.body.classList.remove('overflow-hidden');
+      });
+    }
+
+    /**
+     * Closes the download modal dialog.
+     */
+    closeModal(): void {
+      this.modal.close();
+    }
+
+    /**
+     * Resets views to the documentation state and disables downloads.
+     */
+    initializeViews(): void {
+      this.views.docs.style.display = 'flex';
+      this.views.downloads.style.display = 'none';
+      this.buttons.confirmGuide.checked = false;
+      this.toggleDownloadButtons(false);
+    }
+
+    /**
+     * Switches between the docs and downloads views in the modal.
+     * @param {'docs' | 'downloads'} viewName - 'docs' or 'downloads'.
+     */
+    switchView(viewName: 'docs' | 'downloads'): void {
+      if (this.currentView === viewName) return;
+
+      this.currentView = viewName;
+      const viewToShow = this.views[viewName];
+      const viewToHide = viewName === 'docs' ? this.views.downloads : this.views.docs;
+
+      viewToHide.style.display = 'none';
+      viewToShow.style.display = 'flex';
+
+      this.buttons.confirmGuide.checked = false;
+      this.toggleDownloadButtons(false);
+
+      if (viewName === 'downloads') {
+        this.updateDownloadCount();
+      }
+    }
+
+    /**
+     * Updates enabled state of download buttons based on confirmation.
+     */
+    updateConfirmState(): void {
+      this.toggleDownloadButtons(this.buttons.confirmGuide.checked);
+    }
+
+    /**
+     * Enables or disables the playbook and wizard download buttons.
+     * @param {boolean} enabled - true to enable buttons.
+     */
+    toggleDownloadButtons(enabled: boolean): void {
+      this.buttons.playbook.disabled = !enabled;
+      this.buttons.wizard.classList.toggle('disabled-link', !enabled);
+      this.buttons.wizard.setAttribute('aria-disabled', String(!enabled));
+      this.buttons.wizard.style.pointerEvents = enabled ? 'auto' : 'none';
+    }
+
+    /**
+     * Fetches the current download count and displays it.
+     */
+    async updateDownloadCount(): Promise<void> {
+      this.downloadCountElement.textContent = 'Loading...';
+      try {
+        const count = await this.fetchDownloadCount();
+        this.downloadCountElement.textContent =
+          count != null
+            ? `Atlas has been downloaded ${count.toLocaleString('en-US')} times.`
+            : 'Join the millions of Atlas users!';
+      } catch (error) {
+        console.error('Failed to update download count:', error);
+        this.downloadCountElement.textContent = 'Could not load download count.';
+      }
+    }
+
+    /**
+     * Fetches the raw download count from the API.
+     * @returns {Promise<number|null>} The download count or null.
+     */
+    async fetchDownloadCount(): Promise<number | null> {
+      try {
+        const response = await fetch(this.apiEndpoint);
+        if (!response.ok) throw new Error(`API request failed with status ${response.status}`);
+        const data = (await response.json()) as Array<{ version?: string; count?: number }>;
+        const atlasDownload = data.find((item) => item?.version === 'atlas');
+        return atlasDownload?.count ?? null;
+      } catch (error) {
+        console.error('Error fetching download count:', error);
+        return null;
+      }
+    }
+
+    /**
+     * Sends a request to increment the download count on the server.
+     */
+    async incrementDownloadCount(): Promise<void> {
+      const incrementUrl = `${this.apiEndpoint}atlas/increment`;
+      try {
+        const response = await fetch(incrementUrl, { method: 'POST' });
+        if (!response.ok) throw new Error(`Increment request failed with status ${response.status}`);
+        console.log('Download count incremented successfully.');
+      } catch (error) {
+        console.error('Error incrementing download count:', error);
+      }
+    }
+
+    /**
+     * Handles the playbook download action and triggers count increment.
+     */
+    handleDownload(): void {
+      if (this.buttons.playbook.disabled) return;
+
+      const originalContent = this.buttons.playbook.innerHTML;
+      const downloadUrl = `https://cdn.jsdelivr.net/atlas/${this.atlasVersion}/AtlasPlaybook_v${this.atlasVersion}.zip`;
+
+      this.buttons.playbook.textContent = 'Downloading...';
+      this.buttons.playbook.disabled = true;
+
+      window.open(downloadUrl, '_self');
+
+      this.incrementDownloadCount()
+        .catch((err) => console.error('Failed to increment download count after download:', err))
+        .finally(() => {
+          setTimeout(() => {
+            if (document.body.contains(this.buttons.playbook)) {
+              this.buttons.playbook.innerHTML = originalContent;
+              this.buttons.playbook.disabled = !this.buttons.confirmGuide.checked;
+            }
+          }, 1000);
+        });
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => new DownloadModal());
+  } else {
+    new DownloadModal();
+  }
+</script>
+
+<style>
+  @keyframes show {
+    from {
+      opacity: 0;
+      transform: scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  dialog[open] {
+    display: grid;
+    place-items: center;
+    animation: show 250ms cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  .animate-fade {
+    animation: fade 250ms ease-out;
+  }
+
+  @keyframes fade {
+    from {
+      opacity: 0;
+      transform: translateY(2px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 640px) {
+    dialog > div {
+      margin: 0.75rem;
+      border-radius: 1rem;
+    }
+
+    dialog > div > div:first-child {
+      padding: 1rem 1.25rem;
+    }
+
+    dialog > div > div:last-child {
+      padding: 1.25rem;
+    }
+  }
+
+  .disabled-link {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+</style>

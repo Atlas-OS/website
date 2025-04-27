@@ -1,0 +1,515 @@
+---
+import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+import AtlasWallpaper from '../../assets/atlas-wallpaper.webp';
+import ItsFOSSLogomark from '../../assets/itsfoss-logomark.svg';
+import PcGuideLogomark from '../../assets/pcguide-logomark.svg';
+import TechSpotLogomark from '../../assets/techspot-logomark.svg';
+import WePCLogomark from '../../assets/wepc-logomark.svg';
+import Button from '../ui/Button.astro';
+import DownloadModal from '../ui/DownloadModal.astro';
+
+const links = {
+  faq: 'https://docs.atlasos.net/install-faq/removed-features/',
+  install: 'https://docs.atlasos.net/getting-started/installation/',
+};
+---
+
+<section class="relative overflow-visible px-4 pt-34 md:pt-42" data-reveal>
+  <div class="absolute inset-0 -z-10 w-full" style="height: 100%;">
+    <div
+      class="absolute h-full w-full bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px)] [mask-image:linear-gradient(to_bottom,rgba(0,0,0,0.7),transparent_70%)] bg-[size:24px_24px]"
+    >
+    </div>
+  </div>
+
+  <div class="stars pointer-events-none absolute inset-0 z-[-5] translate-y-[-30%] overflow-hidden">
+    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
+    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
+    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
+    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
+    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
+    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
+    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
+    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
+    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
+    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
+    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
+    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
+    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
+    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
+    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
+    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
+    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
+    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
+    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
+    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
+  </div>
+
+  <div class="relative mx-auto max-w-7xl overflow-visible">
+    <div class="mx-auto max-w-4xl pb-12 text-center">
+      <div
+        class="isolation-isolate shadow-primary/20 relative z-0 mb-4 inline-flex w-max items-center justify-center overflow-hidden rounded-full px-4 py-1.5 text-sm leading-5 font-medium shadow-inner backdrop-blur-[6px]"
+        data-reveal
+      >
+        <Icon name="tabler:users" class="text-primary mr-2 h-4 w-4" />
+        <span class="text-sm text-white"
+          >Over <span id="hero-download-count" class="text-primary font-semibold">Loading...</span> people using AtlasOS</span
+        >
+      </div>
+      <h1
+        class="mb-6 bg-gradient-to-b from-white to-blue-200 bg-clip-text text-4xl font-semibold tracking-tight text-transparent md:text-7xl"
+        data-reveal
+      >
+        Optimized Windows. <br /> Designed for enthusiasts.
+      </h1>
+      <p class="mx-auto mb-10 max-w-2xl leading-relaxed text-white/70" data-reveal>
+        AtlasOS is creating a "kinder" Windows experience. Reducing bloatware and optimizing performance for
+        enthusiasts, gamers, and privacy-conscious individuals.
+      </p>
+      <p class="mb-4 text-sm text-white/70" data-reveal>
+        The latest version is <span class="font-semibold text-white">Atlas v0.4.1 (October 9 2024)</span>
+      </p>
+      <div class="flex flex-wrap items-center justify-center gap-4" data-reveal>
+        <Button variant="primary" size="lg" icon="tabler:chevron-right" iconPosition="after" id="get-started-btn">
+          Get started
+        </Button>
+        <Button
+          href="https://github.com/Atlas-OS/Atlas"
+          variant="secondary"
+          size="lg"
+          icon="tabler:brand-github"
+          external
+        >
+          Star on GitHub
+        </Button>
+      </div>
+    </div>
+  </div>
+
+  <div class="relative mx-auto mb-16 max-w-7xl px-4">
+    <div
+      class="bg-primary/10 pointer-events-none absolute inset-x-0 -top-1/3 -z-10 -mx-40 hidden h-[500px] animate-pulse rounded-full blur-3xl md:block"
+    >
+    </div>
+
+    <div class="wallpaper-container relative z-10 hidden rounded-t-lg md:block" data-reveal>
+      <div class="relative overflow-hidden rounded-t-lg">
+        <Image
+          src={AtlasWallpaper}
+          alt="AtlasOS Wallpaper"
+          width={1276}
+          height={479}
+          class="border-primary/1 relative z-10 block h-auto w-full rounded-t-lg border-2 select-none"
+          draggable={false}
+          loading="eager"
+          decoding="async"
+        />
+      </div>
+      <div class="wallpaper-animation pointer-events-none absolute inset-0 z-20 overflow-hidden rounded-t-lg">
+        <div class="wallpaper-animation-line absolute bottom-[-300px] h-[300px] w-[300px]"></div>
+        <div class="wallpaper-animation-line absolute bottom-[-300px] h-[300px] w-[300px]"></div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="bg-primary/20 absolute top-40 left-0 -z-20 hidden h-96 w-96 rounded-full opacity-30 blur-[120px] md:block"
+  >
+  </div>
+  <div
+    class="bg-primary/10 absolute top-60 right-0 -z-20 hidden h-96 w-96 rounded-full opacity-30 blur-[120px] md:block"
+  >
+  </div>
+
+  <div
+    class="mx-auto flex max-w-4xl flex-wrap items-center justify-center gap-x-8 gap-y-12 opacity-60 lg:gap-x-24"
+    data-reveal
+  >
+    <a
+      href="https://www.techspot.com/news/97095-check-out-AtlasOS-redesigned-windows-10-version-gamers.html"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="transition-opacity duration-300 hover:opacity-100"
+    >
+      <Image
+        src={TechSpotLogomark}
+        alt="TechSpot"
+        width="158"
+        height="48"
+        draggable={false}
+        class="max-h-8 w-auto select-none"
+        loading="lazy"
+        decoding="async"
+      />
+    </a>
+    <a
+      href="https://www.pcguide.com/software/AtlasOS/"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="transition-opacity duration-300 hover:opacity-100"
+    >
+      <Image
+        src={PcGuideLogomark}
+        alt="PC Guide"
+        width="158"
+        height="48"
+        draggable={false}
+        class="max-h-8 w-auto select-none"
+        loading="lazy"
+        decoding="async"
+      />
+    </a>
+    <a
+      href="https://www.wepc.com/tips/is-atlas-os-worth-it/"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="transition-opacity duration-300 hover:opacity-100"
+    >
+      <Image
+        src={WePCLogomark}
+        alt="WePC"
+        width="158"
+        height="48"
+        draggable={false}
+        class="max-h-8 w-auto select-none"
+        loading="lazy"
+        decoding="async"
+      />
+    </a>
+    <a
+      href="https://news.itsfoss.com/atlas-os/"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="transition-opacity duration-300 hover:opacity-100"
+    >
+      <Image
+        src={ItsFOSSLogomark}
+        alt="It's FOSS"
+        width="158"
+        height="48"
+        draggable={false}
+        class="max-h-8 w-auto select-none"
+        loading="lazy"
+        decoding="async"
+      />
+    </a>
+  </div>
+</section>
+
+<DownloadModal links={links} />
+
+<style>
+  @keyframes wallpaper-animation-line {
+    0% {
+      transform: matrix(1, 0, 0, 1, -150, 0);
+    }
+    18% {
+      transform: matrix(1, 0, 0, 1, -150, -440);
+    }
+    21% {
+      transform: matrix(0.7071, 0.7071, -0.7071, 0.7071, -150, -490);
+    }
+    30% {
+      transform: matrix(0, 1, -1, 0, 0, -610);
+    }
+    50% {
+      transform: matrix(0, 1, -1, 0, 500, -610);
+    }
+    68% {
+      transform: matrix(0, 1, -1, 0, 930, -610);
+    }
+    71% {
+      transform: matrix(-0.7071, 0.7071, -0.7071, -0.7071, 950, -610);
+    }
+    80% {
+      transform: matrix(-1, 0, 0, -1, 1100, -440);
+    }
+    100% {
+      transform: matrix(-1, 0, 0, -1, 1100, 0);
+    }
+  }
+
+  .wallpaper-animation {
+    padding: 2px 2px 0;
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask-composite: xor;
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+
+  .wallpaper-animation-line {
+    will-change: transform;
+    animation: wallpaper-animation-line 12s linear infinite;
+    background-image: linear-gradient(
+      to top,
+      rgba(109, 46, 255, 0),
+      rgb(12, 21, 50),
+      rgb(187, 194, 204),
+      rgb(72, 167, 255) 99%,
+      rgba(12, 21, 50, 0) 100%
+    );
+  }
+
+  .wallpaper-animation-line:nth-child(1) {
+    animation-delay: 6s;
+  }
+
+  .star {
+    animation: star-fade 6s ease-in-out infinite;
+  }
+
+  .star:nth-child(1) {
+    width: 2px;
+    height: 2px;
+    top: 5%;
+    left: 20%;
+    animation-delay: 0s;
+  }
+  .star:nth-child(2) {
+    width: 3px;
+    height: 3px;
+    top: 15%;
+    left: 70%;
+    animation-delay: 1s;
+  }
+  .star:nth-child(3) {
+    width: 1.5px;
+    height: 1.5px;
+    top: 30%;
+    left: 40%;
+    animation-delay: 2s;
+  }
+  .star:nth-child(4) {
+    width: 2.5px;
+    height: 2.5px;
+    top: 60%;
+    left: 10%;
+    animation-delay: 3s;
+  }
+  .star:nth-child(5) {
+    width: 1.8px;
+    height: 1.8px;
+    top: 75%;
+    left: 85%;
+    animation-delay: 4s;
+  }
+  .star:nth-child(6) {
+    width: 2px;
+    height: 2px;
+    top: 50%;
+    left: 55%;
+    animation-delay: 5s;
+  }
+  .star:nth-child(7) {
+    width: 1.2px;
+    height: 1.2px;
+    top: 25%;
+    left: 90%;
+    animation-delay: 2.5s;
+  }
+  .star:nth-child(8) {
+    width: 2.2px;
+    height: 2.2px;
+    top: 80%;
+    left: 30%;
+    animation-delay: 1.5s;
+  }
+  .star:nth-child(9) {
+    width: 1.7px;
+    height: 1.7px;
+    top: 40%;
+    left: 60%;
+    animation-delay: 3.5s;
+  }
+  .star:nth-child(10) {
+    width: 2.8px;
+    height: 2.8px;
+    top: 85%;
+    left: 50%;
+    animation-delay: 0.5s;
+  }
+  .star:nth-child(11) {
+    width: 1.5px;
+    height: 1.5px;
+    top: 10%;
+    left: 5%;
+    animation-delay: 0.2s;
+  }
+  .star:nth-child(12) {
+    width: 2.5px;
+    height: 2.5px;
+    top: 20%;
+    left: 80%;
+    animation-delay: 1.8s;
+  }
+  .star:nth-child(13) {
+    width: 1px;
+    height: 1px;
+    top: 35%;
+    left: 25%;
+    animation-delay: 2.7s;
+  }
+  .star:nth-child(14) {
+    width: 3px;
+    height: 3px;
+    top: 65%;
+    left: 15%;
+    animation-delay: 3.3s;
+  }
+  .star:nth-child(15) {
+    width: 2px;
+    height: 2px;
+    top: 70%;
+    left: 75%;
+    animation-delay: 4.1s;
+  }
+  .star:nth-child(16) {
+    width: 1.8px;
+    height: 1.8px;
+    top: 55%;
+    left: 45%;
+    animation-delay: 5.5s;
+  }
+  .star:nth-child(17) {
+    width: 1.4px;
+    height: 1.4px;
+    top: 22%;
+    left: 95%;
+    animation-delay: 2.1s;
+  }
+  .star:nth-child(18) {
+    width: 2.6px;
+    height: 2.6px;
+    top: 82%;
+    left: 35%;
+    animation-delay: 1.1s;
+  }
+  .star:nth-child(19) {
+    width: 1.9px;
+    height: 1.9px;
+    top: 45%;
+    left: 65%;
+    animation-delay: 3.9s;
+  }
+  .star:nth-child(20) {
+    width: 2.3px;
+    height: 2.3px;
+    top: 88%;
+    left: 52%;
+    animation-delay: 0.8s;
+  }
+
+  @keyframes star-fade {
+    0%,
+    100% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  .wallpaper-container > .overflow-hidden::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30%;
+    background: linear-gradient(to top, var(--bg-primary), transparent);
+    pointer-events: none;
+    z-index: 30;
+  }
+</style>
+
+<script>
+  import { animate, stagger } from 'motion';
+
+  /**
+   * Fetches the Atlas download count from the API and updates the hero section counter.
+   */
+  async function updateHeroDownloadCount(): Promise<void> {
+    const countElement = document.getElementById('hero-download-count');
+    if (!countElement) {
+      console.error('Hero download count element not found.');
+      return;
+    }
+
+    try {
+      const response = await fetch('https://api.atlasos.net/');
+      if (!response.ok) {
+        throw new Error(`API request failed with status ${response.status}`);
+      }
+      const data = (await response.json()) as Array<{ version: string; count: number }>;
+      const atlasDownload = data.find((item: { version: string; count: number }) => item.version === 'atlas');
+      const count = atlasDownload?.count;
+
+      if (count !== undefined && count !== null) {
+        countElement.textContent = Number(count).toLocaleString();
+      } else {
+        countElement.textContent = 'N/A';
+      }
+    } catch (error) {
+      console.error('Error fetching download count:', error);
+      countElement.textContent = '2,000,000';
+    }
+  }
+
+  /**
+   * Attaches the Get Started button click listener to open the download modal.
+   */
+  function setupGetStartedButton(): void {
+    const getStartedBtn = document.getElementById('get-started-btn');
+    const downloadModal = document.getElementById('download-modal') as HTMLDialogElement;
+
+    if (getStartedBtn && downloadModal) {
+      getStartedBtn.addEventListener('click', () => {
+        document.body.classList.add('overflow-hidden');
+        downloadModal.showModal();
+      });
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    updateHeroDownloadCount();
+    setupGetStartedButton();
+
+    const wallpaperContainer = document.querySelector<HTMLElement>('.wallpaper-container');
+    if (wallpaperContainer) {
+      (animate as any)(
+        wallpaperContainer,
+        {
+          opacity: [0, 1],
+          transform: ['scale(0.95)', 'scale(1)'],
+        },
+        {
+          duration: 1.2,
+          easing: 'ease-out',
+          delay: 0.3,
+        }
+      );
+    }
+
+    const revealElements = document.querySelectorAll<HTMLElement>('[data-reveal]');
+    if (revealElements.length > 0) {
+      (animate as any)(
+        [...revealElements],
+        {
+          opacity: [0, 1],
+          transform: ['translateY(30px) scale(0.98)', 'translateY(0px) scale(1)'],
+        },
+        {
+          easing: 'ease-out',
+          duration: 0.8,
+          delay: stagger(0.15, { from: 0.6 }),
+        }
+      );
+    }
+  });
+</script>

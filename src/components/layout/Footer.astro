@@ -1,0 +1,210 @@
+---
+import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+import AtlasLogomark from '../../assets/atlas-logomark.svg';
+
+const year = new Date().getFullYear();
+---
+
+<section class="bg-secondary relative mx-auto mt-32 mb-16">
+  <div class="relative mx-auto h-px max-w-7xl bg-gradient-to-r from-transparent via-white/10 to-transparent px-4">
+    <div class="absolute top-0 left-1/2 h-px w-[30px] -translate-x-1/2 bg-white/70"></div>
+  </div>
+  <footer class="pb-6">
+    <div class="mx-auto mt-8 flex max-w-7xl flex-col items-center text-white">
+      <a href="/" class="mb-8 inline-block">
+        <Image src={AtlasLogomark} alt="AtlasOS" class="h-6 w-auto" loading="lazy" decoding="async" />
+      </a>
+      <div class="flex flex-wrap justify-center gap-6 text-sm text-white/70">
+        <a
+          href="https://github.com/orgs/Atlas-OS/discussions"
+          class="hover:text-primary"
+          target="_blank"
+          rel="noopener noreferrer">Discussions</a
+        >
+        <a href="https://docs.atlasos.net" class="hover:text-primary" target="_blank" rel="noopener noreferrer"
+          >Documentation</a
+        >
+        <a
+          href="https://docs.atlasos.net/general-faq/atlas-and-security/"
+          class="hover:text-primary"
+          target="_blank"
+          rel="noopener noreferrer">FAQ</a
+        >
+        <a href="https://ko-fi.com/atlasos" class="hover:text-primary" rel="noopener noreferrer" target="_blank"
+          >Support</a
+        >
+      </div>
+    </div>
+    <div class="my-6 h-px bg-white/20"></div>
+    <div class="mx-auto flex max-w-7xl flex-col items-center justify-between px-4 text-xs text-white md:flex-row">
+      <p class="text-white/70">
+        &copy; {year} AtlasOS. Website under
+        <a
+          href="https://creativecommons.org/licenses/by-nc-nd/4.0/"
+          class="hover:text-primary underline"
+          target="_blank"
+          rel="noopener noreferrer">CC BY-NC-ND 4.0</a
+        >
+      </p>
+      <div class="mt-4 flex items-center space-x-4 md:mt-0">
+        <a
+          href="https://github.com/Atlas-OS/Atlas"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="GitHub"
+          class="hover:text-primary text-white"><Icon name="tabler:brand-github" class="h-5 w-5" /></a
+        >
+        <a
+          href="https://discord.com/invite/atlasos"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Discord"
+          class="hover:text-primary text-white"><Icon name="tabler:brand-discord" class="h-5 w-5" /></a
+        >
+        <a
+          href="https://x.com/atlasos"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="X (Twitter)"
+          class="hover:text-primary text-white"><Icon name="tabler:brand-x" class="h-5 w-5" /></a
+        >
+      </div>
+    </div>
+  </footer>
+  <div class="dot-pattern-container">
+    <canvas id="footer-dot-pattern" class="opacity-35"></canvas>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const canvas = document.getElementById('footer-dot-pattern') as HTMLCanvasElement;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d', { alpha: true });
+    if (!ctx) return;
+
+    const context = ctx as CanvasRenderingContext2D;
+
+    const dotRadius = 1;
+    const spacing = 8;
+    const PI2 = Math.PI * 2;
+    const activeColor = '#3b82f6';
+    const inactiveColor = 'rgba(68, 68, 68, 0.3)';
+
+    let dotsX: Float32Array;
+    let dotsY: Float32Array;
+    let dotsActive: Uint8Array;
+    let dotsCount = 0;
+    let animationId: number;
+    let resizeTimeout: number;
+
+    const handleResize = () => {
+      if (resizeTimeout) window.cancelAnimationFrame(resizeTimeout);
+      resizeTimeout = window.requestAnimationFrame(() => {
+        initDots();
+        drawDots();
+      });
+    };
+
+    function initDots() {
+      const { clientWidth, clientHeight } = canvas;
+      if (canvas.width !== clientWidth || canvas.height !== clientHeight) {
+        canvas.width = clientWidth;
+        canvas.height = clientHeight;
+      }
+
+      const cols = Math.ceil(canvas.width / spacing);
+      const rows = Math.ceil(canvas.height / spacing);
+      dotsCount = cols * rows;
+
+      dotsX = new Float32Array(dotsCount);
+      dotsY = new Float32Array(dotsCount);
+      dotsActive = new Uint8Array(dotsCount);
+
+      const halfSpacing = spacing / 2;
+      let i = 0;
+
+      for (let y = 0; y < rows; y++) {
+        const yPos = y * spacing + halfSpacing;
+        for (let x = 0; x < cols; x++) {
+          dotsX[i] = x * spacing + halfSpacing;
+          dotsY[i] = yPos;
+          dotsActive[i] = 0;
+          i++;
+        }
+      }
+    }
+
+    function drawDots() {
+      context.clearRect(0, 0, canvas.width, canvas.height);
+
+      context.fillStyle = inactiveColor;
+      for (let i = 0; i < dotsCount; i++) {
+        if (!dotsActive[i]) {
+          context.beginPath();
+          context.arc(dotsX[i], dotsY[i], dotRadius, 0, PI2);
+          context.fill();
+        }
+      }
+
+      context.fillStyle = activeColor;
+      for (let i = 0; i < dotsCount; i++) {
+        if (dotsActive[i]) {
+          context.beginPath();
+          context.arc(dotsX[i], dotsY[i], dotRadius, 0, PI2);
+          context.fill();
+        }
+      }
+    }
+
+    function animate() {
+      const index = Math.floor(Math.random() * dotsCount);
+      dotsActive[index] = dotsActive[index] ? 0 : 1;
+
+      drawDots();
+      animationId = window.requestAnimationFrame(() => {
+        setTimeout(() => animate(), 50);
+      });
+    }
+
+    window.removeEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize);
+
+    initDots();
+    drawDots();
+    animate();
+
+    document.addEventListener('astro:before-swap', () => {
+      if (animationId) {
+        window.cancelAnimationFrame(animationId);
+      }
+      window.removeEventListener('resize', handleResize);
+    });
+  });
+</script>
+
+<style>
+  footer {
+    position: relative;
+    z-index: 1;
+  }
+  .dot-pattern-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+    mask-image: linear-gradient(to top, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 100%);
+    -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 100%);
+  }
+  #footer-dot-pattern {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+</style>
