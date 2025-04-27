@@ -10,7 +10,9 @@ const links = {
 };
 ---
 
-<section class="relative mx-auto mt-32 mb-32 flex max-w-7xl flex-col items-end px-4 lg:flex-row lg:justify-between">
+<section
+  class="relative z-10 mx-auto mt-32 mb-32 flex max-w-7xl flex-col items-end px-4 lg:flex-row lg:justify-between"
+>
   <div class="github-wrapper relative hidden h-[330px] w-[587px] lg:block">
     <Image
       src={GitHub}
@@ -57,7 +59,7 @@ const links = {
       </button>
       <div
         id="gh-star-list"
-        class="absolute top-full left-0 z-50 h-0 w-full overflow-hidden rounded-b-md border border-t-0 border-white/10 opacity-0 transition-all duration-300 ease-in-out"
+        class="absolute top-full left-0 z-[999] -mx-[1px] h-0 w-full overflow-hidden rounded-b-md border border-t-0 border-white/10 opacity-0 transition-all duration-300 ease-in-out"
       >
         <div id="gh-star-list-items" class="bg-secondary/80 flex flex-col gap-4 px-5 py-5 backdrop-blur-md"></div>
       </div>
