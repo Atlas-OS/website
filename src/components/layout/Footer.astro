@@ -77,15 +77,15 @@ const year = new Date().getFullYear();
   </div>
 </section>
 
-<script>
+<script is:inline>
   document.addEventListener('DOMContentLoaded', () => {
-    const canvas = document.getElementById('footer-dot-pattern') as HTMLCanvasElement;
+    const canvas = document.getElementById('footer-dot-pattern');
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
 
-    const context = ctx as CanvasRenderingContext2D;
+    const context = ctx;
 
     const dotRadius = 1;
     const spacing = 8;
@@ -93,12 +93,12 @@ const year = new Date().getFullYear();
     const activeColor = '#3b82f6';
     const inactiveColor = 'rgba(68, 68, 68, 0.3)';
 
-    let dotsX: Float32Array;
-    let dotsY: Float32Array;
-    let dotsActive: Uint8Array;
+    let dotsX;
+    let dotsY;
+    let dotsActive;
     let dotsCount = 0;
-    let animationId: number;
-    let resizeTimeout: number;
+    let animationId;
+    let resizeTimeout;
 
     const handleResize = () => {
       if (resizeTimeout) window.cancelAnimationFrame(resizeTimeout);
