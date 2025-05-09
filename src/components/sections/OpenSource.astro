@@ -212,11 +212,10 @@ const links = {
     async updateStarInfo() {
       try {
         const starsResponse = await this.fetchData('https://api.atlasos.net/stars');
-        const starData = starsResponse[0];
-        if (!starData || typeof starData.count !== 'number') {
+        if (!starsResponse || typeof starsResponse.count !== 'number') {
           throw new Error('Invalid star count data received');
         }
-        const count = starData.count;
+        const count = starsResponse.count;
 
         if (this.starCountEl) {
           this.starCountEl.textContent = count.toLocaleString();
