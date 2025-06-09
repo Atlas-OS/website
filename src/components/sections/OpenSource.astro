@@ -236,7 +236,7 @@ const links = {
         if (this.starListItems) {
           this.starListItems.replaceChildren(...items);
         }
-      } catch (err) {
+      } catch (_err) {
         if (this.starCountEl) this.starCountEl.textContent = '--';
         if (this.starBadgeEl) this.starBadgeEl.textContent = '--';
         if (this.starListItems)
