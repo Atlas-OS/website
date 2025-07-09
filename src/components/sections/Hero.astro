@@ -93,13 +93,13 @@ const links = {
     >
     </div>
 
-    <div class="wallpaper-container relative z-10 hidden rounded-t-lg md:block" data-reveal>
+    <div class="wallpaper-container relative z-10 hidden rounded-t-lg md:block">
       <div class="relative overflow-hidden rounded-t-lg">
         <Image
           src={AtlasWallpaper}
           alt="AtlasOS Wallpaper"
-          width={1276}
-          height={479}
+          width={1920}
+          height={1080}
           class="border-primary/1 relative z-10 block h-auto w-full rounded-t-lg border-2 select-none"
           draggable={false}
           loading="eager"
@@ -200,6 +200,11 @@ const links = {
 <DownloadModal links={links} />
 
 <style>
+  .wallpaper-container,
+  [data-reveal] {
+    opacity: 0;
+  }
+
   @keyframes wallpaper-animation-line {
     0% {
       transform: matrix(1, 0, 0, 1, -150, 0);
