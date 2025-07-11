@@ -1,7 +1,5 @@
 ---
 import { Icon } from 'astro-icon/components';
-import { Image } from 'astro:assets';
-import AtlasLogomark from '../../assets/atlas-logomark.svg';
 
 const year = new Date().getFullYear();
 ---
@@ -12,10 +10,7 @@ const year = new Date().getFullYear();
   </div>
   <footer class="pb-6">
     <div class="mx-auto mt-8 flex max-w-7xl flex-col items-center text-white">
-      <a href="/" class="mb-8 inline-block">
-        <Image src={AtlasLogomark} alt="AtlasOS" class="h-6 w-auto" loading="lazy" decoding="async" />
-      </a>
-      <div class="flex flex-wrap justify-center gap-6 text-sm text-white/70">
+      <div class="mt-8 flex flex-wrap justify-center gap-6 text-sm text-white/70">
         <a
           href="https://github.com/orgs/Atlas-OS/discussions"
           class="hover:text-primary"
@@ -36,7 +31,7 @@ const year = new Date().getFullYear();
         >
       </div>
     </div>
-    <div class="my-6 h-px bg-white/20"></div>
+    <div class="my-6 h-px bg-white/5"></div>
     <div class="mx-auto flex max-w-7xl flex-col items-center justify-between px-4 text-xs text-white md:flex-row">
       <p class="text-white/70">
         &copy; {year} AtlasOS. Website under
@@ -86,19 +81,33 @@ const year = new Date().getFullYear();
     if (!ctx) return;
 
     const context = ctx;
+    const logoPathData =
+      'M352.562 2.134 411.49 104.2H293.635l12.458-21.579h68.022L352.562 45.29l-9.053 15.68h-24.916l33.969-58.837ZM0 104.211 38.463 1.789h32.053l38.464 102.422H80.505L74.392 86.47H33.544l-6.114 17.74H0Zm39.954-37.719h27.879l-7.305-21.617a440.685 440.685 0 0 0-1.491-4.026 153.553 153.553 0 0 0-1.64-5.217l-1.49-5.666c-.498-1.888-.995-3.528-1.492-4.92h-1.043c-.398 1.889-.994 4.026-1.79 6.411a197.442 197.442 0 0 1-2.236 7.156 175.15 175.15 0 0 1-1.938 6.262l-7.454 21.617Zm94.677 37.719V23.705h-33.245V1.789h93.177v21.916h-33.246v80.506h-26.686Zm74.96 0V1.789h26.686v80.506h52.03v21.916h-78.716ZM457.942 106c-6.46 0-12.523-.596-18.188-1.789-5.665-1.093-10.684-2.932-15.057-5.516-4.274-2.584-7.653-5.964-10.138-10.138-2.485-4.274-3.727-9.492-3.727-15.654v-1.342c0-.497.05-.894.149-1.193h25.792c0 .299-.05.696-.15 1.193v1.044c0 3.18.796 5.764 2.386 7.752 1.689 1.889 4.025 3.28 7.007 4.175 2.981.795 6.46 1.192 10.435 1.192 2.187 0 4.224-.1 6.113-.298 1.888-.199 3.578-.547 5.069-1.043 1.491-.497 2.783-1.094 3.876-1.79 1.193-.795 2.037-1.69 2.534-2.683.597-1.093.895-2.336.895-3.727 0-2.286-.895-4.175-2.684-5.665-1.689-1.491-4.025-2.734-7.007-3.728-2.882-.994-6.162-1.938-9.839-2.832a1854.9 1854.9 0 0 1-11.479-2.833 86.042 86.042 0 0 1-11.48-3.727c-3.677-1.49-7.007-3.38-9.988-5.665-2.883-2.286-5.218-5.119-7.007-8.498-1.69-3.479-2.535-7.653-2.535-12.523 0-5.367 1.143-9.99 3.429-13.865 2.286-3.976 5.417-7.206 9.392-9.69 4.075-2.486 8.747-4.275 14.014-5.368C445.022.596 450.637 0 456.601 0c5.863 0 11.33.596 16.399 1.789 5.168 1.193 9.74 3.081 13.715 5.665 3.976 2.485 7.057 5.666 9.243 9.542 2.286 3.777 3.479 8.349 3.578 13.716V32.5h-25.642v-1.044c0-2.286-.646-4.274-1.938-5.963-1.193-1.79-3.031-3.18-5.516-4.175-2.485-1.093-5.566-1.64-9.243-1.64-3.678 0-6.808.348-9.392 1.044-2.485.696-4.423 1.69-5.815 2.982-1.292 1.292-1.938 2.832-1.938 4.621 0 2.187.845 3.976 2.535 5.367 1.789 1.392 4.174 2.585 7.156 3.579 2.981.993 6.311 1.938 9.988 2.832 3.678.795 7.454 1.69 11.331 2.684a73.35 73.35 0 0 1 11.479 3.578c3.677 1.391 7.007 3.23 9.989 5.516a23.225 23.225 0 0 1 7.006 8.2c1.789 3.28 2.684 7.255 2.684 11.926 0 8.15-1.938 14.71-5.814 19.68-3.777 4.97-9.045 8.597-15.803 10.883-6.659 2.286-14.213 3.429-22.661 3.429Z';
+    const svgViewBox = { width: 503, height: 106 };
 
     const dotRadius = 1;
     const spacing = 8;
     const PI2 = Math.PI * 2;
     const activeColor = '#3b82f6';
     const inactiveColor = 'rgba(68, 68, 68, 0.3)';
+    const hoverRadius = 40;
 
     let dotsX;
     let dotsY;
     let dotsActive;
+    let dotsIsLogo;
+    let dotsHoverIntensity;
     let dotsCount = 0;
     let animationId;
     let resizeTimeout;
+    let mouseX = -1;
+    let mouseY = -1;
+    let isMouseOver = false;
+    let time = 0;
+    let lastToggleTime = performance.now();
+    const toggleInterval = 100;
+    const maxFPS = 30;
+    let lastDrawTime = performance.now();
 
     const handleResize = () => {
       if (resizeTimeout) window.cancelAnimationFrame(resizeTimeout);
@@ -110,18 +119,25 @@ const year = new Date().getFullYear();
 
     function initDots() {
       const { clientWidth, clientHeight } = canvas;
-      if (canvas.width !== clientWidth || canvas.height !== clientHeight) {
-        canvas.width = clientWidth;
-        canvas.height = clientHeight;
+      const devicePixelRatio = window.devicePixelRatio || 1;
+
+      if (canvas.width !== clientWidth * devicePixelRatio || canvas.height !== clientHeight * devicePixelRatio) {
+        canvas.width = clientWidth * devicePixelRatio;
+        canvas.height = clientHeight * devicePixelRatio;
+        canvas.style.width = clientWidth + 'px';
+        canvas.style.height = clientHeight + 'px';
+        context.scale(devicePixelRatio, devicePixelRatio);
       }
 
-      const cols = Math.ceil(canvas.width / spacing);
-      const rows = Math.ceil(canvas.height / spacing);
+      const cols = Math.ceil(clientWidth / spacing);
+      const rows = Math.ceil(clientHeight / spacing);
       dotsCount = cols * rows;
 
       dotsX = new Float32Array(dotsCount);
       dotsY = new Float32Array(dotsCount);
       dotsActive = new Uint8Array(dotsCount);
+      dotsIsLogo = new Uint8Array(dotsCount);
+      dotsHoverIntensity = new Float32Array(dotsCount);
 
       const halfSpacing = spacing / 2;
       let i = 0;
@@ -132,17 +148,106 @@ const year = new Date().getFullYear();
           dotsX[i] = x * spacing + halfSpacing;
           dotsY[i] = yPos;
           dotsActive[i] = 0;
+          dotsIsLogo[i] = 0;
+          dotsHoverIntensity[i] = 0;
           i++;
+        }
+      }
+      initLogo(clientWidth, clientHeight);
+    }
+
+    function initLogo(clientWidth, clientHeight) {
+      const logoCanvas = document.createElement('canvas');
+      const logoCtx = logoCanvas.getContext('2d', { willReadFrequently: true });
+      if (!logoCtx) return;
+
+      const desiredHeight = 100;
+      const scale = desiredHeight / svgViewBox.height;
+      const logoWidth = Math.ceil(svgViewBox.width * scale);
+      const logoHeight = Math.ceil(svgViewBox.height * scale);
+
+      logoCanvas.width = logoWidth;
+      logoCanvas.height = logoHeight;
+
+      const path = new Path2D(logoPathData);
+      logoCtx.fillStyle = 'white';
+      logoCtx.scale(scale, scale);
+      logoCtx.fill(path);
+
+      const imageData = logoCtx.getImageData(0, 0, logoWidth, logoHeight);
+
+      const startX = clientWidth - logoWidth - 100;
+      const startY = 75;
+
+      const cols = Math.ceil(clientWidth / spacing);
+
+      for (let i = 0; i < dotsCount; i++) {
+        const x = dotsX[i];
+        const y = dotsY[i];
+
+        const relativeX = Math.round(x - startX);
+        const relativeY = Math.round(y - startY);
+
+        if (relativeX >= 0 && relativeX < logoWidth && relativeY >= 0 && relativeY < logoHeight) {
+          const pixelIndex = (relativeY * logoWidth + relativeX) * 4;
+          if (imageData.data[pixelIndex + 3] > 128) {
+            dotsIsLogo[i] = 1;
+            dotsActive[i] = 1;
+          }
+        }
+      }
+    }
+
+    function updateHoverIntensities() {
+      if (isMouseOver) {
+        for (let i = 0; i < dotsCount; i++) {
+          const dx = dotsX[i] - mouseX;
+          const dy = dotsY[i] - mouseY;
+          const distSq = dx * dx + dy * dy;
+          const radiusSq = hoverRadius * hoverRadius;
+
+          if (distSq < radiusSq) {
+            const intensity = 1 - distSq / radiusSq;
+            dotsHoverIntensity[i] = Math.max(dotsHoverIntensity[i], intensity * 0.5);
+          }
+        }
+      }
+
+      for (let i = 0; i < dotsCount; i++) {
+        dotsHoverIntensity[i] *= 0.85;
+        if (dotsHoverIntensity[i] < 0.01) {
+          dotsHoverIntensity[i] = 0;
         }
       }
     }
 
     function drawDots() {
-      context.clearRect(0, 0, canvas.width, canvas.height);
+      const { clientWidth, clientHeight } = canvas;
+      context.clearRect(0, 0, clientWidth, clientHeight);
 
-      context.fillStyle = inactiveColor;
       for (let i = 0; i < dotsCount; i++) {
-        if (!dotsActive[i]) {
+        if (dotsIsLogo[i]) continue;
+        const isActive = dotsActive[i];
+        const hoverIntensity = dotsHoverIntensity[i];
+
+        if (hoverIntensity > 0.05) {
+          if (isActive) {
+            context.fillStyle = activeColor;
+          } else {
+            const alpha = Math.min(hoverIntensity * 1.5, 0.8);
+            context.fillStyle = `rgba(59, 130, 246, ${alpha})`;
+          }
+
+          const sizeMultiplier = 1 + hoverIntensity * 1.2;
+          context.beginPath();
+          context.arc(dotsX[i], dotsY[i], dotRadius * sizeMultiplier, 0, PI2);
+          context.fill();
+        } else {
+          if (isActive) {
+            context.fillStyle = activeColor;
+          } else {
+            context.fillStyle = inactiveColor;
+          }
           context.beginPath();
           context.arc(dotsX[i], dotsY[i], dotRadius, 0, PI2);
           context.fill();
@@ -151,26 +256,71 @@ const year = new Date().getFullYear();
 
       context.fillStyle = activeColor;
       for (let i = 0; i < dotsCount; i++) {
-        if (dotsActive[i]) {
+        if (dotsIsLogo[i]) {
           context.beginPath();
-          context.arc(dotsX[i], dotsY[i], dotRadius, 0, PI2);
+          context.arc(dotsX[i], dotsY[i], dotRadius * 1.2, 0, PI2);
           context.fill();
         }
       }
     }
 
     function animate() {
-      const index = Math.floor(Math.random() * dotsCount);
-      dotsActive[index] = dotsActive[index] ? 0 : 1;
-
-      drawDots();
-      animationId = window.requestAnimationFrame(() => {
-        setTimeout(() => animate(), 50);
-      });
+      const now = performance.now();
+      if (now - lastDrawTime >= 1000 / maxFPS) {
+        time++;
+        if (now - lastToggleTime >= toggleInterval) {
+          lastToggleTime = now;
+          let idx = Math.floor(Math.random() * dotsCount);
+          while (dotsIsLogo[idx]) {
+            idx = Math.floor(Math.random() * dotsCount);
+          }
+          dotsActive[idx] = dotsActive[idx] ? 0 : 1;
+        }
+        updateHoverIntensities();
+        drawDots();
+        lastDrawTime = now;
+      }
+      animationId = window.requestAnimationFrame(animate);
     }
+
+    const handleMouseMove = (e) => {
+      const rect = canvas.getBoundingClientRect();
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
+      isMouseOver = true;
+    };
+
+    const handleMouseLeave = () => {
+      isMouseOver = false;
+      mouseX = -1;
+      mouseY = -1;
+    };
+
+    const handleSectionMouseMove = (e) => {
+      const rect = canvas.getBoundingClientRect();
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
+      isMouseOver = true;
+    };
+
+    const handleSectionMouseLeave = () => {
+      isMouseOver = false;
+      mouseX = -1;
+      mouseY = -1;
+    };
+
+    const section = document.querySelector('section.bg-secondary');
 
     window.removeEventListener('resize', handleResize);
     window.addEventListener('resize', handleResize);
+
+    canvas.addEventListener('mousemove', handleMouseMove);
+    canvas.addEventListener('mouseleave', handleMouseLeave);
+
+    if (section) {
+      section.addEventListener('mousemove', handleSectionMouseMove);
+      section.addEventListener('mouseleave', handleSectionMouseLeave);
+    }
 
     initDots();
     drawDots();
@@ -181,6 +331,12 @@ const year = new Date().getFullYear();
         window.cancelAnimationFrame(animationId);
       }
       window.removeEventListener('resize', handleResize);
+      canvas.removeEventListener('mousemove', handleMouseMove);
+      canvas.removeEventListener('mouseleave', handleMouseLeave);
+      if (section) {
+        section.removeEventListener('mousemove', handleSectionMouseMove);
+        section.removeEventListener('mouseleave', handleSectionMouseLeave);
+      }
     });
   });
 </script>
@@ -188,17 +344,26 @@ const year = new Date().getFullYear();
 <style>
   footer {
     position: relative;
-    z-index: 1;
+    z-index: 2;
+    pointer-events: none;
+  }
+  footer a,
+  footer button {
+    pointer-events: auto;
+  }
+  footer div,
+  footer p {
+    pointer-events: none;
   }
   .dot-pattern-container {
     position: absolute;
-    bottom: 0;
+    top: 0;
     left: 0;
     width: 100%;
-    height: 200px;
+    height: 100%;
     overflow: hidden;
-    pointer-events: none;
-    z-index: 0;
+    pointer-events: auto;
+    z-index: 1;
     mask-image: linear-gradient(to top, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 100%);
     -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 100%);
   }
@@ -206,5 +371,6 @@ const year = new Date().getFullYear();
     width: 100%;
     height: 100%;
     display: block;
+    cursor: crosshair;
   }
 </style>
