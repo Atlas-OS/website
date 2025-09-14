@@ -103,7 +103,6 @@ const year = new Date().getFullYear();
     let mouseX = -1;
     let mouseY = -1;
     let isMouseOver = false;
-    let time = 0;
     let lastToggleTime = performance.now();
     const toggleInterval = 100;
     const maxFPS = 30;
@@ -153,10 +152,10 @@ const year = new Date().getFullYear();
           i++;
         }
       }
-      initLogo(clientWidth, clientHeight);
+      initLogo(clientWidth);
     }
 
-    function initLogo(clientWidth, clientHeight) {
+    function initLogo(clientWidth) {
       const logoCanvas = document.createElement('canvas');
       const logoCtx = logoCanvas.getContext('2d', { willReadFrequently: true });
       if (!logoCtx) return;
@@ -178,8 +177,6 @@ const year = new Date().getFullYear();
 
       const startX = clientWidth - logoWidth - 100;
       const startY = 75;
-
-      const cols = Math.ceil(clientWidth / spacing);
 
       for (let i = 0; i < dotsCount; i++) {
         const x = dotsX[i];
@@ -267,7 +264,6 @@ const year = new Date().getFullYear();
     function animate() {
       const now = performance.now();
       if (now - lastDrawTime >= 1000 / maxFPS) {
-        time++;
         if (now - lastToggleTime >= toggleInterval) {
           lastToggleTime = now;
           let idx = Math.floor(Math.random() * dotsCount);

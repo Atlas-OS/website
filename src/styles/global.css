@@ -3,15 +3,9 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  --font-sans:
-    'Inter Variable', ui-sans-serif, system-ui, sans-serif, 'Apple Color Em oji', 'Segoe UI Emoji',
-    'Segoe UI Symbol', 'Noto Color Emoji';
-  --font-display:
-    'Archivo Variable', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-    'Segoe UI Symbol', 'Noto Color Emoji';
-  --font-mono:
-    'Fira Code Variable', ui-monospace, monospace, 'Apple Color Emoji', 'Segoe UI Emoji',
-    'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-display: 'Archivo Variable', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-mono: 'Fira Code Variable', ui-monospace, monospace, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   --color-primary: oklch(0.65 0.1907 252.91);
   --bg-primary: oklch(0.12 0.0421 264.82);
   --color-secondary: oklch(0.12 0.0421 264.82);

@@ -434,8 +434,6 @@ const links = {
 </style>
 
 <script>
-  import { animate, stagger } from 'motion';
-
   /**
    * Fetches the Atlas download count from the API and updates the hero section counter.
    */
@@ -481,42 +479,52 @@ const links = {
     }
   }
 
+  /**
+   * Lazy loads Motion and sets up scroll-triggered reveal animations
+   */
+  async function setupScrollAnimations(): Promise<void> {
+    try {
+      // Lazy load motion only when animations are needed
+      const { animate, inView } = await import('motion');
+
+      // Wallpaper animation - runs once when element comes into view
+      inView('.wallpaper-container', () => {
+        animate(
+          '.wallpaper-container',
+          {
+            opacity: [0, 1],
+            transform: ['scale(0.95)', 'scale(1)'],
+          },
+          {
+            duration: 1.2,
+            easing: 'ease-out',
+          }
+        );
+      }, { margin: '-100px' });
+
+      // Reveal animations for elements with data-reveal
+      inView('[data-reveal]', (element) => {
+        animate(
+          element,
+          {
+            opacity: [0, 1],
+            transform: ['translateY(30px) scale(0.98)', 'translateY(0px) scale(1)'],
+          },
+          {
+            easing: 'ease-out',
+            duration: 0.8,
+          }
+        );
+      }, { margin: '-50px' });
+    } catch (error) {
+      console.warn('Motion library failed to load, animations will be disabled:', error);
+    }
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     updateHeroDownloadCount();
     setupGetStartedButton();
-
-    const wallpaperContainer = document.querySelector<HTMLElement>('.wallpaper-container');
-    if (wallpaperContainer) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (animate as any)(
-        wallpaperContainer,
-        {
-          opacity: [0, 1],
-          transform: ['scale(0.95)', 'scale(1)'],
-        },
-        {
-          duration: 1.2,
-          easing: 'ease-out',
-          delay: 0.3,
-        }
-      );
-    }
-
-    const revealElements = document.querySelectorAll<HTMLElement>('[data-reveal]');
-    if (revealElements.length > 0) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (animate as any)(
-        [...revealElements],
-        {
-          opacity: [0, 1],
-          transform: ['translateY(30px) scale(0.98)', 'translateY(0px) scale(1)'],
-        },
-        {
-          easing: 'ease-out',
-          duration: 0.8,
-          delay: stagger(0.15, { from: 0.6 }),
-        }
-      );
-    }
+    // Delay animation setup slightly to prioritize critical functionality
+    setTimeout(() => setupScrollAnimations(), 100);
   });
 </script>

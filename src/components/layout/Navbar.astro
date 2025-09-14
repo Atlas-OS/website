@@ -74,6 +74,9 @@ import AtlasLogomark from '../../assets/atlas-logomark.svg';
         type="button"
         id="mobile-menu-button"
         class="relative flex h-8 w-8 items-center justify-center text-white md:hidden"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="Toggle mobile menu"
       >
         <Icon name="tabler:menu-2" class="h-5 w-5" />
         <span class="sr-only">Menu</span>
@@ -139,7 +142,9 @@ import AtlasLogomark from '../../assets/atlas-logomark.svg';
 
   if (mobileMenuButton && mobileMenu) {
     mobileMenuButton.addEventListener('click', () => {
+      const isExpanded = mobileMenu.classList.contains('hidden');
       mobileMenu.classList.toggle('hidden');
+      mobileMenuButton.setAttribute('aria-expanded', (!isExpanded).toString());
     });
   }
 
