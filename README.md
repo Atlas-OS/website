@@ -16,8 +16,8 @@ AtlasOS is an optimized modification of Microsoft Windows tailored for gaming an
 
 ## Prerequisites
 
-- **Bun** ≥ 1.0.0
-- **Node.js** ≥ 18.0.0
+- **Bun** ≥ 1.2.0
+- **Node.js** ≥ 22.0.0
 
 ## Installation
 
