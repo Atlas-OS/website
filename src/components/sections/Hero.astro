@@ -68,7 +68,7 @@ const links = {
         enthusiasts, gamers, and privacy-conscious individuals.
       </p>
       <p class="mb-4 text-sm text-white/70" data-reveal>
-        The latest version is <span class="font-semibold text-white">Atlas v0.4.1 (October 9 2024)</span>
+        The latest version is <span class="font-semibold text-white">Atlas v0.5.0 (October 19 2025)</span>
       </p>
       <div class="flex flex-wrap items-center justify-center gap-4" data-reveal>
         <Button variant="primary" size="lg" icon="tabler:chevron-right" iconPosition="after" id="get-started-btn">
@@ -485,7 +485,10 @@ const links = {
   async function setupScrollAnimations(): Promise<void> {
     try {
       // Lazy load motion only when animations are needed
-      const { animate, inView } = await import('motion');
+      const { animate, inView } = await import('motion') as {
+        animate: (element: string | Element, keyframes: Record<string, unknown>, options?: Record<string, unknown>) => unknown;
+        inView: (selector: string, callback: (element: Element) => void, options?: Record<string, unknown>) => void;
+      };
 
       // Wallpaper animation - runs once when element comes into view
       inView('.wallpaper-container', () => {
@@ -503,7 +506,7 @@ const links = {
       }, { margin: '-100px' });
 
       // Reveal animations for elements with data-reveal
-      inView('[data-reveal]', (element) => {
+      inView('[data-reveal]', (element: Element) => {
         animate(
           element,
           {
