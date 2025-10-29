@@ -16,7 +16,7 @@ AtlasOS is an optimized modification of Microsoft Windows tailored for gaming an
 
 ## Prerequisites
 
-- **Bun** ≥ 1.2.0
+- **Bun** ≥ 1.3.0
 - **Node.js** ≥ 22.0.0
 
 ## Installation
@@ -46,4 +46,4 @@ bun install
 
 ## License
 
-This project is licensed under the **MIT License**. See the `license` field in `package.json` for details.
+This project is licensed under the **Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International** (CC BY-NC-ND 4.0). See the `LICENSE` file for details.

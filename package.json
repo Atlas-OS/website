@@ -7,7 +7,7 @@
   "license": "MIT",
   "contributors": ["AtlasOS Community <contact@atlasos.net>"],
   "engines": {
-    "bun": ">=1.2.0",
+    "bun": ">=1.3.0",
     "node": ">=22.0.0"
   },
   "homepage": "https://atlasos.net/",
@@ -29,31 +29,31 @@
     "preview": "astro preview"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.4",
+    "@astrojs/check": "^0.9.5",
     "@astrojs/partytown": "^2.1.4",
     "@fontsource-variable/archivo": "^5.2.8",
     "@fontsource-variable/fira-code": "^5.2.7",
     "@fontsource-variable/inter": "^5.2.8",
     "@iconify-json/tabler": "^1.2.23",
-    "@tailwindcss/vite": "^4.1.14",
-    "astro": "^5.14.6",
+    "@tailwindcss/vite": "^4.1.16",
+    "astro": "^5.15.2",
     "astro-icon": "^1.1.5",
     "motion": "^12.23.24",
-    "tailwindcss": "^4.1.14",
+    "tailwindcss": "^4.1.16",
     "typescript": "^5.9.3"
   },
   "devDependencies": {
     "@divriots/jampack": "0.34.0",
     "@tailwindcss/typography": "^0.5.19",
-    "@typescript-eslint/eslint-plugin": "^8.46.1",
-    "@typescript-eslint/parser": "^8.46.1",
+    "@typescript-eslint/eslint-plugin": "^8.46.2",
+    "@typescript-eslint/parser": "^8.46.2",
     "eslint": "^9.38.0",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-astro": "^1.3.1",
+    "eslint-plugin-astro": "^1.4.0",
     "prettier": "^3.6.2",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-astro-organize-imports": "^0.4.11",
     "prettier-plugin-tailwindcss": "^0.7.1",
-    "typescript-eslint": "^8.46.1"
+    "typescript-eslint": "^8.46.2"
   }
 }
