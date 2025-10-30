@@ -1,10 +1,10 @@
 ---
 import { Icon } from 'astro-icon/components';
 import { Image } from 'astro:assets';
-import Al0ranteImage from '../../assets/al0rante.webp';
-import MisticImage from '../../assets/mistic.webp';
-import StarwraithImage from '../../assets/starwraith.webp';
-import SectionTitle from '../common/SectionTitle.astro';
+import Al0ranteImage from '@/assets/al0rante.webp';
+import MisticImage from '@/assets/mistic.webp';
+import StarwraithImage from '@/assets/starwraith.webp';
+import SectionTitle from '@/components/common/SectionTitle.astro';
 ---
 
 <section class="relative mx-auto mt-32 mb-32 max-w-7xl px-4">
@@ -62,8 +62,12 @@ import SectionTitle from '../common/SectionTitle.astro';
             <Image
               src={MisticImage}
               alt="Pro Valorant player Mistic"
+              layout="full-width"
+              width={800}
+              height={600}
               class="absolute inset-0 -z-10 h-full w-full rounded-lg object-cover"
               quality={80}
+              loading="lazy"
             />
             <div class="absolute inset-0 z-0 rounded-lg bg-gradient-to-t from-black/70 to-transparent"></div>
             <div class="absolute bottom-4 left-4 z-10">
@@ -98,9 +102,13 @@ import SectionTitle from '../common/SectionTitle.astro';
             <Image
               src={Al0ranteImage}
               alt="Pro Valorant player al0rante"
+              layout="full-width"
+              width={800}
+              height={600}
               class="absolute inset-0 -z-10 h-full w-full rounded-lg object-cover"
               style="object-position: center 12%;"
               quality={80}
+              loading="lazy"
             />
             <div class="absolute inset-0 z-0 rounded-lg bg-gradient-to-t from-black/70 to-transparent"></div>
             <div class="absolute bottom-4 left-4 z-10">
@@ -135,8 +143,12 @@ import SectionTitle from '../common/SectionTitle.astro';
             <Image
               src={StarwraithImage}
               alt="Valorant creator Starwraith"
+              layout="full-width"
+              width={800}
+              height={600}
               class="absolute inset-0 -z-10 h-full w-full rounded-lg object-cover"
               quality={80}
+              loading="lazy"
             />
             <div class="absolute inset-0 z-0 rounded-lg bg-gradient-to-t from-black/70 to-transparent"></div>
             <div class="absolute bottom-4 left-4 z-10">

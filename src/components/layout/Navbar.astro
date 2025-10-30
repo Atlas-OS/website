@@ -1,7 +1,7 @@
 ---
 import { Icon } from 'astro-icon/components';
 import { Image } from 'astro:assets';
-import AtlasLogomark from '../../assets/atlas-logomark.svg';
+import AtlasLogomark from '@/assets/atlas-logomark.svg';
 ---
 
 <header
@@ -16,9 +16,11 @@ import AtlasLogomark from '../../assets/atlas-logomark.svg';
           alt="AtlasOS"
           width={100}
           height={32}
+          layout="fixed"
           class="relative z-10"
           loading="eager"
           decoding="async"
+          fetchpriority="high"
         />
         <div
           class="bg-primary/10 group-hover:bg-primary/20 absolute inset-0 rounded-full opacity-70 blur-lg transition-all duration-300"

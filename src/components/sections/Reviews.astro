@@ -1,10 +1,10 @@
 ---
-import { Image } from 'astro:assets';
-import Logo from '../../assets/atlas-logo.svg';
-import ReviewStar from '../../assets/review-star.svg';
-import ReviewStars from '../../assets/review-stars.svg';
-import ReviewImage from '../../assets/review.png';
-import Verified from '../../assets/verified.svg';
+import { Picture, Image } from 'astro:assets';
+import Logo from '@/assets/atlas-logo.svg';
+import ReviewStar from '@/assets/review-star.svg';
+import ReviewStars from '@/assets/review-stars.svg';
+import ReviewImage from '@/assets/review.png';
+import Verified from '@/assets/verified.svg';
 ---
 
 <section class="relative mx-auto mt-32 mb-32 max-w-7xl px-4">
@@ -30,9 +30,13 @@ import Verified from '../../assets/verified.svg';
     </div>
     <div class="relative ml-auto hidden w-fit lg:block">
       <div class="h-[251px] w-[587px] overflow-hidden">
-        <Image
+        <Picture
           src={ReviewImage}
           alt="Atlas review"
+          formats={['avif', 'webp']}
+          layout="constrained"
+          width={587}
+          height={251}
           class="h-full w-full object-cover select-none"
           loading="lazy"
           draggable="false"

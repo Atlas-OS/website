@@ -2,17 +2,25 @@
 import '@fontsource-variable/archivo';
 import '@fontsource-variable/fira-code';
 import '@fontsource-variable/inter';
-import Footer from '../components/layout/Footer.astro';
-import Navbar from '../components/layout/Navbar.astro';
-import '../styles/global.css';
+import Footer from '@/components/layout/Footer.astro';
+import Navbar from '@/components/layout/Navbar.astro';
+import '@/styles/global.css';
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
+    
+    <!-- Preconnect to external domains for performance -->
+    <link rel="preconnect" href="https://pla.atlasos.net" crossorigin />
+    <link rel="preconnect" href="https://api.atlasos.net" crossorigin />
+    <link rel="dns-prefetch" href="https://pla.atlasos.net" />
+    <link rel="dns-prefetch" href="https://api.atlasos.net" />
+  
+    <!-- Favicons -->
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="shortcut icon" href="/favicon.ico" />
@@ -20,6 +28,7 @@ import '../styles/global.css';
     <meta name="apple-mobile-web-app-title" content="AtlasOS" />
     <link rel="manifest" href="/site.webmanifest" />
 
+    <!-- SEO -->
     <title>AtlasOS - Optimized Windows, designed for enthusiasts.</title>
     <meta
       name="description"
@@ -54,9 +63,10 @@ import '../styles/global.css';
     <meta property="twitter:site" content="@atlasos" />
     <meta property="twitter:creator" content="@atlasos" />
 
+    <!-- Schema.org -->
     <script type="application/ld+json" is:inline>
-      {
-        "@context": "https://schema.org",
+    {
+      "@context": "https://schema.org",
         "@type": "WebSite",
         "name": "AtlasOS",
         "alternateName": "Atlas OS",
@@ -95,6 +105,7 @@ import '../styles/global.css';
       }
     </script>
 
+    <!-- Partytown -->
     <script is:inline type="text/partytown" src="https://pla.atlasos.net/js/script.js" data-domain="atlasos.net"
     ></script>
   </head>

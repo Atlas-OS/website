@@ -1,8 +1,8 @@
 ---
 import { Icon } from 'astro-icon/components';
 import { Image } from 'astro:assets';
-import LinusThumbnail from '../../assets/linus-tech-tips-video-thumbnail.webp';
-import SectionTitle from '../common/SectionTitle.astro';
+import LinusThumbnail from '@/assets/linus-tech-tips-video-thumbnail.webp';
+import SectionTitle from '@/components/common/SectionTitle.astro';
 
 const links = {
   linusvideo: 'https://www.youtube.com/watch?v=dc7CIkZcWYE',
@@ -37,6 +37,9 @@ const videoTitle = "You don't need a new PC - AtlasOS E-Waste PC refresh";
         <Image
           src={LinusThumbnail}
           alt="Linus Tech Tips video thumbnail"
+          layout="full-width"
+          width={1280}
+          height={720}
           class="absolute inset-0 z-0 h-full w-full object-cover select-none"
           loading="lazy"
           draggable="false"

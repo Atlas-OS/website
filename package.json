@@ -19,6 +19,11 @@
     "url": "https://github.com/atlas-os/website/issues"
   },
   "keywords": ["astro", "atlasos", "gaming", "optimized", "performance", "windows"],
+  "browserslist": [
+    "defaults",
+    "not IE 11",
+    "not dead"
+  ],
   "scripts": {
     "astro": "astro",
     "build": "astro build && jampack ./dist",
@@ -38,6 +43,7 @@
     "@tailwindcss/vite": "^4.1.16",
     "astro": "^5.15.2",
     "astro-icon": "^1.1.5",
+    "caniuse-lite": "^1.0.30001751",
     "motion": "^12.23.24",
     "tailwindcss": "^4.1.16",
     "typescript": "^5.9.3"
@@ -50,6 +56,7 @@
     "eslint": "^9.38.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-astro": "^1.4.0",
+    "lightningcss": "^1.30.2",
     "prettier": "^3.6.2",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-astro-organize-imports": "^0.4.11",

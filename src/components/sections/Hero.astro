@@ -1,13 +1,13 @@
 ---
 import { Icon } from 'astro-icon/components';
-import { Image } from 'astro:assets';
-import AtlasWallpaper from '../../assets/atlas-wallpaper.webp';
-import ItsFOSSLogomark from '../../assets/itsfoss-logomark.svg';
-import PcGuideLogomark from '../../assets/pcguide-logomark.svg';
-import TechSpotLogomark from '../../assets/techspot-logomark.svg';
-import WePCLogomark from '../../assets/wepc-logomark.svg';
-import Button from '../ui/Button.astro';
-import DownloadModal from '../ui/DownloadModal.astro';
+import { Picture, Image } from 'astro:assets';
+import AtlasWallpaper from '@/assets/atlas-wallpaper.webp';
+import ItsFOSSLogomark from '@/assets/itsfoss-logomark.svg';
+import PcGuideLogomark from '@/assets/pcguide-logomark.svg';
+import TechSpotLogomark from '@/assets/techspot-logomark.svg';
+import WePCLogomark from '@/assets/wepc-logomark.svg';
+import Button from '@/components/ui/Button.astro';
+import DownloadModal from '@/components/ui/DownloadModal.astro';
 
 const links = {
   faq: 'https://docs.atlasos.net/install-faq/removed-features/',
@@ -95,15 +95,18 @@ const links = {
 
     <div class="wallpaper-container relative z-10 hidden rounded-t-lg md:block">
       <div class="relative overflow-hidden rounded-t-lg">
-        <Image
+        <Picture
           src={AtlasWallpaper}
           alt="AtlasOS Wallpaper"
           width={1920}
           height={1080}
+          formats={['avif', 'webp']}
+          layout="full-width"
           class="border-primary/1 relative z-10 block h-auto w-full rounded-t-lg border-2 select-none"
           draggable={false}
           loading="eager"
           decoding="async"
+          fetchpriority="high"
         />
       </div>
       <div class="wallpaper-animation pointer-events-none absolute inset-0 z-20 overflow-hidden rounded-t-lg">
@@ -135,8 +138,9 @@ const links = {
       <Image
         src={TechSpotLogomark}
         alt="TechSpot"
-        width="158"
-        height="48"
+        width={158}
+        height={48}
+        layout="constrained"
         draggable={false}
         class="max-h-8 w-auto select-none"
         loading="lazy"
@@ -152,8 +156,9 @@ const links = {
       <Image
         src={PcGuideLogomark}
         alt="PC Guide"
-        width="158"
-        height="48"
+        width={158}
+        height={48}
+        layout="constrained"
         draggable={false}
         class="max-h-8 w-auto select-none"
         loading="lazy"
@@ -169,8 +174,9 @@ const links = {
       <Image
         src={WePCLogomark}
         alt="WePC"
-        width="158"
-        height="48"
+        width={158}
+        height={48}
+        layout="constrained"
         draggable={false}
         class="max-h-8 w-auto select-none"
         loading="lazy"
@@ -186,8 +192,9 @@ const links = {
       <Image
         src={ItsFOSSLogomark}
         alt="It's FOSS"
-        width="158"
-        height="48"
+        width={158}
+        height={48}
+        layout="constrained"
         draggable={false}
         class="max-h-8 w-auto select-none"
         loading="lazy"
