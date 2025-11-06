@@ -54,6 +54,15 @@
   @apply mb-6 ml-6;
 }
 
+@media (max-width: 640px) {
+  :where(.prose) > ul:not(.not-prose):not(.not-prose *),
+  :where(.prose) > ol:not(.not-prose):not(.not-prose *),
+  :where(.prose) ul:not(.not-prose):not(.not-prose *),
+  :where(.prose) ol:not(.not-prose):not(.not-prose *) {
+    @apply mb-4 ml-0;
+  }
+}
+
 :where(.prose) ul:not(.not-prose):not(.not-prose *) {
   list-style-type: disc;
 }
