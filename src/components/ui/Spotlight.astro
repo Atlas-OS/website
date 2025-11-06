@@ -1,0 +1,502 @@
+---
+import { Icon } from 'astro-icon/components';
+---
+
+<div
+  id="spotlight-backdrop"
+  class="pointer-events-none fixed inset-0 z-[100] bg-black/60 opacity-0 backdrop-blur-sm transition-opacity duration-200"
+  aria-hidden="true"
+>
+</div>
+
+<div
+  id="spotlight-modal"
+  class="bg-background pointer-events-none fixed top-1/2 left-1/2 z-[101] flex h-[45vh] max-h-[45vh] w-[90vw] max-w-2xl flex-col rounded-lg border border-white/10 opacity-0 shadow-2xl"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="spotlight-title"
+  style="background-color: var(--bg-primary);"
+>
+  <div
+    id="spotlight-input-container"
+    class="flex flex-shrink-0 cursor-text items-center gap-3 border-b border-white/10 px-4 py-3 transition-colors duration-200"
+  >
+    <Icon name="tabler:search" class="h-5 w-5 flex-shrink-0 text-white/60" aria-hidden="true" />
+    <input
+      type="text"
+      id="spotlight-input"
+      class="flex-1 bg-transparent text-sm text-white placeholder:text-white/40 focus:ring-0 focus:outline-none"
+      placeholder="Search documentation..."
+      autocomplete="off"
+      autocorrect="off"
+      spellcheck="false"
+    />
+    <kbd
+      class="hidden flex-shrink-0 items-center gap-1 rounded-md border border-white/10 bg-white/5 px-2 py-1 font-mono text-xs text-white/50 sm:inline-flex"
+    >
+      <span>Esc</span>
+    </kbd>
+  </div>
+
+  <div id="spotlight-results" class="min-h-0 flex-1 overflow-y-auto px-2 py-2">
+    <div id="spotlight-empty" class="hidden px-4 py-8 text-center text-sm text-white/60">No results found</div>
+    <div id="spotlight-loading" class="hidden px-4 py-8 text-center text-sm text-white/60">Loading...</div>
+    <ul id="spotlight-list" class="space-y-1" style="list-style: none; padding: 0; margin: 0;"></ul>
+  </div>
+</div>
+
+<style is:global>
+  #spotlight-modal {
+    transform: translate(-50%, -50%) scale(0.95);
+    transition:
+      opacity 200ms,
+      transform 200ms,
+      pointer-events 200ms;
+  }
+
+  #spotlight-modal.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  #spotlight-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  #spotlight-list {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  #spotlight-results {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+  }
+
+  #spotlight-results::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  #spotlight-results::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  #spotlight-results::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+  }
+
+  .spotlight-item {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.5rem;
+    padding: 0.875rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.15s;
+    cursor: pointer !important;
+    list-style: none !important;
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: transparent;
+  }
+
+  .spotlight-item:hover {
+    background-color: rgb(255 255 255 / 0.1) !important;
+  }
+
+  .spotlight-item.selected {
+    background-color: rgb(255 255 255 / 0.15) !important;
+  }
+
+  .spotlight-item-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    width: 100%;
+  }
+
+  .spotlight-item-content {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .spotlight-item-hierarchy {
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+    color: rgb(255 255 255 / 1) !important;
+    margin-bottom: 0.25rem;
+    line-height: 1.4;
+  }
+
+  .spotlight-item-description {
+    font-size: 0.75rem !important;
+    color: rgb(255 255 255 / 0.65) !important;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 0.375rem;
+  }
+
+  .spotlight-item-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.125rem;
+  }
+
+  .spotlight-item-path {
+    font-size: 0.6875rem !important;
+    color: rgb(255 255 255 / 0.45) !important;
+    font-family: var(--font-mono, 'Courier New', monospace);
+  }
+
+  #spotlight-input-container {
+    cursor: text;
+  }
+
+  #spotlight-input-container:focus-within {
+    border-color: rgb(255 255 255 / 0.2);
+    background-color: rgb(255 255 255 / 0.03);
+  }
+
+  #spotlight-input {
+    outline: none;
+    border: none;
+    background: transparent;
+  }
+
+  #spotlight-input:focus {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  #spotlight-input::placeholder {
+    color: rgb(255 255 255 / 0.4);
+  }
+</style>
+
+<script>
+  interface AstroNavigation {
+    navigate: (url: string) => void;
+  }
+
+  interface WindowWithAstro extends Window {
+    astro?: AstroNavigation;
+  }
+
+  let searchData: Array<{
+    id: string;
+    slug: string;
+    title: string;
+    description: string;
+    type: string;
+    url: string;
+    body: string;
+    section: string | null;
+  }> = [];
+  let selectedIndex = -1;
+
+  async function loadSearchData() {
+    try {
+      const response = await fetch('/api/search.json');
+      searchData = await response.json();
+    } catch {
+      searchData = [];
+    }
+  }
+
+  function openSpotlight() {
+    const modal = document.getElementById('spotlight-modal');
+    const backdrop = document.getElementById('spotlight-backdrop');
+    const input = document.getElementById('spotlight-input') as HTMLInputElement;
+
+    if (modal && backdrop && input) {
+      modal.classList.add('open');
+      backdrop.classList.add('open');
+      backdrop.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+
+      setTimeout(() => {
+        input.focus();
+      }, 100);
+    }
+  }
+
+  function closeSpotlight() {
+    const modal = document.getElementById('spotlight-modal');
+    const backdrop = document.getElementById('spotlight-backdrop');
+    const input = document.getElementById('spotlight-input') as HTMLInputElement;
+
+    if (modal && backdrop && input) {
+      modal.classList.remove('open');
+      backdrop.classList.remove('open');
+      backdrop.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      input.value = '';
+      selectedIndex = -1;
+      renderResults([]);
+    }
+  }
+
+  function search(query: string) {
+    if (!query.trim()) {
+      renderResults([]);
+      return;
+    }
+
+    const lowerQuery = query.toLowerCase();
+    const queryWords = lowerQuery.split(/\s+/).filter((word) => word.length > 0);
+
+    const results = searchData
+      .map((doc) => {
+        let score = 0;
+
+        const titleLower = doc.title.toLowerCase();
+        if (titleLower.includes(lowerQuery)) {
+          score += 100;
+        } else {
+          queryWords.forEach((word) => {
+            if (titleLower.includes(word)) {
+              score += 30;
+            }
+          });
+        }
+
+        const descLower = doc.description.toLowerCase();
+        if (descLower.includes(lowerQuery)) {
+          score += 50;
+        } else {
+          queryWords.forEach((word) => {
+            if (descLower.includes(word)) {
+              score += 15;
+            }
+          });
+        }
+
+        const slugLower = doc.slug.toLowerCase();
+        if (slugLower.includes(lowerQuery)) {
+          score += 40;
+        }
+
+        const bodyLower = doc.body ? doc.body.toLowerCase() : '';
+        if (bodyLower.includes(lowerQuery)) {
+          score += 20;
+        } else {
+          queryWords.forEach((word) => {
+            if (bodyLower.includes(word)) {
+              score += 5;
+            }
+          });
+        }
+
+        return { doc, score };
+      })
+      .filter(({ score }) => score > 0)
+      .sort((a, b) => b.score - a.score)
+      .map(({ doc }) => doc)
+      .slice(0, 10);
+
+    renderResults(results);
+  }
+
+  function renderResults(results: typeof searchData) {
+    const list = document.getElementById('spotlight-list');
+    const empty = document.getElementById('spotlight-empty');
+    const loading = document.getElementById('spotlight-loading');
+
+    if (!list || !empty || !loading) return;
+
+    loading.classList.add('hidden');
+
+    if (results.length === 0) {
+      empty.classList.remove('hidden');
+      list.innerHTML = '';
+      selectedIndex = -1;
+      return;
+    }
+
+    empty.classList.add('hidden');
+
+    const getCollectionHierarchy = (result: (typeof searchData)[0]): string => {
+      if (result.section && result.section !== result.title) {
+        return `${result.section} > ${result.title}`;
+      }
+      return result.title;
+    };
+
+    list.innerHTML = results
+      .map((result, index) => {
+        const hierarchy = getCollectionHierarchy(result);
+        const path = result.slug.replace(/^\//, '').replace(/\/$/, '') || 'Home';
+        return `
+					<li class="spotlight-item ${index === selectedIndex ? 'selected' : ''}" data-index="${index}" data-url="${result.url}">
+						<div class="spotlight-item-header">
+							<div class="spotlight-item-content">
+								<div class="spotlight-item-hierarchy">${escapeHtml(hierarchy)}</div>
+								${result.description ? `<div class="spotlight-item-description">${escapeHtml(result.description)}</div>` : ''}
+								<div class="spotlight-item-meta">
+									<span class="spotlight-item-path">/${path}</span>
+								</div>
+							</div>
+						</div>
+					</li>
+				`;
+      })
+      .join('');
+
+    const items = list.querySelectorAll('.spotlight-item');
+    items.forEach((item) => {
+      const newItem = item.cloneNode(true) as HTMLElement;
+      item.parentNode?.replaceChild(newItem, item);
+
+      newItem.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const url = newItem.getAttribute('data-url');
+        if (url) {
+          closeSpotlight();
+          if (typeof window !== 'undefined' && (window as WindowWithAstro).astro?.navigate) {
+            (window as WindowWithAstro).astro?.navigate(url);
+          } else {
+            window.location.href = url;
+          }
+        }
+      });
+
+      newItem.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+      });
+    });
+  }
+
+  function escapeHtml(text: string): string {
+    const map: Record<string, string> = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#039;',
+    };
+    return text.replace(/[&<>"']/g, (m) => map[m] ?? m);
+  }
+
+  function navigateResults(direction: 'up' | 'down') {
+    const items = document.querySelectorAll('.spotlight-item');
+    if (items.length === 0) return;
+
+    if (direction === 'down') {
+      selectedIndex = (selectedIndex + 1) % items.length;
+    } else {
+      selectedIndex = selectedIndex <= 0 ? items.length - 1 : selectedIndex - 1;
+    }
+
+    items.forEach((item, index) => {
+      if (index === selectedIndex) {
+        item.classList.add('selected');
+        item.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      } else {
+        item.classList.remove('selected');
+      }
+    });
+  }
+
+  function selectCurrentResult() {
+    const items = document.querySelectorAll('.spotlight-item');
+    if (selectedIndex >= 0 && selectedIndex < items.length) {
+      const item = items[selectedIndex];
+      if (item) {
+        const url = item.getAttribute('data-url');
+        if (url) {
+          closeSpotlight();
+          if (typeof window !== 'undefined' && (window as WindowWithAstro).astro?.navigate) {
+            (window as WindowWithAstro).astro?.navigate(url);
+          } else {
+            window.location.href = url;
+          }
+        }
+      }
+    }
+  }
+
+  function setupSpotlight() {
+    const searchButton = document.getElementById('navbar-search-button');
+    const searchButtonMobile = document.getElementById('navbar-search-button-mobile');
+    const input = document.getElementById('spotlight-input');
+    const inputContainer = document.getElementById('spotlight-input-container');
+    const backdrop = document.getElementById('spotlight-backdrop');
+
+    if (searchButton) {
+      searchButton.addEventListener('click', openSpotlight);
+    }
+
+    if (searchButtonMobile) {
+      searchButtonMobile.addEventListener('click', openSpotlight);
+    }
+
+    if (inputContainer && input) {
+      inputContainer.addEventListener('click', (e) => {
+        if (e.target !== input) {
+          input.focus();
+        }
+      });
+    }
+
+    if (input) {
+      input.addEventListener('input', (e) => {
+        const target = e.target as HTMLInputElement;
+        search(target.value);
+        selectedIndex = -1;
+      });
+
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          navigateResults('down');
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          navigateResults('up');
+        } else if (e.key === 'Enter') {
+          e.preventDefault();
+          selectCurrentResult();
+        }
+      });
+    }
+
+    if (backdrop) {
+      backdrop.addEventListener('click', closeSpotlight);
+    }
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
+      e.preventDefault();
+      const modal = document.getElementById('spotlight-modal');
+      if (modal?.classList.contains('open')) {
+        closeSpotlight();
+      } else {
+        openSpotlight();
+      }
+    }
+
+    if (e.key === 'Escape') {
+      const modal = document.getElementById('spotlight-modal');
+      if (modal?.classList.contains('open')) {
+        closeSpotlight();
+      }
+    }
+  });
+
+  loadSearchData();
+  document.addEventListener('astro:page-load', setupSpotlight);
+  setupSpotlight();
+</script>

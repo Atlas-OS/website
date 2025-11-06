@@ -1,0 +1,337 @@
+---
+import { getCollection } from 'astro:content';
+import { buildFullNavigationTree, isActivePage } from '@/utils/navigation';
+import { Icon } from 'astro-icon/components';
+import { DEFAULT_LOCALE, SECTION_PRIORITIES } from '@/constants';
+import '@/styles/sidebar.css';
+
+interface Props {
+  currentSlug: string;
+  locale?: string | null;
+}
+
+const { currentSlug, locale = null } = Astro.props;
+const defaultLocale = DEFAULT_LOCALE;
+const allDocs = await getCollection('docs');
+
+function normalizeSlug(slug: string): string {
+  let normalized = slug;
+  if (locale && locale !== defaultLocale) {
+    const localePrefix = `/${locale}`;
+    if (normalized.startsWith(localePrefix)) {
+      normalized = normalized.slice(localePrefix.length);
+    }
+  }
+  if (normalized.startsWith('/en/')) {
+    normalized = '/' + normalized.slice(4);
+  } else if (normalized === '/en/') {
+    normalized = '/';
+  }
+  return normalized.replace(/\/$/, '') || '/';
+}
+
+function normalizeSlugForDisplay(slug: string): string {
+  if (locale && locale !== defaultLocale) {
+    const localePrefix = `/${locale}`;
+    if (slug.startsWith(localePrefix)) {
+      return slug.slice(localePrefix.length) || '/';
+    }
+  }
+  if (slug.startsWith('/en/')) {
+    return '/' + slug.slice(4);
+  } else if (slug === '/en/') {
+    return '/';
+  }
+  return slug;
+}
+
+let sectionNavItems = buildFullNavigationTree(allDocs, locale, defaultLocale);
+
+sectionNavItems = sectionNavItems.map((section) => ({
+  ...section,
+  sectionSlug: normalizeSlugForDisplay(section.sectionSlug),
+  items: section.items.map((item) => ({
+    ...item,
+    slug: normalizeSlugForDisplay(item.slug),
+    children: item.children?.map((child) => ({
+      ...child,
+      slug: normalizeSlugForDisplay(child.slug),
+    })),
+  })),
+}));
+
+sectionNavItems = sectionNavItems
+  .map((section) => {
+    const normalizedSectionSlug = normalizeSlug(section.sectionSlug);
+    const sectionTitleLower = section.sectionTitle.toLowerCase().trim();
+    const seenSlugs = new Set<string>();
+    const seenTitles = new Set<string>();
+
+    const filteredItems = section.items.filter((item) => {
+      const normalizedItemSlug = normalizeSlug(item.slug);
+      const itemTitleLower = item.title.toLowerCase().trim();
+
+      const isOnlyItem = section.items.length === 1;
+      if (isOnlyItem) {
+        return true;
+      }
+
+      if (
+        normalizedItemSlug === normalizedSectionSlug ||
+        itemTitleLower === sectionTitleLower ||
+        seenSlugs.has(normalizedItemSlug) ||
+        seenTitles.has(itemTitleLower)
+      ) {
+        return false;
+      }
+
+      seenSlugs.add(normalizedItemSlug);
+      seenTitles.add(itemTitleLower);
+
+      if (item.children) {
+        const seenChildSlugs = new Set<string>();
+        const seenChildTitles = new Set<string>();
+
+        item.children = item.children.filter((child) => {
+          const normalizedChildSlug = normalizeSlug(child.slug);
+          const childTitleLower = child.title.toLowerCase().trim();
+
+          if (
+            normalizedChildSlug === normalizedSectionSlug ||
+            normalizedChildSlug === normalizedItemSlug ||
+            childTitleLower === itemTitleLower ||
+            childTitleLower === sectionTitleLower ||
+            seenChildSlugs.has(normalizedChildSlug) ||
+            seenChildTitles.has(childTitleLower)
+          ) {
+            return false;
+          }
+
+          seenChildSlugs.add(normalizedChildSlug);
+          seenChildTitles.add(childTitleLower);
+          return true;
+        });
+      }
+      return true;
+    });
+
+    return {
+      ...section,
+      items: filteredItems,
+    };
+  })
+  .filter((section) => {
+    return section.sectionSlug === '/' || section.items.length > 0;
+  });
+
+const sectionPriority = SECTION_PRIORITIES;
+
+sectionNavItems.sort((a, b) => {
+  if (a.sectionSlug === '/docs/' || normalizeSlug(a.sectionSlug) === '/docs/' || normalizeSlug(a.sectionSlug) === '/')
+    return -1;
+  if (b.sectionSlug === '/docs/' || normalizeSlug(b.sectionSlug) === '/docs/' || normalizeSlug(b.sectionSlug) === '/')
+    return 1;
+
+  const aSlug =
+    normalizeSlug(a.sectionSlug)
+      .replace(/^\/docs\//, '')
+      .replace(/^\/+/, '') || '';
+  const bSlug =
+    normalizeSlug(b.sectionSlug)
+      .replace(/^\/docs\//, '')
+      .replace(/^\/+/, '') || '';
+
+  const aName = aSlug || 'home';
+  const bName = bSlug || 'home';
+
+  const aPriority = sectionPriority[aName] ?? 999;
+  const bPriority = sectionPriority[bName] ?? 999;
+
+  if (aPriority !== bPriority) return aPriority - bPriority;
+  return a.sectionTitle.localeCompare(b.sectionTitle);
+});
+---
+
+{
+  sectionNavItems.length > 0 && (
+    <>
+      <div
+        id="sidebar-backdrop"
+        class="pointer-events-none fixed inset-0 z-30 bg-black/50 opacity-0 backdrop-blur-sm transition-opacity duration-200 lg:hidden"
+        aria-hidden="true"
+      />
+
+      <aside
+        id="sidebar"
+        class="fixed top-12 left-0 z-40 h-[calc(100vh-3rem)] w-72 border-r border-white/10 backdrop-blur-sm transition-transform duration-300 lg:translate-x-0"
+        style="background-color: oklch(0.12 0.0421 264.82 / 0.8);"
+      >
+        <div class="flex h-full flex-col">
+          <div class="flex items-center justify-between border-b border-white/10 px-5 py-4 lg:hidden">
+            <h2 class="text-sm font-semibold text-white">Navigation</h2>
+            <button
+              id="sidebar-close-button"
+              type="button"
+              aria-label="Close sidebar"
+              class="inline-flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md border border-white/10 text-sm font-medium text-white transition-opacity duration-200 outline-none hover:opacity-80"
+              style="background-color: var(--bg-primary);"
+            >
+              <Icon name="tabler:x" class="h-5 w-5" aria-hidden="true" />
+            </button>
+          </div>
+
+          <div id="sidebar-scroll" class="flex-1 overflow-y-auto px-5 py-7 lg:py-7">
+            <nav class="space-y-6">
+              {sectionNavItems.map((section) => {
+                const hasItems = section.items && section.items.length > 0;
+
+                if (section.sectionSlug === '/') {
+                  return (
+                    <div class="sidebar-section">
+                      <a
+                        href="/"
+                        class="sidebar-link group relative block rounded-md transition-opacity duration-200 outline-none hover:opacity-80"
+                      >
+                        <div class="px-1.5 py-1">
+                          <span
+                            class={`block truncate text-sm leading-snug font-semibold whitespace-nowrap transition-opacity duration-200 ${
+                              isActivePage(currentSlug, '/') ? 'text-primary' : 'text-white/80 group-hover:opacity-80'
+                            }`}
+                          >
+                            {section.sectionTitle}
+                          </span>
+                        </div>
+                      </a>
+                    </div>
+                  );
+                }
+
+                return (
+                  <div class="sidebar-section">
+                    {hasItems && (
+                      <div class="space-y-0.5">
+                        <a
+                          href={section.sectionSlug}
+                          class="sidebar-link group relative block rounded-md transition-opacity duration-200 outline-none hover:opacity-80"
+                        >
+                          <div class="px-1.5 py-1">
+                            <span
+                              class={`block truncate text-sm leading-snug font-semibold whitespace-nowrap transition-opacity duration-200 ${
+                                isActivePage(currentSlug, section.sectionSlug)
+                                  ? 'text-primary'
+                                  : 'text-white/80 group-hover:opacity-80'
+                              }`}
+                            >
+                              {section.sectionTitle}
+                            </span>
+                          </div>
+                        </a>
+                        {section.items.map((item) => {
+                          const hasChildren = item.children && item.children.length > 0;
+                          const isActive = isActivePage(currentSlug, item.slug);
+                          const normalizedItemSlug = normalizeSlug(item.slug);
+                          const normalizedSectionSlug = normalizeSlug(section.sectionSlug);
+                          const isItemSameAsSection = normalizedItemSlug === normalizedSectionSlug;
+
+                          if (isItemSameAsSection && !hasChildren) {
+                            return null;
+                          }
+
+                          return (
+                            <div class="space-y-0.5">
+                              {hasChildren ? (
+                                <div class="sidebar-item-with-children">
+                                  <div class="sidebar-link group relative flex items-center rounded-md transition-opacity duration-200 hover:opacity-80">
+                                    <a href={item.slug} class="flex-1 px-1.5 py-1">
+                                      <span
+                                        class={`block truncate text-left text-sm leading-snug whitespace-nowrap transition-opacity duration-200 ${
+                                          isActive
+                                            ? 'text-primary font-medium'
+                                            : 'font-normal text-white/60 group-hover:opacity-80'
+                                        }`}
+                                      >
+                                        {item.title}
+                                      </span>
+                                    </a>
+                                    <button
+                                      type="button"
+                                      class="sidebar-toggle flex shrink-0 cursor-pointer items-center justify-center px-1.5 py-1 transition-opacity duration-200 outline-none hover:opacity-80"
+                                      data-slug={item.slug}
+                                      aria-label="Toggle submenu"
+                                    >
+                                      <Icon
+                                        name="tabler:chevron-down"
+                                        class="sidebar-arrow pointer-events-none h-4 w-4 text-white/60 transition-transform duration-200"
+                                      />
+                                    </button>
+                                  </div>
+                                  <div class="sidebar-children mt-0.5 ml-4 space-y-0.5">
+                                    {item.children &&
+                                      item.children.map((child) => {
+                                        const isChildActive = isActivePage(currentSlug, child.slug);
+                                        return (
+                                          <a
+                                            href={child.slug}
+                                            class="sidebar-link group relative block rounded-md transition-opacity duration-200 outline-none hover:opacity-80"
+                                          >
+                                            <div class="py-1 pr-1.5 pl-1.5">
+                                              <span
+                                                class={`block truncate text-left text-sm leading-snug whitespace-nowrap transition-opacity duration-200 ${
+                                                  isChildActive
+                                                    ? 'text-primary font-medium'
+                                                    : 'font-normal text-white/60 group-hover:opacity-80'
+                                                }`}
+                                              >
+                                                {child.title}
+                                              </span>
+                                            </div>
+                                          </a>
+                                        );
+                                      })}
+                                  </div>
+                                </div>
+                              ) : (
+                                <a
+                                  href={item.slug}
+                                  class="sidebar-link group relative block rounded-md transition-opacity duration-200 outline-none hover:opacity-80"
+                                >
+                                  <div class="px-1.5 py-1">
+                                    <span
+                                      class={`block truncate text-left text-sm leading-snug whitespace-nowrap transition-opacity duration-200 ${
+                                        isActive
+                                          ? 'text-primary font-medium'
+                                          : 'font-normal text-white/60 group-hover:opacity-100'
+                                      }`}
+                                    >
+                                      {item.title}
+                                    </span>
+                                  </div>
+                                </a>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </nav>
+          </div>
+        </div>
+      </aside>
+    </>
+  )
+}
+
+<script>
+  import { initSidebar } from '@/utils/sidebar';
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSidebar);
+  } else {
+    initSidebar();
+  }
+
+  document.addEventListener('astro:page-load', initSidebar);
+</script>

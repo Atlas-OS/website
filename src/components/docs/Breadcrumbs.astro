@@ -1,0 +1,156 @@
+---
+import { getSlugFromId } from '@/utils/navigation';
+import { Icon } from 'astro-icon/components';
+import { getCollection } from 'astro:content';
+
+interface Props {
+  currentSlug: string;
+}
+
+const { currentSlug } = Astro.props;
+
+const allDocs = await getCollection('docs');
+
+function normalizeSlug(slug: string): string {
+  let normalized = slug.replace(/^\/docs\/?/, '');
+  if (normalized.startsWith('/en/')) {
+    return '/' + normalized.slice(4);
+  } else if (normalized === '/en/' || normalized === '/') {
+    return '/';
+  }
+  return normalized || '/';
+}
+
+function buildBreadcrumbs(slug: string): Array<{ title: string; href: string }> {
+  const normalizedSlug = normalizeSlug(slug);
+  const parts = normalizedSlug
+    .replace(/^\/docs\/?/, '')
+    .split('/')
+    .filter(Boolean);
+  const breadcrumbs: Array<{ title: string; href: string }> = [];
+
+  breadcrumbs.push({ title: 'Home', href: '/docs/' });
+
+  let currentPath = '';
+  for (let i = 0; i < parts.length; i++) {
+    currentPath += '/' + parts[i];
+
+    const entry = allDocs.find((e) => {
+      const entrySlug = getSlugFromId(e.id);
+      const normalizedEntrySlug = normalizeSlug(entrySlug);
+      return normalizedEntrySlug === currentPath + '/' || normalizedEntrySlug === currentPath;
+    });
+
+    if (entry) {
+      breadcrumbs.push({
+        title: entry.data.title,
+        href: '/docs' + currentPath + '/',
+      });
+    } else if (i < parts.length - 1) {
+      const part = parts[i];
+      if (part) {
+        const formatted = part
+          .split('-')
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ');
+        breadcrumbs.push({
+          title: formatted,
+          href: '/docs' + currentPath + '/',
+        });
+      }
+    }
+  }
+
+  return breadcrumbs;
+}
+
+const breadcrumbs = buildBreadcrumbs(currentSlug);
+
+const breadcrumbStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: breadcrumbs.map((crumb, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: crumb.title,
+    item: new URL(crumb.href, Astro.site || 'https://atlasos.net').href,
+  })),
+};
+---
+
+{
+  breadcrumbs.length > 1 && (
+    <nav aria-label="Breadcrumb" class="breadcrumbs-animated mb-4">
+      <ol
+        class="flex flex-wrap items-center text-sm text-white/60"
+        itemscope
+        itemtype="https://schema.org/BreadcrumbList"
+      >
+        {breadcrumbs.map((crumb, index) => (
+          <li
+            class="breadcrumb-item flex items-center"
+            itemprop="itemListElement"
+            itemscope
+            itemtype="https://schema.org/ListItem"
+            style={`animation-delay: ${index * 50}ms`}
+          >
+            {index > 0 && (
+              <Icon
+                name="tabler:chevron-right"
+                class="mx-2 text-white/30 transition-colors duration-200"
+                aria-hidden="true"
+              />
+            )}
+            {index === breadcrumbs.length - 1 ? (
+              <span class="rounded-md bg-white/5 px-2 py-1 font-medium text-white/80" itemprop="name">
+                {crumb.title}
+              </span>
+            ) : (
+              <a
+                href={crumb.href}
+                class="focus-visible:ring-primary/50 rounded-md py-1 transition-opacity duration-200 hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                itemprop="item"
+              >
+                <span itemprop="name">{crumb.title}</span>
+              </a>
+            )}
+            <meta itemprop="position" content={String(index + 1)} />
+          </li>
+        ))}
+      </ol>
+      <script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbStructuredData)} />
+    </nav>
+  )
+}
+
+<style>
+  .breadcrumbs-animated {
+    animation: breadcrumbs-fade-in 0.4s ease-out;
+  }
+
+  @keyframes breadcrumbs-fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(-5px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .breadcrumb-item {
+    animation: breadcrumb-item-fade-in 0.3s ease-out backwards;
+  }
+
+  @keyframes breadcrumb-item-fade-in {
+    from {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+</style>

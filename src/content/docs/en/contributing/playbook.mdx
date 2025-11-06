@@ -1,0 +1,108 @@
+---
+title: Playbook
+metaDescription: Learn how to contribute to the AtlasOS Playbook. Understand structure, build process, testing methods, and development tools needed to modify and improve AtlasOS.
+description: Learn how to contribute to the AtlasOS Playbook.
+order: 33
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+
+# Contributing to the Atlas Playbook
+
+This guide covers how to modify, test, and build Atlas. Before contributing, read the [Contribution Guidelines](/docs/contributing/).
+
+## How the Playbook works
+
+### What Playbooks are
+
+AME Playbooks are bundles of regular scripts, executables, and other files alongside script-like AME [YAML](https://gettaurus.org/docs/YAMLTutorial/) files. These YAML files have commands called [actions](https://docs.ameliorated.io/developers/actions.html), which can do things like running executables or setting Registry entries.
+
+[AME Beta](https://ameliorated.io/) is the easy-to-use GUI for users to run Playbooks, and it uses the open-source [TrustedUninstaller](https://github.com/Ameliorated-LLC/trusted-uninstaller-cli) as its backend.
+
+To start adding to Atlas, we recommend browsing our repository's source code to get familiar with how we've structured Atlas.
+
+### What Atlas uses internally
+
+The Atlas Playbook primarily uses the following three languages:
+
+1. [PowerShell scripting](https://learn.microsoft.com/powershell/scripting/learn/ps101/01-getting-started)
+2. [Batch scripting](https://ss64.com/nt/syntax.html)
+3. [YAML](https://gettaurus.org/docs/YAMLTutorial/) - Yet Another Markup Language
+
+For development tools and resources, we recommend using:
+
+- [Visual Studio Code](https://code.visualstudio.com/learn)
+  - The Atlas repo contains VSCode configs by default for building, syntax highlighting, and more
+- [Microsoft documentation](https://learn.microsoft.com/windows/resources/)
+- [AME documentation](https://docs.ameliorated.io/developers.html)
+- Nirsoft utilities
+  - [RegistryChangesView](https://www.nirsoft.net/utils/registry_changes_view.html)
+  - [ServiWin](https://www.nirsoft.net/utils/serviwin.html)
+- [Sysinternals](https://learn.microsoft.com/sysinternals/downloads/)
+
+## How to build a Playbook
+
+If you want to test existing builds, consider viewing our [GitHub Actions](https://github.com/Atlas-OS/Atlas/actions/workflows/apbx.yaml), which builds a Playbook for each commit. Otherwise, clone the <CodeInline text="Atlas-OS/Atlas" /> repo before continuing or using your fork.
+
+### Using VSCode
+
+1. Open [VSCode](https://code.visualstudio.com/), and open the cloned Atlas repo as a folder
+2. Install the [PowerShell](https://marketplace.visualstudio.com/items?itemName=ms-vscode.PowerShell) extension
+   - Non-Windows users must [install PowerShell](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell) first
+3. Install [7-Zip](https://7-zip.org/) or [NanaZip](https://apps.microsoft.com/detail/9n8g7tscl18r) if not done already
+   - For [macOS](https://formulae.brew.sh/formula/sevenzip)/[Linux](https://wiki.archlinux.org/title/p7zip), install 7-Zip (official or <CodeInline text="p7zip" />) using a package manager
+4. **Optional:** Install the other extensions recommended in the 'Extensions' tab
+5. Use the 'Run and Debug' options to build a Playbook
+   - See the <CodeInline text=".vscode" /> launch options to know what each option does
+6. See your built Playbook in **src\playbook** in the repo
+
+### Using the build script directly
+
+1. Install [7-Zip](https://7-zip.org/) or [NanaZip](https://apps.microsoft.com/detail/9n8g7tscl18r) if not done already
+   - For [macOS](https://formulae.brew.sh/formula/sevenzip)/[Linux](https://wiki.archlinux.org/title/p7zip), install 7-Zip (official or <CodeInline text="p7zip" />) using a package manager
+2. For macOS/Linux, install [the latest PowerShell](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell)
+3. Navigate to <CodeInline text="src\playbook" /> in the cloned Atlas repo
+4. If on Windows, run <CodeInline text="build-playbook.cmd" />, else use <CodeInline text="build-playbook.sh" />
+
+## How to run your built Playbooks
+
+For testing, we primarily use virtual machines unless we are testing for a final release, in which case we test on real hardware.
+
+This section will tell you how we set up virtual machines for testing.
+
+### Virtualization software
+
+We recommend:
+
+- **[Hyper-V](https://learn.microsoft.com/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v)** - Type-1 hypervisor (fastest), built into Windows
+- **[VMWare Workstation](https://www.vmware.com/products/desktop-hypervisor.html)** - Type-2 hypervisor, good UI and features
+
+### Snapshotting
+
+Snapshotting is a feature in most virtual machine software that saves the current memory, disk, and settings of a virtual machine so that you can restore it later.
+
+Snapshots are handy for Atlas as you can test one Playbook and revert to unmodified Windows to test another Playbook once finished. Additionally, you can save a snapshot for testing something specific and return to it later.
+
+### Which snapshots to make
+
+<Callout type="tip" title="Setup your snapshots ready for a Playbook">
+  It's best to make your initial snapshots already set up with [AME
+  Beta](https://download.ameliorated.io/AME%20Beta.zip) and some essential utilities (e.g.
+  [Sysinternals](https://learn.microsoft.com/sysinternals/downloads/)) so that you can just
+  drag-and-drop a Playbook as soon as you go to a snapshot.
+</Callout>
+
+We recommend making three initial snapshots:
+
+- Stock Windows **without** Windows Updates installed
+  - For testing installing Windows Updates after installing Atlas
+  - To ensure updates don't install, [pause updates indefinitely](https://github.com/Atlas-OS/docs/blob/main/docs/assets/other/pause-updates.reg) before connecting to the internet. Un-pause them later in Windows Settings
+- Stock Windows **with** Windows Updates installed
+  - Consider updating Windows and remaking the snapshot every so often
+- **Optional:** A current release Atlas snapshot if you need to test anything there
+  - Helpful in diagnosing [GitHub Issues](https://github.com/Atlas-OS/Atlas/issues)
+
+### That's it!
+
+Any Atlas Playbook should be ready to get tested now. Ensure that you extensively test what you're working on.

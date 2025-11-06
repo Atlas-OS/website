@@ -1,83 +1,61 @@
 ---
-import '@fontsource-variable/archivo';
-import '@fontsource-variable/fira-code';
-import '@fontsource-variable/inter';
-import Footer from '@/components/layout/Footer.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
 import Navbar from '@/components/layout/Navbar.astro';
-import '@/styles/global.css';
+import Footer from '@/components/layout/Footer.astro';
+import SEO from '@/components/core/SEO.astro';
+import { getCurrentLocale } from '@/utils/locale';
+
+const currentPath = Astro.url.pathname;
+const currentLocale = getCurrentLocale(currentPath);
+
+const defaultTitle = 'AtlasOS - Optimized Windows, designed for enthusiasts.';
+const defaultDescription =
+  'AtlasOS is an optimized version of Windows, designed for enthusiasts and gamers. Experience faster performance, better privacy, and enhanced gaming capabilities.';
+const defaultImage = 'https://atlasos.net/defaultimg.png';
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="generator" content={Astro.generator} />
-    
-    <!-- Preconnect to external domains for performance -->
-    <link rel="preconnect" href="https://pla.atlasos.net" crossorigin />
-    <link rel="preconnect" href="https://api.atlasos.net" crossorigin />
-    <link rel="dns-prefetch" href="https://pla.atlasos.net" />
-    <link rel="dns-prefetch" href="https://api.atlasos.net" />
-  
-    <!-- Favicons -->
-    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="shortcut icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-title" content="AtlasOS" />
-    <link rel="manifest" href="/site.webmanifest" />
-
-    <!-- SEO -->
-    <title>AtlasOS - Optimized Windows, designed for enthusiasts.</title>
-    <meta
-      name="description"
-      content="AtlasOS is an optimized version of Windows, designed for enthusiasts and gamers. Experience faster performance, better privacy, and enhanced gaming capabilities."
+<BaseLayout locale={currentLocale} currentPath={currentPath}>
+  <Fragment slot="head">
+    <SEO
+      title={defaultTitle}
+      description={defaultDescription}
+      image={defaultImage}
+      canonicalURL={new URL(currentPath, Astro.site || 'https://atlasos.net').href}
+      type="website"
+      currentSlug={currentPath}
     />
-    <meta name="keywords" content="AtlasOS, Windows optimization, gaming performance, privacy-focused OS, Windows debloat, gaming Windows, performance optimization" />
+
+    <meta
+      name="keywords"
+      content="AtlasOS, Windows optimization, gaming performance, privacy-focused OS, Windows debloat, gaming Windows, performance optimization"
+    />
     <meta name="author" content="AtlasOS Community" />
     <meta name="robots" content="index, follow" />
     <meta name="language" content="English" />
     <meta name="theme-color" content="#1990fe" />
-    <link rel="canonical" href="https://atlasos.net/" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="format-detection" content="telephone=no" />
 
-    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://atlasos.net/" />
-    <meta property="og:title" content="AtlasOS - Optimized Windows, designed for enthusiasts." />
-    <meta property="og:description" content="AtlasOS is an optimized version of Windows, designed for enthusiasts and gamers. Experience faster performance, better privacy, and enhanced gaming capabilities." />
-    <meta property="og:image" content="https://atlasos.net/defaultimg.png" />
     <meta property="og:image:alt" content="AtlasOS - Optimized Windows for Gaming and Performance" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:site_name" content="AtlasOS" />
-    <meta property="og:locale" content="en_US" />
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://atlasos.net/" />
-    <meta property="twitter:title" content="AtlasOS - Optimized Windows, designed for enthusiasts." />
-    <meta property="twitter:description" content="AtlasOS is an optimized version of Windows, designed for enthusiasts and gamers. Experience faster performance, better privacy, and enhanced gaming capabilities." />
-    <meta property="twitter:image" content="https://atlasos.net/defaultimg.png" />
     <meta property="twitter:image:alt" content="AtlasOS - Optimized Windows for Gaming and Performance" />
     <meta property="twitter:site" content="@atlasos" />
     <meta property="twitter:creator" content="@atlasos" />
 
-    <!-- Schema.org -->
     <script type="application/ld+json" is:inline>
-    {
-      "@context": "https://schema.org",
+      {
+        "@context": "https://schema.org",
         "@type": "WebSite",
         "name": "AtlasOS",
         "alternateName": "Atlas OS",
         "url": "https://atlasos.net/",
         "description": "AtlasOS is an optimized version of Windows, designed for enthusiasts and gamers. Experience faster performance, better privacy, and enhanced gaming capabilities.",
         "image": "https://atlasos.net/defaultimg.png",
-        "sameAs": [
-          "https://github.com/Atlas-OS/Atlas",
-          "https://discord.com/invite/atlasos",
-          "https://x.com/atlasos"
-        ],
+        "sameAs": ["https://github.com/Atlas-OS/Atlas", "https://discord.com/invite/atlasos", "https://x.com/atlasos"],
         "publisher": {
           "@type": "Organization",
           "name": "AtlasOS Community",
@@ -104,28 +82,16 @@ import '@/styles/global.css';
         ]
       }
     </script>
+  </Fragment>
 
-    <!-- Partytown -->
-    <script is:inline type="text/partytown" src="https://pla.atlasos.net/js/script.js" data-domain="atlasos.net"
-    ></script>
-  </head>
-  <body class="overflow-x-hidden">
+  <Fragment slot="body">
     <header>
       <a href="#main-content" class="sr-only focus:not-sr-only">Skip to main content</a>
-      <Navbar />
+      <Navbar currentPath={currentPath} locale={currentLocale} isDocsPage={false} />
     </header>
     <main id="main-content" role="main">
       <slot />
     </main>
     <Footer />
-  </body>
-</html>
-
-<style>
-  html,
-  body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-  }
-</style>
+  </Fragment>
+</BaseLayout>

@@ -1,0 +1,1253 @@
+---
+title: Branding
+metaDescription: Download official AtlasOS branding assets including logos, icons, banners, wallpapers, and wordmarks. Available in multiple formats and sizes for community use.
+description: Download official AtlasOS branding assets.
+order: 80
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import Tabs from '@/components/ui/Tabs.astro';
+import TabPanel from '@/components/ui/TabPanel.astro';
+import Button from '@/components/ui/Button.astro';
+import Grid from '@/components/ui/Grid.astro';
+import BrandAssetCard from '@/components/ui/BrandAssetCard.astro';
+import BannerPreview from '@/components/ui/BannerPreview.astro';
+import WallpaperPreview from '@/components/ui/WallpaperPreview.astro';
+import Image from '@/components/ui/Image.astro';
+import Text from '@/components/ui/Text.astro';
+
+# Official AtlasOS branding
+
+Our official branding assets are freely available for community use. Whether you're creating content, presentations, or fan art, feel free to use these assets to show your support for AtlasOS. All assets are provided in multiple formats and sizes to suit your needs.
+
+<Callout type="info" title="Brand Guidelines">
+Copyright (C) 2025 AtlasOS ([atlasos.net](https://atlasos.net/)), All rights reserved.
+
+The utilization of our branding assets is subject to our [Brand Guidelines](https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/brand_guidelines_atlasos.pdf). Please adhere to these guidelines when using AtlasOS branding.
+
+</Callout>
+
+## Avatars
+
+Square profile images perfect for social media profiles, avatars, and thumbnails. Available in multiple versions to match your design aesthetic.
+
+<Grid columns={{ md: 2 }} gap="6" spacing>
+  <BrandAssetCard
+    image={{
+      src: "/assets/images/brand/avatars/preview-avatar-v1.png",
+      alt: "AtlasOS Avatar Version 1",
+      class: "w-32 h-32 rounded-[5%]"
+    }}
+    title="Version 1"
+    singleButton={{
+      href: "https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/avatars/avatar-v1.png",
+      label: "Download PNG (460x460)",
+      external: true
+    }}
+  />
+
+  <BrandAssetCard
+    image={{
+      src: "/assets/images/brand/avatars/preview-avatar-v2.png",
+      alt: "AtlasOS Avatar Version 2",
+      class: "w-32 h-32 rounded-[5%]"
+    }}
+    title="Version 2"
+    singleButton={{
+      href: "https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/avatars/avatar-v2.png",
+      label: "Download PNG (460x460)",
+      external: true
+    }}
+  />
+</Grid>
+
+## Banners
+
+Wide-format promotional banners ideal for website headers, YouTube thumbnails, and social media covers. Each version offers a different visual style to fit your content theme.
+
+<Tabs
+  items={[
+    { label: 'Version 1', value: 'v1' },
+    { label: 'Version 2', value: 'v2' },
+    { label: 'Version 3', value: 'v3' },
+  ]}
+  defaultTab="v1"
+>
+  <TabPanel value="v1" default>
+    <BannerPreview
+      image={{
+        src: '/assets/images/brand/banners/preview-banner-v1.png',
+        alt: 'AtlasOS Banner Version 1',
+      }}
+      downloadButton={{
+        href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/banners/banner-v1.png',
+        label: 'Download PNG (1920x653)',
+        external: true,
+      }}
+    />
+  </TabPanel>
+  <TabPanel value="v2">
+    <BannerPreview
+      image={{
+        src: '/assets/images/brand/banners/preview-banner-v2.png',
+        alt: 'AtlasOS Banner Version 2',
+      }}
+      downloadButton={{
+        href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/banners/banner-v2.png',
+        label: 'Download PNG (1920x653)',
+        external: true,
+      }}
+    />
+  </TabPanel>
+  <TabPanel value="v3">
+    <BannerPreview
+      image={{
+        src: '/assets/images/brand/banners/preview-banner-v3.png',
+        alt: 'AtlasOS Banner Version 3',
+      }}
+      downloadButton={{
+        href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/banners/banner-v3.png',
+        label: 'Download PNG (1920x653)',
+        external: true,
+      }}
+    />
+  </TabPanel>
+</Tabs>
+
+## Icons
+
+Square application icons designed for use as app icons, favicons, or UI elements. Available in multiple color variants (Ice, Clouds, Night, White, and Black) and formats (PNG, SVG, and PDF).
+
+<Grid columns={{ md: 2, lg: 3 }} gap="6" spacing>
+  <BrandAssetCard
+    image={{
+      src: "/assets/images/brand/icons/preview-icon-ice.png",
+      alt: "AtlasOS Ice Icon",
+      class: "w-32 h-32"
+    }}
+    title="Ice"
+    buttons={[
+      { href: "https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/icons/icon-ice.png", label: "PNG", external: true },
+      { href: "https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/icons/icon-ice.svg", label: "SVG", external: true },
+      { href: "https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/icons/icon-ice.pdf", label: "PDF", external: true }
+    ]}
+  />
+
+<BrandAssetCard
+  image={{
+    src: '/assets/images/brand/icons/preview-icon-clouds.png',
+    alt: 'AtlasOS Clouds Icon',
+    class: 'w-32 h-32',
+  }}
+  title="Clouds"
+  buttons={[
+    {
+      href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/icons/icon-clouds.png',
+      label: 'PNG',
+      external: true,
+    },
+    {
+      href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/icons/icon-clouds.svg',
+      label: 'SVG',
+      external: true,
+    },
+    {
+      href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/icons/icon-clouds.pdf',
+      label: 'PDF',
+      external: true,
+    },
+  ]}
+/>
+
+<BrandAssetCard
+  image={{
+    src: '/assets/images/brand/icons/preview-icon-night.png',
+    alt: 'AtlasOS Night Icon',
+    class: 'w-32 h-32',
+  }}
+  title="Night"
+  buttons={[
+    {
+      href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/icons/icon-night.png',
+      label: 'PNG',
+      external: true,
+    },
+    {
+      href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/icons/icon-night.svg',
+      label: 'SVG',
+      external: true,
+    },
+    {
+      href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/icons/icon-night.pdf',
+      label: 'PDF',
+      external: true,
+    },
+  ]}
+/>
+
+<BrandAssetCard
+  image={{
+    src: '/assets/images/brand/icons/preview-icon-white.png',
+    alt: 'AtlasOS White Icon',
+    class: 'w-32 h-32',
+  }}
+  title="White"
+  buttons={[
+    {
+      href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/icons/icon-white.png',
+      label: 'PNG',
+      external: true,
+    },
+    {
+      href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/icons/icon-white.svg',
+      label: 'SVG',
+      external: true,
+    },
+    {
+      href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/icons/icon-white.pdf',
+      label: 'PDF',
+      external: true,
+    },
+  ]}
+/>
+
+  <BrandAssetCard
+    image={{
+      src: "/assets/images/brand/icons/preview-icon-black.png",
+      alt: "AtlasOS Black Icon",
+      class: "w-32 h-32"
+    }}
+    title="Black"
+    buttons={[
+      { href: "https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/icons/icon-black.png", label: "PNG", external: true },
+      { href: "https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/icons/icon-black.svg", label: "SVG", external: true },
+      { href: "https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/icons/icon-black.pdf", label: "PDF", external: true }
+    ]}
+  />
+</Grid>
+
+## Logomarks
+
+Horizontal logo variants featuring the AtlasOS wordmark alongside the icon. Perfect for headers, footers, and any context where you want the full brand identity. Available in multiple color combinations.
+
+<Grid columns={{ md: 2, lg: 3 }} gap="6" spacing>
+  <BrandAssetCard
+    image={{
+      src: "/assets/images/brand/logomark/preview-logomark-ice.png",
+      alt: "AtlasOS Ice Logomark",
+      class: "w-64"
+    }}
+    title="Ice"
+    buttons={[
+      { href: "https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/logomarks/logomark-ice.png", label: "PNG", external: true },
+      { href: "https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/logomarks/logomark-ice.svg", label: "SVG", external: true },
+      { href: "https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/logomarks/logomark-ice.pdf", label: "PDF", external: true }
+    ]}
+  />
+
+<BrandAssetCard
+  image={{
+    src: '/assets/images/brand/logomark/preview-logomark-ice-white.png',
+    alt: 'AtlasOS Ice + White Logomark',
+    class: 'w-64',
+  }}
+  title="Ice + White"
+  buttons={[
+    {
+      href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/logomarks/logomark-ice-white.png',
+      label: 'PNG',
+      external: true,
+    },
+    {
+      href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/logomarks/logomark-ice-white.svg',
+      label: 'SVG',
+      external: true,
+    },
+    {
+      href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/logomarks/logomark-ice-white.pdf',
+      label: 'PDF',
+      external: true,
+    },
+  ]}
+/>
+
+<BrandAssetCard
+  image={{
+    src: '/assets/images/brand/logomark/preview-logomark-ice-black.png',
+    alt: 'AtlasOS Ice + Black Logomark',
+    class: 'w-64',
+  }}
+  title="Ice + Black"
+  buttons={[
+    {
+      href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/logomarks/logomark-ice-black.png',
+      label: 'PNG',
+      external: true,
+    },
+    {
+      href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/logomarks/logomark-ice-black.svg',
+      label: 'SVG',
+      external: true,
+    },
+    {
+      href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/logomarks/logomark-ice-black.pdf',
+      label: 'PDF',
+      external: true,
+    },
+  ]}
+/>
+
+<BrandAssetCard
+  image={{
+    src: '/assets/images/brand/logomark/preview-logomark-white.png',
+    alt: 'AtlasOS White Logomark',
+    class: 'w-64',
+  }}
+  title="White"
+  buttons={[
+    {
+      href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/logomarks/logomark-white.png',
+      label: 'PNG',
+      external: true,
+    },
+    {
+      href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/logomarks/logomark-white.svg',
+      label: 'SVG',
+      external: true,
+    },
+    {
+      href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/logomarks/logomark-white.pdf',
+      label: 'PDF',
+      external: true,
+    },
+  ]}
+/>
+
+  <BrandAssetCard
+    image={{
+      src: "/assets/images/brand/logomark/preview-logomark-black.png",
+      alt: "AtlasOS Black Logomark",
+      class: "w-64"
+    }}
+    title="Black"
+    buttons={[
+      { href: "https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/logomarks/logomark-black.png", label: "PNG", external: true },
+      { href: "https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/logomarks/logomark-black.svg", label: "SVG", external: true },
+      { href: "https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/logomarks/logomark-black.pdf", label: "PDF", external: true }
+    ]}
+  />
+</Grid>
+
+## Wordmarks
+
+Text-only logo variants displaying the AtlasOS wordmark without the icon. Ideal for minimalist designs or when space is limited. Available in the same color variants as our icons.
+
+<Grid columns={{ md: 2, lg: 3 }} gap="6" spacing>
+  <BrandAssetCard
+    image={{
+      src: "/assets/images/brand/wordmark/preview-wordmark-ice.png",
+      alt: "AtlasOS Ice Wordmark",
+      class: "w-64"
+    }}
+    title="Ice"
+    buttons={[
+      { href: "https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wordmarks/wordmark-ice.png", label: "PNG", external: true },
+      { href: "https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wordmarks/wordmark-ice.svg", label: "SVG", external: true },
+      { href: "https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wordmarks/wordmark-ice.pdf", label: "PDF", external: true }
+    ]}
+  />
+
+<BrandAssetCard
+  image={{
+    src: '/assets/images/brand/wordmark/preview-wordmark-clouds.png',
+    alt: 'AtlasOS Clouds Wordmark',
+    class: 'w-64',
+  }}
+  title="Clouds"
+  buttons={[
+    {
+      href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wordmarks/wordmark-clouds.png',
+      label: 'PNG',
+      external: true,
+    },
+    {
+      href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wordmarks/wordmark-clouds.svg',
+      label: 'SVG',
+      external: true,
+    },
+    {
+      href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wordmarks/wordmark-clouds.pdf',
+      label: 'PDF',
+      external: true,
+    },
+  ]}
+/>
+
+<BrandAssetCard
+  image={{
+    src: '/assets/images/brand/wordmark/preview-wordmark-night.png',
+    alt: 'AtlasOS Night Wordmark',
+    class: 'w-64',
+  }}
+  title="Night"
+  buttons={[
+    {
+      href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wordmarks/wordmark-night.png',
+      label: 'PNG',
+      external: true,
+    },
+    {
+      href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wordmarks/wordmark-night.svg',
+      label: 'SVG',
+      external: true,
+    },
+    {
+      href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wordmarks/wordmark-night.pdf',
+      label: 'PDF',
+      external: true,
+    },
+  ]}
+/>
+
+<BrandAssetCard
+  image={{
+    src: '/assets/images/brand/wordmark/preview-wordmark-white.png',
+    alt: 'AtlasOS White Wordmark',
+    class: 'w-64',
+  }}
+  title="White"
+  buttons={[
+    {
+      href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wordmarks/wordmark-white.png',
+      label: 'PNG',
+      external: true,
+    },
+    {
+      href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wordmarks/wordmark-white.svg',
+      label: 'SVG',
+      external: true,
+    },
+    {
+      href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wordmarks/wordmark-white.pdf',
+      label: 'PDF',
+      external: true,
+    },
+  ]}
+/>
+
+  <BrandAssetCard
+    image={{
+      src: "/assets/images/brand/wordmark/preview-wordmark-black.png",
+      alt: "AtlasOS Black Wordmark",
+      class: "w-64"
+    }}
+    title="Black"
+    buttons={[
+      { href: "https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wordmarks/wordmark-black.png", label: "PNG", external: true },
+      { href: "https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wordmarks/wordmark-black.svg", label: "SVG", external: true },
+      { href: "https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wordmarks/wordmark-black.pdf", label: "PDF", external: true }
+    ]}
+  />
+</Grid>
+
+## Wallpapers
+
+Desktop wallpapers featuring AtlasOS branding. Each wallpaper is available in multiple aspect ratios (4:3, 16:9, 16:10, and 21:9) to fit different monitor configurations. Organized by AtlasOS version and revision.
+
+### Atlas v0.5
+
+#### Rev 1
+
+<Tabs
+  items={[
+    { label: 'v0.5 Rev 1.0', value: 'v05-r1-0' },
+    { label: 'v0.5 Rev 1.1', value: 'v05-r1-1' },
+  ]}
+  defaultTab="v05-r1-0"
+>
+  <TabPanel value="v05-r1-0" default>
+    <WallpaperPreview
+      image={{
+        src: '/assets/images/brand/wallpapers/v0.5/rev-1/preview-wallpaper-v0.5-rev1.0.png',
+        alt: 'AtlasOS v0.5 Rev 1.0 Wallpaper',
+      }}
+      downloadButtons={[
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.5/rev-1/wallpaper-v0.5-rev1.0-4_3.png',
+          label: 'PNG 4:3 (3072x2304)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.5/rev-1/wallpaper-v0.5-rev1.0-16_9.png',
+          label: 'PNG 16:9 (3840x2160)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.5/rev-1/wallpaper-v0.5-rev1.0-16_10.png',
+          label: 'PNG 16:10 (3840x2400)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.5/rev-1/wallpaper-v0.5-rev1.0-21_9.png',
+          label: 'PNG 21:9 (5040x2160)',
+          external: true,
+        },
+      ]}
+    />
+  </TabPanel>
+  <TabPanel value="v05-r1-1">
+    <WallpaperPreview
+      image={{
+        src: '/assets/images/brand/wallpapers/v0.5/rev-1/preview-wallpaper-v0.5-rev1.1.png',
+        alt: 'AtlasOS v0.5 Rev 1.1 Wallpaper',
+      }}
+      downloadButtons={[
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.5/rev-1/wallpaper-v0.5-rev1.1-4_3.png',
+          label: 'PNG 4:3 (3072x2304)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.5/rev-1/wallpaper-v0.5-rev1.1-16_9.png',
+          label: 'PNG 16:9 (3840x2160)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.5/rev-1/wallpaper-v0.5-rev1.1-16_10.png',
+          label: 'PNG 16:10 (3840x2400)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.5/rev-1/wallpaper-v0.5-rev1.1-21_9.png',
+          label: 'PNG 21:9 (5040x2160)',
+          external: true,
+        },
+      ]}
+    />
+  </TabPanel>
+</Tabs>
+
+### Atlas v0.4
+
+#### Rev 1
+
+<Tabs
+  items={[
+    { label: 'v0.4 Rev 1.0', value: 'v04-r1-0' },
+    { label: 'v0.4 Rev 1.1', value: 'v04-r1-1' },
+  ]}
+  defaultTab="v04-r1-0"
+>
+  <TabPanel value="v04-r1-0" default>
+    <WallpaperPreview
+      image={{
+        src: '/assets/images/brand/wallpapers/v0.4/rev-1/preview-wallpaper-v0.4-rev1.0.png',
+        alt: 'AtlasOS v0.4 Rev 1.0 Wallpaper',
+      }}
+      downloadButtons={[
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.4/rev-1/wallpaper-v0.4-rev1.0-4_3.png',
+          label: 'PNG 4:3 (3072x2304)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.4/rev-1/wallpaper-v0.4-rev1.0-16_9.png',
+          label: 'PNG 16:9 (3840x2160)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.4/rev-1/wallpaper-v0.4-rev1.0-16_10.png',
+          label: 'PNG 16:10 (3840x2400)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.4/rev-1/wallpaper-v0.4-rev1.0-21_9.png',
+          label: 'PNG 21:9 (5040x2160)',
+          external: true,
+        },
+      ]}
+    />
+  </TabPanel>
+  <TabPanel value="v04-r1-1">
+    <WallpaperPreview
+      image={{
+        src: '/assets/images/brand/wallpapers/v0.4/rev-1/preview-wallpaper-v0.4-rev1.1.png',
+        alt: 'AtlasOS v0.4 Rev 1.1 Wallpaper',
+      }}
+      downloadButtons={[
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.4/rev-1/wallpaper-v0.4-rev1.1-4_3.png',
+          label: 'PNG 4:3 (3072x2304)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.4/rev-1/wallpaper-v0.4-rev1.1-16_9.png',
+          label: 'PNG 16:9 (3840x2160)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.4/rev-1/wallpaper-v0.4-rev1.1-16_10.png',
+          label: 'PNG 16:10 (3840x2400)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.4/rev-1/wallpaper-v0.4-rev1.1-21_9.png',
+          label: 'PNG 21:9 (5040x2160)',
+          external: true,
+        },
+      ]}
+    />
+  </TabPanel>
+</Tabs>
+
+### Atlas v0.3
+
+#### Rev 1
+
+<Tabs
+  items={[
+    { label: 'v0.3 Rev 1.0', value: 'v03-r1-0' },
+    { label: 'v0.3 Rev 1.1', value: 'v03-r1-1' },
+    { label: 'v0.3 Rev 1.2', value: 'v03-r1-2' },
+  ]}
+  defaultTab="v03-r1-0"
+>
+  <TabPanel value="v03-r1-0" default>
+    <WallpaperPreview
+      image={{
+        src: '/assets/images/brand/wallpapers/v0.3/rev-1/preview-wallpaper-v0.3-rev1.0.png',
+        alt: 'AtlasOS v0.3 Rev 1.0 Wallpaper',
+      }}
+      downloadButtons={[
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-1/wallpaper-v0.3-rev1.0-4_3.png',
+          label: 'PNG 4:3 (3072x2304)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-1/wallpaper-v0.3-rev1.0-16_9.png',
+          label: 'PNG 16:9 (3840x2160)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-1/wallpaper-v0.3-rev1.0-16_10.png',
+          label: 'PNG 16:10 (3840x2400)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-1/wallpaper-v0.3-rev1.0-21_9.png',
+          label: 'PNG 21:9 (5040x2160)',
+          external: true,
+        },
+      ]}
+    />
+  </TabPanel>
+  <TabPanel value="v03-r1-1">
+    <WallpaperPreview
+      image={{
+        src: '/assets/images/brand/wallpapers/v0.3/rev-1/preview-wallpaper-v0.3-rev1.1.png',
+        alt: 'AtlasOS v0.3 Rev 1.1 Wallpaper',
+      }}
+      downloadButtons={[
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-1/wallpaper-v0.3-rev1.1-4_3.png',
+          label: 'PNG 4:3 (3072x2304)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-1/wallpaper-v0.3-rev1.1-16_9.png',
+          label: 'PNG 16:9 (3840x2160)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-1/wallpaper-v0.3-rev1.1-16_10.png',
+          label: 'PNG 16:10 (3840x2400)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-1/wallpaper-v0.3-rev1.1-21_9.png',
+          label: 'PNG 21:9 (5040x2160)',
+          external: true,
+        },
+      ]}
+    />
+  </TabPanel>
+  <TabPanel value="v03-r1-2">
+    <WallpaperPreview
+      image={{
+        src: '/assets/images/brand/wallpapers/v0.3/rev-1/preview-wallpaper-v0.3-rev1.2.png',
+        alt: 'AtlasOS v0.3 Rev 1.2 Wallpaper',
+      }}
+      downloadButtons={[
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-1/wallpaper-v0.3-rev1.2-4_3.png',
+          label: 'PNG 4:3 (3072x2304)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-1/wallpaper-v0.3-rev1.2-16_9.png',
+          label: 'PNG 16:9 (3840x2160)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-1/wallpaper-v0.3-rev1.2-16_10.png',
+          label: 'PNG 16:10 (3840x2400)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-1/wallpaper-v0.3-rev1.2-21_9.png',
+          label: 'PNG 21:9 (5040x2160)',
+          external: true,
+        },
+      ]}
+    />
+  </TabPanel>
+</Tabs>
+
+#### Rev 2
+
+<Tabs
+  items={[
+    { label: 'v0.3 Rev 2.0', value: 'v03-r2-0' },
+    { label: 'v0.3 Rev 2.1', value: 'v03-r2-1' },
+  ]}
+  defaultTab="v03-r2-0"
+>
+  <TabPanel value="v03-r2-0" default>
+    <WallpaperPreview
+      image={{
+        src: '/assets/images/brand/wallpapers/v0.3/rev-2/preview-wallpaper-v0.3-rev2.0.png',
+        alt: 'AtlasOS v0.3 Rev 2.0 Wallpaper',
+      }}
+      downloadButtons={[
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-2/wallpaper-v0.3-rev2.0-4_3.png',
+          label: 'PNG 4:3 (3072x2304)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-2/wallpaper-v0.3-rev2.0-16_9.png',
+          label: 'PNG 16:9 (3840x2160)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-2/wallpaper-v0.3-rev2.0-16_10.png',
+          label: 'PNG 16:10 (3840x2400)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-2/wallpaper-v0.3-rev2.0-21_9.png',
+          label: 'PNG 21:9 (5040x2160)',
+          external: true,
+        },
+      ]}
+    />
+  </TabPanel>
+  <TabPanel value="v03-r2-1">
+    <WallpaperPreview
+      image={{
+        src: '/assets/images/brand/wallpapers/v0.3/rev-2/preview-wallpaper-v0.3-rev2.1.png',
+        alt: 'AtlasOS v0.3 Rev 2.1 Wallpaper',
+      }}
+      downloadButtons={[
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-2/wallpaper-v0.3-rev2.1-4_3.png',
+          label: 'PNG 4:3 (3072x2304)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-2/wallpaper-v0.3-rev2.1-16_9.png',
+          label: 'PNG 16:9 (3840x2160)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-2/wallpaper-v0.3-rev2.1-16_10.png',
+          label: 'PNG 16:10 (3840x2400)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-2/wallpaper-v0.3-rev2.1-21_9.png',
+          label: 'PNG 21:9 (5040x2160)',
+          external: true,
+        },
+      ]}
+    />
+  </TabPanel>
+</Tabs>
+
+#### Rev 3
+
+<Tabs
+  items={[
+    { label: 'v0.3 Rev 3.0', value: 'v03-r3-0' },
+    { label: 'v0.3 Rev 3.1', value: 'v03-r3-1' },
+    { label: 'v0.3 Rev 3.2', value: 'v03-r3-2' },
+    { label: 'v0.3 Rev 3.3', value: 'v03-r3-3' },
+  ]}
+  defaultTab="v03-r3-0"
+>
+  <TabPanel value="v03-r3-0" default>
+    <WallpaperPreview
+      image={{
+        src: '/assets/images/brand/wallpapers/v0.3/rev-3/preview-wallpaper-v0.3-rev3.0.png',
+        alt: 'AtlasOS v0.3 Rev 3.0 Wallpaper',
+      }}
+      downloadButtons={[
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-3/wallpaper-v0.3-rev3.0-4_3.png',
+          label: 'PNG 4:3 (3072x2304)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-3/wallpaper-v0.3-rev3.0-16_9.png',
+          label: 'PNG 16:9 (3840x2160)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-3/wallpaper-v0.3-rev3.0-16_10.png',
+          label: 'PNG 16:10 (3840x2400)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-3/wallpaper-v0.3-rev3.0-21_9.png',
+          label: 'PNG 21:9 (5040x2160)',
+          external: true,
+        },
+      ]}
+    />
+  </TabPanel>
+  <TabPanel value="v03-r3-1">
+    <WallpaperPreview
+      image={{
+        src: '/assets/images/brand/wallpapers/v0.3/rev-3/preview-wallpaper-v0.3-rev3.1.png',
+        alt: 'AtlasOS v0.3 Rev 3.1 Wallpaper',
+      }}
+      downloadButtons={[
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-3/wallpaper-v0.3-rev3.1-4_3.png',
+          label: 'PNG 4:3 (3072x2304)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-3/wallpaper-v0.3-rev3.1-16_9.png',
+          label: 'PNG 16:9 (3840x2160)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-3/wallpaper-v0.3-rev3.1-16_10.png',
+          label: 'PNG 16:10 (3840x2400)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-3/wallpaper-v0.3-rev3.1-21_9.png',
+          label: 'PNG 21:9 (5040x2160)',
+          external: true,
+        },
+      ]}
+    />
+  </TabPanel>
+  <TabPanel value="v03-r3-2">
+    <WallpaperPreview
+      image={{
+        src: '/assets/images/brand/wallpapers/v0.3/rev-3/preview-wallpaper-v0.3-rev3.2.png',
+        alt: 'AtlasOS v0.3 Rev 3.2 Wallpaper',
+      }}
+      downloadButtons={[
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-3/wallpaper-v0.3-rev3.2-4_3.png',
+          label: 'PNG 4:3 (3072x2304)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-3/wallpaper-v0.3-rev3.2-16_9.png',
+          label: 'PNG 16:9 (3840x2160)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-3/wallpaper-v0.3-rev3.2-16_10.png',
+          label: 'PNG 16:10 (3840x2400)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-3/wallpaper-v0.3-rev3.2-21_9.png',
+          label: 'PNG 21:9 (5040x2160)',
+          external: true,
+        },
+      ]}
+    />
+  </TabPanel>
+  <TabPanel value="v03-r3-3">
+    <WallpaperPreview
+      image={{
+        src: '/assets/images/brand/wallpapers/v0.3/rev-3/preview-wallpaper-v0.3-rev3.3.png',
+        alt: 'AtlasOS v0.3 Rev 3.3 Wallpaper',
+      }}
+      downloadButtons={[
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-3/wallpaper-v0.3-rev3.3-4_3.png',
+          label: 'PNG 4:3 (3072x2304)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-3/wallpaper-v0.3-rev3.3-16_9.png',
+          label: 'PNG 16:9 (3840x2160)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-3/wallpaper-v0.3-rev3.3-16_10.png',
+          label: 'PNG 16:10 (3840x2400)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-3/wallpaper-v0.3-rev3.3-21_9.png',
+          label: 'PNG 21:9 (5040x2160)',
+          external: true,
+        },
+      ]}
+    />
+  </TabPanel>
+</Tabs>
+
+#### Rev 4
+
+<Tabs
+  items={[
+    { label: 'v0.3 Rev 4.0', value: 'v03-r4-0' },
+    { label: 'v0.3 Rev 4.1', value: 'v03-r4-1' },
+    { label: 'v0.3 Rev 4.2', value: 'v03-r4-2' },
+    { label: 'v0.3 Rev 4.3', value: 'v03-r4-3' },
+    { label: 'v0.3 Rev 4.4', value: 'v03-r4-4' },
+  ]}
+  defaultTab="v03-r4-0"
+>
+  <TabPanel value="v03-r4-0" default>
+    <WallpaperPreview
+      image={{
+        src: '/assets/images/brand/wallpapers/v0.3/rev-4/preview-wallpaper-v0.3-rev4.0.png',
+        alt: 'AtlasOS v0.3 Rev 4.0 Wallpaper',
+      }}
+      downloadButtons={[
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-4/wallpaper-v0.3-rev4.0-4_3.png',
+          label: 'PNG 4:3 (3072x2304)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-4/wallpaper-v0.3-rev4.0-16_9.png',
+          label: 'PNG 16:9 (3840x2160)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-4/wallpaper-v0.3-rev4.0-16_10.png',
+          label: 'PNG 16:10 (3840x2400)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-4/wallpaper-v0.3-rev4.0-21_9.png',
+          label: 'PNG 21:9 (5040x2160)',
+          external: true,
+        },
+      ]}
+    />
+  </TabPanel>
+  <TabPanel value="v03-r4-1">
+    <WallpaperPreview
+      image={{
+        src: '/assets/images/brand/wallpapers/v0.3/rev-4/preview-wallpaper-v0.3-rev4.1.png',
+        alt: 'AtlasOS v0.3 Rev 4.1 Wallpaper',
+      }}
+      downloadButtons={[
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-4/wallpaper-v0.3-rev4.1-4_3.png',
+          label: 'PNG 4:3 (3072x2304)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-4/wallpaper-v0.3-rev4.1-16_9.png',
+          label: 'PNG 16:9 (3840x2160)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-4/wallpaper-v0.3-rev4.1-16_10.png',
+          label: 'PNG 16:10 (3840x2400)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-4/wallpaper-v0.3-rev4.1-21_9.png',
+          label: 'PNG 21:9 (5040x2160)',
+          external: true,
+        },
+      ]}
+    />
+  </TabPanel>
+  <TabPanel value="v03-r4-2">
+    <WallpaperPreview
+      image={{
+        src: '/assets/images/brand/wallpapers/v0.3/rev-4/preview-wallpaper-v0.3-rev4.2.png',
+        alt: 'AtlasOS v0.3 Rev 4.2 Wallpaper',
+      }}
+      downloadButtons={[
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-4/wallpaper-v0.3-rev4.2-4_3.png',
+          label: 'PNG 4:3 (3072x2304)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-4/wallpaper-v0.3-rev4.2-16_9.png',
+          label: 'PNG 16:9 (3840x2160)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-4/wallpaper-v0.3-rev4.2-16_10.png',
+          label: 'PNG 16:10 (3840x2400)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-4/wallpaper-v0.3-rev4.2-21_9.png',
+          label: 'PNG 21:9 (5040x2160)',
+          external: true,
+        },
+      ]}
+    />
+  </TabPanel>
+  <TabPanel value="v03-r4-3">
+    <WallpaperPreview
+      image={{
+        src: '/assets/images/brand/wallpapers/v0.3/rev-4/preview-wallpaper-v0.3-rev4.3.png',
+        alt: 'AtlasOS v0.3 Rev 4.3 Wallpaper',
+      }}
+      downloadButtons={[
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-4/wallpaper-v0.3-rev4.3-4_3.png',
+          label: 'PNG 4:3 (3072x2304)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-4/wallpaper-v0.3-rev4.3-16_9.png',
+          label: 'PNG 16:9 (3840x2160)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-4/wallpaper-v0.3-rev4.3-16_10.png',
+          label: 'PNG 16:10 (3840x2400)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-4/wallpaper-v0.3-rev4.3-21_9.png',
+          label: 'PNG 21:9 (5040x2160)',
+          external: true,
+        },
+      ]}
+    />
+  </TabPanel>
+  <TabPanel value="v03-r4-4">
+    <WallpaperPreview
+      image={{
+        src: '/assets/images/brand/wallpapers/v0.3/rev-4/preview-wallpaper-v0.3-rev4.4.png',
+        alt: 'AtlasOS v0.3 Rev 4.4 Wallpaper',
+      }}
+      downloadButtons={[
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-4/wallpaper-v0.3-rev4.4-4_3.png',
+          label: 'PNG 4:3 (3072x2304)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-4/wallpaper-v0.3-rev4.4-16_9.png',
+          label: 'PNG 16:9 (3840x2160)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-4/wallpaper-v0.3-rev4.4-16_10.png',
+          label: 'PNG 16:10 (3840x2400)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.3/rev-4/wallpaper-v0.3-rev4.4-21_9.png',
+          label: 'PNG 21:9 (5040x2160)',
+          external: true,
+        },
+      ]}
+    />
+  </TabPanel>
+</Tabs>
+
+### Atlas Generic
+
+#### Rev 1
+
+<Tabs
+  items={[
+    { label: 'Generic Rev 1.0', value: 'gen-r1-0' },
+    { label: 'Generic Rev 1.1', value: 'gen-r1-1' },
+    { label: 'Generic Rev 1.2', value: 'gen-r1-2' },
+  ]}
+  defaultTab="gen-r1-0"
+>
+  <TabPanel value="gen-r1-0" default>
+    <WallpaperPreview
+      image={{
+        src: '/assets/images/brand/wallpapers/generic/rev-1/preview-wallpaper-generic-rev1.0.png',
+        alt: 'AtlasOS Generic Rev 1.0 Wallpaper',
+      }}
+      description="Originally the Generic Clouds Wordmark-Ice Wallpaper"
+      downloadButtons={[
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/generic/rev-1/wallpaper-generic-rev1.0-4_3.png',
+          label: 'PNG 4:3 (3072x2304)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/generic/rev-1/wallpaper-generic-rev1.0-16_9.png',
+          label: 'PNG 16:9 (3840x2160)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/generic/rev-1/wallpaper-generic-rev1.0-16_10.png',
+          label: 'PNG 16:10 (3840x2400)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/generic/rev-1/wallpaper-generic-rev1.0-21_9.png',
+          label: 'PNG 21:9 (5040x2160)',
+          external: true,
+        },
+      ]}
+    />
+  </TabPanel>
+  <TabPanel value="gen-r1-1">
+    <WallpaperPreview
+      image={{
+        src: '/assets/images/brand/wallpapers/generic/rev-1/preview-wallpaper-generic-rev1.1.png',
+        alt: 'AtlasOS Generic Rev 1.1 Wallpaper',
+      }}
+      description="Originally the Generic Ice Wordmark-Clouds Wallpaper"
+      downloadButtons={[
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/generic/rev-1/wallpaper-generic-rev1.1-4_3.png',
+          label: 'PNG 4:3 (3072x2304)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/generic/rev-1/wallpaper-generic-rev1.1-16_9.png',
+          label: 'PNG 16:9 (3840x2160)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/generic/rev-1/wallpaper-generic-rev1.1-16_10.png',
+          label: 'PNG 16:10 (3840x2400)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/generic/rev-1/wallpaper-generic-rev1.1-21_9.png',
+          label: 'PNG 21:9 (5040x2160)',
+          external: true,
+        },
+      ]}
+    />
+  </TabPanel>
+  <TabPanel value="gen-r1-2">
+    <WallpaperPreview
+      image={{
+        src: '/assets/images/brand/wallpapers/generic/rev-1/preview-wallpaper-generic-rev1.2.png',
+        alt: 'AtlasOS Generic Rev 1.2 Wallpaper',
+      }}
+      description="Originally the Generic Night Wordmark-Clouds Wallpaper"
+      downloadButtons={[
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/generic/rev-1/wallpaper-generic-rev1.2-4_3.png',
+          label: 'PNG 4:3 (3072x2304)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/generic/rev-1/wallpaper-generic-rev1.2-16_9.png',
+          label: 'PNG 16:9 (3840x2160)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/generic/rev-1/wallpaper-generic-rev1.2-16_10.png',
+          label: 'PNG 16:10 (3840x2400)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/generic/rev-1/wallpaper-generic-rev1.2-21_9.png',
+          label: 'PNG 21:9 (5040x2160)',
+          external: true,
+        },
+      ]}
+    />
+  </TabPanel>
+</Tabs>
+
+#### Rev 2
+
+<Tabs items={[{ label: 'Generic Rev 2.0', value: 'gen-r2-0' }]} defaultTab="gen-r2-0">
+  <TabPanel value="gen-r2-0" default>
+    <WallpaperPreview
+      image={{
+        src: '/assets/images/brand/wallpapers/generic/rev-2/preview-wallpaper-generic-rev2.0.png',
+        alt: 'AtlasOS Generic Rev 2.0 Wallpaper',
+      }}
+      description="Originally the Generic Setup Wallpaper"
+      credit="Photo taken by Roberto Nickson (@rpnickson) via Unsplash."
+      downloadButtons={[
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/generic/rev-2/wallpaper-generic-rev2.0-4_3.png',
+          label: 'PNG 4:3 (3072x2304)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/generic/rev-2/wallpaper-generic-rev2.0-16_9.png',
+          label: 'PNG 16:9 (3840x2160)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/generic/rev-2/wallpaper-generic-rev2.0-16_10.png',
+          label: 'PNG 16:10 (3840x2400)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/generic/rev-2/wallpaper-generic-rev2.0-21_9.png',
+          label: 'PNG 21:9 (5040x2160)',
+          external: true,
+        },
+      ]}
+    />
+  </TabPanel>
+</Tabs>
+
+#### Rev 3
+
+<Tabs items={[{ label: 'Generic Rev 3.0', value: 'gen-r3-0' }]} defaultTab="gen-r3-0">
+  <TabPanel value="gen-r3-0" default>
+    <WallpaperPreview
+      image={{
+        src: '/assets/images/brand/wallpapers/generic/rev-3/preview-wallpaper-generic-rev3.0.png',
+        alt: 'AtlasOS Generic Rev 3.0 Wallpaper',
+      }}
+      description="Originally the Generic Night Wordmark-Pride Wallpaper"
+      downloadButtons={[
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/generic/rev-3/wallpaper-generic-rev3.0-4_3.png',
+          label: 'PNG 4:3 (3072x2304)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/generic/rev-3/wallpaper-generic-rev3.0-16_9.png',
+          label: 'PNG 16:9 (3840x2160)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/generic/rev-3/wallpaper-generic-rev3.0-16_10.png',
+          label: 'PNG 16:10 (3840x2400)',
+          external: true,
+        },
+        {
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/generic/rev-3/wallpaper-generic-rev3.0-21_9.png',
+          label: 'PNG 21:9 (5040x2160)',
+          external: true,
+        },
+      ]}
+    />
+  </TabPanel>
+</Tabs>

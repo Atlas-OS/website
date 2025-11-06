@@ -1,0 +1,49 @@
+---
+import Image from '@/components/ui/Image.astro';
+import Button from '@/components/ui/Button.astro';
+import Text from '@/components/ui/Text.astro';
+
+interface Props {
+  image: {
+    src: string;
+    alt: string;
+  };
+  downloadButtons: Array<{
+    href: string;
+    label: string;
+    external?: boolean;
+  }>;
+  description?: string;
+  credit?: string;
+  class?: string;
+}
+
+const { image, downloadButtons, description, credit, class: className = '' } = Astro.props;
+---
+
+<div class={`not-prose my-6 ${className}`}>
+  {
+    description && (
+      <Text as="p" class="mb-4 text-sm text-white/60">
+        {description}
+      </Text>
+    )
+  }
+  {
+    credit && (
+      <Text as="p" class="mb-4 text-xs text-white/50">
+        {credit}
+      </Text>
+    )
+  }
+  <Image src={image.src} alt={image.alt} class="w-full rounded-lg" loading="lazy" />
+  <div class="mt-4 grid grid-cols-2 gap-2 md:grid-cols-4">
+    {
+      downloadButtons.map((button) => (
+        <Button href={button.href} external={button.external} variant="secondary" size="sm" fw>
+          {button.label}
+        </Button>
+      ))
+    }
+  </div>
+</div>

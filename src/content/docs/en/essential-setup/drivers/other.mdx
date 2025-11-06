@@ -1,0 +1,48 @@
+---
+title: Other drivers
+metaDescription: Install Bluetooth, printer, and other device drivers for AtlasOS. Learn how to find manufacturer drivers and use Snappy Driver Installer Origin (SDIO) as a backup option.
+description: Install Bluetooth, printer, and other device drivers.
+order: 3
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+
+# Other drivers
+
+Install drivers for additional devices like Bluetooth, printers, scanners, and other peripherals. Always try to download drivers directly from the device manufacturer first, as they're optimized for your specific hardware. Use Snappy Driver Installer Origin (SDIO) as a backup option if you can't find manufacturer drivers.
+
+## Manufacturer drivers (recommended)
+
+Search for your device model or motherboard manufacturer, as they provide drivers optimized for your specific hardware.
+
+**Search examples:**
+
+- <CodeInline text="[Device Model] driver" />
+- <CodeInline text="[Motherboard Manufacturer] [Motherboard Model] support" />
+
+## Snappy Driver Installer Origin (SDIO)
+
+Snappy Driver Installer Origin (SDIO) can help you find drivers that are compatible with your hardware. SDIO scans your system for missing or outdated drivers and installs the most up-to-date ones for you.
+
+<Callout type="warning" title="Important">
+  Do not install all drivers that SDIO lists. Only install, update, or change drivers if you're
+  experiencing specific device issues.
+</Callout>
+
+### SDIO installation steps
+
+1. Visit the [SDIO website](https://www.glenn.delahoy.com/snappy-driver-installer-origin) and download the installer from the "Download Application" section
+2. Extract the .zip file and run the <CodeInline text="x64" /> executable
+   - The x64 build is required for AtlasOS
+   - When prompted, select **"Download indexes only"** to avoid downloading unnecessary drivers
+3. Wait for SDIO to download the driver indexes
+4. Select the drivers you need and click **"Install"**
+
+## Next steps
+
+After installing all necessary drivers:
+
+- **[Optimize hardware](/docs/essential-setup/hardware/)** (optional) - Enable XMP/DOCP and Resizable BAR for better performance
+- **Configure [Atlas settings](/docs/atlas-configuration/)** to customize your installation
+- **Explore [optional tweaks](/docs/atlas-configuration/tweaks/)** to personalize your experience

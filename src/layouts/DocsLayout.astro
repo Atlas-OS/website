@@ -1,0 +1,121 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Navbar from '@/components/layout/Navbar.astro';
+import Sidebar from '@/components/layout/Sidebar.astro';
+import TableOfContents from '@/components/docs/TableOfContents.astro';
+import Breadcrumbs from '@/components/docs/Breadcrumbs.astro';
+import PageNav from '@/components/docs/PageNav.astro';
+import SEO from '@/components/core/SEO.astro';
+import Spotlight from '@/components/ui/Spotlight.astro';
+import { ClientRouter } from 'astro:transitions';
+import { getCollection } from 'astro:content';
+import { getPrevNextPages } from '@/utils/navigation';
+import { getLangCode } from '@/utils/locale';
+import { DEFAULT_LOCALE } from '@/constants';
+import '@/styles/prose.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  metaDescription?: string;
+  currentSlug: string;
+  headings?: Array<{ depth: number; slug: string; text: string }>;
+  image?: string;
+  ogImage?: string;
+  type?: 'website' | 'article';
+  showPageNav?: boolean;
+  locale?: string;
+}
+
+const {
+  title,
+  description,
+  metaDescription,
+  currentSlug,
+  headings = [],
+  image,
+  ogImage,
+  type,
+  showPageNav = true,
+  locale = DEFAULT_LOCALE,
+} = Astro.props;
+
+const defaultLocale = DEFAULT_LOCALE;
+const langCode = getLangCode(locale);
+
+const showSidebar = true;
+const allDocs = await getCollection('docs');
+const { prev, next } = getPrevNextPages(allDocs, currentSlug, locale === defaultLocale ? null : locale, defaultLocale);
+---
+
+<BaseLayout locale={locale} currentPath={currentSlug}>
+  <Fragment slot="head">
+    <meta property="xml:lang" content={langCode} />
+    <meta name="apple-mobile-web-app-title" content="AtlasOS Docs" />
+    <SEO
+      title={title}
+      description={description}
+      metaDescription={metaDescription}
+      image={ogImage || image}
+      canonicalURL={new URL(currentSlug, Astro.site || 'https://atlasos.net').href}
+      type={type}
+      currentSlug={currentSlug}
+    />
+    <ClientRouter />
+  </Fragment>
+
+  <Fragment slot="body">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <Navbar currentPath={currentSlug} locale={locale} isDocsPage={true} data-pagefind-ignore />
+    <div class="relative z-10 flex pt-12">
+      <div class="absolute inset-0 -z-10 w-full" style="height: 100%;">
+        <div
+          class="absolute h-full w-full bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px)] mask-[linear-gradient(to_bottom,rgba(0,0,0,0.7),transparent_70%)] bg-size-[24px_24px]"
+        >
+        </div>
+      </div>
+      {
+        showSidebar && (
+          <Sidebar currentSlug={currentSlug} locale={locale === defaultLocale ? null : locale} data-pagefind-ignore />
+        )
+      }
+      <main
+        class={`flex-1 overflow-auto scroll-pt-20 xl:mr-64 ${showSidebar ? 'lg:ml-64' : ''}`}
+        id="main-content"
+        tabindex="-1"
+        style="overflow-anchor: none; scroll-behavior: smooth;"
+      >
+        <div class="flex-1">
+          <div class="mx-auto max-w-7xl space-y-8">
+            <div class="mx-auto flex max-w-5xl">
+              <div
+                class="max-w-4xl min-w-0 flex-1 space-y-8 px-4 py-6 sm:px-6 sm:py-8 md:px-8 lg:px-10 lg:py-10 xl:px-12 xl:py-12"
+              >
+                <Breadcrumbs currentSlug={currentSlug} data-pagefind-ignore />
+                <div class="prose prose-lg max-w-none" data-pagefind-body>
+                  <slot />
+                </div>
+                <div class="prose prose-lg max-w-none">
+                  {showPageNav && <PageNav prev={prev || undefined} next={next || undefined} data-pagefind-ignore />}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <TableOfContents headings={headings} data-pagefind-ignore />
+    </div>
+    <script>
+      import { initScrollAnimations } from '@/utils/scroll-animations';
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initScrollAnimations);
+      } else {
+        initScrollAnimations();
+      }
+
+      document.addEventListener('astro:page-load', initScrollAnimations);
+    </script>
+    <Spotlight />
+  </Fragment>
+</BaseLayout>

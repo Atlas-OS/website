@@ -1,0 +1,39 @@
+---
+title: Report issues
+metaDescription: Learn how to report issues when testing AtlasOS. Find AME Beta logs, understand what information to include, and discover where to report bugs for different versions.
+description: Learn how to report issues when testing AtlasOS.
+order: 37
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+
+# How to report issues
+
+This guide explains how to report issues you find [when testing](/docs/contributing/testing/).
+
+## AME Beta logs
+
+Before reporting, we would find it useful if you could skim through your AME Beta logs (located in <CodeInline text="C:\ProgramData\AME\Logs" />) to look for the following:
+
+- The <CodeInline text="Output.txt" /> from the latest Playbook
+  - Check if there are any errors in the scripts
+  - If there are any logical errors in the scripts
+- The <CodeInline text="Log.yml" />
+  - Check if there are any errors from AME Beta
+
+If you find anything, include that in your report. However, **post all logs when reporting bugs so we can also look through them.** No personally identifiable information is contained in these, except from your Windows username.
+
+## Where to report
+
+### If it's the latest release...
+
+Please report to the [Atlas GitHub Issues](https://github.com/Atlas-OS/Atlas/issues). Ensure that you follow the issue template.
+
+### If it's from a GitHub branch...
+
+Ideally, report to the <CodeInline text="📘 ┃ playbook" /> channel under our [Discord's 'Development' category](https://discord.com/invite/atlasos). Otherwise, report to the [Atlas GitHub Issues](https://github.com/Atlas-OS/Atlas/issues). Ensure that you follow the issue template.
+
+### If it's a preview from our Discord...
+
+Report to the designated <CodeInline text="🧪 ┃ issue-reporting" /> forum channel under the 'Development' category.

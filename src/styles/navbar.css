@@ -1,0 +1,18 @@
+.header-scrolled {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.nav-link:hover .nav-link-underline {
+  transform: scaleX(1);
+}
+
+.nav-link-underline {
+  transform-origin: left;
+}
+
+header button:focus-visible,
+header a:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}

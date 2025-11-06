@@ -1,0 +1,114 @@
+---
+interface Props {
+  headings?: Array<{ depth: number; slug: string; text: string }>;
+}
+
+const { headings = [] } = Astro.props;
+
+const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+{
+  filteredHeadings.length > 0 && (
+    <aside
+      id="toc"
+      class="fixed top-12 right-0 hidden h-[calc(100vh-3rem)] w-64 overflow-y-auto border-l border-white/10 p-6 xl:block"
+      style="background-color: var(--bg-primary);"
+    >
+      <nav class="sticky top-8 z-10 -mr-2 max-h-[calc(100vh-4rem)] overflow-y-auto px-2" aria-label="On this page">
+        <div class="space-y-4">
+          <h2 class="mb-4 text-xs font-semibold tracking-wider text-white/50 uppercase">On this page</h2>
+          <ul class="space-y-2">
+            {filteredHeadings.map((heading) => (
+              <li>
+                <a
+                  href={`#${heading.slug}`}
+                  class={`toc-link block w-full text-left text-sm transition-opacity duration-200 hover:opacity-80 ${
+                    heading.depth === 3 ? 'pl-4' : ''
+                  } relative pl-0 text-white/60`}
+                  style="scroll-behavior: smooth;"
+                >
+                  {heading.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </nav>
+    </aside>
+  )
+}
+
+<style>
+  #toc {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+  }
+
+  #toc::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  #toc::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  #toc::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+  }
+
+  #toc::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+</style>
+
+<script>
+  function setupTableOfContents() {
+    const toc = document.querySelector('#toc');
+
+    if (toc) {
+      const tocLinks = toc.querySelectorAll('.toc-link');
+      const headings = Array.from(document.querySelectorAll('h2, h3')).map((el) => ({
+        id: el.id,
+        element: el,
+      }));
+
+      if (tocLinks.length > 0 && headings.length > 0) {
+        const updateActiveLink = () => {
+          const scrollPosition = window.scrollY + 100;
+
+          for (let i = headings.length - 1; i >= 0; i--) {
+            const heading = headings[i];
+            if (!heading) continue;
+            const rect = heading.element.getBoundingClientRect();
+            const top = rect.top + window.scrollY;
+
+            if (scrollPosition >= top) {
+              tocLinks.forEach((link) => {
+                link.classList.remove('text-primary', 'font-medium');
+                link.classList.add('text-white/60');
+              });
+
+              const activeLink = Array.from(tocLinks).find(
+                (link) => link.getAttribute('href') === `#${heading.id}`
+              ) as HTMLElement;
+
+              if (activeLink) {
+                activeLink.classList.remove('text-white/60');
+                activeLink.classList.add('text-primary', 'font-medium');
+              }
+              break;
+            }
+          }
+        };
+
+        window.addEventListener('scroll', updateActiveLink);
+        updateActiveLink();
+      }
+    }
+  }
+
+  document.addEventListener('astro:page-load', setupTableOfContents);
+  setupTableOfContents();
+</script>

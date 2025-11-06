@@ -1,0 +1,55 @@
+---
+import { Image as AstroImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  src: string | ImageMetadata;
+  alt: string;
+  width?: number;
+  height?: number;
+  loading?: 'lazy' | 'eager';
+  fetchpriority?: 'high' | 'low' | 'auto';
+  decoding?: 'sync' | 'async' | 'auto';
+  class?: string;
+}
+
+const {
+  src,
+  alt,
+  width,
+  height,
+  loading = 'lazy',
+  fetchpriority = loading === 'eager' ? 'high' : 'auto',
+  decoding = 'async',
+  class: className = '',
+} = Astro.props;
+
+const isStringSrc = typeof src === 'string';
+const hasDimensions = width && height;
+---
+
+{
+  isStringSrc ? (
+    <img
+      src={src}
+      alt={alt}
+      width={width}
+      height={height}
+      loading={loading}
+      fetchpriority={fetchpriority}
+      decoding={decoding}
+      class={className}
+      {...(hasDimensions && { style: `aspect-ratio: ${width} / ${height}` })}
+    />
+  ) : (
+    <AstroImage
+      src={src}
+      alt={alt}
+      width={width}
+      height={height}
+      loading={loading}
+      class={className}
+      {...(hasDimensions && { style: `aspect-ratio: ${width} / ${height}` })}
+    />
+  )
+}

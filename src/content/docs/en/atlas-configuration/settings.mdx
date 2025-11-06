@@ -1,0 +1,289 @@
+---
+title: Basic settings
+metaDescription: Configure essential Windows features in AtlasOS including Bluetooth, Game Mode, notifications, and power settings. Enable or disable features to match your needs.
+description: Configure essential Windows features in AtlasOS.
+order: 21
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+import IconArrow from '@/components/ui/IconArrow.astro';
+
+# Basic settings
+
+Configure essential Windows features and system options to match your needs. These settings control core functionality like Bluetooth, Game Mode, notifications, and more.
+
+All configuration files listed here are located in the **3. Configuration** folder within the Atlas folder on your Desktop. If you can't find the Atlas folder, see [our guide to restore it](/docs/faq/post-install/).
+
+<Callout type="info">
+  Most settings require a system restart to take effect. We'll remind you when needed.
+</Callout>
+
+## Before you start
+
+These settings give you control over Windows features that AtlasOS modifies by default. Before making changes:
+
+- Understand what each feature does and why you might want to enable or disable it
+- Make sure you have a reason to change the default settings
+- Remember that AtlasOS defaults are optimized for performance and responsiveness
+
+For more configuration options, check:
+
+- [Advanced Configuration](/docs/atlas-configuration/advanced/) - Advanced system options
+- [Optional Tweaks](/docs/atlas-configuration/tweaks/) - Interface personalization
+- [Windows Settings](/docs/atlas-configuration/windows/) - Quick shortcuts to Windows configuration
+
+## Background apps
+
+**When to use:** Enable if you need apps to run in the background (e.g., Sea of Thieves requires this).
+
+By default, AtlasOS disables background apps to improve system responsiveness and reduce resource usage. Some games and applications require background apps to function properly.
+
+To enable background apps, run <CodeInline text="Enable Background Apps.reg" /> in the **Background Apps** folder and restart your system.
+
+## Bluetooth
+
+**When to use:** Enable if you need to connect Bluetooth devices like headphones, speakers, or game controllers.
+
+Bluetooth is disabled by default in AtlasOS to reduce system overhead. If you use Bluetooth devices, you'll need to enable this feature.
+
+1. Run the <CodeInline text="Enable Bluetooth.cmd" /> file in the **Bluetooth** folder
+2. Restart your system
+3. You may need to install Bluetooth drivers from your motherboard manufacturer's website
+
+<Callout type="tip">
+  Need help finding Bluetooth drivers? Check [our drivers
+  guide](/docs/essential-setup/drivers/other/) for instructions.
+</Callout>
+
+## Diagnostics and troubleshooting
+
+**When to use:** Enable if you need Windows built-in troubleshooting tools for diagnosing system issues.
+
+Windows troubleshooting is disabled by default to prevent AtlasOS tweaks from being reset. However, if you encounter issues and need Windows' diagnostic tools, you can re-enable this feature.
+
+To enable it, run the <CodeInline text="Enable Troubleshooting.cmd" /> file in the **Diagnostics and Troubleshooting** folder and restart.
+
+<Callout type="warning">
+  Enabling troubleshooting may reset some AtlasOS optimizations. Only enable if you specifically
+  need Windows troubleshooting tools.
+</Callout>
+
+## Driver updates
+
+**When to use:** Switch between automatic and manual driver installation based on your preference.
+
+When installing AtlasOS, you choose between Automatic Driver Installation (via Windows Update) or Manual Driver Installation. You can change this choice later if needed.
+
+To switch methods:
+
+1. Open the **Driver Updates** folder in the Atlas folder
+2. Run the appropriate file for your desired method
+3. Restart your system
+
+**Automatic:** Windows Update handles all driver installations automatically.
+**Manual:** You install drivers yourself for full control over versions.
+
+## FSO and Game Bar
+
+**When to use:** Enable Game Bar if you want to record gameplay, take screenshots, or monitor performance. Disable FSO if you prefer fullscreen exclusive mode.
+
+Game Bar is a Windows feature for screen recording, screenshots, and performance monitoring. It relies on Fullscreen Optimizations (FSO), which AtlasOS enables by default.
+
+### Enable Game Bar
+
+Game Bar is removed from AtlasOS by default. To enable it:
+
+1. Run <CodeInline text="Enable FSO & Game Bar.reg" />
+2. Install Game Bar from the [Microsoft Store](ms-windows-store://review/?ProductId=9NZKPSTSNW4P)
+
+### Disable FSO (Fullscreen Exclusive Mode)
+
+If you prefer fullscreen exclusive mode (better for some games with frame limiting), disable FSO:
+
+1. Run <CodeInline text="Disable FSO & Game Bar.reg" />
+2. This fixes compatibility with the "Disable fullscreen optimizations" option in game compatibility settings
+
+<Callout type="info">
+  Learn more about [Fullscreen
+  Optimizations](https://devblogs.microsoft.com/directx/demystifying-full-screen-optimizations/) and
+  [Fullscreen Exclusive](https://wiki.special-k.info/en/SwapChain) modes.
+</Callout>
+
+## Game mode
+
+**When to use:** Enable if you want Windows to prioritize gaming performance, though results vary.
+
+Game Mode is a Windows feature that prioritizes gaming performance by reducing background processes. However, research shows it may not always provide benefits and can sometimes reduce performance in certain games.
+
+By default, Game Mode is disabled in AtlasOS. To enable it:
+
+1. Run the <CodeInline text="Enable Game Mode.reg" /> file in the **Game Mode** folder
+2. Restart your system
+
+<Callout type="tip">
+  Test Game Mode with your specific games to see if it helps. Many users find it unnecessary with
+  AtlasOS optimizations.
+</Callout>
+
+## HAGS (Hardware-Accelerated GPU Scheduling)
+
+**When to use:** Test if you want to improve GPU performance, but results vary by system.
+
+HAGS is a Windows feature that can improve performance in GPU-intensive tasks by allowing the GPU to manage its memory more efficiently. However, it doesn't always produce positive results on every system.
+
+To test HAGS:
+
+1. Check if your GPU supports it (NVIDIA 10-series or newer, AMD RX 5000 series or newer)
+2. Enable it in Windows Settings <IconArrow /> **System** <IconArrow /> **Display** <IconArrow /> **Graphics settings**
+3. Restart your system
+4. Test your applications to see if performance improves
+
+<Callout type="info">
+  HAGS is controlled through Windows Settings, not the Atlas folder. The impact varies by system and
+  application, so testing is recommended.
+</Callout>
+
+## Lanman workstation (SMB)
+
+**When to use:** Disable only if you don't need file sharing and don't use software that requires SMB (like AMD Ryzen Master).
+
+SMB (Server Message Block) enables file sharing over a network. It's also required by some software like AMD Ryzen Master. AtlasOS enables it by default.
+
+To disable SMB, run the <CodeInline text="Disable Lanman Workstation.cmd" /> file in the **Lanman Workstation (SMB)** folder and restart.
+
+## Network discovery
+
+**When to use:** Disable if you don't need to see or share with other computers on your network.
+
+Network Discovery allows your computer to find and be found by other devices on your local network. AtlasOS enables it by default.
+
+### Disable network discovery
+
+To disable network discovery, run the <CodeInline text="Disable Network Discovery Services.cmd" /> file in the **Network Discovery** folder and restart.
+
+### Enable file sharing
+
+File sharing is disabled by default. To share files with other Windows devices on your network:
+
+1. Run the <CodeInline text="Enable File Sharing.cmd" /> file in the **File Sharing** folder
+2. Restart your system
+
+### Network navigation pane
+
+Control whether the "Network" section appears in File Explorer. To enable it, run the <CodeInline text="User Network Navigation Pane choice.reg" /> file in the **Network Navigation Pane** folder and restart.
+
+## Notifications
+
+**When to use:** Disable if you find notifications distracting and want a cleaner experience.
+
+Notifications are enabled by default in AtlasOS. If you prefer a distraction-free experience, you can disable them.
+
+To disable notifications, run the <CodeInline text="Disable Notifications.cmd" /> file in the **Notifications** folder and restart.
+
+## Power settings
+
+Control power-related behavior that affects performance, responsiveness, and power consumption.
+
+### CPU idle
+
+**When to use:** Disable only if you need maximum responsiveness and have adequate cooling. Not recommended for laptops or systems left running unattended.
+
+Disabling CPU idle prevents the CPU from entering power-saving states, which reduces jitter and improves responsiveness by keeping the CPU at C-State 0. However, this increases power consumption and heat.
+
+**Warning:** Only disable CPU idle if:
+
+- You have adequate cooling
+- You don't leave your PC running unattended for long periods
+- You're not using a laptop
+- You're comfortable managing power consumption
+
+To disable CPU idle, use the appropriate file in the **CPU Idle** folder.
+
+### Hibernation
+
+**When to use:** Enable if you want your system to save its state to disk when shutting down (useful for quick resume).
+
+Hibernation saves your system's current state to disk, allowing you to resume exactly where you left off. It's disabled by default in AtlasOS due to potential stability issues.
+
+To enable hibernation, run the <CodeInline text="Enable Hibernation.cmd" /> file in the **Hibernation** folder.
+
+### Power saving
+
+**When to use:** Adjust based on your priority—performance vs. power efficiency.
+
+Control your system's power-saving behavior. These settings affect both the power scheme and related system behavior, impacting performance.
+
+To modify power saving settings, use the registry files in the **Power Saving** folder.
+
+### Timer resolution
+
+**When to use:** Increase if you use multimedia applications or frame rate limiters that benefit from precise timing.
+
+Increasing timer resolution improves precision for applications requiring consistent pacing, such as multimedia apps and frame rate limiters. This comes at the cost of increased power consumption.
+
+Adjust timer resolution using the files in the **Timer Resolution** folder. Test to see if your applications benefit.
+
+## Printing
+
+**When to use:** Enable if you need to print documents.
+
+Printing is disabled by default in AtlasOS to improve system responsiveness. Enable it if you use printers.
+
+To enable printing, run the <CodeInline text="Enable Printing.cmd" /> file in the **Printing** folder and restart.
+
+## Search indexing
+
+**When to use:** Enable if you frequently search for files and want faster search results.
+
+Search Indexing speeds up file searches by indexing your files in the background. It's disabled by default to reduce system overhead.
+
+To enable search indexing, run the <CodeInline text="Enable Search Indexing.cmd" /> file in the **Search Indexing** folder and restart.
+
+<Callout type="tip">
+  Search indexing uses system resources. Only enable if you frequently search for files and need
+  faster results.
+</Callout>
+
+## Start menu
+
+**When to use:** Install Open-Shell if you prefer a classic Start menu experience.
+
+Customize your Start menu experience with Open-Shell, a tool that provides a customizable classic Start menu.
+
+### Install Open-Shell
+
+1. Run the <CodeInline text="Install Open-Shell.cmd" /> file
+2. Follow the installation prompts
+3. Optionally use the <CodeInline text="Atlas Open-Shell Preset.xml" /> file for a pre-configured setup
+
+Learn more about [Open-Shell](https://github.com/Open-Shell/Open-Shell-Menu) and customize it to your preferences.
+
+## System restore
+
+**When to use:** Disable only if you don't need the ability to restore your system to a previous state and want to save disk space.
+
+System Restore creates snapshots of your system that you can use to revert to a previous state. It's enabled by default but uses disk space.
+
+To disable System Restore, run <CodeInline text="Disable System Restore.reg" /> in the **System Restore** folder and restart.
+
+<Callout type="warning">
+  Disabling System Restore removes the ability to roll back system changes. Only disable if you're
+  confident you won't need this feature.
+</Callout>
+
+## VPN
+
+**When to use:** Disable only if you don't use VPN software and want to reduce system overhead.
+
+VPN support is enabled by default in AtlasOS for compatibility with VPN applications. If you don't use VPN software, you can disable it.
+
+To disable VPN support, run the <CodeInline text="Disable VPN support.cmd" /> file in the **VPN** folder.
+
+## Visual effects
+
+**When to use:** Enable if you prefer Windows' visual animations and effects over maximum performance.
+
+Windows includes visual effects like animated menus, tooltips, and window transitions. These enhance appearance but can slightly reduce performance. AtlasOS disables them by default for better performance.
+
+To restore Windows visual effects, run the <CodeInline text="Default Windows Visual Effects.cmd" /> file in the **Visual Effects** folder.

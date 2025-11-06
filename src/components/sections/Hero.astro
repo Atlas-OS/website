@@ -15,10 +15,10 @@ const links = {
 };
 ---
 
-<section class="relative overflow-visible px-4 pt-34 md:pt-42" data-reveal>
+<section class="relative overflow-visible px-4 pt-14 md:pt-22" data-reveal>
   <div class="absolute inset-0 -z-10 w-full" style="height: 100%;">
     <div
-      class="absolute h-full w-full bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px)] [mask-image:linear-gradient(to_bottom,rgba(0,0,0,0.7),transparent_70%)] bg-[size:24px_24px]"
+      class="absolute h-full w-full bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px)] mask-[linear-gradient(to_bottom,rgba(0,0,0,0.7),transparent_70%)] bg-size-[24px_24px]"
     >
     </div>
   </div>
@@ -58,7 +58,7 @@ const links = {
         >
       </div>
       <h1
-        class="mb-6 bg-gradient-to-b from-white to-blue-200 bg-clip-text text-4xl font-semibold tracking-tight text-transparent md:text-7xl"
+        class="mb-6 bg-linear-to-b from-white to-blue-200 bg-clip-text text-4xl font-semibold tracking-tight text-transparent md:text-7xl"
         data-reveal
       >
         Optimized Windows. <br /> Designed for enthusiasts.
@@ -133,7 +133,7 @@ const links = {
       href="https://www.techspot.com/news/97095-check-out-AtlasOS-redesigned-windows-10-version-gamers.html"
       target="_blank"
       rel="noopener noreferrer"
-      class="transition-opacity duration-300 hover:opacity-100"
+      class="transition-opacity duration-200 hover:opacity-80"
     >
       <Image
         src={TechSpotLogomark}
@@ -151,7 +151,7 @@ const links = {
       href="https://www.pcguide.com/software/AtlasOS/"
       target="_blank"
       rel="noopener noreferrer"
-      class="transition-opacity duration-300 hover:opacity-100"
+      class="transition-opacity duration-200 hover:opacity-80"
     >
       <Image
         src={PcGuideLogomark}
@@ -169,7 +169,7 @@ const links = {
       href="https://www.wepc.com/tips/is-atlas-os-worth-it/"
       target="_blank"
       rel="noopener noreferrer"
-      class="transition-opacity duration-300 hover:opacity-100"
+      class="transition-opacity duration-200 hover:opacity-80"
     >
       <Image
         src={WePCLogomark}
@@ -187,7 +187,7 @@ const links = {
       href="https://news.itsfoss.com/atlas-os/"
       target="_blank"
       rel="noopener noreferrer"
-      class="transition-opacity duration-300 hover:opacity-100"
+      class="transition-opacity duration-200 hover:opacity-80"
     >
       <Image
         src={ItsFOSSLogomark}
@@ -447,7 +447,6 @@ const links = {
   async function updateHeroDownloadCount(): Promise<void> {
     const countElement = document.getElementById('hero-download-count');
     if (!countElement) {
-      console.error('Hero download count element not found.');
       return;
     }
 
@@ -465,8 +464,7 @@ const links = {
       } else {
         countElement.textContent = 'N/A';
       }
-    } catch (error) {
-      console.error('Error fetching download count:', error);
+    } catch {
       countElement.textContent = '2,000,000';
     }
   }
@@ -491,50 +489,59 @@ const links = {
    */
   async function setupScrollAnimations(): Promise<void> {
     try {
-      // Lazy load motion only when animations are needed
-      const { animate, inView } = await import('motion') as {
-        animate: (element: string | Element, keyframes: Record<string, unknown>, options?: Record<string, unknown>) => unknown;
+      const { animate, inView } = (await import('motion')) as {
+        animate: (
+          element: string | Element,
+          keyframes: Record<string, unknown>,
+          options?: Record<string, unknown>
+        ) => unknown;
         inView: (selector: string, callback: (element: Element) => void, options?: Record<string, unknown>) => void;
       };
 
       // Wallpaper animation - runs once when element comes into view
-      inView('.wallpaper-container', () => {
-        animate(
-          '.wallpaper-container',
-          {
-            opacity: [0, 1],
-            transform: ['scale(0.95)', 'scale(1)'],
-          },
-          {
-            duration: 1.2,
-            easing: 'ease-out',
-          }
-        );
-      }, { margin: '-100px' });
+      inView(
+        '.wallpaper-container',
+        () => {
+          animate(
+            '.wallpaper-container',
+            {
+              opacity: [0, 1],
+              transform: ['scale(0.95)', 'scale(1)'],
+            },
+            {
+              duration: 1.2,
+              easing: 'ease-out',
+            }
+          );
+        },
+        { margin: '-100px' }
+      );
 
-      // Reveal animations for elements with data-reveal
-      inView('[data-reveal]', (element: Element) => {
-        animate(
-          element,
-          {
-            opacity: [0, 1],
-            transform: ['translateY(30px) scale(0.98)', 'translateY(0px) scale(1)'],
-          },
-          {
-            easing: 'ease-out',
-            duration: 0.8,
-          }
-        );
-      }, { margin: '-50px' });
-    } catch (error) {
-      console.warn('Motion library failed to load, animations will be disabled:', error);
+      inView(
+        '[data-reveal]',
+        (element: Element) => {
+          animate(
+            element,
+            {
+              opacity: [0, 1],
+              transform: ['translateY(30px) scale(0.98)', 'translateY(0px) scale(1)'],
+            },
+            {
+              easing: 'ease-out',
+              duration: 0.8,
+            }
+          );
+        },
+        { margin: '-50px' }
+      );
+    } catch {
+      console.error('Error setting up scroll animations');
     }
   }
 
   document.addEventListener('DOMContentLoaded', () => {
     updateHeroDownloadCount();
     setupGetStartedButton();
-    // Delay animation setup slightly to prioritize critical functionality
     setTimeout(() => setupScrollAnimations(), 100);
   });
 </script>

@@ -1,0 +1,34 @@
+---
+title: Toolbox
+metaDescription: Learn how to contribute to the AtlasOS Toolbox utility. Understand the C# and XAML codebase, development tools, and resources needed to build and improve the Toolbox.
+description: Learn how to contribute to the AtlasOS Toolbox utility.
+order: 35
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+
+# Contributing to the Atlas Toolbox
+
+This guide covers how to modify, test, and build Atlas Toolbox. Before contributing, read the [Contribution Guidelines](/docs/contributing/).
+
+This assumes you've already cloned the <CodeInline text="Atlas-OS/atlas-toolbox" /> repository.
+
+## What Atlas Toolbox uses internally
+
+The AtlasOS Toolbox primarily uses the following two languages:
+
+1. [C# (.NET 8.0)](https://learn.microsoft.com/en-us/dotnet/csharp/tour-of-csharp/)
+2. [XAML](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/xaml/?view=netdesktop-9.0)
+
+For development tools and resources, we recommend using:
+
+- [Visual Studio Community 2022](https://visualstudio.microsoft.com/vs/)
+  - The Toolbox repo contains the default NuGet packages required.
+- [.Net 8 Runtime](https://download.visualstudio.microsoft.com/download/pr/fc8c9dea-8180-4dad-bf1b-5f229cf47477/c3f0536639ab40f1470b6bad5e1b95b8/windowsdesktop-runtime-8.0.13-win-x64.exe) - Included in AtlasOS v0.5.0+
+- [Windows App SDK 1.6](https://download.microsoft.com/download/7a3a6a44-b07e-4ca5-8b63-2de185769dbc/WindowsAppRuntimeInstall-x64.exe) - Included in AtlasOS v0.5.0+
+
+For demos of UI elements used in the Toolbox, we recommend using:
+
+- [WinUI 3 Gallery](https://apps.microsoft.com/detail/9p3jfpwwdzrc)
+- [Windows Community Toolkit Gallery](https://apps.microsoft.com/detail/9nblggh4tlcq)

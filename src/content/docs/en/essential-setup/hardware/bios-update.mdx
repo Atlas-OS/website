@@ -1,0 +1,157 @@
+---
+title: BIOS update
+metaDescription: Complete guide to safely updating your BIOS for AtlasOS. Learn how to check your current version, download updates, and use Windows-based or BIOS flash utilities safely.
+description: Complete guide to safely updating your BIOS.
+order: 1
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+import FeatureList from '@/components/ui/FeatureList.astro';
+
+# BIOS update
+
+Keeping your BIOS up to date is important for compatibility, performance, and security. This should be done first before enabling other hardware optimizations like XMP/DOCP and Resizable BAR, as BIOS updates can reset these settings.
+
+<Callout type="warning" title="Important Warning">
+  Incorrect BIOS updates can permanently damage your motherboard. Only update if necessary, follow
+  manufacturer instructions exactly, and never interrupt the update process.
+</Callout>
+
+## Before you begin
+
+### Check current BIOS version
+
+1. Press <CodeInline text="Win + R" />
+2. Type <CodeInline text="msinfo32" /> and press <CodeInline text="Enter" />
+3. Look for **BIOS Version/Date** in the System Information window
+
+### Identify your motherboard
+
+You need to know your exact motherboard model:
+
+- **Check System Information** (as above) - Look for **BaseBoard Manufacturer** and **BaseBoard Product**
+- **Check physical motherboard** - Model number is usually printed on the board
+- **Use system detection tools** - Many manufacturer websites have auto-detection tools
+
+## Update process
+
+### Step 1: Download BIOS update
+
+1. Visit your motherboard manufacturer's support website:
+   - **ASUS**: [asus.com/support](https://www.asus.com/support/)
+   - **MSI**: [msi.com/support](https://www.msi.com/support/)
+   - **Gigabyte**: [gigabyte.com/support](https://www.gigabyte.com/support/)
+   - **ASRock**: [asrock.com/support](https://www.asrock.com/support/)
+2. Enter your motherboard model
+3. Go to **Downloads** or **BIOS** section
+4. Download the latest BIOS file (usually a <CodeInline text=".zip" /> or <CodeInline text=".exe" /> file)
+
+<Callout type="info">
+  Read the BIOS update notes/changelog - only update if the new version fixes issues you're
+  experiencing or adds features you need.
+</Callout>
+
+### Step 2: Prepare for update
+
+1. **Backup current BIOS** - Some manufacturers provide backup tools
+2. **Ensure stable power** - Use a UPS if possible, or ensure laptop is fully charged and plugged in
+3. **Close all applications** - Close unnecessary programs
+4. **Disable antivirus temporarily** - May interfere with BIOS update
+
+### Step 3: Update BIOS
+
+**Method 1: Windows-based update (easiest)**
+
+Many manufacturers provide Windows utilities:
+
+1. Extract the downloaded BIOS file
+2. Run the BIOS update utility (e.g., <CodeInline text="Setup.exe" /> or manufacturer-specific tool)
+3. Follow on-screen instructions
+4. **Do not power off or restart** during the update
+5. System will restart automatically when complete
+
+**Method 2: BIOS flash utility**
+
+1. Extract the BIOS file to a USB drive (FAT32 formatted)
+2. Restart and enter BIOS/UEFI (usually <CodeInline text="Del" /> or <CodeInline text="F2" /> during boot)
+3. Use the BIOS flash utility (varies by manufacturer)
+4. Select the BIOS file from USB
+5. Start the update process
+6. **Do not power off or restart** during the update
+
+<Callout type="danger" title="Critical Warning">
+  **NEVER** interrupt a BIOS update. The system will restart automatically when complete.
+  Interrupting can brick your motherboard.
+</Callout>
+
+## After update
+
+1. BIOS will restart automatically
+2. Enter BIOS/UEFI and verify the new version
+3. Load optimized defaults or reconfigure settings
+4. Save and exit
+5. Boot into Windows and verify everything works
+
+## Troubleshooting
+
+### Update failed
+
+If the update process was interrupted:
+
+- **Try recovery methods** - Many motherboards have BIOS recovery features
+- **Contact manufacturer support** - They may provide recovery instructions
+- **Professional repair** - May be required if recovery fails
+
+### System won't boot after update
+
+1. **Clear CMOS** - Remove CMOS battery or use jumper (check manual)
+2. **Reset BIOS settings** - Load default/optimized settings
+3. **Check all connections** - Ensure RAM, CPU, power cables are secure
+
+## Manufacturer resources
+
+<FeatureList
+  items={[
+    {
+      icon: 'tabler:external-link',
+      title: 'ASUS Support',
+      description: 'Find BIOS updates and documentation for ASUS motherboards',
+      href: 'https://www.asus.com/support/',
+    },
+    {
+      icon: 'tabler:external-link',
+      title: 'MSI Support',
+      description: 'MSI motherboard BIOS updates and support',
+      href: 'https://www.msi.com/support/',
+    },
+    {
+      icon: 'tabler:external-link',
+      title: 'Gigabyte Support',
+      description: 'Gigabyte motherboard support and BIOS downloads',
+      href: 'https://www.gigabyte.com/support/',
+    },
+    {
+      icon: 'tabler:external-link',
+      title: 'ASRock Support',
+      description: 'ASRock motherboard BIOS and driver downloads',
+      href: 'https://www.asrock.com/support/',
+    },
+  ]}
+/>
+
+## Best practices
+
+- **Only update if necessary** - Don't update just because a new version exists
+- **Read release notes** - Understand what the update fixes or adds
+- **Use stable power** - Ensure uninterrupted power supply
+- **Follow manufacturer instructions** - Each manufacturer has specific procedures
+- **Keep a backup** - Some tools let you backup current BIOS before updating
+
+## Next steps
+
+After updating your BIOS:
+
+- **[Enable XMP/DOCP](/docs/essential-setup/hardware/memory/)** - Unlock your RAM's full speed
+- **[Enable Resizable BAR](/docs/essential-setup/hardware/gpu/)** - Improve GPU performance if you have a compatible graphics card
+- **Configure [Atlas settings](/docs/atlas-configuration/)** to customize your installation

@@ -1,0 +1,85 @@
+---
+title: Drivers
+metaDescription: Complete guide to installing drivers for AtlasOS. Learn which drivers you need, installation order, and how to install graphics, chipset, network, audio, and Bluetooth.
+description: Complete guide to installing drivers for AtlasOS.
+order: 1
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import QuickLinkCard from '@/components/docs/QuickLinkCard.astro';
+import QuickLinksGrid from '@/components/docs/QuickLinksGrid.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+
+# Drivers guide
+
+Get your hardware working properly by installing the necessary drivers. Since you chose manual driver installation during setup, this guide will walk you through installing all essential drivers.
+
+## Why manual installation?
+
+You chose manual installation for:
+
+- **Full control** over driver versions
+- **Potentially lower system resource usage**
+- **Fewer potentially unwanted applications**
+
+If you'd prefer to switch to automatic installation via Windows Update, you can do so using the files in the <CodeInline text="2. Drivers" /> directory in the Atlas folder. See [our FAQ](/docs/faq/general/) if you can't find the Atlas folder.
+
+<Callout type="info" title="Want to Switch to Automatic?">
+  You can switch to automatic driver installation using the files in the{' '}
+  <CodeInline text="2. Drivers" /> directory in the Atlas folder. This will allow Windows Update to
+  handle driver installation automatically.
+</Callout>
+
+## Which drivers do I need?
+
+Start with the essential drivers your system needs to function properly:
+
+- **Graphics (GPU/iGPU)** - Required for display output and gaming performance
+- **Audio** - For sound output from speakers or headphones
+- **Wi-Fi/Network** - Required for internet connectivity
+- **Bluetooth** - For wireless peripherals (only if you use Bluetooth devices)
+- **Chipset** - Important for system stability and performance
+
+<Callout type="warning" title="Multiple Graphics Cards">
+  If you have both integrated and dedicated graphics (e.g., Intel CPU with NVIDIA GPU), you must
+  install drivers for both. This ensures proper functionality and allows you to switch between GPUs
+  as needed.
+</Callout>
+
+<Callout type="tip">
+  Install drivers in this order: Graphics → Network → Audio → Chipset → Other (Bluetooth, etc.).
+  This ensures your display and internet work first, then other functionality.
+</Callout>
+
+## Driver installation guides
+
+<QuickLinksGrid columns={{ md: 2 }}>
+  <QuickLinkCard
+    href="/docs/essential-setup/drivers/gpu/"
+    icon="tabler:device-desktop"
+    title="Graphics Drivers"
+    description="NVIDIA, AMD, and Intel GPU drivers"
+  />
+
+<QuickLinkCard
+  href="/docs/essential-setup/drivers/chipset/"
+  icon="tabler:cpu"
+  title="Chipset Drivers"
+  description="Install chipset drivers for better performance"
+/>
+
+  <QuickLinkCard
+    href="/docs/essential-setup/drivers/other/"
+    icon="tabler:tools"
+    title="Other Drivers"
+    description="Bluetooth, printer, and other device drivers"
+  />
+</QuickLinksGrid>
+
+## Next steps
+
+After installing all necessary drivers:
+
+- **[Optimize hardware](/docs/essential-setup/hardware/)** (optional) - Enable XMP/DOCP and Resizable BAR for better performance
+- **Configure [Atlas settings](/docs/atlas-configuration/)** to customize your installation
+- **Explore [optional tweaks](/docs/atlas-configuration/tweaks/)** to personalize your experience

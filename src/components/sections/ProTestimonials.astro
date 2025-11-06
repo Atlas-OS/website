@@ -4,7 +4,7 @@ import { Image } from 'astro:assets';
 import Al0ranteImage from '@/assets/al0rante.webp';
 import MisticImage from '@/assets/mistic.webp';
 import StarwraithImage from '@/assets/starwraith.webp';
-import SectionTitle from '@/components/common/SectionTitle.astro';
+import SectionTitle from '@/components/sections/common/SectionTitle.astro';
 ---
 
 <section class="relative mx-auto mt-32 mb-32 max-w-7xl px-4">
@@ -288,8 +288,11 @@ import SectionTitle from '@/components/common/SectionTitle.astro';
         slideEl.classList.toggle(config.inactiveClasses.slide, !isActive);
         slideEl.style.zIndex = isActive ? '10' : '0';
 
-        state.dots[i].classList.toggle(config.activeClasses.dot, isActive);
-        state.dots[i].classList.toggle(config.inactiveClasses.dot, !isActive);
+        const dot = state.dots[i];
+        if (dot) {
+          dot.classList.toggle(config.activeClasses.dot, isActive);
+          dot.classList.toggle(config.inactiveClasses.dot, !isActive);
+        }
       });
 
       state.currentIndex = index;

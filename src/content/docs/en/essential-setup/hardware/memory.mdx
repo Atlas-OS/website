@@ -1,0 +1,60 @@
+---
+title: RAM & XMP
+metaDescription: Enable XMP (Intel) or DOCP (AMD) to unlock your RAM's full speed potential in AtlasOS. Learn how to enable memory profiles in BIOS and run stress tests.
+description: Enable XMP or DOCP to unlock your RAM's full speed.
+order: 2
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+
+# RAM & XMP/DOCP
+
+Enable XMP (Extreme Memory Profile) for Intel or DOCP (Direct Overclock Profile) for AMD to unlock your RAM's full speed potential. High-performance RAM often has a speed rating (e.g., 3200MHz), but it runs at a slower default speed when first installed.
+
+Enabling XMP or DOCP in your BIOS allows the RAM to run at its advertised speed, which can significantly improve performance, especially in games and applications that require fast data transfers.
+
+<Callout type="info" title="Update BIOS First">
+  Before enabling XMP/DOCP, [update your BIOS](/docs/essential-setup/hardware/bios-update/). If you
+  enable XMP/DOCP first, your settings may revert after updating the BIOS.
+</Callout>
+
+## How to enable XMP/DOCP
+
+1. **Boot into the BIOS** by pressing the BIOS key while your PC starts
+   - Commonly <CodeInline text="Del" /> or <CodeInline text="F2" />, but check your motherboard manual for the correct key
+
+2. **Locate the XMP/DOCP setting**
+   - AMD systems use DOCP, Intel systems use XMP
+   - Usually found on the main BIOS screen or under an OC/Overclocking section
+   - Select **Profile 1**, as it's typically the most stable profile
+
+3. **Save and exit** the BIOS
+
+4. **Run a stress test** to verify stability (see below)
+
+## How to run a stress test
+
+Memory profiles can sometimes be unstable and cause crashes. Run a stress test for at least **1 hour** to verify stability before finalizing your setup.
+
+1. [Download OCCT](https://www.ocbase.com/download/edition:Personal) and install it
+
+2. Open OCCT and navigate to the **Stability Test** tab
+
+3. Select the **Memory** tab and click the green **Start** button
+
+4. Wait 10 seconds for the test to start (free users), then monitor for errors on the left side
+
+5. Let the test run for **1 hour** without interruption
+
+<Callout type="danger" title="Important">
+  If your computer blue screens, freezes, or OCCT reports errors, **disable the XMP/DOCP profile
+  immediately**. Unstable memory settings can cause file corruption and random crashes.
+</Callout>
+
+## Next steps
+
+After enabling XMP/DOCP:
+
+- **[Enable Resizable BAR](/docs/essential-setup/hardware/gpu/)** (optional) - Improve GPU performance if you have a compatible graphics card
+- **Configure [Atlas settings](/docs/atlas-configuration/)** to customize your installation

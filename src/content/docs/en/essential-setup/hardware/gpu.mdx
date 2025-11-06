@@ -1,0 +1,67 @@
+---
+title: GPU settings
+metaDescription: Enable Resizable BAR (Smart Access Memory) for improved GPU performance in AtlasOS. Learn requirements, how to check status, and BIOS configuration for NVIDIA and AMD.
+description: Enable Resizable BAR for improved GPU performance.
+order: 3
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+
+# GPU settings - Resizable BAR
+
+Enable Resizable BAR (Base Address Register), also known as Smart Access Memory (SAM) on AMD systems, to improve communication between your CPU and GPU. This can significantly improve in-game FPS, sometimes by up to 15%, by allowing your CPU to access the GPU's entire frame buffer at once.
+
+## How it works
+
+When playing a game, your GPU requests textures, shaders, and other assets from your CPU. These are stored in the graphics card's VRAM before being rendered.
+
+Traditionally, the CPU could only access 256MB chunks of VRAM at a time, requiring multiple sequential transfers. As games have become larger and more complex, this limitation becomes more significant.
+
+Resizable BAR allows your CPU to access the GPU's entire frame buffer at once, enabling more efficient concurrent transfers and boosting performance.
+
+## Requirements
+
+Resizable BAR requires the following graphics cards:
+
+- NVIDIA GeForce 30 series or newer
+- AMD Radeon RX 6000 Series or newer
+
+<Callout type="warning" title="Hardware Requirements">
+  If you do not meet these specifications, it's recommended to not enable the feature.
+</Callout>
+
+<Callout type="info" title="Update BIOS First">
+  Before enabling Resizable BAR, [update your BIOS](/docs/essential-setup/hardware/bios-update/). If
+  you enable it first, the settings may not be visible in your BIOS, and you'll need to repeat these
+  steps after updating.
+</Callout>
+
+## How to check if Resizable BAR is enabled
+
+1. [Download GPU-Z](https://www.techpowerup.com/download/techpowerup-gpu-z/) and open the application
+2. Check to see if **Resizable BAR** is disabled or enabled
+3. GPU-Z allows you to see why it's disabled. Click on **Disabled** to see more information about what you're missing
+
+## How to enable Resizable BAR
+
+1. **Boot into the BIOS** by pressing the BIOS key while your PC starts
+   - Commonly <CodeInline text="Del" /> or <CodeInline text="F2" />, but check your motherboard manual
+
+2. **Disable Compatibility Support Module (CSM)** from the Boot menu
+
+3. **Enable the following options:**
+   - **Above 4G Decoding**
+   - **ReSize BAR Support** (or similar wording)
+   - These are usually found under **PCI Subsystem Settings** or on the main BIOS screen
+
+4. **Save and exit** the BIOS
+
+5. **Verify it's enabled** using GPU-Z (see above)
+
+## Next steps
+
+After enabling Resizable BAR:
+
+- **Configure [Atlas settings](/docs/atlas-configuration/)** to customize your installation
+- **Explore [optional tweaks](/docs/atlas-configuration/tweaks/)** to personalize your experience

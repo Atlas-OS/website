@@ -1,0 +1,245 @@
+---
+import { AVAILABLE_LOCALES, DEFAULT_LOCALE, DEFAULT_META_DESCRIPTION } from '@/constants';
+import { getCurrentLocale, getLangCode } from '@/utils/locale';
+
+interface Props {
+  title: string;
+  description?: string;
+  metaDescription?: string;
+  image?: string;
+  canonicalURL?: string;
+  type?: 'website' | 'article';
+  publishedTime?: string;
+  modifiedTime?: string;
+  author?: string;
+  tags?: string[];
+  currentSlug?: string;
+  faqItems?: Array<{ question: string; answer: string }>;
+  softwareApp?: boolean;
+}
+
+const {
+  title,
+  description,
+  metaDescription,
+  image,
+  canonicalURL,
+  type = 'website',
+  publishedTime,
+  modifiedTime,
+  author,
+  tags = [],
+  currentSlug,
+  faqItems = [],
+  softwareApp = false,
+} = Astro.props;
+
+const defaultLocale = DEFAULT_LOCALE;
+const site = Astro.site || 'https://atlasos.net';
+const fullTitle = title.includes('|') ? title : `${title} | AtlasOS Documentation`;
+const pageURL = canonicalURL || new URL(Astro.url.pathname, site).href;
+const ogImage = image || `${site}/defaultimg.png`;
+const finalMetaDescription = metaDescription || description || DEFAULT_META_DESCRIPTION;
+const currentLocale = currentSlug ? getCurrentLocale(currentSlug) : defaultLocale;
+const langCode = getLangCode(currentLocale);
+
+const availableLocales = AVAILABLE_LOCALES;
+
+const hreflangLinks: Array<{ href: string; hreflang: string }> = [];
+const currentPath = currentSlug || Astro.url.pathname;
+
+for (const loc of availableLocales) {
+  try {
+    let alternateUrl: string;
+
+    if (loc === defaultLocale) {
+      alternateUrl = new URL(currentPath, site).href;
+    } else {
+      const localePath = currentPath.startsWith('/') ? currentPath.slice(1) : currentPath;
+      alternateUrl = new URL(`/${loc}/${localePath}`, site).href;
+    }
+
+    const hreflangCode = loc === 'en' ? 'en-US' : loc;
+    hreflangLinks.push({ href: alternateUrl, hreflang: hreflangCode });
+  } catch {
+    // Ignore invalid URLs
+  }
+}
+
+if (hreflangLinks.length > 0) {
+  const defaultUrl = hreflangLinks.find((link) => link.hreflang.startsWith(defaultLocale))?.href || pageURL;
+  hreflangLinks.push({ href: defaultUrl, hreflang: 'x-default' });
+}
+
+const organizationSchema = {
+  '@type': 'Organization',
+  name: 'AtlasOS',
+  url: site,
+  logo: {
+    '@type': 'ImageObject',
+    url: `${site}/favicon.svg`,
+  },
+  sameAs: ['https://github.com/Atlas-OS/Atlas', 'https://discord.com/invite/atlasos', 'https://x.com/atlasos'],
+};
+
+const softwareApplicationSchema = softwareApp
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'SoftwareApplication',
+      name: 'AtlasOS',
+      applicationCategory: 'UtilitiesApplication',
+      operatingSystem: 'Windows',
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'USD',
+      },
+      publisher: organizationSchema,
+      url: site,
+      description: finalMetaDescription,
+    }
+  : null;
+
+const faqPageSchema =
+  faqItems.length > 0
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer,
+          },
+        })),
+      }
+    : null;
+
+const articleSchema =
+  type === 'article'
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: title,
+        description: finalMetaDescription,
+        url: pageURL,
+        datePublished: publishedTime,
+        dateModified: modifiedTime || publishedTime,
+        author: author
+          ? {
+              '@type': 'Organization',
+              name: author,
+            }
+          : organizationSchema,
+        publisher: organizationSchema,
+        keywords: tags.join(', '),
+        image: ogImage,
+      }
+    : null;
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': type === 'article' ? 'TechArticle' : 'WebSite',
+  name: fullTitle,
+  description: finalMetaDescription,
+  url: pageURL,
+  ...(type === 'article' && {
+    headline: title,
+    datePublished: publishedTime,
+    dateModified: modifiedTime || publishedTime,
+    author: author
+      ? {
+          '@type': 'Organization',
+          name: author,
+        }
+      : undefined,
+    keywords: tags.join(', '),
+  }),
+  publisher: organizationSchema,
+};
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={finalMetaDescription} />
+
+<link rel="canonical" href={pageURL} />
+
+{hreflangLinks.map((link) => <link rel="alternate" hreflang={link.hreflang} href={link.href} />)}
+
+<meta property="og:type" content={type} />
+<meta property="og:url" content={pageURL} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={finalMetaDescription} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={finalMetaDescription} />
+<meta property="og:site_name" content="AtlasOS Documentation" />
+<meta property="og:locale" content={langCode} />
+
+{
+  type === 'article' && (
+    <>
+      {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+      {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+      {author && <meta property="article:author" content={author} />}
+      {tags.length > 0 && tags.map((tag) => <meta property="article:tag" content={tag} />)}
+    </>
+  )
+}
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@atlasos" />
+<meta name="twitter:creator" content="@atlasos" />
+<meta name="twitter:url" content={pageURL} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={finalMetaDescription} />
+<meta name="twitter:image" content={ogImage} />
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)} />
+
+{faqPageSchema && <script type="application/ld+json" is:inline set:html={JSON.stringify(faqPageSchema)} />}
+
+{
+  softwareApplicationSchema && (
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(softwareApplicationSchema)} />
+  )
+}
+
+{articleSchema && <script type="application/ld+json" is:inline set:html={JSON.stringify(articleSchema)} />}
+
+<script
+  type="application/ld+json"
+  is:inline
+  set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: title,
+    description: finalMetaDescription,
+    url: pageURL,
+    publisher: organizationSchema,
+  })}
+/>
+
+<script
+  type="application/ld+json"
+  is:inline
+  set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'AtlasOS Documentation',
+    url: site,
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `${site}/api/search.json?q={search_term_string}`,
+      },
+      'query-input': 'required name=search_term_string',
+    },
+    publisher: organizationSchema,
+  })}
+/>
+
+<meta name="theme-color" content="#4a86e8" />

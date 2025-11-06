@@ -40,9 +40,37 @@ bun install
 
 - **Astro config**: `astro.config.mjs` (integrations, `site`)
 - **Tailwind config**: `globals.css` (minimal config, theme)
-- **ESLint config**: `.eslintrc.cjs` (Astro + TypeScript rules)
+- **ESLint config**: `eslint.config.js` (Astro + TypeScript rules, flat config)
 - **EditorConfig**: `.editorconfig` (consistent editor settings)
 - **Gitignore**: ignores Jampack cache in `.jampack/`, build output, lockfiles, etc.
+
+## Project Structure
+
+### Component Organization
+
+Components are organized by purpose and usage pattern:
+
+- **`src/components/ui/`** - Reusable UI primitives (Button, Card, Link, etc.)
+- **`src/components/layout/`** - Layout-specific components (Navbar, Footer, Sidebar)
+- **`src/components/sections/`** - Page sections used on the homepage
+- **`src/components/docs/`** - Documentation-specific components (Breadcrumbs, TableOfContents, etc.)
+- **`src/components/core/`** - Core functionality components (SEO, LanguageSwitcher)
+
+### Utility Functions
+
+All utility functions are organized in `src/utils/` by domain:
+
+- `navigation.ts` - Navigation and routing utilities
+- `locale.ts` - Internationalization utilities
+- `navbar.ts` - Navbar interaction logic
+- `sidebar.ts` - Sidebar behavior and state management
+- `scroll-animations.ts` - Scroll-based animation utilities
+
+Barrel exports are available via `src/utils/index.ts` for cleaner imports.
+
+### Constants
+
+Site-wide constants are centralized in `src/constants.ts` and organized by domain (locale, navigation, site metadata).
 
 ## License
 

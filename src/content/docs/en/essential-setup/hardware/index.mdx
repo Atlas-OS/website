@@ -1,0 +1,80 @@
+---
+title: Hardware setup
+metaDescription: Optimize your hardware for best AtlasOS performance. Enable XMP/DOCP for faster RAM, Resizable BAR for GPU performance, and update BIOS. Follow recommended order.
+description: Optimize your hardware for best AtlasOS performance.
+order: 2
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import QuickLinkCard from '@/components/docs/QuickLinkCard.astro';
+import QuickLinksGrid from '@/components/docs/QuickLinksGrid.astro';
+
+# Hardware optimization
+
+These optional optimizations can significantly improve your system's performance, especially for gaming. Hardware optimization is entirely optional but highly recommended for getting the most out of your AtlasOS installation.
+
+<Callout type="info" title="Update BIOS First">
+  We recommend updating your BIOS before enabling XMP/DOCP or Resizable BAR. If you enable these
+  features before updating BIOS, your settings may revert after the update.
+</Callout>
+
+## Quick links
+
+<QuickLinksGrid columns={{ md: 3 }}>
+  <QuickLinkCard
+    href="/docs/essential-setup/hardware/memory/"
+    icon="tabler:cpu"
+    title="RAM & XMP"
+    description="Enable XMP/DOCP for faster RAM speeds"
+  />
+
+<QuickLinkCard
+  href="/docs/essential-setup/hardware/gpu/"
+  icon="tabler:device-desktop"
+  title="GPU Settings"
+  description="Enable Resizable BAR for better performance"
+/>
+
+  <QuickLinkCard
+    href="/docs/essential-setup/hardware/bios-update/"
+    icon="tabler:settings"
+    title="BIOS Update"
+    description="Keep your BIOS up to date"
+  />
+</QuickLinksGrid>
+
+## Recommended order
+
+For best results, follow this order:
+
+1. **[Update BIOS](/docs/essential-setup/hardware/bios-update/)** - Do this first to avoid settings reverting
+2. **[Enable XMP/DOCP](/docs/essential-setup/hardware/memory/)** - Unlock your RAM's full speed
+3. **[Enable Resizable BAR](/docs/essential-setup/hardware/gpu/)** - Improve GPU performance
+
+## What these features do
+
+### XMP/DOCP (Memory Overclocking)
+
+- Allows your RAM to run at its advertised speed
+- Can significantly improve performance, especially in games
+- Intel uses XMP, AMD uses DOCP
+
+### Resizable BAR (GPU Enhancement)
+
+- Improves communication between CPU and GPU
+- Can improve FPS by up to 15% in some games
+- Requires NVIDIA GeForce 30 series or AMD Radeon RX 6000 Series or newer
+
+### BIOS updates
+
+- Provides additional hardware support
+- Security fixes and bug fixes
+- More configuration options
+- Improved performance and stability
+
+## Next steps
+
+After completing hardware optimization:
+
+- **Configure [Atlas settings](/docs/atlas-configuration/)** to customize your installation
+- **Explore [optional tweaks](/docs/atlas-configuration/tweaks/)** to personalize your experience

@@ -2,8 +2,8 @@
   "$schema": "http://json.schemastore.org/prettierrc",
   "plugins": [
     "prettier-plugin-astro",
-    "prettier-plugin-tailwindcss",
-    "prettier-plugin-astro-organize-imports"
+    "prettier-plugin-astro-organize-imports",
+    "prettier-plugin-tailwindcss"
   ],
   "printWidth": 100,
   "tabWidth": 2,

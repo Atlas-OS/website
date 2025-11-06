@@ -1,0 +1,70 @@
+---
+import { DEFAULT_LOCALE } from '@/constants';
+import DocsLayout from '@/layouts/DocsLayout.astro';
+import { getLocaleFromId, getSlugFromId } from '@/utils/navigation';
+import type { CollectionEntry } from 'astro:content';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const defaultLocale = DEFAULT_LOCALE;
+  const docs = await getCollection('docs');
+
+  const paths = docs
+    .map((entry) => {
+      const locale = getLocaleFromId(entry.id, defaultLocale);
+      const slug = getSlugFromId(entry.id, defaultLocale);
+
+      if (slug === '/docs/' || slug === '/docs') {
+        return null;
+      }
+
+      let slugString = slug
+        .replace(/^\/docs\/?/, '')
+        .replace(/^\/+/, '')
+        .replace(/\/+$/, '');
+
+      if (!slugString) {
+        return null;
+      }
+
+      const paramsSlug = locale ? `${locale}/${slugString}` : slugString;
+
+      return {
+        params: { slug: paramsSlug },
+        props: { entry, locale: locale || defaultLocale },
+      };
+    })
+    .filter((path): path is NonNullable<typeof path> => path !== null);
+
+  return paths;
+}
+
+interface Props {
+  entry: CollectionEntry<'docs'>;
+  locale?: string;
+}
+
+const defaultLocale = DEFAULT_LOCALE;
+const { entry, locale: entryLocale } = Astro.props;
+const locale = entryLocale || defaultLocale;
+const { Content, headings } = await render(entry);
+const slug = getSlugFromId(entry.id, defaultLocale);
+
+// Calculate OG image URL - matches the og-image.png.ts endpoint path
+const site = Astro.site || 'https://atlasos.net';
+// Ensure no double slashes - slug already starts with /
+const ogImagePath = `${slug}og-image.png`;
+const ogImageUrl = new URL(ogImagePath, site).href;
+---
+
+<DocsLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  metaDescription={entry.data.metaDescription}
+  currentSlug={slug}
+  headings={headings}
+  locale={locale}
+  ogImage={ogImageUrl}
+>
+  <Content />
+</DocsLayout>

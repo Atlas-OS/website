@@ -1,18 +1,41 @@
 @import 'tailwindcss';
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/archivo';
+@import '@fontsource-variable/fira-code';
 
-@plugin "@tailwindcss/typography";
+@plugin '@tailwindcss/typography';
 
 @theme {
-  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  --font-display: 'Archivo Variable', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  --font-mono: 'Fira Code Variable', ui-monospace, monospace, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-sans:
+    'Inter Variable', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-display:
+    'Archivo Variable', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-mono:
+    'Fira Code Variable', ui-monospace, monospace, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
   --color-primary: oklch(0.65 0.1907 252.91);
   --bg-primary: oklch(0.12 0.0421 264.82);
+  --bg-secondary: oklch(0.1 0.045 270);
   --color-secondary: oklch(0.12 0.0421 264.82);
 }
 
 body {
-  background-color: var(--bg-primary);
+  background: linear-gradient(to bottom right, var(--bg-primary), var(--bg-secondary));
+  background-attachment: fixed;
+  color: white;
+  position: relative;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 50% 0%, oklch(0.65 0.1907 252.91 / 0.08), transparent 50%);
+  pointer-events: none;
+  z-index: -1;
 }
 
 h1,
@@ -36,10 +59,149 @@ button {
     @apply opacity-70;
   }
 }
+.not-prose {
+  contain: layout style paint;
+  isolation: isolate;
+}
 
-/* Custom utilities */
+.prose > .not-prose {
+  contain: layout style paint;
+  isolation: isolate;
+}
+
+@layer components {
+  [data-component] {
+    contain: layout style;
+  }
+}
+
 @layer utilities {
   .bg-gradient-radial {
     background-image: radial-gradient(var(--tw-gradient-stops));
   }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.4s ease-out;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.5s ease-out;
+}
+
+.animate-slide-down {
+  animation: slide-down 0.5s ease-out;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+main,
+[role='main'] {
+  position: relative;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--color-primary);
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 0 0 4px 0;
+  z-index: 100;
+  transition: top 0.3s ease;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+[data-animate] {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 0.6s ease-out,
+    transform 0.6s ease-out;
+}
+
+[data-animate].animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+[data-animate-delay='1'] {
+  transition-delay: 0.1s;
+}
+
+[data-animate-delay='2'] {
+  transition-delay: 0.2s;
+}
+
+[data-animate-delay='3'] {
+  transition-delay: 0.3s;
+}
+
+[data-animate-delay='4'] {
+  transition-delay: 0.4s;
 }

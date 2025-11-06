@@ -1,0 +1,145 @@
+---
+import { Icon } from 'astro-icon/components';
+import { DEFAULT_LOCALE } from '@/constants';
+
+interface Props {
+  currentLocale?: string;
+  currentSlug?: string;
+}
+
+const { currentLocale = DEFAULT_LOCALE, currentSlug = '/' } = Astro.props;
+const defaultLocale = DEFAULT_LOCALE;
+
+const availableLocales: Array<{ code: string; label: string; lang: string }> = [
+  { code: 'en', label: 'English', lang: 'en-US' },
+];
+
+const showSwitcher = availableLocales.length > 0;
+const hasMultipleLocales = availableLocales.length > 1;
+
+const localeLinks = availableLocales.map((locale) => {
+  let href: string;
+
+  if (currentSlug.startsWith('/docs/')) {
+    if (locale.code === defaultLocale) {
+      href = currentSlug.replace(/^\/docs\/([a-z]{2}(?:-[a-z]{2})?)\//, '/docs/');
+    } else {
+      const slugWithoutDocsPrefix = currentSlug.replace(/^\/docs\//, '');
+      const slugWithoutLocale = slugWithoutDocsPrefix.replace(/^([a-z]{2}(?:-[a-z]{2})?)\//, '');
+      href = `/docs/${locale.code}/${slugWithoutLocale}`;
+    }
+  } else {
+    if (locale.code === defaultLocale) {
+      href = currentSlug.replace(/^\/([a-z]{2}(?:-[a-z]{2})?)\//, '/') || '/';
+    } else {
+      const slugWithoutLeadingSlash = currentSlug.startsWith('/') ? currentSlug.slice(1) : currentSlug;
+      const slugWithoutLocale = slugWithoutLeadingSlash.replace(/^([a-z]{2}(?:-[a-z]{2})?)\//, '');
+      href = `/${locale.code}/${slugWithoutLocale}`;
+    }
+  }
+
+  return {
+    ...locale,
+    href,
+    isCurrent: locale.code === currentLocale,
+  };
+});
+---
+
+{
+  showSwitcher && (
+    <div class="relative">
+      <button
+        id="language-switcher-button"
+        type="button"
+        aria-label={hasMultipleLocales ? 'Select language' : 'Current language'}
+        aria-haspopup={hasMultipleLocales}
+        aria-expanded={hasMultipleLocales ? 'false' : undefined}
+        class={`inline-flex h-9 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-md border border-white/10 px-3 text-sm font-medium whitespace-nowrap text-white transition-opacity duration-200 outline-none hover:opacity-80 ${
+          hasMultipleLocales ? '' : 'cursor-default'
+        }`}
+        style="background-color: var(--bg-primary);"
+      >
+        <Icon name="tabler:world" class="h-4 w-4 shrink-0" aria-hidden="true" />
+        <span class="hidden sm:inline">
+          {availableLocales.find((l) => l.code === currentLocale)?.label || currentLocale.toUpperCase()}
+        </span>
+        {hasMultipleLocales && <Icon name="tabler:chevron-down" class="h-4 w-4 shrink-0" aria-hidden="true" />}
+      </button>
+
+      {hasMultipleLocales && (
+        <div
+          id="language-switcher-menu"
+          class="absolute top-full right-0 z-50 mt-2 hidden w-48 rounded-md border border-white/10 shadow-lg"
+          style="background-color: var(--bg-primary);"
+          role="menu"
+          aria-orientation="vertical"
+        >
+          {localeLinks.map((locale) => (
+            <a
+              href={locale.href}
+              lang={locale.lang}
+              hreflang={locale.lang}
+              class={`block px-4 py-2 text-sm transition-opacity duration-200 outline-none first:rounded-t-md last:rounded-b-md ${
+                locale.isCurrent
+                  ? 'text-primary bg-white/5 font-medium'
+                  : 'text-white/80 hover:bg-white/5 hover:opacity-80'
+              }`}
+              role="menuitem"
+            >
+              {locale.label}
+              {locale.isCurrent && <Icon name="tabler:check" class="ml-2 inline h-4 w-4" aria-hidden="true" />}
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+<script>
+  function setupLanguageSwitcher() {
+    const button = document.getElementById('language-switcher-button');
+    const menu = document.getElementById('language-switcher-menu');
+
+    if (!button || !menu) return;
+
+    const toggleMenu = () => {
+      const isExpanded = button.getAttribute('aria-expanded') === 'true';
+      button.setAttribute('aria-expanded', (!isExpanded).toString());
+
+      if (isExpanded) {
+        menu.classList.add('hidden');
+      } else {
+        menu.classList.remove('hidden');
+      }
+    };
+
+    button.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleMenu();
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!menu.contains(e.target as Node) && !button.contains(e.target as Node)) {
+        menu.classList.add('hidden');
+        button.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !menu.classList.contains('hidden')) {
+        menu.classList.add('hidden');
+        button.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupLanguageSwitcher);
+  } else {
+    setupLanguageSwitcher();
+  }
+
+  document.addEventListener('astro:page-load', setupLanguageSwitcher);
+</script>

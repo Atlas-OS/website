@@ -1,0 +1,11 @@
+# Dependencies
+node_modules
+bun.lock
+
+# Build outputs
+dist
+.astro
+
+# Content files - Prettier doesn't handle MDX frontmatter well
+src/content/**/*.mdx
+src/content/**/*.md
