@@ -7,7 +7,6 @@
     "ms-vscode.vscode-typescript-next",
     "usernamehw.errorlens",
     "christian-kohler.path-intellisense",
-    "formulahendry.auto-rename-tag",
     "ms-vscode.vscode-json"
   ],
   "unwantedRecommendations": []
