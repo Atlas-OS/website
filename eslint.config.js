@@ -20,7 +20,6 @@ export default [
       parserOptions: {
         parser: tseslint.parser,
         extraFileExtensions: ['.astro'],
-        project: './tsconfig.json',
       },
     },
     processor: astro.processors.astro,
