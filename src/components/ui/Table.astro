@@ -1,0 +1,66 @@
+---
+interface Props {
+  headers: string[];
+  class?: string;
+}
+
+const { headers, class: className = '' } = Astro.props;
+---
+
+<div class={`not-prose table-wrapper mb-6 ${className}`}>
+  <div class="table-container overflow-x-auto">
+    <table class="w-full border-collapse text-base">
+      <thead>
+        <tr>
+          {
+            headers.map((header) => (
+              <th class="border border-white/20 bg-white/5 px-4 py-3 text-left font-semibold text-white">{header}</th>
+            ))
+          }
+        </tr>
+      </thead>
+      <tbody>
+        <slot />
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<style>
+  .table-wrapper {
+    contain: layout style paint;
+    isolation: isolate;
+  }
+
+  .table-container {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+  }
+
+  .table-container::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .table-container::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .table-container::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+  }
+
+  .table-container::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .table-container table {
+    min-width: 100%;
+  }
+
+  @media (max-width: 640px) {
+    .table-container table {
+      min-width: 600px;
+    }
+  }
+</style>

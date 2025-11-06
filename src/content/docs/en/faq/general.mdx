@@ -6,6 +6,9 @@ order: 29
 ---
 
 import Callout from '@/components/docs/Callout.astro';
+import Table from '@/components/ui/Table.astro';
+import TableRow from '@/components/ui/TableRow.astro';
+import TableCell from '@/components/ui/TableCell.astro';
 import { Icon } from 'astro-icon/components';
 
 # General FAQ
@@ -18,12 +21,56 @@ Keeping your AtlasOS installation current ensures you benefit from the latest fe
 
 Check the table below to see the update options available for your version:
 
-| Version              | Windows Update                                                                                 | Updating Atlas                                                                      | Support from Atlas Team                                       |
-| -------------------- | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| v0.3.x               | <Icon name="tabler:x" class="inline h-4 w-4" /> Can't upgrade to v0.5.0                        | <Icon name="tabler:x" class="inline h-4 w-4" /> No support                          | <Icon name="tabler:x" class="inline h-4 w-4" /> No support    |
-| v0.4.0               | <Icon name="tabler:x" class="inline h-4 w-4" /> Can't upgrade to v0.5.0                        | <Icon name="tabler:x" class="inline h-4 w-4" /> No support                          | <Icon name="tabler:x" class="inline h-4 w-4" /> No support    |
-| v0.4.1 (W11 24H2)    | <Icon name="tabler:check" class="inline h-4 w-4" /> Can directly upgrade to v0.5.0             | <Icon name="tabler:check" class="inline h-4 w-4" /> Fully supported                 | <Icon name="tabler:check" class="inline h-4 w-4" /> Supported |
-| v0.5.0 (24H2 & 25H2) | <Icon name="tabler:check" class="inline h-4 w-4" /> Will be able to upgrade to future versions | <Icon name="tabler:check" class="inline h-4 w-4" /> Will be supported in the future | <Icon name="tabler:check" class="inline h-4 w-4" /> Supported |
+<Table headers={['Version', 'Windows Update', 'Updating Atlas', 'Support from Atlas Team']}>
+  <TableRow>
+    <TableCell>v0.3.x</TableCell>
+    <TableCell>
+      <Icon name="tabler:x" class="inline h-4 w-4" /> Can't upgrade to v0.5.0
+    </TableCell>
+    <TableCell>
+      <Icon name="tabler:x" class="inline h-4 w-4" /> No support
+    </TableCell>
+    <TableCell>
+      <Icon name="tabler:x" class="inline h-4 w-4" /> No support
+    </TableCell>
+  </TableRow>
+  <TableRow>
+    <TableCell>v0.4.0</TableCell>
+    <TableCell>
+      <Icon name="tabler:x" class="inline h-4 w-4" /> Can't upgrade to v0.5.0
+    </TableCell>
+    <TableCell>
+      <Icon name="tabler:x" class="inline h-4 w-4" /> No support
+    </TableCell>
+    <TableCell>
+      <Icon name="tabler:x" class="inline h-4 w-4" /> No support
+    </TableCell>
+  </TableRow>
+  <TableRow>
+    <TableCell>v0.4.1 (W11 24H2)</TableCell>
+    <TableCell>
+      <Icon name="tabler:check" class="inline h-4 w-4" /> Can directly upgrade to v0.5.0
+    </TableCell>
+    <TableCell>
+      <Icon name="tabler:check" class="inline h-4 w-4" /> Fully supported
+    </TableCell>
+    <TableCell>
+      <Icon name="tabler:check" class="inline h-4 w-4" /> Supported
+    </TableCell>
+  </TableRow>
+  <TableRow>
+    <TableCell>v0.5.0 (24H2 & 25H2)</TableCell>
+    <TableCell>
+      <Icon name="tabler:check" class="inline h-4 w-4" /> Will be able to upgrade to future versions
+    </TableCell>
+    <TableCell>
+      <Icon name="tabler:check" class="inline h-4 w-4" /> Will be supported in the future
+    </TableCell>
+    <TableCell>
+      <Icon name="tabler:check" class="inline h-4 w-4" /> Supported
+    </TableCell>
+  </TableRow>
+</Table>
 
 ## Checking your AtlasOS version
 
