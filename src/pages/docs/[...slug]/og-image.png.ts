@@ -112,13 +112,13 @@ export const GET: APIRoute = async function get({ props }) {
     {
       name: 'Inter',
       data: fontData,
-      weight: 400,
+      weight: 400 as const,
       style: 'normal' as const,
     },
     {
       name: 'Inter',
       data: boldFontData,
-      weight: 700,
+      weight: 700 as const,
       style: 'normal' as const,
     },
   ];
@@ -245,7 +245,7 @@ export const GET: APIRoute = async function get({ props }) {
           },
         ].filter(Boolean),
       },
-    },
+    } as any,
     {
       width: 1200,
       height: 630,
@@ -255,7 +255,7 @@ export const GET: APIRoute = async function get({ props }) {
 
   const png = await sharp(Buffer.from(svg)).png().toBuffer();
 
-  return new Response(png, {
+  return new Response(png as unknown as BodyInit, {
     headers: {
       'Content-Type': 'image/png',
       'Cache-Control': 'public, max-age=31536000, immutable',

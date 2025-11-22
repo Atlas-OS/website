@@ -170,8 +170,9 @@ export function setupNavbar(): void {
 }
 
 export function handleNavbarKeyboardEvents(): void {
-  const keyboardHandler = (e: KeyboardEvent) => {
-    if (e.key !== 'Escape') return;
+  const keyboardHandler = (e: Event) => {
+    const keyEvent = e as KeyboardEvent;
+    if (keyEvent.key !== 'Escape') return;
 
     const sidebar = document.getElementById('sidebar');
     if (sidebar?.classList.contains('open')) {

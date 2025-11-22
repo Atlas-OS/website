@@ -81,7 +81,7 @@ function removeLocaleFromSlug(slug: string, defaultLocale: string = DEFAULT_LOCA
   return slug;
 }
 
-function normalizeSlug(slug: string, defaultLocale: string = DEFAULT_LOCALE): string {
+export function normalizeSlug(slug: string, defaultLocale: string = DEFAULT_LOCALE): string {
   if (slug === '/' || slug === '/docs/') return '/docs/';
 
   const cacheKey = `normalize:${slug}:${defaultLocale}`;

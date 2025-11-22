@@ -12,27 +12,37 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
   filteredHeadings.length > 0 && (
     <aside
       id="toc"
-      class="fixed top-12 right-0 hidden h-[calc(100vh-3rem)] w-64 overflow-y-auto border-l border-white/10 p-6 xl:block"
-      style="background-color: var(--bg-primary);"
+      class="fixed top-12 right-0 hidden h-[calc(100vh-3rem)] w-64 overflow-y-auto border-l border-white/10 p-6 backdrop-blur-md xl:block"
+      style="background-color: oklch(0.12 0.0421 264.82 / 0.6);"
     >
       <nav class="sticky top-8 z-10 -mr-2 max-h-[calc(100vh-4rem)] overflow-y-auto px-2" aria-label="On this page">
         <div class="space-y-4">
           <h2 class="mb-4 text-xs font-semibold tracking-wider text-white/50 uppercase">On this page</h2>
-          <ul class="space-y-2">
-            {filteredHeadings.map((heading) => (
-              <li>
-                <a
-                  href={`#${heading.slug}`}
-                  class={`toc-link block w-full text-left text-sm transition-opacity duration-200 hover:opacity-80 ${
-                    heading.depth === 3 ? 'pl-4' : ''
-                  } relative pl-0 text-white/60`}
-                  style="scroll-behavior: smooth;"
-                >
-                  {heading.text}
-                </a>
-              </li>
-            ))}
-          </ul>
+          <div class="relative">
+            <div
+              id="toc-marker"
+              class="bg-primary absolute left-0 w-[2px] rounded-full opacity-0 transition-all duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1.0)]"
+              style="top: 0; height: 0;"
+            >
+              <div class="bg-primary/50 absolute inset-0 blur-[2px]" />
+            </div>
+
+            <ul class="space-y-2 border-l border-white/10">
+              {filteredHeadings.map((heading) => (
+                <li>
+                  <a
+                    href={`#${heading.slug}`}
+                    class={`toc-link block w-full text-left text-sm transition-colors duration-200 ${
+                      heading.depth === 3 ? 'pl-6' : 'pl-4'
+                    } text-white/60 hover:text-white hover:opacity-100`}
+                    style="scroll-behavior: smooth;"
+                  >
+                    {heading.text}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </nav>
     </aside>
@@ -40,6 +50,8 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 }
 
 <style>
+  @reference "tailwindcss";
+
   #toc {
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
@@ -61,52 +73,82 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
   #toc::-webkit-scrollbar-thumb:hover {
     background-color: rgba(255, 255, 255, 0.2);
   }
+
+  .toc-active {
+    @apply font-medium;
+    color: var(--color-primary);
+  }
 </style>
 
 <script>
   function setupTableOfContents() {
     const toc = document.querySelector('#toc');
+    if (!toc) return;
 
-    if (toc) {
-      const tocLinks = toc.querySelectorAll('.toc-link');
-      const headings = Array.from(document.querySelectorAll('h2, h3')).map((el) => ({
-        id: el.id,
-        element: el,
-      }));
+    const tocLinks = Array.from(toc.querySelectorAll('a.toc-link'));
+    const marker = toc.querySelector('#toc-marker') as HTMLElement;
 
-      if (tocLinks.length > 0 && headings.length > 0) {
-        const updateActiveLink = () => {
-          const scrollPosition = window.scrollY + 100;
+    if (!tocLinks.length || !marker) return;
 
-          for (let i = headings.length - 1; i >= 0; i--) {
-            const heading = headings[i];
-            if (!heading) continue;
-            const rect = heading.element.getBoundingClientRect();
-            const top = rect.top + window.scrollY;
+    const headingIds = tocLinks.map((link) => link.getAttribute('href')?.substring(1)).filter(Boolean) as string[];
+    const headings = headingIds
+      .map((id) => {
+        const el = document.getElementById(id);
+        return el ? { id, element: el } : null;
+      })
+      .filter((h): h is { id: string; element: HTMLElement } => h !== null);
 
-            if (scrollPosition >= top) {
-              tocLinks.forEach((link) => {
-                link.classList.remove('text-primary', 'font-medium');
-                link.classList.add('text-white/60');
-              });
+    if (headings.length === 0) return;
 
-              const activeLink = Array.from(tocLinks).find(
-                (link) => link.getAttribute('href') === `#${heading.id}`
-              ) as HTMLElement;
+    const updateActiveLink = () => {
+      const scrollPosition = window.scrollY + 100;
+      let activeHeadingId: string | null = null;
 
-              if (activeLink) {
-                activeLink.classList.remove('text-white/60');
-                activeLink.classList.add('text-primary', 'font-medium');
-              }
-              break;
-            }
-          }
-        };
+      for (let i = headings.length - 1; i >= 0; i--) {
+        const heading = headings[i];
+        if (!heading) continue;
 
-        window.addEventListener('scroll', updateActiveLink);
-        updateActiveLink();
+        const rect = heading.element.getBoundingClientRect();
+        const top = rect.top + window.scrollY;
+
+        if (scrollPosition >= top) {
+          activeHeadingId = heading.id;
+          break;
+        }
       }
-    }
+
+      tocLinks.forEach((link) => {
+        link.classList.remove('toc-active', 'text-white');
+        link.classList.add('text-white/60');
+      });
+
+      if (activeHeadingId) {
+        const activeLink = tocLinks.find((link) => link.getAttribute('href') === `#${activeHeadingId}`) as HTMLElement;
+
+        if (activeLink) {
+          activeLink.classList.remove('text-white/60');
+          activeLink.classList.add('toc-active', 'text-white');
+
+          const linkRect = activeLink.getBoundingClientRect();
+          const containerRect = marker.parentElement?.getBoundingClientRect();
+
+          if (containerRect) {
+            const top = linkRect.top - containerRect.top;
+            const height = linkRect.height;
+
+            marker.style.top = `${top}px`;
+            marker.style.height = `${height}px`;
+            marker.style.opacity = '1';
+          }
+        }
+      } else {
+        marker.style.opacity = '0';
+      }
+    };
+
+    window.addEventListener('scroll', updateActiveLink, { passive: true });
+    window.addEventListener('resize', updateActiveLink);
+    updateActiveLink();
   }
 
   document.addEventListener('astro:page-load', setupTableOfContents);

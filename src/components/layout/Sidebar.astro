@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import { buildFullNavigationTree, isActivePage } from '@/utils/navigation';
+import { buildFullNavigationTree, isActivePage, normalizeSlug } from '@/utils/navigation';
 import { Icon } from 'astro-icon/components';
 import { DEFAULT_LOCALE, SECTION_PRIORITIES } from '@/constants';
 import '@/styles/sidebar.css';
@@ -13,22 +13,6 @@ interface Props {
 const { currentSlug, locale = null } = Astro.props;
 const defaultLocale = DEFAULT_LOCALE;
 const allDocs = await getCollection('docs');
-
-function normalizeSlug(slug: string): string {
-  let normalized = slug;
-  if (locale && locale !== defaultLocale) {
-    const localePrefix = `/${locale}`;
-    if (normalized.startsWith(localePrefix)) {
-      normalized = normalized.slice(localePrefix.length);
-    }
-  }
-  if (normalized.startsWith('/en/')) {
-    normalized = '/' + normalized.slice(4);
-  } else if (normalized === '/en/') {
-    normalized = '/';
-  }
-  return normalized.replace(/\/$/, '') || '/';
-}
 
 function normalizeSlugForDisplay(slug: string): string {
   if (locale && locale !== defaultLocale) {
@@ -163,8 +147,8 @@ sectionNavItems.sort((a, b) => {
 
       <aside
         id="sidebar"
-        class="fixed top-12 left-0 z-40 h-[calc(100vh-3rem)] w-72 border-r border-white/10 backdrop-blur-sm transition-transform duration-300 lg:translate-x-0"
-        style="background-color: oklch(0.12 0.0421 264.82 / 0.8);"
+        class="fixed top-14 left-0 z-40 h-[calc(100vh-3.5rem)] w-72 border-r border-white/10 backdrop-blur-md transition-transform duration-300 lg:translate-x-0"
+        style="background-color: oklch(0.12 0.0421 264.82 / 0.6);"
       >
         <div class="flex h-full flex-col">
           <div class="flex items-center justify-between border-b border-white/10 px-5 py-4 lg:hidden">
@@ -180,8 +164,8 @@ sectionNavItems.sort((a, b) => {
             </button>
           </div>
 
-          <div id="sidebar-scroll" class="flex-1 overflow-y-auto px-5 py-7 lg:py-7">
-            <nav class="space-y-6">
+          <div id="sidebar-scroll" class="flex-1 overflow-y-auto px-4 py-6 lg:py-6">
+            <nav class="space-y-8">
               {sectionNavItems.map((section) => {
                 const hasItems = section.items && section.items.length > 0;
 
@@ -190,14 +174,17 @@ sectionNavItems.sort((a, b) => {
                     <div class="sidebar-section">
                       <a
                         href="/"
-                        class="sidebar-link group relative block rounded-md transition-opacity duration-200 outline-none hover:opacity-80"
+                        class={`sidebar-link group relative block rounded-md transition-all duration-200 outline-none ${
+                          isActivePage(currentSlug, '/')
+                            ? 'bg-primary/10 text-primary font-medium'
+                            : 'text-white/80 hover:bg-white/5 hover:text-white'
+                        }`}
                       >
-                        <div class="px-1.5 py-1">
-                          <span
-                            class={`block truncate text-sm leading-snug font-semibold whitespace-nowrap transition-opacity duration-200 ${
-                              isActivePage(currentSlug, '/') ? 'text-primary' : 'text-white/80 group-hover:opacity-80'
-                            }`}
-                          >
+                        {isActivePage(currentSlug, '/') && (
+                          <div class="bg-primary absolute top-1/2 left-0 h-4 w-1 -translate-y-1/2 rounded-r-full" />
+                        )}
+                        <div class="px-3 py-2">
+                          <span class="block truncate text-sm leading-snug whitespace-nowrap">
                             {section.sectionTitle}
                           </span>
                         </div>
@@ -209,108 +196,113 @@ sectionNavItems.sort((a, b) => {
                 return (
                   <div class="sidebar-section">
                     {hasItems && (
-                      <div class="space-y-0.5">
+                      <div class="space-y-1">
                         <a
                           href={section.sectionSlug}
-                          class="sidebar-link group relative block rounded-md transition-opacity duration-200 outline-none hover:opacity-80"
+                          class={`sidebar-link group relative block rounded-md transition-all duration-200 outline-none ${
+                            isActivePage(currentSlug, section.sectionSlug)
+                              ? 'bg-primary/10 text-primary font-medium'
+                              : 'font-semibold text-white/90 hover:bg-white/5 hover:text-white'
+                          }`}
                         >
-                          <div class="px-1.5 py-1">
-                            <span
-                              class={`block truncate text-sm leading-snug font-semibold whitespace-nowrap transition-opacity duration-200 ${
-                                isActivePage(currentSlug, section.sectionSlug)
-                                  ? 'text-primary'
-                                  : 'text-white/80 group-hover:opacity-80'
-                              }`}
-                            >
+                          {isActivePage(currentSlug, section.sectionSlug) && (
+                            <div class="bg-primary absolute top-1/2 left-0 h-4 w-1 -translate-y-1/2 rounded-r-full" />
+                          )}
+                          <div class="px-3 py-2">
+                            <span class="block truncate text-sm leading-snug whitespace-nowrap">
                               {section.sectionTitle}
                             </span>
                           </div>
                         </a>
-                        {section.items.map((item) => {
-                          const hasChildren = item.children && item.children.length > 0;
-                          const isActive = isActivePage(currentSlug, item.slug);
-                          const normalizedItemSlug = normalizeSlug(item.slug);
-                          const normalizedSectionSlug = normalizeSlug(section.sectionSlug);
-                          const isItemSameAsSection = normalizedItemSlug === normalizedSectionSlug;
+                        <div class="mt-1 ml-2 space-y-0.5 border-l border-white/10 pl-2">
+                          {section.items.map((item) => {
+                            const hasChildren = item.children && item.children.length > 0;
+                            const isActive = isActivePage(currentSlug, item.slug);
+                            const normalizedItemSlug = normalizeSlug(item.slug);
+                            const normalizedSectionSlug = normalizeSlug(section.sectionSlug);
+                            const isItemSameAsSection = normalizedItemSlug === normalizedSectionSlug;
 
-                          if (isItemSameAsSection && !hasChildren) {
-                            return null;
-                          }
+                            if (isItemSameAsSection && !hasChildren) {
+                              return null;
+                            }
 
-                          return (
-                            <div class="space-y-0.5">
-                              {hasChildren ? (
-                                <div class="sidebar-item-with-children">
-                                  <div class="sidebar-link group relative flex items-center rounded-md transition-opacity duration-200 hover:opacity-80">
-                                    <a href={item.slug} class="flex-1 px-1.5 py-1">
-                                      <span
-                                        class={`block truncate text-left text-sm leading-snug whitespace-nowrap transition-opacity duration-200 ${
-                                          isActive
-                                            ? 'text-primary font-medium'
-                                            : 'font-normal text-white/60 group-hover:opacity-80'
-                                        }`}
+                            return (
+                              <div class="space-y-0.5">
+                                {hasChildren ? (
+                                  <div class="sidebar-item-with-children">
+                                    <div class="sidebar-link group relative flex items-center rounded-md transition-opacity duration-200 hover:opacity-80">
+                                      <a href={item.slug} class="flex-1 px-2 py-1.5">
+                                        <span
+                                          class={`block truncate text-left text-sm leading-snug whitespace-nowrap transition-opacity duration-200 ${
+                                            isActive
+                                              ? 'text-primary font-medium'
+                                              : 'font-normal text-white/70 group-hover:text-white'
+                                          }`}
+                                        >
+                                          {item.title}
+                                        </span>
+                                      </a>
+                                      <button
+                                        type="button"
+                                        class="sidebar-toggle flex shrink-0 cursor-pointer items-center justify-center px-1.5 py-1 transition-opacity duration-200 outline-none hover:opacity-80"
+                                        data-slug={item.slug}
+                                        aria-label="Toggle submenu"
                                       >
+                                        <Icon
+                                          name="tabler:chevron-down"
+                                          class="sidebar-arrow pointer-events-none h-4 w-4 text-white/60 transition-transform duration-200"
+                                        />
+                                      </button>
+                                    </div>
+                                    <div class="sidebar-children mt-0.5 ml-3 space-y-0.5 border-l border-white/10 pl-3">
+                                      {item.children &&
+                                        item.children.map((child) => {
+                                          const isChildActive = isActivePage(currentSlug, child.slug);
+                                          return (
+                                            <a
+                                              href={child.slug}
+                                              class={`sidebar-link group relative block rounded-md transition-all duration-200 outline-none ${
+                                                isChildActive
+                                                  ? 'bg-primary/10 text-primary font-medium'
+                                                  : 'text-white/60 hover:bg-white/5 hover:text-white'
+                                              }`}
+                                            >
+                                              {isChildActive && (
+                                                <div class="bg-primary absolute top-1/2 left-0 h-3 w-0.5 -translate-y-1/2 rounded-r-full" />
+                                              )}
+                                              <div class="px-2 py-1.5">
+                                                <span class="block truncate text-left text-sm leading-snug whitespace-nowrap">
+                                                  {child.title}
+                                                </span>
+                                              </div>
+                                            </a>
+                                          );
+                                        })}
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <a
+                                    href={item.slug}
+                                    class={`sidebar-link group relative block rounded-md transition-all duration-200 outline-none ${
+                                      isActive
+                                        ? 'bg-primary/10 text-primary font-medium'
+                                        : 'text-white/70 hover:bg-white/5 hover:text-white'
+                                    }`}
+                                  >
+                                    {isActive && (
+                                      <div class="bg-primary absolute top-1/2 left-0 h-3 w-0.5 -translate-y-1/2 rounded-r-full" />
+                                    )}
+                                    <div class="px-2 py-1.5">
+                                      <span class="block truncate text-left text-sm leading-snug whitespace-nowrap">
                                         {item.title}
                                       </span>
-                                    </a>
-                                    <button
-                                      type="button"
-                                      class="sidebar-toggle flex shrink-0 cursor-pointer items-center justify-center px-1.5 py-1 transition-opacity duration-200 outline-none hover:opacity-80"
-                                      data-slug={item.slug}
-                                      aria-label="Toggle submenu"
-                                    >
-                                      <Icon
-                                        name="tabler:chevron-down"
-                                        class="sidebar-arrow pointer-events-none h-4 w-4 text-white/60 transition-transform duration-200"
-                                      />
-                                    </button>
-                                  </div>
-                                  <div class="sidebar-children mt-0.5 ml-4 space-y-0.5">
-                                    {item.children &&
-                                      item.children.map((child) => {
-                                        const isChildActive = isActivePage(currentSlug, child.slug);
-                                        return (
-                                          <a
-                                            href={child.slug}
-                                            class="sidebar-link group relative block rounded-md transition-opacity duration-200 outline-none hover:opacity-80"
-                                          >
-                                            <div class="py-1 pr-1.5 pl-1.5">
-                                              <span
-                                                class={`block truncate text-left text-sm leading-snug whitespace-nowrap transition-opacity duration-200 ${
-                                                  isChildActive
-                                                    ? 'text-primary font-medium'
-                                                    : 'font-normal text-white/60 group-hover:opacity-80'
-                                                }`}
-                                              >
-                                                {child.title}
-                                              </span>
-                                            </div>
-                                          </a>
-                                        );
-                                      })}
-                                  </div>
-                                </div>
-                              ) : (
-                                <a
-                                  href={item.slug}
-                                  class="sidebar-link group relative block rounded-md transition-opacity duration-200 outline-none hover:opacity-80"
-                                >
-                                  <div class="px-1.5 py-1">
-                                    <span
-                                      class={`block truncate text-left text-sm leading-snug whitespace-nowrap transition-opacity duration-200 ${
-                                        isActive
-                                          ? 'text-primary font-medium'
-                                          : 'font-normal text-white/60 group-hover:opacity-100'
-                                      }`}
-                                    >
-                                      {item.title}
-                                    </span>
-                                  </div>
-                                </a>
-                              )}
-                            </div>
-                          );
-                        })}
+                                    </div>
+                                  </a>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
                       </div>
                     )}
                   </div>

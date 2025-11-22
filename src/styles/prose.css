@@ -129,10 +129,10 @@
 
 :where(.prose) > pre:not(.not-prose):not(.not-prose *),
 :where(.prose) pre:not(.not-prose):not(.not-prose *) {
-  @apply mb-6 overflow-x-auto rounded-lg p-5;
-  background-color: rgb(255 255 255 / 0.05);
-  border: 1px solid rgb(255 255 255 / 0.1);
-  line-height: 1.6;
+  @apply mb-8 overflow-x-auto rounded-xl border border-white/10 p-5 shadow-lg;
+  background-color: oklch(0.12 0.0421 264.82 / 0.6) !important;
+  backdrop-filter: blur(12px);
+  line-height: 1.7;
 }
 
 :where(.prose) pre:not(.not-prose):not(.not-prose *) code {

@@ -66,14 +66,14 @@ const { prev, next } = getPrevNextPages(allDocs, currentSlug, locale === default
 
   <Fragment slot="body">
     <a href="#main-content" class="skip-link">Skip to main content</a>
+    <div class="fixed inset-0 -z-10 h-full w-full">
+      <div
+        class="absolute h-full w-full bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px)] mask-[linear-gradient(to_bottom,rgba(0,0,0,0.7),transparent_70%)] bg-size-[24px_24px]"
+      >
+      </div>
+    </div>
     <Navbar currentPath={currentSlug} locale={locale} isDocsPage={true} data-pagefind-ignore />
     <div class="relative z-10 flex pt-12">
-      <div class="absolute inset-0 -z-10 w-full" style="height: 100%;">
-        <div
-          class="absolute h-full w-full bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px)] mask-[linear-gradient(to_bottom,rgba(0,0,0,0.7),transparent_70%)] bg-size-[24px_24px]"
-        >
-        </div>
-      </div>
       {
         showSidebar && (
           <Sidebar currentSlug={currentSlug} locale={locale === defaultLocale ? null : locale} data-pagefind-ignore />

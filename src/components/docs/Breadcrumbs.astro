@@ -1,5 +1,5 @@
 ---
-import { getSlugFromId } from '@/utils/navigation';
+import { getSlugFromId, normalizeSlug } from '@/utils/navigation';
 import { Icon } from 'astro-icon/components';
 import { getCollection } from 'astro:content';
 
@@ -10,16 +10,6 @@ interface Props {
 const { currentSlug } = Astro.props;
 
 const allDocs = await getCollection('docs');
-
-function normalizeSlug(slug: string): string {
-  let normalized = slug.replace(/^\/docs\/?/, '');
-  if (normalized.startsWith('/en/')) {
-    return '/' + normalized.slice(4);
-  } else if (normalized === '/en/' || normalized === '/') {
-    return '/';
-  }
-  return normalized || '/';
-}
 
 function buildBreadcrumbs(slug: string): Array<{ title: string; href: string }> {
   const normalizedSlug = normalizeSlug(slug);
@@ -97,7 +87,7 @@ const breadcrumbStructuredData = {
             {index > 0 && (
               <Icon
                 name="tabler:chevron-right"
-                class="mx-2 text-white/30 transition-colors duration-200"
+                class="mx-1.5 h-4 w-4 text-white/30 transition-colors duration-200"
                 aria-hidden="true"
               />
             )}
