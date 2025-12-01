@@ -194,24 +194,59 @@ import { Icon } from 'astro-icon/components';
     astro?: AstroNavigation;
   }
 
-  let searchData: Array<{
+  // Pagefind types
+  interface PagefindResult {
     id: string;
-    slug: string;
-    title: string;
-    description: string;
-    type: string;
-    url: string;
-    body: string;
-    section: string | null;
-  }> = [];
-  let selectedIndex = -1;
+    data: () => Promise<PagefindResultData>;
+  }
 
-  async function loadSearchData() {
+  interface PagefindResultData {
+    url: string;
+    content: string;
+    excerpt: string;
+    meta: {
+      title?: string;
+      image?: string;
+    };
+    sub_results?: Array<{
+      url: string;
+      title: string;
+      excerpt: string;
+    }>;
+  }
+
+  interface PagefindSearchResponse {
+    results: PagefindResult[];
+  }
+
+  interface Pagefind {
+    init: () => Promise<void>;
+    search: (query: string) => Promise<PagefindSearchResponse>;
+  }
+
+  interface SearchResult {
+    url: string;
+    title: string;
+    excerpt: string;
+  }
+
+  let pagefind: Pagefind | null = null;
+  let selectedIndex = -1;
+  let searchDebounceTimer: ReturnType<typeof setTimeout> | null = null;
+  let currentQuery = '';
+
+  async function loadPagefind(): Promise<Pagefind | null> {
+    if (pagefind) return pagefind;
+
     try {
-      const response = await fetch('/api/search.json');
-      searchData = await response.json();
+      // @ts-expect-error - Pagefind is generated at build time
+      const pf = await import(/* @vite-ignore */ '/pagefind/pagefind.js');
+      await pf.init();
+      pagefind = pf as Pagefind;
+      return pagefind;
     } catch {
-      searchData = [];
+      console.warn('Pagefind not available - search index may not be built yet');
+      return null;
     }
   }
 
@@ -244,82 +279,117 @@ import { Icon } from 'astro-icon/components';
       document.body.style.overflow = '';
       input.value = '';
       selectedIndex = -1;
+      currentQuery = '';
       renderResults([]);
     }
   }
 
-  function search(query: string) {
+  function showLoading() {
+    const list = document.getElementById('spotlight-list');
+    const empty = document.getElementById('spotlight-empty');
+    const loading = document.getElementById('spotlight-loading');
+
+    if (list) list.innerHTML = '';
+    if (empty) empty.classList.add('hidden');
+    if (loading) loading.classList.remove('hidden');
+  }
+
+  function hideLoading() {
+    const loading = document.getElementById('spotlight-loading');
+    if (loading) loading.classList.add('hidden');
+  }
+
+  async function search(query: string) {
+    currentQuery = query;
+
     if (!query.trim()) {
       renderResults([]);
       return;
     }
 
-    const lowerQuery = query.toLowerCase();
-    const queryWords = lowerQuery.split(/\s+/).filter((word) => word.length > 0);
+    showLoading();
 
-    const results = searchData
-      .map((doc) => {
-        let score = 0;
+    const pf = await loadPagefind();
+    if (!pf) {
+      hideLoading();
+      renderResults([]);
+      return;
+    }
 
-        const titleLower = doc.title.toLowerCase();
-        if (titleLower.includes(lowerQuery)) {
-          score += 100;
-        } else {
-          queryWords.forEach((word) => {
-            if (titleLower.includes(word)) {
-              score += 30;
-            }
-          });
-        }
+    // Check if query changed while loading
+    if (query !== currentQuery) return;
 
-        const descLower = doc.description.toLowerCase();
-        if (descLower.includes(lowerQuery)) {
-          score += 50;
-        } else {
-          queryWords.forEach((word) => {
-            if (descLower.includes(word)) {
-              score += 15;
-            }
-          });
-        }
+    try {
+      const searchResponse = await pf.search(query);
 
-        const slugLower = doc.slug.toLowerCase();
-        if (slugLower.includes(lowerQuery)) {
-          score += 40;
-        }
+      // Check if query changed while searching
+      if (query !== currentQuery) return;
 
-        const bodyLower = doc.body ? doc.body.toLowerCase() : '';
-        if (bodyLower.includes(lowerQuery)) {
-          score += 20;
-        } else {
-          queryWords.forEach((word) => {
-            if (bodyLower.includes(word)) {
-              score += 5;
-            }
-          });
-        }
+      // Load full data for top 10 results
+      const resultsData = await Promise.all(searchResponse.results.slice(0, 10).map((r) => r.data()));
 
-        return { doc, score };
-      })
-      .filter(({ score }) => score > 0)
-      .sort((a, b) => b.score - a.score)
-      .map(({ doc }) => doc)
-      .slice(0, 10);
+      // Check if query changed while loading data
+      if (query !== currentQuery) return;
 
-    renderResults(results);
+      // Map to our render format
+      const results: SearchResult[] = resultsData.map((data) => ({
+        url: data.url,
+        title: data.meta?.title || extractTitleFromUrl(data.url),
+        excerpt: data.excerpt || '',
+      }));
+
+      renderResults(results);
+    } catch {
+      hideLoading();
+      renderResults([]);
+    }
   }
 
-  function renderResults(results: typeof searchData) {
+  function extractTitleFromUrl(url: string): string {
+    const path = url.replace(/^\//, '').replace(/\/$/, '');
+    if (!path) return 'Home';
+    const segments = path.split('/');
+    const last = segments[segments.length - 1] ?? '';
+    if (!last) return 'Home';
+    return last
+      .split('-')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
+
+  function debouncedSearch(query: string) {
+    if (searchDebounceTimer) {
+      clearTimeout(searchDebounceTimer);
+    }
+
+    if (!query.trim()) {
+      renderResults([]);
+      return;
+    }
+
+    searchDebounceTimer = setTimeout(() => {
+      search(query);
+    }, 150);
+  }
+
+  function renderResults(results: SearchResult[]) {
     const list = document.getElementById('spotlight-list');
     const empty = document.getElementById('spotlight-empty');
     const loading = document.getElementById('spotlight-loading');
 
     if (!list || !empty || !loading) return;
 
-    loading.classList.add('hidden');
+    hideLoading();
+
+    const input = document.getElementById('spotlight-input') as HTMLInputElement;
+    const hasQuery = input && input.value.trim().length > 0;
 
     if (results.length === 0) {
-      empty.classList.remove('hidden');
+      if (hasQuery) {
+        empty.classList.remove('hidden');
+      } else {
+        empty.classList.add('hidden');
+      }
       list.innerHTML = '';
       selectedIndex = -1;
       return;
@@ -327,30 +397,22 @@ import { Icon } from 'astro-icon/components';
 
     empty.classList.add('hidden');
 
-    const getCollectionHierarchy = (result: (typeof searchData)[0]): string => {
-      if (result.section && result.section !== result.title) {
-        return `${result.section} > ${result.title}`;
-      }
-      return result.title;
-    };
-
     list.innerHTML = results
       .map((result, index) => {
-        const hierarchy = getCollectionHierarchy(result);
-        const path = result.slug.replace(/^\//, '').replace(/\/$/, '') || 'Home';
+        const path = result.url.replace(/^\//, '').replace(/\/$/, '') || 'Home';
         return `
-					<li class="spotlight-item ${index === selectedIndex ? 'selected' : ''}" data-index="${index}" data-url="${result.url}">
-						<div class="spotlight-item-header">
-							<div class="spotlight-item-content">
-								<div class="spotlight-item-hierarchy">${escapeHtml(hierarchy)}</div>
-								${result.description ? `<div class="spotlight-item-description">${escapeHtml(result.description)}</div>` : ''}
-								<div class="spotlight-item-meta">
-									<span class="spotlight-item-path">/${path}</span>
-								</div>
-							</div>
-						</div>
-					</li>
-				`;
+          <li class="spotlight-item ${index === selectedIndex ? 'selected' : ''}" data-index="${index}" data-url="${result.url}">
+            <div class="spotlight-item-header">
+              <div class="spotlight-item-content">
+                <div class="spotlight-item-hierarchy">${escapeHtml(result.title)}</div>
+                ${result.excerpt ? `<div class="spotlight-item-description">${result.excerpt}</div>` : ''}
+                <div class="spotlight-item-meta">
+                  <span class="spotlight-item-path">/${path}</span>
+                </div>
+              </div>
+            </div>
+          </li>
+        `;
       })
       .join('');
 
@@ -454,7 +516,7 @@ import { Icon } from 'astro-icon/components';
     if (input) {
       input.addEventListener('input', (e) => {
         const target = e.target as HTMLInputElement;
-        search(target.value);
+        debouncedSearch(target.value);
         selectedIndex = -1;
       });
 
@@ -496,7 +558,6 @@ import { Icon } from 'astro-icon/components';
     }
   });
 
-  loadSearchData();
   document.addEventListener('astro:page-load', setupSpotlight);
   setupSpotlight();
 </script>

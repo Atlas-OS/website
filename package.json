@@ -30,8 +30,7 @@
     "preview": "astro preview"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.5",
-    "@astrojs/mdx": "^4.3.11",
+    "@astrojs/mdx": "^4.3.12",
     "@astrojs/partytown": "^2.1.4",
     "@astrojs/sitemap": "^3.6.0",
     "@fontsource-variable/archivo": "^5.2.8",
@@ -39,35 +38,35 @@
     "@fontsource-variable/inter": "^5.2.8",
     "@iconify-json/tabler": "^1.2.23",
     "@tailwindcss/vite": "^4.1.17",
-    "astro": "^5.15.9",
+    "astro": "^5.16.3",
     "astro-icon": "^1.1.5",
     "astro-pagefind": "^1.8.5",
-    "caniuse-lite": "^1.0.30001755",
     "gray-matter": "^4.0.3",
-    "motion": "^12.23.24",
+    "motion": "^12.23.25",
     "satori": "^0.18.3",
     "sharp": "^0.34.5",
     "tailwindcss": "^4.1.17",
     "typescript": "^5.9.3",
-    "zod": "^4.1.12"
+    "zod": "^4.1.13"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.6",
     "@divriots/jampack": "0.34.0",
     "@eslint/js": "^9.39.1",
     "@tailwindcss/typography": "^0.5.19",
-    "@types/bun": "^1.3.2",
+    "@types/bun": "^1.3.3",
     "@types/node": "^24.10.1",
-    "@typescript-eslint/eslint-plugin": "^8.47.0",
-    "@typescript-eslint/parser": "^8.47.0",
+    "@typescript-eslint/eslint-plugin": "^8.48.0",
+    "@typescript-eslint/parser": "^8.48.0",
     "astro-eslint-parser": "^1.2.2",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-astro": "^1.5.0",
     "lightningcss": "^1.30.2",
-    "prettier": "^3.6.2",
+    "prettier": "^3.7.3",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-astro-organize-imports": "^0.4.11",
     "prettier-plugin-tailwindcss": "^0.7.1",
-    "typescript-eslint": "^8.47.0"
+    "typescript-eslint": "^8.48.0"
   }
 }

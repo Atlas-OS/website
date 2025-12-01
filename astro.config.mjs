@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 import icon from 'astro-icon';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
+import pagefind from 'astro-pagefind';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import seoValidation from './src/integrations/seo-validation';
@@ -60,6 +61,7 @@ export default defineConfig({
       },
     }),
     seoValidation(),
+    pagefind(),
   ],
 
   vite: {
@@ -74,6 +76,7 @@ export default defineConfig({
       cssMinify: 'lightningcss',
       chunkSizeWarningLimit: 1000,
       rollupOptions: {
+        external: ['/pagefind/pagefind.js'],
         output: {
           assetFileNames: 'assets/[name].[hash][extname]',
           chunkFileNames: 'assets/[name].[hash].js',
