@@ -17,7 +17,7 @@ const tabsId = `tabs-${Math.random().toString(36).substring(2, 11)}`;
           role="tab"
           data-tab={item.value}
           aria-selected={item.value === defaultTab ? 'true' : 'false'}
-          class={`tab-button shrink-0 border-b-2 px-4 py-2 text-sm font-medium transition-opacity duration-200 outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black ${
+          class={`tab-button shrink-0 border-b-2 px-4 py-2 text-sm font-medium transition-opacity duration-200 cursor-pointer outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black ${
             item.value === defaultTab
               ? 'border-primary text-primary'
               : 'border-transparent text-white/60 hover:opacity-80'
