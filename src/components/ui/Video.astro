@@ -24,4 +24,12 @@ const {
 const classes = [spacing && 'my-6', rounded && 'rounded-lg', className].filter(Boolean).join(' ');
 ---
 
-<video src={src} controls={controls} muted={muted} autoplay={autoplay} loop={loop} class={classes}></video>
+<video
+  src={src}
+  controls={controls}
+  muted={muted}
+  autoplay={autoplay}
+  loop={loop}
+  class={classes}
+  data-jampack-skip
+  preload="auto"></video>
