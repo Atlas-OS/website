@@ -1,8 +1,14 @@
 ---
 import { getCollection } from 'astro:content';
-import { buildFullNavigationTree, isActivePage, normalizeSlug } from '@/utils/navigation';
+import {
+  buildNavigationTree,
+  prepareSidebarNavigation,
+  isActivePage,
+  shouldSkipItem,
+  type SectionNavItem,
+} from '@/utils/navigation';
 import { Icon } from 'astro-icon/components';
-import { DEFAULT_LOCALE, SECTION_PRIORITIES } from '@/constants';
+import { DEFAULT_LOCALE } from '@/constants';
 import '@/styles/sidebar.css';
 
 interface Props {
@@ -12,128 +18,17 @@ interface Props {
 
 const { currentSlug, locale = null } = Astro.props;
 const defaultLocale = DEFAULT_LOCALE;
+
+// Fetch docs and build navigation
 const allDocs = await getCollection('docs');
+const rawNavItems = buildNavigationTree(allDocs, {
+  scope: 'full',
+  locale,
+  defaultLocale,
+}) as SectionNavItem[];
 
-function normalizeSlugForDisplay(slug: string): string {
-  if (locale && locale !== defaultLocale) {
-    const localePrefix = `/${locale}`;
-    if (slug.startsWith(localePrefix)) {
-      return slug.slice(localePrefix.length) || '/';
-    }
-  }
-  if (slug.startsWith('/en/')) {
-    return '/' + slug.slice(4);
-  } else if (slug === '/en/') {
-    return '/';
-  }
-  return slug;
-}
-
-let sectionNavItems = buildFullNavigationTree(allDocs, locale, defaultLocale);
-
-sectionNavItems = sectionNavItems.map((section) => ({
-  ...section,
-  sectionSlug: normalizeSlugForDisplay(section.sectionSlug),
-  items: section.items.map((item) => ({
-    ...item,
-    slug: normalizeSlugForDisplay(item.slug),
-    children: item.children?.map((child) => ({
-      ...child,
-      slug: normalizeSlugForDisplay(child.slug),
-    })),
-  })),
-}));
-
-sectionNavItems = sectionNavItems
-  .map((section) => {
-    const normalizedSectionSlug = normalizeSlug(section.sectionSlug);
-    const sectionTitleLower = section.sectionTitle.toLowerCase().trim();
-    const seenSlugs = new Set<string>();
-    const seenTitles = new Set<string>();
-
-    const filteredItems = section.items.filter((item) => {
-      const normalizedItemSlug = normalizeSlug(item.slug);
-      const itemTitleLower = item.title.toLowerCase().trim();
-
-      const isOnlyItem = section.items.length === 1;
-      if (isOnlyItem) {
-        return true;
-      }
-
-      if (
-        normalizedItemSlug === normalizedSectionSlug ||
-        itemTitleLower === sectionTitleLower ||
-        seenSlugs.has(normalizedItemSlug) ||
-        seenTitles.has(itemTitleLower)
-      ) {
-        return false;
-      }
-
-      seenSlugs.add(normalizedItemSlug);
-      seenTitles.add(itemTitleLower);
-
-      if (item.children) {
-        const seenChildSlugs = new Set<string>();
-        const seenChildTitles = new Set<string>();
-
-        item.children = item.children.filter((child) => {
-          const normalizedChildSlug = normalizeSlug(child.slug);
-          const childTitleLower = child.title.toLowerCase().trim();
-
-          if (
-            normalizedChildSlug === normalizedSectionSlug ||
-            normalizedChildSlug === normalizedItemSlug ||
-            childTitleLower === itemTitleLower ||
-            childTitleLower === sectionTitleLower ||
-            seenChildSlugs.has(normalizedChildSlug) ||
-            seenChildTitles.has(childTitleLower)
-          ) {
-            return false;
-          }
-
-          seenChildSlugs.add(normalizedChildSlug);
-          seenChildTitles.add(childTitleLower);
-          return true;
-        });
-      }
-      return true;
-    });
-
-    return {
-      ...section,
-      items: filteredItems,
-    };
-  })
-  .filter((section) => {
-    return section.sectionSlug === '/' || section.items.length > 0;
-  });
-
-const sectionPriority = SECTION_PRIORITIES;
-
-sectionNavItems.sort((a, b) => {
-  if (a.sectionSlug === '/docs/' || normalizeSlug(a.sectionSlug) === '/docs/' || normalizeSlug(a.sectionSlug) === '/')
-    return -1;
-  if (b.sectionSlug === '/docs/' || normalizeSlug(b.sectionSlug) === '/docs/' || normalizeSlug(b.sectionSlug) === '/')
-    return 1;
-
-  const aSlug =
-    normalizeSlug(a.sectionSlug)
-      .replace(/^\/docs\//, '')
-      .replace(/^\/+/, '') || '';
-  const bSlug =
-    normalizeSlug(b.sectionSlug)
-      .replace(/^\/docs\//, '')
-      .replace(/^\/+/, '') || '';
-
-  const aName = aSlug || 'home';
-  const bName = bSlug || 'home';
-
-  const aPriority = sectionPriority[aName] ?? 999;
-  const bPriority = sectionPriority[bName] ?? 999;
-
-  if (aPriority !== bPriority) return aPriority - bPriority;
-  return a.sectionTitle.localeCompare(b.sectionTitle);
-});
+// Prepare navigation for display (normalize, filter, sort)
+const sectionNavItems = prepareSidebarNavigation(rawNavItems, locale, defaultLocale);
 ---
 
 {
@@ -165,10 +60,13 @@ sectionNavItems.sort((a, b) => {
           </div>
 
           <div id="sidebar-scroll" class="flex-1 overflow-y-auto px-4 py-6 lg:py-6">
-            <nav class="space-y-8">
+            <nav class="space-y-6">
               {sectionNavItems.map((section) => {
                 const hasItems = section.items && section.items.length > 0;
 
+                {
+                  /* Home section */
+                }
                 if (section.sectionSlug === '/') {
                   return (
                     <div class="sidebar-section">
@@ -193,6 +91,9 @@ sectionNavItems.sort((a, b) => {
                   );
                 }
 
+                {
+                  /* Regular sections */
+                }
                 return (
                   <div class="sidebar-section">
                     {hasItems && (
@@ -218,11 +119,11 @@ sectionNavItems.sort((a, b) => {
                           {section.items.map((item) => {
                             const hasChildren = item.children && item.children.length > 0;
                             const isActive = isActivePage(currentSlug, item.slug);
-                            const normalizedItemSlug = normalizeSlug(item.slug);
-                            const normalizedSectionSlug = normalizeSlug(section.sectionSlug);
-                            const isItemSameAsSection = normalizedItemSlug === normalizedSectionSlug;
 
-                            if (isItemSameAsSection && !hasChildren) {
+                            {
+                              /* Skip items that duplicate section */
+                            }
+                            if (shouldSkipItem(item, section.sectionSlug)) {
                               return null;
                             }
 
@@ -317,7 +218,7 @@ sectionNavItems.sort((a, b) => {
 }
 
 <script>
-  import { initSidebar } from '@/utils/sidebar';
+  import { initSidebar } from '@/utils/ui';
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initSidebar);
