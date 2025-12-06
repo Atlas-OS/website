@@ -1,0 +1,171 @@
+---
+title: Reverting Atlas
+metaDescription: Instructions for reverting your AtlasOS install back to a normal Windows install. Learn where to find support before choosing to revert back to Windows, download the setup again, and reinstall Windows.
+description: Reverting AtlasOS back to a normal Windows install.
+order: 32
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CommunityLink from '@/components/docs/CommunityLink.astro';
+import IconArrow from '@/components/ui/IconArrow.astro';
+import QuickLinkCard from '@/components/docs/QuickLinkCard.astro';
+import QuickLinksGrid from '@/components/docs/QuickLinksGrid.astro';
+import Tabs from '@/components/ui/Tabs.astro';
+import TabPanel from '@/components/ui/TabPanel.astro';
+
+# Reverting Atlas
+
+Important information for reverting back to Windows 11.
+
+## Before Uninstalling
+
+We are sorry to hear that you are not satisfied with AtlasOS. If you are not using the [latest playbook](docs/faq/general/#keeping-atlasos-updated), please consider [upgrading](/docs/upgrade/requirements). This may address certain issues found in older playbooks.
+
+Please also use our support channels
+
+<Grid columns={{ lg: 2 }} gap="4" spacing>
+  <CommunityLink
+    href="https://discord.com/invite/atlasos"
+    icon="tabler:brand-discord"
+    title="Discord Community"
+    description="Connect with the community and get support"
+  />
+
+  <CommunityLink
+    href="https://github.com/orgs/Atlas-OS/discussions"
+    icon="tabler:messages"
+    title="GitHub Discussions"
+    description="Get support from the community and find answers to common issues"
+  />
+</Grid>
+
+### Still having problems?
+
+We are sorry to see you go. Please know that we are constantly improving AtlasOS to ensure issues are resolved for future releases.
+
+Before you continue, please consider [reporting your issue](docs/contributing/reporting) so we can address it in a future release. Alternatively, provide us feedback through Discord and GitHub Discussions.
+
+<Callout type="tip">
+  Looking to reinstall/install Atlas? Follow the [installation guide](docs/install/requirements/) instead.
+</Callout>
+
+## Prerequisites
+
+Before proceeding, ensure you have:
+
+- **Backed up all important data** to a safe location:
+  - Cloud storage (Google Drive, Microsoft OneDrive, Dropbox)
+  - External storage (NAS, portable drive, USB drive)
+
+## Step 1: Download Windows ISO
+
+1. Visit [Microsoft's Windows 11 download page](https://www.microsoft.com/en-us/software-download/windows11)
+2. Choose the appropriate ISO:
+   - For **Intel/AMD CPUs**: Click **Download Windows 11 Disk Image (ISO) for x64 devices**
+   - For **ARM CPUs**: Click **Download Windows 11 Disk Image (ISO) for ARM64 devices**
+3. Select **Windows 11 (multi-edition ISO)** <IconArrow /> **Confirm**
+4. Choose your language <IconArrow /> **Confirm**
+5. Click the appropriate download option:
+   - **64-bit Download** for x64 systems
+   - **ARM64 Download** for ARM systems
+
+<Callout type="tip">
+  **Which version?** Intel/AMD CPUs use x64. ARM (Snapdragon) systems use ARM64. Make sure you
+  download the correct ISO for your CPU architecture.
+</Callout>
+
+## Step 2: Prepare network drivers (recommended)
+
+You may lose internet connection after Windows installation if network drivers aren't available.
+
+**Download now:**
+
+1. Search for your motherboard or device model + "network drivers"
+2. Download the latest drivers
+3. Save to a USB drive or external storage
+
+<Callout type="info">
+  **Can't find drivers?** Check your manufacturer's support page or search Device Manager for your
+  network adapter name.
+</Callout>
+
+## Step 3: Reinstall Windows
+
+Choose your installation method below.
+
+<Tabs items={[
+  { label: 'Install from Windows (No USB)', value: 'windows' },
+  { label: 'Install from USB', value: 'usb' }
+]} defaultTab="windows">
+  <TabPanel value="windows" default>
+    **Best for:** Users already running Windows who want the easiest installation method.
+
+    1. **Disconnect internet** (unplug ethernet, disable Wi-Fi)
+
+    2. **Mount the ISO:**
+       - Right-click downloaded ISO <IconArrow /> **Open With** <IconArrow /> **File Explorer**
+       - Note the drive letter (e.g., <CodeInline text="H:" />)
+
+    3. **Launch Windows Setup:**
+       - Press <CodeInline text="Win + R" />
+       - Type: <CodeInline text="H:\sources\setup.exe" /> (replace H with your drive letter)
+       - Press <CodeInline text="Enter" /> <IconArrow /> Accept UAC prompt
+
+    4. **Complete Windows Setup:**
+       - Click **No thanks** (updates)
+       - Uncheck "I want to help make Windows installation better"
+       - Click **I don't have a product key**
+       - Select **Windows Pro** (or Pro for Workstations/Enterprise)
+       - Accept license <IconArrow /> **Custom: Install Windows only (advanced)**
+       - Select your Windows drive <IconArrow /> **Next** <IconArrow /> **OK** (Windows.old warning)
+       - Wait for installation (~15-20 minutes)
+
+    <Callout type="warning" title="BitLocker Error?">
+      See [troubleshooting](/docs/faq/installation/) to suspend BitLocker first.
+    </Callout>
+
+  </TabPanel>
+
+  <TabPanel value="usb">
+    **Best for:** Users wanting a fresh install or those currently on Linux.
+
+    1. **Create bootable USB:**
+       - Download [Ventoy](https://github.com/ventoy/Ventoy/releases/)
+       - Run **Ventoy2Disk.exe**
+       - Select USB drive <IconArrow /> **Install** (<IconInline name="tabler:alert-triangle" /> erases USB data!)
+       - Copy Windows ISO to USB drive
+
+    2. **Boot from USB:**
+       - Restart <IconArrow /> Enter BIOS/UEFI (usually F12 or Del)
+       - Select your USB drive as the boot device (you may need to change boot order in BIOS settings)
+       - In Ventoy menu: Select Windows ISO <IconArrow /> **Boot in normal mode**
+
+    3. **Complete Windows Setup:**
+       - Click **Next** twice <IconArrow /> **Previous version of setup** (bottom left)
+       - Select language <IconArrow /> **Next** <IconArrow /> **Install Now**
+       - Click **I don't have a product key**
+       - Select **Windows Pro** (or Pro for Workstations/Enterprise)
+       - Accept license <IconArrow /> **Custom: Install Windows only (advanced)**
+       - Select partition <IconArrow /> **Next**
+       - Wait for installation (~15-20 minutes)
+
+    <Callout type="warning" title="Security Violation?">
+      If Ventoy shows an error, [enroll the key](https://ventoy.net/doc_secure.html).
+    </Callout>
+
+  </TabPanel>
+</Tabs>
+
+## Step 4: Continue with the Windows setup
+
+You should now be at the regular Windows initial setup and back on stock Windows.
+
+### Step 4.1: Removing the Old Windows folder
+
+If you previously followed steps that mentioned a Windows.Old folder, you can find your previous installation data in this folder.
+
+When you are sure you have retrieved any important data from this folder, follow these steps.
+
+1. Open **Windows Settings <IconArrow /> System <IconArrow /> Storage**
+2. Click **Temporary files**, and wait for it to scan your files.
+3. Select **Previous versions of Windows**, and then click **Remove files**.
