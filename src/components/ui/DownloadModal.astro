@@ -362,7 +362,7 @@ const { links } = Astro.props;
       if (this.buttons.playbook.disabled) return;
 
       const originalContent = this.buttons.playbook.innerHTML;
-      const downloadUrl = `https://cdn.jsdelivr.net/atlas/${this.atlasVersion}/AtlasPlaybook_v${this.atlasVersion}.zip`;
+      const downloadUrl = `https://cdn.jsdelivr.net/atlas/playbook/${this.atlasVersion}/AtlasPlaybook_v${this.atlasVersion}.zip`;
 
       this.buttons.playbook.textContent = 'Downloading...';
       this.buttons.playbook.disabled = true;
