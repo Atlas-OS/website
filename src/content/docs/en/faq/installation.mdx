@@ -1,0 +1,93 @@
+---
+title: Installation FAQ
+metaDescription: Find answers to common installation questions for AtlasOS. Learn about prerequisites, installation time, BitLocker errors, Windows Update issues, and post-installation.
+description: Common installation questions and troubleshooting.
+order: 27
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import { Icon } from 'astro-icon/components';
+
+# Installation FAQ
+
+Common questions and troubleshooting for AtlasOS installation.
+
+## Prerequisites
+
+### What do I need to install AtlasOS?
+
+- Windows 11 license (Pro, Pro for Workstations, or Enterprise)
+- 64-bit CPU (x64) or ARM CPU (ARM64) - Use x64 Windows ISO for Intel/AMD CPUs, or ARM64 Windows ISO for ARM systems
+- USB drive (only if installing from USB)
+- Backup of important data
+
+### Can I install on a virtual machine?
+
+Yes, but some optimizations may not apply. Use the Playbook installation method.
+
+### Which Windows editions are supported?
+
+- Windows Pro
+- Windows Pro for Workstations
+- Windows Enterprise (excluding LTSC, IoT LTSC)
+
+<Callout type="info">
+  Windows Home is not supported. You can upgrade to Pro later by changing your product key.
+</Callout>
+
+## Installation process
+
+### How long does installation take?
+
+About 30-45 minutes, depending on your hardware and internet speed.
+
+### What if I get a BitLocker error?
+
+If you see "Make sure BitLocker Drive Encryption is suspended":
+
+1. Boot back into your original Windows
+2. **Control Panel** <Icon name="tabler:arrow-right" class="inline h-4 w-4 mx-1" /> **BitLocker Drive Encryption**
+3. Click **Suspend protection** for your system drive
+4. Restart and continue installation
+
+<Callout type="tip">
+  The drive stays encrypted; you can resume BitLocker after installation.
+</Callout>
+
+### What if Windows Update fails?
+
+1. Check your internet connection
+2. Run Windows Update Troubleshooter (**Settings** <Icon name="tabler:arrow-right" class="inline h-4 w-4 mx-1" /> **Update & Security** <Icon name="tabler:arrow-right" class="inline h-4 w-4 mx-1" /> **Troubleshoot**)
+3. Restart and try again
+
+### Why disconnect internet during Windows installation?
+
+Prevents Windows from auto-installing drivers and updates, giving you more control over the process.
+
+### What if installation fails?
+
+Common causes:
+
+- Not enough disk space (need at least 64GB free)
+- Corrupted ISO file (re-download)
+- BitLocker enabled (suspend it first)
+- Hardware incompatibility (check Windows 11 requirements)
+
+## Post-installation
+
+### How do I remove Windows.old?
+
+1. **Settings** <Icon name="tabler:arrow-right" class="inline h-4 w-4 mx-1" /> **System** <Icon name="tabler:arrow-right" class="inline h-4 w-4 mx-1" /> **Storage**
+2. Click **Temporary files**
+3. Select **Previous version of Windows** <Icon name="tabler:arrow-right" class="inline h-4 w-4 mx-1" /> **Remove files**
+
+<Callout type="tip">
+  This frees up significant disk space after you've retrieved any needed data.
+</Callout>
+
+### What should I do after installation?
+
+After installation, follow these guides:
+
+- [Essential Setup](/docs/essential-setup/) - Install drivers and optimize hardware
+- [Atlas Configuration](/docs/atlas-configuration/) - Configure Atlas Folder settings

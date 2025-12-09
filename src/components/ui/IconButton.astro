@@ -1,0 +1,29 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  id?: string;
+  icon: string;
+  label: string;
+  controls?: string;
+  expanded?: boolean;
+  class?: string;
+}
+
+const { id, icon, label, controls, expanded, class: className = '' } = Astro.props;
+
+const buttonClasses = `inline-flex size-9 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-md border border-white/10 text-sm font-medium whitespace-nowrap text-white transition-opacity duration-200 outline-none hover:opacity-80 disabled:pointer-events-none disabled:opacity-50 ${className}`;
+---
+
+<button
+  type="button"
+  id={id}
+  aria-label={label}
+  aria-controls={controls}
+  aria-expanded={expanded !== undefined ? expanded : undefined}
+  class={buttonClasses}
+  style="background-color: var(--bg-primary);"
+>
+  <Icon name={icon} class="h-5 w-5" aria-hidden="true" />
+  {label && <span class="sr-only">{label}</span>}
+</button>

@@ -1,0 +1,14 @@
+---
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+---
+
+<span
+  class="code-inline-wrapper not-prose text-primary inline-flex items-center gap-1.5 rounded-md border border-white/10 bg-white/5 px-2.5 py-1 align-middle font-mono text-sm transition-opacity duration-200 hover:opacity-80"
+  data-component="code-inline"
+>
+  <span class="code-inline-text leading-none">{text}</span>
+</span>

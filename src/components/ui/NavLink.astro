@@ -1,0 +1,27 @@
+---
+interface Props {
+  href: string;
+  isActive?: boolean;
+  external?: boolean;
+  class?: string;
+}
+
+const { href, isActive = false, external = false, class: className = '' } = Astro.props;
+---
+
+<a
+  href={href}
+  target={external ? '_blank' : undefined}
+  rel={external ? 'noopener noreferrer' : undefined}
+  class={`nav-link relative whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium transition-opacity duration-200 ease-in-out outline-none shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black ${
+    isActive ? 'text-primary' : 'text-white/60 hover:opacity-80'
+  } ${className}`}
+>
+  <slot />
+  <div
+    class={`nav-link-underline bg-primary absolute right-0 -bottom-[10px] left-0 h-0.5 transition-transform duration-300 ease-out ${
+      isActive ? 'scale-x-100' : 'scale-x-0'
+    }`}
+  >
+  </div>
+</a>

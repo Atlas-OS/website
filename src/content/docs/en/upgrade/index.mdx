@@ -1,0 +1,52 @@
+---
+title: Upgrade Atlas
+metaDescription: Learn how to upgrade your existing AtlasOS installation to a newer version. Verify requirements, download assets, and follow step-by-step upgrade instructions.
+description: Upgrade your AtlasOS installation to a newer version.
+order: 7
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import QuickLinkCard from '@/components/docs/QuickLinkCard.astro';
+import QuickLinksGrid from '@/components/docs/QuickLinksGrid.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+
+# Upgrade guide
+
+Upgrade your existing AtlasOS installation to a newer version without reinstalling. This process preserves your settings and installed applications while applying the latest AtlasOS optimizations.
+
+<Callout type="tip" title="Quick Summary">
+  If you're running AtlasOS **v0.4.x or later**, you can upgrade directly to a newer version (e.g.,
+  v0.5.x) using AME Beta. Clean installs are not required but are still recommended.
+</Callout>
+
+## Requirements
+
+Before upgrading, ensure:
+
+- Your system currently runs **AtlasOS 0.4.x or newer**
+  - Users on **0.3.x** must perform a fresh install instead
+- You have the latest **AME Beta** executable
+- You have the **new Atlas Playbook** (<CodeInline text=".apbx" />) for the version you want to upgrade to (e.g., <CodeInline text="Atlas Playbook 0.5.x" />)
+
+<Callout type="warning" title="Version Check">
+  If you're unsure about your current AtlasOS version, check the [FAQ guide](/docs/faq/general/) for
+  instructions on checking your version.
+</Callout>
+
+## Quick start
+
+<QuickLinksGrid columns={{ md: 2 }}>
+  <QuickLinkCard
+    href="/docs/upgrade/requirements/"
+    icon="tabler:checklist"
+    title="Before Upgrading"
+    description="Verify you meet all requirements"
+  />
+
+  <QuickLinkCard
+    href="/docs/upgrade/upgrade/"
+    icon="tabler:arrow-up"
+    title="Upgrade Process"
+    description="Step-by-step upgrade instructions"
+  />
+</QuickLinksGrid>

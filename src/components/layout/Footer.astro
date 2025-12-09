@@ -4,8 +4,8 @@ import { Icon } from 'astro-icon/components';
 const year = new Date().getFullYear();
 ---
 
-<section class="bg-secondary relative mx-auto mt-32 mb-16">
-  <div class="relative mx-auto h-px max-w-7xl bg-gradient-to-r from-transparent via-white/10 to-transparent px-4">
+<section class="bg-secondary relative mx-auto mt-32">
+  <div class="relative mx-auto h-px max-w-7xl bg-linear-to-r from-transparent via-white/10 to-transparent px-4">
     <div class="absolute top-0 left-1/2 h-px w-[30px] -translate-x-1/2 bg-white/70"></div>
   </div>
   <footer class="pb-6">
@@ -17,17 +17,10 @@ const year = new Date().getFullYear();
           target="_blank"
           rel="noopener noreferrer">Discussions</a
         >
-        <a href="https://docs.atlasos.net" class="hover:text-primary" target="_blank" rel="noopener noreferrer"
-          >Documentation</a
-        >
-        <a
-          href="https://docs.atlasos.net/general-faq/atlas-and-security/"
-          class="hover:text-primary"
-          target="_blank"
-          rel="noopener noreferrer">FAQ</a
-        >
+        <a href="/docs/" class="hover:text-primary">Documentation</a>
+        <a href="/docs/faq/" class="hover:text-primary">FAQ</a>
         <a href="https://ko-fi.com/atlasos" class="hover:text-primary" rel="noopener noreferrer" target="_blank"
-          >Support</a
+          >Support Us</a
         >
       </div>
     </div>

@@ -1,0 +1,58 @@
+---
+interface Props {
+  class?: string;
+  hover?: boolean;
+  clickable?: boolean;
+  padding?: 'none' | 'sm' | 'md' | 'lg';
+}
+
+const { class: className = '', hover = false, clickable = false, padding = 'md' } = Astro.props;
+
+const baseClasses = ['rounded-lg border border-white/10 bg-white/5', 'transition-opacity duration-200'];
+
+const paddingClasses = {
+  none: '',
+  sm: 'p-3',
+  md: 'p-4',
+  lg: 'p-6',
+};
+
+const hoverClasses = hover || clickable ? ['hover:opacity-80'] : [];
+
+const clickableClasses = clickable ? ['cursor-pointer'] : [];
+
+const classes = [...baseClasses, paddingClasses[padding], ...hoverClasses, ...clickableClasses, className].join(' ');
+---
+
+<div class={`not-prose ${classes}`}>
+  <slot name="header" />
+  <slot />
+  <slot name="footer" />
+</div>
+
+<style>
+  .card-gradient-hover {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-gradient-hover::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, transparent 0%, var(--color-primary) 50%, transparent 100%);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .card-gradient-hover:hover::before {
+    opacity: 0.5;
+  }
+</style>

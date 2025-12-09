@@ -1,0 +1,24 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  href: string;
+  icon?: string;
+  iconPosition?: 'left' | 'right';
+  external?: boolean;
+  class?: string;
+}
+
+const { href, icon, iconPosition = 'left', external = false, class: className = '' } = Astro.props;
+---
+
+<a
+  href={href}
+  target={external ? '_blank' : undefined}
+  rel={external ? 'noopener noreferrer' : undefined}
+  class={`text-primary inline-flex items-center gap-2 transition-opacity duration-200 hover:opacity-80 outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black ${className}`}
+>
+  {icon && iconPosition === 'left' && <Icon name={icon} class="h-5 w-5" />}
+  <span><slot /></span>
+  {icon && iconPosition === 'right' && <Icon name={icon} class="h-5 w-5" />}
+</a>

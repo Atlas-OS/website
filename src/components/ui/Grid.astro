@@ -1,0 +1,46 @@
+---
+interface Props {
+  columns?: {
+    sm?: 1 | 2 | 3 | 4;
+    md?: 1 | 2 | 3 | 4;
+    lg?: 1 | 2 | 3 | 4;
+    xl?: 1 | 2 | 3 | 4;
+  };
+  gap?: '2' | '4' | '6' | '8';
+  spacing?: boolean;
+  class?: string;
+}
+
+const { columns = { md: 1 }, gap = '4', spacing = false, class: className = '' } = Astro.props;
+
+const gapClasses = {
+  2: 'gap-2',
+  4: 'gap-4',
+  6: 'gap-6',
+  8: 'gap-8',
+};
+
+const gridColMap: Record<number, string> = {
+  1: 'grid-cols-1',
+  2: 'grid-cols-2',
+  3: 'grid-cols-3',
+  4: 'grid-cols-4',
+};
+
+const gridCols = [
+  columns.sm && `sm:${gridColMap[columns.sm]}`,
+  columns.md && `md:${gridColMap[columns.md]}`,
+  columns.lg && `lg:${gridColMap[columns.lg]}`,
+  columns.xl && `xl:${gridColMap[columns.xl]}`,
+]
+  .filter(Boolean)
+  .join(' ');
+
+const classes = ['not-prose grid grid-cols-1', gapClasses[gap], gridCols, spacing && 'my-6', className]
+  .filter(Boolean)
+  .join(' ');
+---
+
+<div class={classes}>
+  <slot />
+</div>

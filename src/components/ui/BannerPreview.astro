@@ -1,0 +1,28 @@
+---
+import Image from '@/components/ui/Image.astro';
+import Button from '@/components/ui/Button.astro';
+
+interface Props {
+  image: {
+    src: string;
+    alt: string;
+  };
+  downloadButton: {
+    href: string;
+    label: string;
+    external?: boolean;
+  };
+  class?: string;
+}
+
+const { image, downloadButton, class: className = '' } = Astro.props;
+---
+
+<div class={`not-prose my-6 ${className}`}>
+  <Image src={image.src} alt={image.alt} class="w-full rounded-lg" loading="lazy" />
+  <div class="mt-4 flex justify-center">
+    <Button href={downloadButton.href} external={downloadButton.external} variant="secondary" size="md">
+      {downloadButton.label}
+    </Button>
+  </div>
+</div>

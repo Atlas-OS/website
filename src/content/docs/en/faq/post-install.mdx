@@ -1,0 +1,76 @@
+---
+title: Post-install FAQ
+metaDescription: Get help with common post-installation questions for AtlasOS. Learn about the Atlas folder location, driver installation, enabling Bluetooth, and Windows Update.
+description: Common post-installation questions and answers.
+order: 28
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+import IconArrow from '@/components/ui/IconArrow.astro';
+
+# Post-install FAQ
+
+Common questions about configuring and using AtlasOS after installation.
+
+## Atlas folder
+
+### Where is the Atlas folder?
+
+The Atlas folder is located at <CodeInline text="C:\Atlas" /> and can also be found on your Desktop or in the Start Menu.
+
+### I can't find the Atlas folder
+
+If you can't find the Atlas folder, see the [FAQ guide](/docs/faq/post-install/#restoring-the-atlas-folder) for instructions to restore it.
+
+### What's in the Atlas folder?
+
+The Atlas folder contains configuration files, scripts, and utilities for customizing your AtlasOS installation:
+
+- Configuration files for tweaks and settings
+- Scripts to enable/disable features
+- Windows Settings shortcuts
+- Driver installation options
+
+## Drivers
+
+### Do I need to install drivers manually?
+
+It depends on which installation method you chose:
+
+- **Windows Update method**: Drivers install automatically
+- **Manual method**: You'll need to install drivers manually
+
+See the [Drivers Guide](/docs/essential-setup/drivers/) for detailed instructions.
+
+### Which drivers do I need?
+
+Essential drivers typically include:
+
+- Graphics (GPU)
+- Network/Wi-Fi
+- Audio
+- Bluetooth (if needed)
+- Chipset (recommended)
+
+## Configuration
+
+### How do I enable Bluetooth?
+
+1. Open the Atlas folder
+2. Go to <CodeInline text="3. Configuration" /> <IconArrow /> <CodeInline text="Bluetooth" />
+3. Run <CodeInline text="Enable Bluetooth.cmd" />
+4. Restart your computer
+
+### How do I enable Windows Update for drivers?
+
+1. Open the Atlas folder
+2. Go to <CodeInline text="2. Drivers" /> folder
+3. Run the appropriate script to enable Windows Update driver installation
+4. Restart your computer
+
+### How do I restore Windows visual effects?
+
+1. Open the Atlas folder
+2. Go to <CodeInline text="3. Configuration" /> <IconArrow /> <CodeInline text="Visual Effects" />
+3. Run <CodeInline text="Default Windows Visual Effects.cmd" />

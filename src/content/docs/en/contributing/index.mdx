@@ -1,0 +1,108 @@
+---
+title: Contributing
+metaDescription: Complete guide to contributing to AtlasOS projects. Learn how to contribute to the Playbook, documentation, Toolbox, testing, and issue reporting.
+description: Complete guide to contributing to AtlasOS projects.
+order: 32
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import QuickLinkCard from '@/components/docs/QuickLinkCard.astro';
+import QuickLinksGrid from '@/components/docs/QuickLinksGrid.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+import { Icon } from 'astro-icon/components';
+
+# Contribution guide
+
+Thank you for your interest in contributing to AtlasOS! This guide will help you understand how to contribute effectively to our projects. We appreciate all contributions, big and small.
+
+## Our contribution platform
+
+Atlas uses [GitHub](https://github.com/Atlas-OS) to manage everything. Please note that our documentation does not contain instructions on how to use GitHub or Git; if you're unfamiliar with them, see the [GitHub quick-start guide](https://docs.github.com/get-started/quickstart) first.
+
+A [Code of Conduct](https://github.com/Atlas-OS/.github/blob/main/profile/CODE_OF_CONDUCT.md) applies to each Atlas repository. Please read this before contributing.
+
+## Areas of contribution
+
+<QuickLinksGrid columns={{ md: 2 }}>
+  <QuickLinkCard
+    href="/docs/contributing/playbook/"
+    icon="tabler:book"
+    title="Atlas Playbook"
+    description="Core AtlasOS source code and scripts"
+  />
+
+<QuickLinkCard
+  href="/docs/contributing/docs/"
+  icon="tabler:file-text"
+  title="Documentation"
+  description="Help improve the docs"
+/>
+
+<QuickLinkCard
+  href="/docs/contributing/toolbox/"
+  icon="tabler:tools"
+  title="Atlas Toolbox"
+  description="Toolbox utility development"
+/>
+
+<QuickLinkCard
+  href="/docs/contributing/testing/"
+  icon="tabler:test-pipe"
+  title="Testing Guide"
+  description="What to test and how"
+/>
+
+  <QuickLinkCard
+    href="/docs/contributing/reporting/"
+    icon="tabler:bug"
+    title="Report Issues"
+    description="How to report bugs"
+  />
+</QuickLinksGrid>
+
+## How to make changes
+
+<Callout type="tip" title="Unsure if people will like your change?">
+  Consider proposing the change in the [Discord](https://discord.com/invite/atlasos) or [GitHub
+  issues](https://github.com/Atlas-OS/Atlas/issues) first. Remember that it's okay to make
+  mistakes—people will provide feedback in your pull requests. Don't worry too much about getting
+  everything perfect on the first try.
+</Callout>
+
+Follow these steps to contribute:
+
+1. **Fork or branch** - Create a fork (external contributors) or branch (team members) in the repository
+2. **Make your changes** - Implement your improvements or fixes
+3. **Submit a pull request** - Create a PR to the primary branch of the repository
+4. **Wait for reviews** - Wait for at least two reviews (depending on change size)
+   - Team members only require one review
+5. **Merge** - Once approved, your PR will be squash-merged (all commits combined into one)
+
+<Callout type="info">
+  Team members may skip pull requests for uncontroversial, well-tested changes that don't require
+  review.
+</Callout>
+
+## Formatting
+
+Before a pull request, ensure that:
+
+- Your changes comply with the general formatting of a repository
+- There's a minimal amount of mistakes; check grammar and anything else important
+  - For YAML changes, verify that they are valid using a linter
+
+## Commit signature verification
+
+We highly recommend setting up [commit signature verification](https://docs.github.com/en/authentication/managing-commit-signature-verification). It marks your commits as **Verified**, indicating that someone else has not forged commits.
+
+Check out this [detailed guide on setting up verified commits](https://gist.github.com/Beneboe/3183a8a9eb53439dbee07c90b344c77e#file-how-to-setup-verified-commits-md).
+
+## Conventional commits
+
+We recommend using [Conventional Commits](https://www.conventionalcommits.org/) in Atlas repositories for consistency and more descriptive commits.
+
+Conventional Commits is a commit message format that helps make the commit history more readable and easier to navigate.
+
+_Example_: <CodeInline text="feat: ✨ add fAllowFullControl" />
+
+[Extension for Visual Studio Code <Icon name="tabler:arrow-right" class="inline h-4 w-4 mx-1" />](https://github.com/vivaxy/vscode-conventional-commits)

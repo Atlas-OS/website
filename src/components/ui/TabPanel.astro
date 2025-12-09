@@ -1,0 +1,12 @@
+---
+interface Props {
+  value: string;
+  default?: boolean;
+}
+
+const { value, default: isDefault = false } = Astro.props;
+---
+
+<div data-tab-panel={value} class={isDefault ? '' : 'hidden'}>
+  <slot />
+</div>

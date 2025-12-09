@@ -1,0 +1,26 @@
+---
+import { getCollection } from 'astro:content';
+import DocsLayout from '@/layouts/DocsLayout.astro';
+import { render } from 'astro:content';
+import { DEFAULT_LOCALE } from '@/constants';
+
+const allDocs = await getCollection('docs');
+const entry = allDocs.find((e) => e.id === DEFAULT_LOCALE);
+
+if (!entry) {
+  throw new Error(`Home page not found. Expected entry ID: "${DEFAULT_LOCALE}"`);
+}
+
+const { Content, headings } = await render(entry);
+const defaultLocale = DEFAULT_LOCALE;
+---
+
+<DocsLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  currentSlug="/docs/"
+  headings={headings}
+  locale={defaultLocale}
+>
+  <Content />
+</DocsLayout>

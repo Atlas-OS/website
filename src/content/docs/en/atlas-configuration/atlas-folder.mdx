@@ -1,0 +1,86 @@
+---
+title: Atlas folder
+metaDescription: Learn about the Atlas Folder structure and configuration files. Customize General.ini, Advanced.ini, and add custom scripts to personalize your AtlasOS installation.
+description: Learn about the Atlas Folder structure.
+order: 20
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+import { Icon } from 'astro-icon/components';
+
+# Atlas folder configuration
+
+The Atlas Folder is located at <CodeInline text="C:\Atlas" /> and contains configuration files and scripts that control your AtlasOS installation.
+
+## Folder structure
+
+The Atlas Folder contains the following structure:
+
+```
+C:\Atlas\
+├── Config\
+│   ├── General.ini
+│   └── Advanced.ini
+├── Scripts\
+│   └── CustomScripts.ps1
+└── Logs\
+```
+
+## Configuration files
+
+### General.ini
+
+Contains general system settings and preferences for common tweaks and optimizations.
+
+<Callout type="info">
+  Edit <CodeInline text="General.ini" /> with a text editor like Notepad to customize basic AtlasOS
+  settings.
+</Callout>
+
+### Advanced.ini
+
+Contains advanced configuration options for power users who want fine-grained control over AtlasOS behavior.
+
+<Callout type="warning" title="Advanced Users Only">
+  Only modify <CodeInline text="Advanced.ini" /> if you understand the implications of each setting.
+  Incorrect changes may affect system stability.
+</Callout>
+
+## Customization
+
+### Editing configuration files
+
+1. Navigate to <CodeInline text="C:\Atlas\Config" />
+2. Open the desired <CodeInline text=".ini" /> file with a text editor
+3. Modify settings according to your preferences
+4. Save the file
+5. Restart your computer for changes to take effect
+
+<Callout type="tip">
+  Always make a backup of configuration files before editing. You can copy them to another location
+  for safekeeping.
+</Callout>
+
+### Custom scripts
+
+The <CodeInline text="Scripts" /> folder allows you to add custom PowerShell scripts that run during AtlasOS initialization.
+
+1. Place your <CodeInline text=".ps1" /> script in <CodeInline text="C:\Atlas\Scripts" />
+2. Ensure scripts follow PowerShell best practices
+3. Scripts will execute automatically during system startup
+
+<Callout type="warning" title="Script Safety">
+  Only run scripts from trusted sources. Malicious scripts can compromise your system security.
+</Callout>
+
+## Logs
+
+The <CodeInline text="Logs" /> folder contains diagnostic information and error logs that can help troubleshoot issues with your AtlasOS installation.
+
+If you encounter problems, check the logs directory for error messages and diagnostic information.
+
+## Related configuration
+
+- [Basic Settings](/docs/atlas-configuration/settings/) - General configuration options
+- [Installation Guide](/docs/install/) - Initial setup

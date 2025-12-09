@@ -1,0 +1,53 @@
+---
+title: Chipset drivers
+metaDescription: Install chipset drivers for improved AtlasOS performance and stability. Learn how to find your motherboard model and install drivers from manufacturer or generic sources.
+description: Install chipset drivers for improved performance.
+order: 2
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+
+# Chipset drivers
+
+Chipset drivers are important for system stability and performance. They help your CPU communicate efficiently with other components like RAM, storage, and USB devices. Installing chipset drivers is especially recommended if you're not getting the expected performance or if you have a newer CPU generation.
+
+## Finding your motherboard model
+
+1. Download [HWiNFO](https://www.hwinfo.com/)
+2. Open the application and click **Start** to view your motherboard model and other system information
+
+## Installing from manufacturer website
+
+We recommend downloading chipset drivers from your motherboard manufacturer's support page, as these are tested for your specific motherboard model.
+
+1. Search for "_your motherboard model_ support" to find the manufacturer's support page
+2. Find and download the chipset driver
+3. Run the installer and follow the setup instructions
+
+<Callout type="info" title="Can't Find Manufacturer Drivers?">
+  If you can't find your chipset driver from your motherboard manufacturer, you can install the
+  generic chipset from your CPU manufacturer using the steps below.
+</Callout>
+
+## Generic chipset drivers
+
+### AMD
+
+1. Visit [TechPowerUp's AMD Chipset](https://www.techpowerup.com/download/amd-ryzen-chipset-drivers/) and click the download button
+   - Alternatively, use [AMD's Official Website](https://www.amd.com/en/support), though TechPowerUp provides a simpler download experience
+2. Run the installer and complete the installation process
+3. Restart your computer if prompted
+
+### Intel
+
+1. Visit [Intel's Official Website](https://www.intel.com/content/www/us/en/download/19347/chipset-inf-utility.html) and click the download button
+2. Run the installer and complete the installation process
+3. Restart your computer if prompted
+
+## Next steps
+
+After installing chipset drivers:
+
+1. **[Install other drivers](/docs/essential-setup/drivers/other/)** - Bluetooth, printers, etc. if needed
+2. **[Optimize hardware](/docs/essential-setup/hardware/)** (optional) - Enable XMP/DOCP and Resizable BAR for better performance

@@ -1,0 +1,44 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  variant?: 'default' | 'primary' | 'success' | 'warning' | 'danger';
+  size?: 'sm' | 'md' | 'lg';
+  icon?: string;
+  class?: string;
+}
+
+const { variant = 'default', size = 'md', icon = '', class: className = '' } = Astro.props;
+
+const baseClasses = [
+  'inline-flex items-center justify-center font-medium whitespace-nowrap rounded-md border',
+  'transition-all duration-200',
+];
+
+const sizeClasses = {
+  sm: 'text-xs px-2 py-0.5 gap-1',
+  md: 'text-sm px-2.5 py-1 gap-1.5',
+  lg: 'text-base px-3 py-1.5 gap-2',
+};
+
+const variantClasses = {
+  default: ['bg-white/5 border-white/10 text-white/80', 'hover:opacity-80'],
+  primary: ['bg-primary/10 border-primary/30 text-primary', 'hover:opacity-80'],
+  success: ['bg-green-500/10 border-green-500/30 text-green-400', 'hover:opacity-80'],
+  warning: ['bg-yellow-500/10 border-yellow-500/30 text-yellow-400', 'hover:opacity-80'],
+  danger: ['bg-red-500/10 border-red-500/30 text-red-400', 'hover:opacity-80'],
+};
+
+const iconSize = {
+  sm: 'h-3 w-3',
+  md: 'h-3.5 w-3.5',
+  lg: 'h-4 w-4',
+};
+
+const classes = [...baseClasses, sizeClasses[size], ...variantClasses[variant], className].join(' ');
+---
+
+<span class={`not-prose ${classes}`}>
+  {icon && <Icon name={icon} class={iconSize[size]} />}
+  <slot />
+</span>

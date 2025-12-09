@@ -1,0 +1,192 @@
+---
+title: Optional tweaks
+metaDescription: Personalize your Windows interface with optional AtlasOS tweaks. Customize Alt-Tab, File Explorer, context menus, lock screen, and more for your ideal desktop experience.
+description: Personalize your Windows interface with optional tweaks.
+order: 23
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+import IconArrow from '@/components/ui/IconArrow.astro';
+
+# Optional tweaks
+
+Personalize your Windows interface and experience with these optional tweaks. From changing your Alt-Tab menu style to customizing File Explorer, these tweaks let you make AtlasOS feel exactly how you want it.
+
+All configuration files listed here are located in the **4. Optional Tweaks** folder within the Atlas folder on your Desktop. If you can't find the Atlas folder, see [our guide to restore it](/docs/faq/post-install/).
+
+<Callout type="info">
+  Most tweaks require a restart to take effect. These are purely cosmetic and functional preferences
+  that don't affect system stability.
+</Callout>
+
+## Alt-Tab
+
+**When to use:** Switch to modern Alt-Tab if you prefer Windows 11's task switcher appearance.
+
+Choose between the classic Alt-Tab menu (default in AtlasOS) or Windows 11's modern Alt-Tab interface.
+
+**Default:** AtlasOS uses the legacy (classic) Alt-Tab menu.
+
+**To use modern Alt-Tab:**
+
+1. Run the <CodeInline text="Modern Alt-Tab.reg" /> file
+2. Restart your system
+
+<Callout type="tip">
+  The modern Alt-Tab provides a more visual interface, while the classic version is faster and more
+  compact.
+</Callout>
+
+## Delivery optimization
+
+**When to use:** Enable if you want faster Windows Updates by sharing data with other Windows devices on your local network.
+
+Delivery Optimization speeds up Windows Updates by sharing update data with other Windows machines on your local network. It's disabled by default to reduce background network usage.
+
+To enable Delivery Optimization, run the <CodeInline text="Enable Delivery Optimization.reg" /> file and restart.
+
+<Callout type="info">
+  Delivery Optimization only shares data with devices on your local network, not the internet. It
+  can significantly speed up updates if you have multiple Windows devices.
+</Callout>
+
+## File Explorer customization
+
+Personalize how File Explorer looks and behaves with these options.
+
+### Compact view
+
+**When to use:** Disable if you prefer the default Windows 11 spacing with more padding.
+
+Windows 11 introduced larger padding in File Explorer. AtlasOS uses compact view by default to show more content in the same space.
+
+**To revert to default spacing:**
+
+- Option 1: In File Explorer, go to **View** <IconArrow /> **Compact View** to toggle it
+- Option 2: Run the <CodeInline text="Disable Compact View.reg" /> file
+
+### Folders in This PC
+
+**When to use:** Restore if you want to see default folders (Desktop, Documents, Downloads, etc.) in File Explorer's "This PC" section.
+
+By default, AtlasOS removes default folders from "This PC" in favor of Quick Access. If you prefer the traditional layout, restore them.
+
+To restore folders, run the <CodeInline text="Restore all folders in This PC.reg" /> file and restart.
+
+### Gallery
+
+**When to use:** Enable if you want Windows 11's gallery feature for viewing images in File Explorer.
+
+The Gallery feature provides an image viewing experience in File Explorer. It's disabled by default in AtlasOS.
+
+To enable Gallery, run the <CodeInline text="Enable Gallery.reg" /> file and restart.
+
+### Quick Access
+
+**When to use:** Remove if you don't use pinned folders and prefer a cleaner File Explorer sidebar.
+
+Quick Access shows your pinned folders at the top of File Explorer. It's enabled by default.
+
+To remove Quick Access, run the <CodeInline text="Remove Quick Access.reg" /> file and restart.
+
+### Removable drives in sidebar
+
+**When to use:** Enable if you want to see USB drives and other removable devices in the File Explorer sidebar.
+
+By default, removable drives may not appear in the File Explorer sidebar. Enable this to make them visible.
+
+To enable, run the <CodeInline text="Enable Removable Drives in Sidebar.reg" /> file and restart.
+
+## Lock screen
+
+**When to use:** Disable if you don't want a lock screen when waking your system.
+
+The lock screen is enabled by default in AtlasOS. You can disable it to go directly to the sign-in screen.
+
+To disable the lock screen, run the <CodeInline text="Hide Lock Screen.reg" /> file and restart.
+
+<Callout type="info">
+  Disabling the lock screen goes directly to sign-in, skipping the lock screen with background image
+  and time display.
+</Callout>
+
+## Run with priority in context menu
+
+**When to use:** Enable if you want to control application priority from the right-click menu.
+
+This tweak adds an option to set application priority (high, normal, low, etc.) directly from the context menu when right-clicking executable files.
+
+To enable, run the <CodeInline text="Add Run With Priority In Context Menu.reg" /> file and restart.
+
+<Callout type="tip">
+  Useful for running specific applications with higher or lower priority to manage system resource
+  allocation.
+</Callout>
+
+## Send to context menu
+
+**When to use:** Use if you want to clean up the "Send to" menu by removing unnecessary items.
+
+Reduce clutter in the "Send to" context menu by removing default items you don't use.
+
+To clean up the menu, run the <CodeInline text="Debloat Send To Context Menu.cmd" /> file.
+
+## Shortcut icon
+
+**When to use:** Change if you prefer classic shortcut arrows or want a different visual style.
+
+Customize how shortcut icons appear. Options include Windows default, classic style, or no indicator at all.
+
+**Options:**
+
+- **Windows Default** - Current default style
+- **Classic** - Traditional shortcut arrow indicator
+- **None** - No visual indicator (not recommended)
+
+To change to classic style, run the <CodeInline text="Classic.reg" /> file.
+
+<Callout type="warning" title="Security Risk">
+  Disabling shortcut icons entirely ("None" option) is a security risk because you won't be able to
+  visually distinguish shortcuts from regular files. This could make you vulnerable to malicious
+  files disguised as shortcuts.
+</Callout>
+
+## Shortcut text
+
+**When to use:** Enable if you want to see text labels on Start menu shortcut icons.
+
+Shortcut text labels are disabled by default in AtlasOS. Enable this to show text under Start menu shortcut icons.
+
+To enable shortcut text, run the <CodeInline text="Restore Shortcut Text.reg" /> file and restart.
+
+## Windows 11 context menu
+
+**When to use:** Enable if you prefer Windows 11's modern context menu over the classic right-click menu.
+
+AtlasOS uses the classic context menu by default for faster access to options. Switch to Windows 11's modern context menu if you prefer its appearance.
+
+**Default:** Classic context menu
+
+**To use Windows 11 context menu:**
+
+1. Run the <CodeInline text="New Context Menu.reg" /> file
+2. Restart your system
+
+<Callout type="tip">
+  The modern context menu has a cleaner look but requires an extra click ("Show more options") to
+  access some features. The classic menu shows everything immediately.
+</Callout>
+
+## Explorer Patcher
+
+**When to use:** Install if you want to restore UI elements from previous Windows versions (like Windows 10 Start menu on Windows 11).
+
+Explorer Patcher is a tool that patches File Explorer and other Windows components to restore UI elements from previous Windows versions. This allows you to use Windows 10's Start menu on Windows 11, for example.
+
+The Atlas folder includes a shortcut to Explorer Patcher for easy access. Learn more about [Explorer Patcher](https://github.com/valinet/ExplorerPatcher) and its features.
+
+<Callout type="info">
+  Explorer Patcher is a third-party tool that requires installation. It's included as a convenient
+  shortcut for users who want to customize their Windows interface further.
+</Callout>

@@ -1,0 +1,230 @@
+---
+import { getCollection } from 'astro:content';
+import {
+  buildNavigationTree,
+  prepareSidebarNavigation,
+  isActivePage,
+  shouldSkipItem,
+  type SectionNavItem,
+} from '@/utils/navigation';
+import { Icon } from 'astro-icon/components';
+import { DEFAULT_LOCALE } from '@/constants';
+import '@/styles/sidebar.css';
+
+interface Props {
+  currentSlug: string;
+  locale?: string | null;
+}
+
+const { currentSlug, locale = null } = Astro.props;
+const defaultLocale = DEFAULT_LOCALE;
+
+// Fetch docs and build navigation
+const allDocs = await getCollection('docs');
+const rawNavItems = buildNavigationTree(allDocs, {
+  scope: 'full',
+  locale,
+  defaultLocale,
+}) as SectionNavItem[];
+
+// Prepare navigation for display (normalize, filter, sort)
+const sectionNavItems = prepareSidebarNavigation(rawNavItems, locale, defaultLocale);
+---
+
+{
+  sectionNavItems.length > 0 && (
+    <>
+      <div
+        id="sidebar-backdrop"
+        class="pointer-events-none fixed inset-0 z-30 bg-black/50 opacity-0 backdrop-blur-sm transition-opacity duration-200 lg:hidden"
+        aria-hidden="true"
+      />
+
+      <aside
+        id="sidebar"
+        class="fixed top-14 left-0 z-40 h-[calc(100vh-3.5rem)] w-72 border-r border-white/10 backdrop-blur-md transition-transform duration-300 lg:translate-x-0"
+        style="background-color: oklch(0.12 0.0421 264.82 / 0.6);"
+      >
+        <div class="flex h-full flex-col">
+          <div class="flex items-center justify-between border-b border-white/10 px-5 py-4 lg:hidden">
+            <h2 class="text-sm font-semibold text-white">Navigation</h2>
+            <button
+              id="sidebar-close-button"
+              type="button"
+              aria-label="Close sidebar"
+              class="inline-flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md border border-white/10 text-sm font-medium text-white transition-opacity duration-200 outline-none hover:opacity-80"
+              style="background-color: var(--bg-primary);"
+            >
+              <Icon name="tabler:x" class="h-5 w-5" aria-hidden="true" />
+            </button>
+          </div>
+
+          <div id="sidebar-scroll" class="flex-1 overflow-y-auto px-4 py-6 lg:py-6">
+            <nav class="space-y-6">
+              {sectionNavItems.map((section) => {
+                const hasItems = section.items && section.items.length > 0;
+
+                {
+                  /* Home section */
+                }
+                if (section.sectionSlug === '/') {
+                  return (
+                    <div class="sidebar-section">
+                      <a
+                        href="/"
+                        class={`sidebar-link group relative block rounded-md transition-all duration-200 outline-none ${
+                          isActivePage(currentSlug, '/')
+                            ? 'bg-primary/10 text-primary font-medium'
+                            : 'text-white/80 hover:bg-white/5 hover:text-white'
+                        }`}
+                      >
+                        {isActivePage(currentSlug, '/') && (
+                          <div class="bg-primary absolute top-1/2 left-0 h-4 w-1 -translate-y-1/2 rounded-r-full" />
+                        )}
+                        <div class="px-3 py-2">
+                          <span class="block truncate text-sm leading-snug whitespace-nowrap">
+                            {section.sectionTitle}
+                          </span>
+                        </div>
+                      </a>
+                    </div>
+                  );
+                }
+
+                {
+                  /* Regular sections */
+                }
+                return (
+                  <div class="sidebar-section">
+                    {hasItems && (
+                      <div class="space-y-1">
+                        <a
+                          href={section.sectionSlug}
+                          class={`sidebar-link group relative block rounded-md transition-all duration-200 outline-none ${
+                            isActivePage(currentSlug, section.sectionSlug)
+                              ? 'bg-primary/10 text-primary font-medium'
+                              : 'font-semibold text-white/90 hover:bg-white/5 hover:text-white'
+                          }`}
+                        >
+                          {isActivePage(currentSlug, section.sectionSlug) && (
+                            <div class="bg-primary absolute top-1/2 left-0 h-4 w-1 -translate-y-1/2 rounded-r-full" />
+                          )}
+                          <div class="px-3 py-2">
+                            <span class="block truncate text-sm leading-snug whitespace-nowrap">
+                              {section.sectionTitle}
+                            </span>
+                          </div>
+                        </a>
+                        <div class="mt-1 ml-2 space-y-0.5 border-l border-white/10 pl-2">
+                          {section.items.map((item) => {
+                            const hasChildren = item.children && item.children.length > 0;
+                            const isActive = isActivePage(currentSlug, item.slug);
+
+                            {
+                              /* Skip items that duplicate section */
+                            }
+                            if (shouldSkipItem(item, section.sectionSlug)) {
+                              return null;
+                            }
+
+                            return (
+                              <div class="space-y-0.5">
+                                {hasChildren ? (
+                                  <div class="sidebar-item-with-children">
+                                    <div class="sidebar-link group relative flex items-center rounded-md transition-opacity duration-200 hover:opacity-80">
+                                      <a href={item.slug} class="flex-1 px-2 py-1.5">
+                                        <span
+                                          class={`block truncate text-left text-sm leading-snug whitespace-nowrap transition-opacity duration-200 ${
+                                            isActive
+                                              ? 'text-primary font-medium'
+                                              : 'font-normal text-white/70 group-hover:text-white'
+                                          }`}
+                                        >
+                                          {item.title}
+                                        </span>
+                                      </a>
+                                      <button
+                                        type="button"
+                                        class="sidebar-toggle flex shrink-0 cursor-pointer items-center justify-center px-1.5 py-1 transition-opacity duration-200 outline-none hover:opacity-80"
+                                        data-slug={item.slug}
+                                        aria-label="Toggle submenu"
+                                      >
+                                        <Icon
+                                          name="tabler:chevron-down"
+                                          class="sidebar-arrow pointer-events-none h-4 w-4 text-white/60 transition-transform duration-200"
+                                        />
+                                      </button>
+                                    </div>
+                                    <div class="sidebar-children mt-0.5 ml-3 space-y-0.5 border-l border-white/10 pl-3">
+                                      {item.children &&
+                                        item.children.map((child) => {
+                                          const isChildActive = isActivePage(currentSlug, child.slug);
+                                          return (
+                                            <a
+                                              href={child.slug}
+                                              class={`sidebar-link group relative block rounded-md transition-all duration-200 outline-none ${
+                                                isChildActive
+                                                  ? 'bg-primary/10 text-primary font-medium'
+                                                  : 'text-white/60 hover:bg-white/5 hover:text-white'
+                                              }`}
+                                            >
+                                              {isChildActive && (
+                                                <div class="bg-primary absolute top-1/2 left-0 h-3 w-0.5 -translate-y-1/2 rounded-r-full" />
+                                              )}
+                                              <div class="px-2 py-1.5">
+                                                <span class="block truncate text-left text-sm leading-snug whitespace-nowrap">
+                                                  {child.title}
+                                                </span>
+                                              </div>
+                                            </a>
+                                          );
+                                        })}
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <a
+                                    href={item.slug}
+                                    class={`sidebar-link group relative block rounded-md transition-all duration-200 outline-none ${
+                                      isActive
+                                        ? 'bg-primary/10 text-primary font-medium'
+                                        : 'text-white/70 hover:bg-white/5 hover:text-white'
+                                    }`}
+                                  >
+                                    {isActive && (
+                                      <div class="bg-primary absolute top-1/2 left-0 h-3 w-0.5 -translate-y-1/2 rounded-r-full" />
+                                    )}
+                                    <div class="px-2 py-1.5">
+                                      <span class="block truncate text-left text-sm leading-snug whitespace-nowrap">
+                                        {item.title}
+                                      </span>
+                                    </div>
+                                  </a>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </nav>
+          </div>
+        </div>
+      </aside>
+    </>
+  )
+}
+
+<script>
+  import { initSidebar } from '@/utils/ui';
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSidebar);
+  } else {
+    initSidebar();
+  }
+
+  document.addEventListener('astro:page-load', initSidebar);
+</script>

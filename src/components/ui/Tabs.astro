@@ -1,0 +1,119 @@
+---
+interface Props {
+  items: Array<{ label: string; value: string }>;
+  defaultTab?: string;
+}
+
+const { items, defaultTab = items[0]?.value || '' } = Astro.props;
+const tabsId = `tabs-${Math.random().toString(36).substring(2, 11)}`;
+---
+
+<div class="tabs-container" data-tabs-id={tabsId}>
+  <div class="tabs-list mb-4 flex flex-nowrap gap-2 overflow-x-auto border-b border-white/10" role="tablist">
+    {
+      items.map((item) => (
+        <button
+          type="button"
+          role="tab"
+          data-tab={item.value}
+          aria-selected={item.value === defaultTab ? 'true' : 'false'}
+          class={`tab-button shrink-0 border-b-2 px-4 py-2 text-sm font-medium transition-opacity duration-200 cursor-pointer outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black ${
+            item.value === defaultTab
+              ? 'border-primary text-primary'
+              : 'border-transparent text-white/60 hover:opacity-80'
+          }`}
+        >
+          {item.label}
+        </button>
+      ))
+    }
+  </div>
+
+  <div class="tab-content">
+    <slot />
+  </div>
+</div>
+
+<script>
+  function initTabs(container: HTMLElement) {
+    const tabsId = container.dataset.tabsId;
+    if (!tabsId) return;
+
+    const buttons = container.querySelectorAll<HTMLButtonElement>('[role="tab"]');
+    const panels = container.querySelectorAll('[data-tab-panel]');
+
+    function switchTab(tabValue: string) {
+      buttons.forEach((btn) => {
+        const isSelected = btn.dataset.tab === tabValue;
+        btn.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+        if (isSelected) {
+          btn.classList.remove('border-transparent', 'text-white/60');
+          btn.classList.add('border-primary', 'text-primary');
+        } else {
+          btn.classList.remove('border-primary', 'text-primary');
+          btn.classList.add('border-transparent', 'text-white/60');
+        }
+      });
+
+      panels.forEach((panel) => {
+        const isVisible = panel.getAttribute('data-tab-panel') === tabValue;
+        panel.classList.toggle('hidden', !isVisible);
+      });
+    }
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const tabValue = button.dataset.tab;
+        if (tabValue) {
+          switchTab(tabValue);
+        }
+      });
+    });
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll('.tabs-container').forEach((container) => {
+      if (container instanceof HTMLElement) {
+        initTabs(container);
+      }
+    });
+  });
+
+  document.querySelectorAll('.tabs-container').forEach((container) => {
+    if (container instanceof HTMLElement) {
+      initTabs(container);
+    }
+  });
+</script>
+
+<style>
+  .tab-content [data-tab-panel] {
+    display: block;
+  }
+
+  .tab-content [data-tab-panel].hidden {
+    display: none;
+  }
+
+  .tabs-list {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+  }
+
+  .tabs-list::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .tabs-list::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .tabs-list::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+  }
+
+  .tabs-list::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+</style>

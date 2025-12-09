@@ -24,7 +24,7 @@ const { links } = Astro.props;
         <Icon name="tabler:download" class="text-white/70" size={22} />
         <h1 class="text-xl font-semibold tracking-tight text-white">Installing AtlasOS</h1>
       </div>
-      <button class="cursor-pointer rounded-md p-2 hover:bg-white/10" id="modal-close" aria-label="Close">
+      <button class="cursor-pointer rounded-md p-2 transition-opacity duration-200 hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2" id="modal-close" aria-label="Close">
         <Icon name="tabler:x" class="text-white/70" size={16} />
       </button>
     </div>
@@ -50,7 +50,6 @@ const { links } = Astro.props;
           </Button>
           <Button
             href={links.faq}
-            external
             variant="secondary"
             icon="tabler:arrow-up-right"
             iconPosition="after"
@@ -68,7 +67,7 @@ const { links } = Astro.props;
 
         <button
           id="show-downloads"
-          class="group focus-visible:outline-primary inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-md px-4 py-2 text-center text-sm font-medium text-white/70 transition-colors duration-200 hover:text-white focus-visible:outline focus-visible:outline-offset-2"
+          class="group focus-visible:outline-primary inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-md px-4 py-2 text-center text-sm font-medium text-white/70 transition-opacity duration-200 hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
         >
           <span>I'm following the guide, show me the downloads</span>
           <Icon
@@ -318,8 +317,7 @@ const { links } = Astro.props;
           count != null
             ? `Atlas has been downloaded ${count.toLocaleString('en-US')} times.`
             : 'Join the millions of Atlas users!';
-      } catch (error) {
-        console.error('Failed to update download count:', error);
+      } catch {
         this.downloadCountElement.textContent = 'Could not load download count.';
       }
     }
@@ -335,8 +333,7 @@ const { links } = Astro.props;
         const data = (await response.json()) as Array<{ version?: string; count?: number }>;
         const atlasDownload = data.find((item) => item?.version === 'atlas');
         return atlasDownload?.count ?? null;
-      } catch (error) {
-        console.error('Error fetching download count:', error);
+      } catch {
         return null;
       }
     }
@@ -349,10 +346,7 @@ const { links } = Astro.props;
       try {
         const response = await fetch(incrementUrl, { method: 'POST' });
         if (!response.ok) throw new Error(`Increment request failed with status ${response.status}`);
-        console.log('Download count incremented successfully.');
-      } catch (error) {
-        console.error('Error incrementing download count:', error);
-      }
+      } catch {}
     }
 
     /**
@@ -370,7 +364,7 @@ const { links } = Astro.props;
       window.open(downloadUrl, '_self');
 
       this.incrementDownloadCount()
-        .catch((err) => console.error('Failed to increment download count after download:', err))
+        .catch(() => {})
         .finally(() => {
           setTimeout(() => {
             if (document.body.contains(this.buttons.playbook)) {

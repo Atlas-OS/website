@@ -1,0 +1,223 @@
+---
+title: Playbook method
+metaDescription: Complete step-by-step installation guide for AtlasOS using the Playbook method. Download Windows ISO, reinstall Windows, update system, and install AtlasOS with AME Beta.
+description: Complete installation guide using the Playbook method.
+order: 4
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import Video from '@/components/ui/Video.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+import Tabs from '@/components/ui/Tabs.astro';
+import TabPanel from '@/components/ui/TabPanel.astro';
+import IconArrow from '@/components/ui/IconArrow.astro';
+import IconInline from '@/components/ui/IconInline.astro';
+
+# Playbook installation method
+
+Follow these steps in order. The entire process takes approximately 30–45 minutes.
+
+## Step 1: Download Windows ISO
+
+1. Visit [Microsoft's Windows 11 download page](https://www.microsoft.com/en-us/software-download/windows11)
+2. Choose the appropriate ISO:
+   - For **Intel/AMD CPUs**: Click **Download Windows 11 Disk Image (ISO) for x64 devices**
+   - For **ARM CPUs**: Click **Download Windows 11 Disk Image (ISO) for ARM64 devices**
+3. Select **Windows 11 (multi-edition ISO)** <IconArrow /> **Confirm**
+4. Choose your language <IconArrow /> **Confirm**
+5. Click the appropriate download option:
+   - **64-bit Download** for x64 systems
+   - **ARM64 Download** for ARM systems
+
+<Callout type="tip">
+  **Which version?** Intel/AMD CPUs use x64. ARM (Snapdragon) systems use ARM64. Make sure you
+  download the correct ISO for your CPU architecture.
+</Callout>
+
+## Step 2: Prepare network drivers (recommended)
+
+You may lose internet connection after Windows installation if network drivers aren't available.
+
+**Download now:**
+
+1. Search for your motherboard or device model + "network drivers"
+2. Download the latest drivers
+3. Save to a USB drive or external storage
+
+<Callout type="info">
+  **Can't find drivers?** Check your manufacturer's support page or search Device Manager for your
+  network adapter name.
+</Callout>
+
+## Step 3: Reinstall Windows
+
+Choose your installation method below.
+
+<Tabs items={[
+  { label: 'Install from Windows (No USB)', value: 'windows' },
+  { label: 'Install from USB', value: 'usb' }
+]} defaultTab="windows">
+  <TabPanel value="windows" default>
+    **Best for:** Users already running Windows who want the easiest installation method.
+
+    1. **Disconnect internet** (unplug ethernet, disable Wi-Fi)
+
+    2. **Mount the ISO:**
+       - Right-click downloaded ISO <IconArrow /> **Open With** <IconArrow /> **File Explorer**
+       - Note the drive letter (e.g., <CodeInline text="H:" />)
+
+    3. **Launch Windows Setup:**
+       - Press <CodeInline text="Win + R" />
+       - Type: <CodeInline text="H:\sources\setup.exe" /> (replace H with your drive letter)
+       - Press <CodeInline text="Enter" /> <IconArrow /> Accept UAC prompt
+
+    4. **Complete Windows Setup:**
+       - Click **No thanks** (updates)
+       - Uncheck "I want to help make Windows installation better"
+       - Click **I don't have a product key**
+       - Select **Windows Pro** (or Pro for Workstations/Enterprise)
+       - Accept license <IconArrow /> **Custom: Install Windows only (advanced)**
+       - Select your Windows drive <IconArrow /> **Next** <IconArrow /> **OK** (Windows.old warning)
+       - Wait for installation (~15-20 minutes)
+
+    <Callout type="warning" title="BitLocker Error?">
+      See [troubleshooting](/docs/faq/installation/) to suspend BitLocker first.
+    </Callout>
+
+  </TabPanel>
+
+  <TabPanel value="usb">
+    **Best for:** Users wanting a fresh install or those currently on Linux.
+
+    1. **Create bootable USB:**
+       - Download [Ventoy](https://github.com/ventoy/Ventoy/releases/)
+       - Run **Ventoy2Disk.exe**
+       - Select USB drive <IconArrow /> **Install** (<IconInline name="tabler:alert-triangle" /> erases USB data!)
+       - Copy Windows ISO to USB drive
+
+    2. **Boot from USB:**
+       - Restart <IconArrow /> Enter BIOS/UEFI (usually F12 or Del)
+       - Select your USB drive as the boot device (you may need to change boot order in BIOS settings)
+       - In Ventoy menu: Select Windows ISO <IconArrow /> **Boot in normal mode**
+
+    3. **Complete Windows Setup:**
+       - Click **Next** twice <IconArrow /> **Previous version of setup** (bottom left)
+       - Select language <IconArrow /> **Next** <IconArrow /> **Install Now**
+       - Click **I don't have a product key**
+       - Select **Windows Pro** (or Pro for Workstations/Enterprise)
+       - Accept license <IconArrow /> **Custom: Install Windows only (advanced)**
+       - Select partition <IconArrow /> **Next**
+       - Wait for installation (~15-20 minutes)
+
+    <Callout type="warning" title="Security Violation?">
+      If Ventoy shows an error, [enroll the key](https://ventoy.net/doc_secure.html).
+    </Callout>
+
+  </TabPanel>
+</Tabs>
+
+## Step 4: Initial Windows setup
+
+<Video src="/assets/videos/win11-OOBE.mp4" muted spacing={true} rounded={true} />
+
+1. Select language and keyboard layout
+2. Press <CodeInline text="Shift + F10" /> <IconArrow /> Command Prompt opens
+3. Type: <CodeInline text="start ms-cxh:localonly" /> <IconArrow /> Press <CodeInline text="Enter" />
+4. Create account:
+   - Enter username, password, security questions
+   - In **Privacy** section: Turn off all options <IconArrow /> **Accept**
+
+## Step 5: Choose driver method
+
+<Tabs items={[
+  { label: 'Windows Update (Recommended)', value: 'windows-update' },
+  { label: 'Manual Installation (Advanced)', value: 'manual' }
+]} defaultTab="windows-update">
+  <TabPanel value="windows-update" default>
+    **Best for:** Beginners who want the easiest setup.
+
+    - Connect to internet
+    - Windows installs drivers automatically
+    - Proceed to Step 6
+
+  </TabPanel>
+
+  <TabPanel value="manual">
+    **Best for:** Advanced users who want full control over driver versions.
+
+    - **Settings** <IconArrow /> **Windows Update** <IconArrow /> **Pause updates** (1 week)
+    - Connect to internet
+    - Proceed to Step 6
+    - Install drivers manually later ([see Drivers Guide](/docs/essential-setup/drivers/))
+
+  </TabPanel>
+</Tabs>
+
+## Step 6: Update Windows and Microsoft Store apps
+
+Before installing AtlasOS, ensure all Windows Updates and Microsoft Store apps are up to date.
+
+1. **Update Windows:**
+   - **Settings** <IconArrow /> **Windows Update**
+   - Install all updates (including optional updates)
+   - If paused, click **Resume Updates**
+   - Restart your computer if prompted
+
+2. **After restart (if applicable):**
+   - Check **Windows Update** again and install any remaining updates
+   - Repeat until no more updates are available
+
+3. **Update Microsoft Store apps:**
+   - Open **Microsoft Store**
+   - Click **Library** (or search for "Updates")
+   - Click **Get updates** to update all apps
+   - Wait for all updates to complete
+
+4. **After restart (if applicable):**
+   - Open **Microsoft Store** again
+   - Check for updates once more to ensure everything is up to date
+
+<Callout type="info" title="Important">
+  Make sure all Windows Updates and Microsoft Store apps are fully updated before proceeding. If you
+  restart during this process, check both Windows Update and Microsoft Store again after the
+  restart.
+</Callout>
+
+## Step 7: Install AtlasOS
+
+1. **If using Manual Driver Installation:**
+   - Run <CodeInline text="Disable Drivers Installation in Windows Update.reg" /> from Playbook folder
+   - Restart your computer
+
+2. **Download AtlasOS:**
+   - Open Edge <IconArrow /> Go to [atlasos.net](https://atlasos.net)
+   - Click **Get started** <IconArrow /> **Already following the guide?**
+   - Download **Atlas Playbook** and **AME Beta**
+
+3. **Extract files:**
+   - Extract both to desktop
+
+4. **Install AtlasOS:**
+   - Open <CodeInline text="AME Beta.exe" />
+   - If SmartScreen warning: **More info** <IconArrow /> **Run anyway** (safe to ignore)
+   - Click **Updates** <IconArrow /> Update AME Beta if available
+   - Drag <CodeInline text="Atlas Playbook.apbx" /> into AME Beta
+   - Follow on-screen instructions
+
+<Callout type="warning" title="AME Beta deleted?">
+  Add it as an exclusion in Windows Security or disable Real-time protection temporarily.
+</Callout>
+
+## Installation complete <IconInline name="tabler:confetti" size="md" />
+
+Congratulations! You've successfully installed AtlasOS. Your system will restart automatically after the installation completes.
+
+### Next steps
+
+Follow the [First Setup guide](/docs/install/setup/) to complete your AtlasOS installation:
+
+- Install drivers
+- Configure Atlas settings
+- Optimize your hardware
+
+Enjoy your optimized Windows experience!

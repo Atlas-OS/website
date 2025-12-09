@@ -1,0 +1,110 @@
+---
+title: Home
+metaDescription: Welcome to the AtlasOS documentation. Learn how to install, configure, and optimize AtlasOS for privacy, performance, and usability. Get started with installation guides.
+description: Welcome to the AtlasOS documentation.
+order: 1
+---
+
+import CommunityLink from '@/components/docs/CommunityLink.astro';
+import QuickLinkCard from '@/components/docs/QuickLinkCard.astro';
+import QuickLinksGrid from '@/components/docs/QuickLinksGrid.astro';
+import Grid from '@/components/ui/Grid.astro';
+
+# Welcome to AtlasOS documentation
+
+AtlasOS is an open-source project that enhances Windows with privacy, usability, and performance optimizations while maintaining full functionality and customizability.
+
+## Quick links
+
+<QuickLinksGrid columns={{ md: 2, lg: 3 }}>
+  <QuickLinkCard
+    href="/docs/install/"
+    icon="tabler:rocket"
+    label="Get Started"
+    title="Install Atlas"
+    description="Complete installation guide for AtlasOS"
+  />
+
+<QuickLinkCard
+  href="/docs/upgrade/"
+  icon="tabler:arrow-up"
+  label="Update"
+  title="Upgrade Atlas"
+  description="Upgrade to a newer AtlasOS version"
+/>
+
+<QuickLinkCard
+  href="/docs/essential-setup/"
+  icon="tabler:cpu"
+  label="Hardware"
+  title="Essential Setup"
+  description="Install drivers and optimize your hardware"
+/>
+
+<QuickLinkCard
+  href="/docs/atlas-configuration/"
+  icon="tabler:settings"
+  label="Configure"
+  title="Atlas Configuration"
+  description="Customize settings, tweaks, and optimizations"
+/>
+
+<QuickLinkCard
+  href="/docs/faq/"
+  icon="tabler:help-circle"
+  label="Support"
+  title="FAQ"
+  description="Common questions and troubleshooting"
+/>
+
+  <QuickLinkCard
+    href="/docs/contributing/"
+    icon="tabler:code"
+    label="Contribute"
+    title="Contributing"
+    description="Help improve AtlasOS and contribute"
+  />
+</QuickLinksGrid>
+
+## What is AtlasOS?
+
+AtlasOS (also called Atlas) is an open-source modification of Windows that removes unnecessary services, reduces telemetry, and optimizes system performance while maintaining full functionality. All modifications are transparent, community-reviewed, and available on GitHub.
+
+### Key features
+
+- **Privacy-focused**: Removes telemetry and tracking services
+- **Performance-optimized**: Reduces system overhead and improves gaming performance
+- **Fully customizable**: All tweaks and settings can be enabled or disabled
+- **Open-source**: All code is publicly available and community-reviewed
+
+### Learn more
+
+<Grid columns={{ md: 2 }} gap="4" spacing>
+  <CommunityLink
+    href="https://github.com/Atlas-OS/Atlas"
+    icon="tabler:brand-github"
+    title="GitHub Repository"
+    description="Browse the source code and documentation"
+  />
+
+<CommunityLink
+  href="https://atlasos.net/"
+  icon="tabler:world"
+  title="Official Website"
+  description="General overview and download links"
+/>
+
+<CommunityLink
+  href="https://discord.com/invite/atlasos"
+  icon="tabler:brand-discord"
+  title="Discord Community"
+  description="Connect with the community and get support"
+/>
+
+  <CommunityLink
+    href="https://github.com/Atlas-OS/Atlas/tree/main/src"
+    icon="tabler:code"
+    title="Source Code"
+    description="See what Atlas does under the hood"
+  />
+</Grid>

@@ -27,13 +27,13 @@ const links = {
     />
     <div
       id="gh-stars-wrap"
-      class="bg-secondary/80 absolute right-[-60px] bottom-[-7px] w-[300px] cursor-pointer rounded-md border border-white/10 text-gray-400 backdrop-blur-md transition-[border-radius_0.3s]"
+      class="bg-secondary/80 absolute right-[-60px] bottom-[-7px] w-[300px] cursor-pointer rounded-md border border-white/10 text-gray-400 backdrop-blur-md transition-[border-radius] duration-200"
     >
       <button
         id="toggle-star-list-btn"
         aria-controls="gh-star-list"
         aria-expanded="false"
-        class="w-full border-none bg-transparent p-0 text-left hover:opacity-90"
+        class="w-full border-none bg-transparent p-0 text-left transition-opacity duration-200 hover:opacity-80 outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2"
         type="button"
       >
         <div class="flex w-full cursor-pointer justify-between">
@@ -63,7 +63,7 @@ const links = {
       </button>
       <div
         id="gh-star-list"
-        class="absolute top-full left-0 z-[999] -ml-[1px] h-0 w-[calc(100%+2px)] overflow-hidden rounded-b-md border border-t-0 border-white/10 opacity-0 transition-all duration-300 ease-in-out"
+        class="absolute top-full left-0 z-[999] -ml-[1px] h-0 w-[calc(100%+2px)] overflow-hidden rounded-b-md border border-t-0 border-white/10 opacity-0 transition-all duration-200 ease-in-out"
       >
         <div id="gh-star-list-items" class="bg-secondary/80 flex flex-col gap-4 px-5 py-5 backdrop-blur-md"></div>
       </div>

@@ -1,0 +1,52 @@
+---
+title: AME Beta FAQ
+metaDescription: Find answers to common questions about AME Beta and troubleshooting AtlasOS installation issues. Learn about AME Beta being flagged, installation failures, and upgrades.
+description: Common questions about AME Beta and troubleshooting.
+type: faq
+---
+
+import Callout from '@/components/docs/Callout.astro';
+
+# AME Beta FAQ
+
+Common questions about AME Beta and troubleshooting installation issues.
+
+## What is AME Beta?
+
+AME Beta is the tool used to install and upgrade AtlasOS. It applies the Atlas Playbook to your Windows installation.
+
+## AME Beta deleted or closed suddenly
+
+If AME Beta suddenly closes or gets deleted, especially when a new version is released:
+
+1. Add AME Beta as an exclusion in Windows Security
+2. Or temporarily disable Real-time protection in Windows Security
+
+<Callout type="info">
+  This is a false positive from Windows Defender. AME Beta is safe to use.
+</Callout>
+
+## Why is AME Beta being flagged?
+
+AME Beta may be flagged by Windows Defender because it modifies system files. This is expected behavior for a tool that applies system optimizations.
+
+## Installation issues
+
+### AME Beta won't open
+
+- Ensure you're running as administrator
+- Check Windows Security exclusions
+- Temporarily disable antivirus if needed
+
+### Upgrade option not available
+
+- Verify you're on AtlasOS 0.4.x or newer
+- Ensure you're using the latest AME Beta version
+- Check that you're using the correct Playbook file
+
+### Installation fails
+
+- Check that you have enough disk space
+- Ensure Windows is activated
+- Run AME Beta as administrator
+- Check for conflicting software

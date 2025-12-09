@@ -1,0 +1,57 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface FeatureItem {
+  icon: string;
+  title: string;
+  description: string;
+  href?: string;
+  disabled?: boolean;
+  external?: boolean;
+}
+
+interface Props {
+  items: FeatureItem[];
+  class?: string;
+}
+
+const { items, class: className = '' } = Astro.props;
+
+function isExternalUrl(url: string): boolean {
+  return url.startsWith('http://') || url.startsWith('https://') || url.startsWith('//');
+}
+---
+
+<div class={`not-prose space-y-6 my-6 ${className}`}>
+  {
+    items.map((item) => {
+      const isExternal = item.href && (item.external || isExternalUrl(item.href));
+      const linkAttrs = isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {};
+
+      return (
+        <div class="flex items-start gap-3">
+          <Icon
+            name={item.icon}
+            class={`h-5 w-5 ${item.disabled ? 'text-white/40' : 'text-primary'} mt-0.5 flex-shrink-0`}
+          />
+          <div>
+            {item.href ? (
+              <a
+                href={item.href}
+                class={`text-primary mb-1 block text-base leading-normal font-semibold hover:opacity-80 ${item.disabled ? 'text-white/60' : ''}`}
+                {...linkAttrs}
+              >
+                {item.title}
+              </a>
+            ) : (
+              <p class={`mb-1 text-base leading-normal font-semibold ${item.disabled ? 'text-white/60' : ''}`}>
+                {item.title}
+              </p>
+            )}
+            <p class={`text-sm ${item.disabled ? 'text-white/50' : 'text-white/70'}`}>{item.description}</p>
+          </div>
+        </div>
+      );
+    })
+  }
+</div>

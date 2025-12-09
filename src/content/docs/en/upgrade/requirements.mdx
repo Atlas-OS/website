@@ -1,0 +1,52 @@
+---
+title: Before upgrading
+metaDescription: Verify system requirements before upgrading AtlasOS. Check your current version, ensure you have required files, learn what gets preserved, and understand limitations.
+description: Verify requirements before upgrading AtlasOS.
+order: 8
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+import { Icon } from 'astro-icon/components';
+
+# Before upgrading
+
+Verify you meet all requirements before proceeding with the upgrade.
+
+## Version requirements
+
+- Your system must currently run **AtlasOS 0.4.x or newer**
+- Users on **0.3.x** must perform a [fresh install](/docs/install/) instead
+
+<Callout type="info" title="Not Sure?">
+  If you're unsure about your current AtlasOS version, check the [FAQ guide](/docs/faq/general/) for
+  instructions on checking your version.
+</Callout>
+
+## Required files
+
+Ensure you have:
+
+- <Icon name="tabler:check" class="text-primary mr-1 inline h-4 w-4" /> The latest **AME Beta**
+  executable
+- <Icon name="tabler:check" class="text-primary mr-1 inline h-4 w-4" /> The **new Atlas Playbook** (
+  <CodeInline text=".apbx" />) for the version you want to upgrade to
+
+## Backup important data
+
+<Callout type="warning" title="Recommended">
+  While upgrades preserve most settings, always back up important data before upgrading.
+</Callout>
+
+## What gets preserved
+
+- All user files and apps
+- Most AtlasOS tweaks and settings
+
+## Known limitations
+
+**Upgrading from 0.4.x <Icon name="tabler:arrow-right" class="inline h-4 w-4 mx-1" /> 0.5.x:**
+
+The upgrade does not carry over Atlas Folder configuration (General Configuration, Interface Tweaks, etc.). You'll need to re-apply these settings after the upgrade.
+
+This limitation does not apply when upgrading from 0.5.x to later versions.

@@ -1,0 +1,50 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  id?: string;
+  mobile?: boolean;
+  class?: string;
+}
+
+const { id, mobile = false, class: className = '' } = Astro.props;
+---
+
+{
+  mobile ? (
+    <button
+      id={id || 'navbar-search-button-mobile'}
+      type="button"
+      aria-label="Search"
+      class={`inline-flex size-9 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-md border border-white/10 text-sm font-medium whitespace-nowrap text-white transition-opacity duration-200 outline-none hover:opacity-80 disabled:pointer-events-none disabled:opacity-50 sm:hidden ${className}`}
+      style="background-color: var(--bg-primary);"
+    >
+      <Icon name="tabler:search" class="h-5 w-5" aria-hidden="true" />
+    </button>
+  ) : (
+    <div class={`hidden sm:block ${className}`}>
+      <div class="relative">
+        <button
+          id={id || 'navbar-search-button'}
+          type="button"
+          aria-expanded="false"
+          aria-haspopup="dialog"
+          class="bg-background relative h-9 w-64 cursor-pointer items-center rounded-md border border-white/10 pr-4 pl-9 text-left text-sm text-white/60 transition-opacity duration-200 hover:opacity-80 focus:outline-none"
+          style="background-color: var(--bg-primary);"
+        >
+          <Icon
+            name="tabler:search"
+            class="absolute top-1/2 left-3 size-[14px] -translate-y-1/2 text-white/60"
+            aria-hidden="true"
+          />
+          <span class="mt-[1px] block max-w-full truncate text-sm text-white/60">Search docs...</span>
+          <kbd class="absolute top-1/2 right-2 hidden -translate-y-1/2 items-center gap-1 rounded-md border border-white/10 bg-white/5 px-2 py-1 font-mono text-xs text-white/50 xl:inline-flex">
+            <span>Ctrl</span>
+            <span class="text-white/30">+</span>
+            <span>K</span>
+          </kbd>
+        </button>
+      </div>
+    </div>
+  )
+}

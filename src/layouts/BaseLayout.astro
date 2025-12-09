@@ -1,0 +1,62 @@
+---
+import '@/styles/global.css';
+import { getCurrentLocale, getLangCode } from '@/utils/navigation';
+
+interface Props {
+  locale?: string;
+  currentPath?: string;
+}
+
+const { locale: providedLocale, currentPath = Astro.url.pathname } = Astro.props;
+const currentLocale = providedLocale || getCurrentLocale(currentPath);
+const langCode = getLangCode(currentLocale);
+---
+
+<!doctype html>
+<html lang={langCode}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <meta property="xml:lang" content={langCode} />
+
+    <!-- Resource Hints - Preconnect for critical third-party domains -->
+    <link rel="preconnect" href="https://pla.atlasos.net" crossorigin />
+    <link rel="preconnect" href="https://api.atlasos.net" crossorigin />
+    <link rel="dns-prefetch" href="https://pla.atlasos.net" />
+    <link rel="dns-prefetch" href="https://api.atlasos.net" />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="AtlasOS" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- SEO Slot - DefaultLayout and DocsLayout provides the SEO component here -->
+    <slot name="head" />
+
+    <!-- Partytown -->
+    <script is:inline type="text/partytown" src="https://pla.atlasos.net/js/script.js" data-domain="atlasos.net"
+    ></script>
+  </head>
+  <body class="overflow-x-hidden">
+    <slot name="body" />
+    <slot />
+  </body>
+</html>
+
+<style>
+  html {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    width: 100%;
+    min-height: 100%;
+  }
+</style>

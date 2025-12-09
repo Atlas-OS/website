@@ -1,0 +1,35 @@
+---
+interface Props {
+  columns?: { md?: number; lg?: number };
+  gap?: '4' | '6';
+  marginY?: '6' | '8';
+}
+
+const { columns = { md: 2, lg: 3 }, gap = '4', marginY = '8' } = Astro.props;
+
+let gridClasses = 'grid grid-cols-1';
+if (columns.md === 2) {
+  gridClasses += ' md:grid-cols-2';
+} else if (columns.md === 3) {
+  gridClasses += ' md:grid-cols-3';
+}
+if (columns.lg === 3) {
+  gridClasses += ' lg:grid-cols-3';
+}
+
+if (gap === '4') {
+  gridClasses += ' gap-4';
+} else if (gap === '6') {
+  gridClasses += ' gap-6';
+}
+
+if (marginY === '6') {
+  gridClasses += ' my-6';
+} else if (marginY === '8') {
+  gridClasses += ' my-8';
+}
+---
+
+<div class={`not-prose overflow-visible -mb-4 pb-4 ${gridClasses}`}>
+  <slot />
+</div>

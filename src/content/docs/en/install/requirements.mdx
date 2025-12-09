@@ -1,0 +1,54 @@
+---
+title: Requirements
+metaDescription: Verify system requirements before installing AtlasOS. Check Windows 11 compatibility, CPU architecture, Windows edition support, and learn about backup procedures.
+description: Verify system requirements before installing AtlasOS.
+order: 3
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import QuickLinkCard from '@/components/docs/QuickLinkCard.astro';
+import QuickLinksGrid from '@/components/docs/QuickLinksGrid.astro';
+import { Icon } from 'astro-icon/components';
+
+# Installation requirements
+
+Verify that you meet all requirements before proceeding.
+
+## System requirements
+
+Before proceeding, ensure you have:
+
+- **Backed up all important data** to a safe location:
+  - Cloud storage (Google Drive, Microsoft OneDrive, Dropbox)
+  - External storage (NAS, portable drive, USB drive)
+
+- Met the **[Windows 11 system requirements](https://www.microsoft.com/windows/windows-11-specifications#table1)**
+
+- **64-bit CPU (x64) or ARM CPU (ARM64)** - Use x64 Windows ISO for Intel/AMD CPUs, or ARM64 Windows ISO for ARM systems ([check your system architecture](https://support.microsoft.com/en-us/windows/which-version-of-windows-operating-system-am-i-running-628bec99-476a-2c13-5296-9dd081cdd808))
+
+- **Supported Windows edition:** Pro, Pro for Workstations, or Enterprise (Windows Home is not supported)
+
+<Callout type="warning" title="Important">
+  The installation process reinstalls Windows, which will erase your current installation. Back up
+  all important data before proceeding.
+</Callout>
+
+## Choose your installation method
+
+AtlasOS offers two installation methods:
+
+<QuickLinksGrid columns={{ md: 2 }}>
+  <QuickLinkCard
+    href="/docs/install/playbook/"
+    icon="tabler:book"
+    title="Playbook Method"
+    description="Recommended method for most users. No USB drive required."
+  />
+
+  <QuickLinkCard
+    href="/docs/install/iso/"
+    icon="tabler:disc"
+    title="ISO Injection"
+    description="Advanced method for experienced users. Coming soon."
+  />
+</QuickLinksGrid>

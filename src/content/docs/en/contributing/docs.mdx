@@ -1,0 +1,50 @@
+---
+title: Documentation
+metaDescription: Learn how to contribute to AtlasOS documentation. Set up your local environment, preview changes with Material for MkDocs, and help improve the docs for all users.
+description: Learn how to contribute to AtlasOS documentation.
+order: 34
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+
+# Contributing to documentation
+
+This guide covers how to modify and preview the Atlas documentation locally. Before contributing, read the [Contribution Guidelines](/docs/contributing/).
+
+This assumes you've already cloned the <CodeInline text="Atlas-OS/docs" /> repository.
+
+## How the documentation is built
+
+[Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) is used to build the Atlas docs, powered by the following:
+
+- YAML configuration
+- HTML, JavaScript, and CSS overrides
+- Extended [Markdown](https://www.markdowntutorial.com/) for the pages
+
+<Callout type="tip">
+  We recommend viewing [their reference
+  documentation](https://squidfunk.github.io/mkdocs-material/reference/).
+</Callout>
+
+## Prerequisites
+
+As Material for MkDocs uses Python, you must install [Python](https://www.python.org/downloads/), including <CodeInline text="pip" />. Additionally, consider checking the VSCode extension recommendations.
+
+## Viewing your changes live
+
+The docs will refresh on any page change and reflect what you've just saved.
+
+### Windows
+
+1. Run <CodeInline text="locally-host.cmd" /> to host the documentation preview
+   - This also installs and updates dependencies
+2. Navigate to the URL it provides in the console
+
+### Non-Windows
+
+1. Run <CodeInline text="pip install -r local-requirements.txt" /> to install all the dependencies inside of the repository
+   - You might need to use a virtual environment like <CodeInline text="pipenv" /> or distro-specific packages for dependencies
+   - Consider checking the VSCode extension recommendations
+2. Run <CodeInline text="mkdocs serve" /> to host the documentation preview
+3. Navigate to the URL it provides in the console

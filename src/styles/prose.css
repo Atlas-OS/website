@@ -1,0 +1,215 @@
+@reference "tailwindcss";
+
+.prose {
+  color: rgb(255 255 255 / 0.9);
+  max-width: 65ch;
+}
+
+:where(.prose) > h1:not(.not-prose):not(.not-prose *),
+:where(.prose) h1:not(.not-prose):not(.not-prose *) {
+  @apply mb-8 text-4xl font-bold text-white;
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.prose > h2:not(.not-prose):not(.not-prose *),
+.prose h2:not(.not-prose):not(.not-prose *) {
+  @apply mt-12 mb-4 text-2xl font-semibold text-white;
+  font-family: var(--font-display);
+  scroll-margin-top: 6rem;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  font-size: 1.5rem !important;
+}
+
+.prose > h3:not(.not-prose):not(.not-prose *),
+.prose h3:not(.not-prose):not(.not-prose *) {
+  @apply mt-8 mb-3 text-xl font-semibold text-white;
+  font-family: var(--font-display);
+  scroll-margin-top: 6rem;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  font-size: 1.25rem !important;
+}
+
+:where(.prose) > h4:not(.not-prose):not(.not-prose *),
+:where(.prose) h4:not(.not-prose):not(.not-prose *) {
+  @apply mt-6 mb-2 text-lg font-semibold text-white;
+  font-family: var(--font-display);
+  line-height: 1.4;
+}
+
+:where(.prose) > p:not(.not-prose):not(.not-prose *),
+:where(.prose) p:not(.not-prose):not(.not-prose *) {
+  @apply mb-4 text-base;
+  line-height: 1.75;
+  color: rgb(255 255 255 / 0.9);
+}
+
+:where(.prose) > ul:not(.not-prose):not(.not-prose *),
+:where(.prose) > ol:not(.not-prose):not(.not-prose *),
+:where(.prose) ul:not(.not-prose):not(.not-prose *),
+:where(.prose) ol:not(.not-prose):not(.not-prose *) {
+  @apply mb-6 ml-6;
+}
+
+@media (max-width: 640px) {
+  :where(.prose) > ul:not(.not-prose):not(.not-prose *),
+  :where(.prose) > ol:not(.not-prose):not(.not-prose *),
+  :where(.prose) ul:not(.not-prose):not(.not-prose *),
+  :where(.prose) ol:not(.not-prose):not(.not-prose *) {
+    @apply mb-4 ml-0;
+  }
+}
+
+:where(.prose) ul:not(.not-prose):not(.not-prose *) {
+  list-style-type: disc;
+}
+
+:where(.prose) ol:not(.not-prose):not(.not-prose *) {
+  list-style-type: decimal;
+}
+
+:where(.prose) li:not(.not-prose):not(.not-prose *) {
+  @apply mb-2 text-base;
+  line-height: 1.75;
+  color: rgb(255 255 255 / 0.9);
+}
+
+:where(.prose) li:not(.not-prose):not(.not-prose *) > p {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+:where(.prose) li:not(.not-prose):not(.not-prose *) > *:first-child {
+  margin-top: 0;
+}
+
+:where(.prose) li:not(.not-prose):not(.not-prose *) > *:last-child {
+  margin-bottom: 0;
+}
+
+:where(.prose) > a:not(.not-prose):not(.not-prose *),
+:where(.prose) a:not(.not-prose):not(.not-prose *) {
+  @apply text-base;
+  color: var(--color-primary);
+  text-decoration: none;
+  transition:
+    color 0.2s ease-in-out,
+    opacity 0.2s ease-in-out;
+  font-weight: 500;
+}
+
+:where(.prose) > a:not(.not-prose):not(.not-prose *):hover,
+:where(.prose) a:not(.not-prose):not(.not-prose *):hover {
+  opacity: 0.85;
+  color: var(--color-primary);
+}
+
+:where(.prose) > strong:not(.not-prose):not(.not-prose *),
+:where(.prose) strong:not(.not-prose):not(.not-prose *) {
+  @apply font-semibold text-white;
+}
+
+:where(.prose) > em:not(.not-prose):not(.not-prose *),
+:where(.prose) em:not(.not-prose):not(.not-prose *) {
+  font-style: italic;
+  color: rgb(255 255 255 / 0.95);
+}
+
+:where(.prose) > code:not(.not-prose):not(.not-prose *),
+:where(.prose) code:not(.not-prose):not(.not-prose *) {
+  @apply rounded px-1.5 py-0.5 text-sm;
+  font-family: var(--font-mono);
+  background-color: rgb(255 255 255 / 0.1);
+  color: var(--color-primary);
+  font-size: 0.9em;
+}
+
+:where(.prose) > pre:not(.not-prose):not(.not-prose *),
+:where(.prose) pre:not(.not-prose):not(.not-prose *) {
+  @apply mb-8 overflow-x-auto rounded-xl border border-white/10 p-5 shadow-lg;
+  background-color: oklch(0.12 0.0421 264.82 / 0.6) !important;
+  backdrop-filter: blur(12px);
+  line-height: 1.7;
+}
+
+:where(.prose) pre:not(.not-prose):not(.not-prose *) code {
+  background-color: transparent;
+  padding: 0;
+  color: rgb(255 255 255 / 0.9);
+  font-size: 0.9em;
+  border: none;
+}
+
+:where(.prose) > blockquote:not(.not-prose):not(.not-prose *),
+:where(.prose) blockquote:not(.not-prose):not(.not-prose *) {
+  @apply my-6 border-l-4 py-2 pl-6 italic;
+  border-color: var(--color-primary);
+  background-color: rgb(255 255 255 / 0.03);
+  color: rgb(255 255 255 / 0.8);
+  font-size: 1.125rem;
+}
+
+:where(.prose) blockquote:not(.not-prose):not(.not-prose *) p {
+  margin-bottom: 0;
+}
+
+:where(.prose) blockquote:not(.not-prose):not(.not-prose *) p:last-child {
+  margin-bottom: 0;
+}
+
+:where(.prose) > hr:not(.not-prose):not(.not-prose *),
+:where(.prose) hr:not(.not-prose):not(.not-prose *) {
+  @apply my-8;
+  border-color: rgb(255 255 255 / 0.1);
+  border-top-width: 1px;
+}
+
+:where(.prose) > table:not(.not-prose):not(.not-prose *),
+:where(.prose) table:not(.not-prose):not(.not-prose *) {
+  @apply mb-6 w-full border-collapse;
+  font-size: 1rem;
+}
+
+:where(.prose) th:not(.not-prose):not(.not-prose *) {
+  @apply border px-4 py-3 text-left font-semibold;
+  border-color: rgb(255 255 255 / 0.2);
+  background-color: rgb(255 255 255 / 0.05);
+  color: white;
+}
+
+:where(.prose) td:not(.not-prose):not(.not-prose *) {
+  @apply border px-4 py-3;
+  border-color: rgb(255 255 255 / 0.2);
+}
+
+:where(.prose) > img:not(.not-prose):not(.not-prose *),
+:where(.prose) img:not(.not-prose):not(.not-prose *) {
+  @apply my-8 rounded-lg;
+  max-width: 100%;
+  height: auto;
+}
+
+:where(.prose) > *:first-child:not(.not-prose):not(.not-prose *):not(h1) {
+  margin-top: 0;
+}
+
+:where(.prose) > *:last-child:not(.not-prose):not(.not-prose *) {
+  margin-bottom: 0;
+}
+
+:where(.prose) > *:not(.not-prose):not(.not-prose *):focus,
+:where(.prose)
+  *:not(.not-prose):not(.not-prose *):not(a):not(button):not(input):not(textarea):not(
+    select
+  ):focus {
+  outline: none;
+  box-shadow: none;
+}
+
+:where(.prose) a:not(.not-prose):not(.not-prose *):focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}

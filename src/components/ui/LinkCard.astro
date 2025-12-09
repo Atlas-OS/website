@@ -1,0 +1,68 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  href: string;
+  title: string;
+  description?: string;
+  icon?: string;
+  external?: boolean;
+  class?: string;
+}
+
+const { href, title, description, icon = 'tabler:arrow-right', external = false, class: className = '' } = Astro.props;
+
+const externalAttrs = external ? { target: '_blank', rel: 'noopener noreferrer' } : {};
+---
+
+<a
+  href={href}
+  {...externalAttrs}
+  class={`link-card link-card-animated not-prose group block rounded-lg border border-white/10 bg-white/5 p-5 transition-opacity duration-200 hover:opacity-80 relative overflow-hidden focus:outline-none ${className}`}
+>
+  <div class="relative z-10">
+    <div class="mb-2 flex items-start justify-between gap-3">
+      <h3 class="text-lg font-semibold text-white transition-opacity duration-200 group-hover:opacity-80">
+        {title}
+      </h3>
+      <div
+        class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md border border-white/10 bg-white/5 transition-opacity duration-200 group-hover:opacity-80"
+      >
+        <div class="link-card-icon-wrapper">
+          <Icon name={icon} class="h-4 w-4 text-white/60 transition-opacity duration-200 group-hover:opacity-80" />
+        </div>
+      </div>
+    </div>
+    {description && <p class="line-clamp-2 text-sm leading-relaxed text-white/60">{description}</p>}
+  </div>
+</a>
+
+<style>
+  .link-card-animated {
+    animation: link-card-fade-in 0.4s ease-out;
+  }
+
+  @keyframes link-card-fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .link-card-icon-wrapper {
+    animation: link-card-icon-fade-in 0.6s ease-out;
+  }
+
+  @keyframes link-card-icon-fade-in {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+</style>

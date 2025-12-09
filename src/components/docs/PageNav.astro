@@ -1,0 +1,95 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  prev?: {
+    href: string;
+    title: string;
+    description?: string;
+  };
+  next?: {
+    href: string;
+    title: string;
+    description?: string;
+  };
+}
+
+const { prev, next } = Astro.props;
+---
+
+{
+  (prev || next) && (
+    <nav class="page-nav not-prose astro-component mt-12 border-t border-white/10 pt-8" data-component="page-nav">
+      <div class={`grid gap-4 ${prev && next ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'}`}>
+        {prev && (
+          <a
+            href={prev.href}
+            class="page-nav-card group hover:border-primary/50 focus-visible:ring-primary/50 relative order-2 flex items-center gap-4 overflow-hidden rounded-lg border border-white/10 bg-white/5 p-6 transition-all duration-300 hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black md:order-1"
+          >
+            <div class="relative z-10 flex-shrink-0">
+              <div class="group-hover:border-primary/50 group-hover:bg-primary/10 flex h-12 w-12 items-center justify-center rounded-lg border border-white/10 bg-white/5 transition-colors duration-300">
+                <Icon
+                  name="tabler:arrow-left"
+                  class="group-hover:text-primary h-5 w-5 text-white/60 transition-colors duration-300"
+                />
+              </div>
+            </div>
+            <div class="relative z-10 min-w-0 flex-1">
+              <div class="group-hover:text-primary/80 mb-1.5 text-xs font-medium tracking-wider text-white/50 uppercase transition-colors duration-300">
+                Previous
+              </div>
+              <h3 class="group-hover:text-primary mb-1 text-lg font-semibold text-white transition-colors duration-300">
+                {prev.title}
+              </h3>
+              {prev.description && (
+                <p class="line-clamp-2 text-sm text-white/60 transition-colors duration-300 group-hover:text-white/80">
+                  {prev.description}
+                </p>
+              )}
+            </div>
+          </a>
+        )}
+
+        {next && (
+          <a
+            href={next.href}
+            class="page-nav-card group hover:border-primary/50 focus-visible:ring-primary/50 relative order-1 flex items-center gap-4 overflow-hidden rounded-lg border border-white/10 bg-white/5 p-6 transition-all duration-300 hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black md:order-2"
+          >
+            <div class="relative z-10 min-w-0 flex-1 text-right">
+              <div class="group-hover:text-primary/80 mb-1.5 text-xs font-medium tracking-wider text-white/50 uppercase transition-colors duration-300">
+                Next
+              </div>
+              <h3 class="group-hover:text-primary mb-1 text-lg font-semibold text-white transition-colors duration-300">
+                {next.title}
+              </h3>
+              {next.description && (
+                <p class="line-clamp-2 text-sm text-white/60 transition-colors duration-300 group-hover:text-white/80">
+                  {next.description}
+                </p>
+              )}
+            </div>
+            <div class="relative z-10 flex-shrink-0">
+              <div class="group-hover:border-primary/50 group-hover:bg-primary/10 flex h-12 w-12 items-center justify-center rounded-lg border border-white/10 bg-white/5 transition-colors duration-300">
+                <Icon
+                  name="tabler:arrow-right"
+                  class="group-hover:text-primary h-5 w-5 text-white/60 transition-colors duration-300"
+                />
+              </div>
+            </div>
+          </a>
+        )}
+      </div>
+    </nav>
+  )
+}
+
+<style is:global>
+  .page-nav {
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+  }
+
+  .prose + .page-nav {
+    margin-top: 4rem;
+  }
+</style>

@@ -1,0 +1,20 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  name?: string;
+  size?: 'sm' | 'md';
+  class?: string;
+}
+
+const { name = 'tabler:arrow-right', size = 'sm', class: className = '' } = Astro.props;
+
+const sizeClasses = {
+  sm: 'h-4 w-4',
+  md: 'h-5 w-5',
+};
+
+const classes = `inline ${sizeClasses[size]} mx-1 ${className}`.trim();
+---
+
+<Icon name={name} class={classes} />

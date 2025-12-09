@@ -1,0 +1,103 @@
+---
+import { Icon } from 'astro-icon/components';
+import Button from '@/components/ui/Button.astro';
+
+interface Props {
+  icon?: string;
+  title: string;
+  description: string;
+  features?: string[];
+  downloadUrl: string;
+  downloadText: string;
+  variant?: 'detailed' | 'simple' | 'compact';
+  class?: string;
+}
+
+const {
+  icon,
+  title,
+  description,
+  features = [],
+  downloadUrl,
+  downloadText,
+  variant = features.length > 0 ? 'detailed' : 'simple',
+  class: className = '',
+} = Astro.props;
+
+const isDetailed = variant === 'detailed' && features.length > 0;
+const isCompact = variant === 'compact';
+const padding = isDetailed ? 'p-6' : isCompact ? 'p-4' : 'p-4';
+const titleSize = isDetailed ? 'text-xl' : 'text-lg';
+const iconSize = isDetailed ? 'h-8 w-8' : isCompact ? 'h-6 w-6' : 'h-6 w-6';
+---
+
+<div
+  class={`not-prose software-card software-card-animated border border-white/10 rounded-lg ${padding} bg-white/5 my-6 ${className}`}
+>
+  <div class={`flex items-start gap-3 ${isDetailed ? 'mb-4' : 'mb-3'}`}>
+    {icon && <Icon name={icon} class={`${iconSize} text-primary ${isCompact ? 'mt-0.5' : ''} flex-shrink-0`} />}
+    <div class={icon ? 'flex-1' : 'w-full'}>
+      <h3 class={`${titleSize} font-semibold ${isDetailed ? 'mb-2' : 'mb-1'}`}>{title}</h3>
+      <p class={`text-white/70 text-sm ${isDetailed ? 'mb-4' : 'mb-3'}`}>{description}</p>
+      {
+        !isDetailed && (
+          <Button
+            href={downloadUrl}
+            variant="tertiary"
+            size="sm"
+            external={true}
+            icon="tabler:arrow-up-right"
+            iconPosition="after"
+          >
+            {downloadText}
+          </Button>
+        )
+      }
+    </div>
+  </div>
+
+  {
+    isDetailed && features.length > 0 && (
+      <div class="mb-4 space-y-2">
+        {features.map((feature) => (
+          <div class="flex items-start gap-2">
+            <Icon name="tabler:check" class="text-primary mt-0.5 h-5 w-5 flex-shrink-0" />
+            <span class="text-sm">{feature}</span>
+          </div>
+        ))}
+      </div>
+    )
+  }
+
+  {
+    isDetailed && (
+      <Button
+        href={downloadUrl}
+        variant="tertiary"
+        size="md"
+        external={true}
+        icon="tabler:arrow-up-right"
+        iconPosition="after"
+      >
+        {downloadText}
+      </Button>
+    )
+  }
+</div>
+
+<style is:global>
+  .software-card-animated {
+    animation: software-card-fade-in 0.4s ease-out;
+  }
+
+  @keyframes software-card-fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

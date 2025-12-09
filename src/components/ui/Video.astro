@@ -1,0 +1,35 @@
+---
+interface Props {
+  src: string;
+  controls?: boolean;
+  muted?: boolean;
+  autoplay?: boolean;
+  loop?: boolean;
+  spacing?: boolean;
+  rounded?: boolean;
+  class?: string;
+}
+
+const {
+  src,
+  controls = true,
+  muted = false,
+  autoplay = false,
+  loop = false,
+  spacing = false,
+  rounded = false,
+  class: className = '',
+} = Astro.props;
+
+const classes = [spacing && 'my-6', rounded && 'rounded-lg', className].filter(Boolean).join(' ');
+---
+
+<video
+  src={src}
+  controls={controls}
+  muted={muted}
+  autoplay={autoplay}
+  loop={loop}
+  class={classes}
+  data-jampack-skip
+  preload="auto"></video>

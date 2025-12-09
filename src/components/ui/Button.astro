@@ -52,20 +52,18 @@ const variantClasses = {
   primary: [
     'relative isolate',
     'text-white font-medium',
-    'button-gradient-border-primary',
     'backdrop-blur-sm',
     '!disabled:hover:bg-primary/80',
     'shadow-sm shadow-primary/10',
-    'active:scale-98',
+    'active:scale-[0.98]',
   ],
   secondary: [
     'relative isolate',
     'text-white font-medium',
-    'button-gradient-border-secondary',
     'backdrop-blur-sm',
     '!disabled:hover:bg-white/10',
     'shadow-sm shadow-black/5',
-    'active:scale-98',
+    'active:scale-[0.98]',
   ],
   tertiary: [
     'py-0.5 px-0',
@@ -74,6 +72,18 @@ const variantClasses = {
     'tertiary-link',
     'after:bg-current',
   ],
+};
+
+const variantStyles = {
+  primary: {
+    background: 'linear-gradient(180deg, #2563eb 0%, #1e40af 100%)',
+    boxShadow: '0 4px 6px -1px rgba(30, 64, 175, 0.1), 0 2px 4px -2px rgba(30, 64, 175, 0.1)',
+  },
+  secondary: {
+    background: 'linear-gradient(0deg, hsla(0, 0%, 100%, 0), hsla(0, 0%, 100%, 0.09)), hsla(0, 0%, 100%, 0.12)',
+    boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.13), inset 0 1px 0 0 hsla(0, 0%, 100%, 0.07)',
+  },
+  tertiary: {},
 };
 
 const iconSize = {
@@ -90,22 +100,31 @@ const classes = [
   isLink && disabled ? 'disabled-link' : '',
   className,
 ].join(' ');
+
+const inlineStyle = variantStyles[variant];
 ---
 
 {
   isLink ? (
-    <a href={href} class={classes} {...externalAttrs} aria-disabled={disabled ? 'true' : undefined} id={id}>
+    <a
+      href={href}
+      class={classes}
+      style={inlineStyle}
+      {...externalAttrs}
+      aria-disabled={disabled ? 'true' : undefined}
+      id={id}
+    >
       {icon && iconPosition === 'before' && <Icon name={icon} class={iconSize[size]} />}
       <slot />
 
       {icon && iconPosition === 'after' && <Icon name={icon} class={iconSize[size]} />}
     </a>
   ) : (
-    <button type={type} class={classes} disabled={disabled || loading} id={id}>
+    <button type={type} class={classes} style={inlineStyle} disabled={disabled || loading} id={id}>
       {loading ? (
         <span class="loading-spinner" aria-hidden="true" />
       ) : (
-        <>{icon && iconPosition === 'before' && <Icon name={icon} class={iconSize[size]} />}</>
+        icon && iconPosition === 'before' && <Icon name={icon} class={iconSize[size]} />
       )}
 
       <slot />
@@ -115,25 +134,7 @@ const classes = [
   )
 }
 
-<style>
-  .button-gradient-border-primary {
-    position: relative;
-    background: linear-gradient(180deg, #2563eb 0%, #1e40af 100%);
-    box-shadow:
-      0 4px 6px -1px rgba(30, 64, 175, 0.1),
-      0 2px 4px -2px rgba(30, 64, 175, 0.1);
-    z-index: 0;
-  }
-
-  .button-gradient-border-secondary {
-    position: relative;
-    background: linear-gradient(0deg, hsla(0, 0%, 100%, 0), hsla(0, 0%, 100%, 0.09)), hsla(0, 0%, 100%, 0.12);
-    box-shadow:
-      0 1px 2px 0 rgba(0, 0, 0, 0.13),
-      inset 0 1px 0 0 hsla(0, 0%, 100%, 0.07);
-    z-index: 0;
-  }
-
+<style is:global>
   .tertiary-link {
     position: relative;
   }
