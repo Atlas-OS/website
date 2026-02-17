@@ -1,22 +1,19 @@
 ---
 title: Requirements
-metaDescription: Verify system requirements before installing AtlasOS. Check Windows 11 compatibility, CPU architecture, Windows edition support, and learn about backup procedures.
-description: Verify system requirements before installing AtlasOS.
+metaDescription: "AtlasOS installation requirements: Windows 11, CPU architecture, edition support, backup."
+description: Installation requirements for AtlasOS.
 order: 3
 ---
 
 import Callout from '@/components/docs/Callout.astro';
 import QuickLinkCard from '@/components/docs/QuickLinkCard.astro';
 import QuickLinksGrid from '@/components/docs/QuickLinksGrid.astro';
-import { Icon } from 'astro-icon/components';
 
 # Installation requirements
 
-Verify that you meet all requirements before proceeding.
+Before installing AtlasOS, verify you have everything below.
 
 ## System requirements
-
-Before proceeding, ensure you have:
 
 - **Backed up all important data** to a safe location:
   - Cloud storage (Google Drive, Microsoft OneDrive, Dropbox)
@@ -26,16 +23,18 @@ Before proceeding, ensure you have:
 
 - **64-bit CPU (x64) or ARM CPU (ARM64)** - Use x64 Windows ISO for Intel/AMD CPUs, or ARM64 Windows ISO for ARM systems ([check your system architecture](https://support.microsoft.com/en-us/windows/which-version-of-windows-operating-system-am-i-running-628bec99-476a-2c13-5296-9dd081cdd808))
 
-- **Supported Windows edition:** Pro, Pro for Workstations, or Enterprise (Windows Home is not supported)
+- **Windows edition:** Pro, Pro for Workstations, or Enterprise (Atlas does not support Home)
 
-<Callout type="warning" title="Important">
-  The installation process reinstalls Windows, which will erase your current installation. Back up
-  all important data before proceeding.
+- **Basic familiarity with Windows** – Meet Windows 11 requirements; bypassing them can cause update and game issues
+
+<Callout type="danger" title="Back up your data first">
+  Atlas installs by reinstalling Windows. Your current setup will be replaced. Removing Atlas
+  requires [reinstalling Windows](/docs/faq/reverting/). Back up important files before you start.
 </Callout>
 
 ## Choose your installation method
 
-AtlasOS offers two installation methods:
+Pick the option that works for you:
 
 <QuickLinksGrid columns={{ md: 2 }}>
   <QuickLinkCard
@@ -49,6 +48,6 @@ AtlasOS offers two installation methods:
     href="/docs/install/iso/"
     icon="tabler:disc"
     title="ISO Injection"
-    description="Advanced method for experienced users. Coming soon."
+    description="Advanced method for experienced users. Experimental."
   />
 </QuickLinksGrid>

@@ -27,12 +27,41 @@ const sections = [
 ---
 
 <DefaultLayout>
-  {
-    sections.map((Section, index) => (
-      <>
-        <Section />
-        {index < sections.length - 1 && <SectionSeparator />}
-      </>
-    ))
-  }
+  <div class="homepage-motion">
+    {
+      sections.map((Section, index) => (
+        <>
+          <Section />
+          {index < sections.length - 1 && (
+            <div data-animate>
+              <SectionSeparator />
+            </div>
+          )}
+        </>
+      ))
+    }
+  </div>
 </DefaultLayout>
+
+<style>
+  .homepage-motion {
+    --motion-reveal-duration: 520ms;
+    --motion-reveal-step: 140ms;
+    --motion-reveal-distance: 28px;
+    --motion-reveal-blur: 6px;
+    --motion-reveal-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --motion-reveal-scale-start: 0.985;
+  }
+</style>
+
+<script>
+  import { initScrollAnimations } from '@/utils/scroll-animations';
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initScrollAnimations);
+  } else {
+    initScrollAnimations();
+  }
+
+  document.addEventListener('astro:page-load', initScrollAnimations);
+</script>

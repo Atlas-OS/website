@@ -11,7 +11,7 @@ import { Icon } from 'astro-icon/components';
 
 <div
   id="spotlight-modal"
-  class="bg-background pointer-events-none fixed top-1/2 left-1/2 z-[101] flex h-[45vh] max-h-[45vh] w-[90vw] max-w-2xl flex-col rounded-lg border border-white/10 opacity-0 shadow-2xl"
+  class="bg-background pointer-events-none fixed top-1/2 left-1/2 z-[101] flex h-[45vh] max-h-[45vh] w-[90vw] max-w-2xl flex-col rounded-lg border border-white/[0.06] opacity-0 shadow-2xl"
   role="dialog"
   aria-modal="true"
   aria-labelledby="spotlight-title"
@@ -19,7 +19,7 @@ import { Icon } from 'astro-icon/components';
 >
   <div
     id="spotlight-input-container"
-    class="flex flex-shrink-0 cursor-text items-center gap-3 border-b border-white/10 px-4 py-3 transition-colors duration-200"
+    class="flex flex-shrink-0 cursor-text items-center gap-3 border-b border-white/[0.06] px-4 py-3 transition-colors duration-200"
   >
     <Icon name="tabler:search" class="h-5 w-5 flex-shrink-0 text-white/60" aria-hidden="true" />
     <input
@@ -32,7 +32,7 @@ import { Icon } from 'astro-icon/components';
       spellcheck="false"
     />
     <kbd
-      class="hidden flex-shrink-0 items-center gap-1 rounded-md border border-white/10 bg-white/5 px-2 py-1 font-mono text-xs text-white/50 sm:inline-flex"
+      class="hidden flex-shrink-0 items-center gap-1 rounded-md border border-white/[0.06] bg-white/5 px-2 py-1 font-mono text-xs text-white/50 sm:inline-flex"
     >
       <span>Esc</span>
     </kbd>
@@ -48,16 +48,24 @@ import { Icon } from 'astro-icon/components';
 <style is:global>
   #spotlight-modal {
     transform: translate(-50%, -50%) scale(0.95);
+    filter: blur(4px);
+    will-change: transform, opacity, filter;
     transition:
-      opacity 200ms,
-      transform 200ms,
-      pointer-events 200ms;
+      opacity var(--motion-duration-normal, 250ms) var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1)),
+      transform var(--motion-duration-normal, 250ms) var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1)),
+      filter var(--motion-duration-normal, 250ms) var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1)),
+      pointer-events var(--motion-duration-normal, 250ms);
   }
 
   #spotlight-modal.open {
     opacity: 1;
     pointer-events: auto;
     transform: translate(-50%, -50%) scale(1);
+    filter: blur(0);
+  }
+
+  #spotlight-backdrop {
+    transition: opacity var(--motion-duration-normal, 250ms) var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1));
   }
 
   #spotlight-backdrop.open {
@@ -239,10 +247,14 @@ import { Icon } from 'astro-icon/components';
     if (pagefind) return pagefind;
 
     try {
-      // @ts-expect-error - Pagefind is generated at build time
-      const pf = await import(/* @vite-ignore */ '/pagefind/pagefind.js');
+      const pagefindPath = '/pagefind/pagefind.js';
+      const importPagefind = (modulePath: string): Promise<unknown> =>
+        import(/* @vite-ignore */ modulePath);
+
+      // Pagefind is generated after build, so this can fail in dev.
+      const pf = (await importPagefind(pagefindPath)) as Pagefind;
       await pf.init();
-      pagefind = pf as Pagefind;
+      pagefind = pf;
       return pagefind;
     } catch {
       console.warn('Pagefind not available - search index may not be built yet');

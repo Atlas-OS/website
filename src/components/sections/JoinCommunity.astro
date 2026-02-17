@@ -4,14 +4,16 @@ import Button from '@/components/ui/Button.astro';
 ---
 
 <section class="relative mx-auto mt-32 mb-32 max-w-7xl px-4 text-center">
-  <SectionTitle>Join our community</SectionTitle>
-  <h2 class="mb-6 text-4xl font-semibold tracking-tight text-white md:text-5xl">
+  <div data-animate>
+    <SectionTitle>Join our community</SectionTitle>
+  </div>
+  <h2 class="mb-6 text-4xl font-semibold tracking-tight text-white md:text-5xl" data-animate data-animate-delay="1">
     Be part of the <span class="text-primary">Atlas</span> community
   </h2>
-  <p class="mx-auto mb-12 max-w-2xl text-white/70">
+  <p class="mx-auto mb-12 max-w-2xl text-white/70" data-animate data-animate-delay="2">
     Join our thriving community of over 50,000 members and millions of AtlasOS users. <br /> Connect, share, and stay updated.
   </p>
-  <div class="flex flex-col items-center justify-center gap-5 sm:flex-row">
+  <div class="flex flex-col items-center justify-center gap-5 sm:flex-row" data-animate data-animate-delay="3">
     <Button href="https://discord.com/invite/atlasos" variant="primary" size="lg" icon="tabler:brand-discord" external>
       Join Discord
     </Button>

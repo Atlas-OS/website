@@ -1,79 +1,103 @@
 ---
-import { Icon } from 'astro-icon/components';
 import SectionTitle from '@/components/sections/common/SectionTitle.astro';
 import Button from '@/components/ui/Button.astro';
+import { Icon } from 'astro-icon/components';
 ---
 
 <section id="faq" class="relative mx-auto mt-32 mb-32 max-w-6xl px-4">
-  <div class="mb-12 text-center">
+  <div class="mb-12 text-center" data-animate>
     <SectionTitle>FAQ</SectionTitle>
     <h2 class="mb-6 text-4xl font-semibold tracking-tight text-white md:text-5xl">Frequently asked questions</h2>
   </div>
 
   <div class="space-y-6">
-    <details class="group cursor-pointer rounded-lg border border-white/10 bg-white/5 transition hover:bg-white/10">
+    <details
+      class="faq-item group cursor-pointer rounded-lg border border-white/[0.06] bg-white/5 transition hover:bg-white/10"
+      data-animate
+      data-animate-delay="1"
+    >
       <summary class="flex w-full items-center justify-between px-6 py-5 text-lg font-semibold text-white select-none">
         Which Windows versions are supported?
         <Icon name="tabler:chevron-down" class="h-5 w-5 flex-shrink-0 transition-transform group-open:rotate-180" />
       </summary>
-      <div class="px-6 pb-6">
-        <p class="leading-relaxed text-white/70">
-          AtlasOS officially supports <span class="font-semibold text-white">Windows 11</span>.
-        </p>
+      <div class="faq-answer px-6">
+        <div class="faq-answer-inner pb-6">
+          <p class="leading-relaxed text-white/70">
+            AtlasOS officially supports <span class="font-semibold text-white">Windows 11</span>.
+          </p>
+        </div>
       </div>
     </details>
 
-    <details class="group cursor-pointer rounded-lg border border-white/10 bg-white/5 transition hover:bg-white/10">
+    <details
+      class="faq-item group cursor-pointer rounded-lg border border-white/[0.06] bg-white/5 transition hover:bg-white/10"
+      data-animate
+      data-animate-delay="2"
+    >
       <summary class="flex w-full items-center justify-between px-6 py-5 text-lg font-semibold text-white select-none">
         Will my apps keep working?
         <Icon name="tabler:chevron-down" class="h-5 w-5 flex-shrink-0 transition-transform group-open:rotate-180" />
       </summary>
-      <div class="px-6 pb-6">
-        <p class="leading-relaxed text-white/70">
-          Yes! AtlasOS is the same as standard Windows, we support all functionality and all anti-cheats. There is
-          nothing stripped from AtlasOS, giving you the same experience as standard Windows.
-        </p>
+      <div class="faq-answer px-6">
+        <div class="faq-answer-inner pb-6">
+          <p class="leading-relaxed text-white/70">
+            Yes! AtlasOS is the same as standard Windows, we support all functionality and all anti-cheats. There is
+            nothing stripped from AtlasOS, giving you the same experience as standard Windows.
+          </p>
+        </div>
       </div>
     </details>
 
-    <details class="group cursor-pointer rounded-lg border border-white/10 bg-white/5 transition hover:bg-white/10">
+    <details
+      class="faq-item group cursor-pointer rounded-lg border border-white/[0.06] bg-white/5 transition hover:bg-white/10"
+      data-animate
+      data-animate-delay="3"
+    >
       <summary class="flex w-full items-center justify-between px-6 py-5 text-lg font-semibold text-white select-none">
         How do I install AtlasOS?
         <Icon name="tabler:chevron-down" class="h-5 w-5 flex-shrink-0 transition-transform group-open:rotate-180" />
       </summary>
-      <div class="px-6 pb-6">
-        <p class="leading-relaxed text-white/70">
-          It is required that everyone choosing to install AtlasOS follows our
-          <a
-            href="/docs/install/"
-            class="text-primary hover:text-primary">installation documentation</a
-          >. If you do not follow our
-          <a
-            href="/docs/install/"
-            class="text-primary hover:text-primary">installation documentation</a
-          > your installation of AtlasOS will be unsupported.
-        </p>
+      <div class="faq-answer px-6">
+        <div class="faq-answer-inner pb-6">
+          <p class="leading-relaxed text-white/70">
+            It is required that everyone choosing to install AtlasOS follows our
+            <a
+              href="/docs/install/"
+              class="text-primary hover:text-primary">installation documentation</a
+            >. If you do not follow our
+            <a
+              href="/docs/install/"
+              class="text-primary hover:text-primary">installation documentation</a
+            > your installation of AtlasOS will be unsupported.
+          </p>
+        </div>
       </div>
     </details>
 
-    <details class="group cursor-pointer rounded-lg border border-white/10 bg-white/5 transition hover:bg-white/10">
+    <details
+      class="faq-item group cursor-pointer rounded-lg border border-white/[0.06] bg-white/5 transition hover:bg-white/10"
+      data-animate
+      data-animate-delay="4"
+    >
       <summary class="flex w-full items-center justify-between px-6 py-5 text-lg font-semibold text-white select-none">
         Can I easily roll back to stock Windows?
         <Icon name="tabler:chevron-down" class="h-5 w-5 flex-shrink-0 transition-transform group-open:rotate-180" />
       </summary>
-      <div class="px-6 pb-6">
-        <p class="leading-relaxed text-white/70">
-          No, AtlasOS does not provide a rollback or recovery option. You will need to reinstall Windows, just the same
-          as you would need to reinstall Windows to install AtlasOS. We have a guide on how to do this in our
-          <a
-            href="/docs/upgrade/"
-            class="text-primary hover:text-primary">reverting AtlasOS documentation</a
-          >.
-        </p>
+      <div class="faq-answer px-6">
+        <div class="faq-answer-inner pb-6">
+          <p class="leading-relaxed text-white/70">
+            No, AtlasOS does not provide a rollback or recovery option. You will need to reinstall Windows, just the same
+            as you would need to reinstall Windows to install AtlasOS. We have a guide on how to do this in our
+            <a
+              href="/docs/upgrade/"
+              class="text-primary hover:text-primary">reverting AtlasOS documentation</a
+            >.
+          </p>
+        </div>
       </div>
     </details>
   </div>
-  <div class="mt-8 text-center">
+  <div class="mt-8 text-center" data-animate data-animate-delay="5">
     <Button
       href="/docs/faq/"
       icon="tabler:arrow-up-right"
@@ -85,3 +109,30 @@ import Button from '@/components/ui/Button.astro';
     </Button>
   </div>
 </section>
+
+<style>
+  .faq-answer {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transform: translateY(-6px);
+    filter: blur(2px);
+    transition:
+      grid-template-rows var(--motion-duration-normal) var(--motion-ease-out),
+      opacity var(--motion-duration-normal) var(--motion-ease-out),
+      transform var(--motion-duration-normal) var(--motion-ease-out),
+      filter var(--motion-duration-normal) var(--motion-ease-out);
+  }
+
+  .faq-answer-inner {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .faq-item[open] .faq-answer {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+</style>

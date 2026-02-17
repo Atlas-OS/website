@@ -16,3 +16,20 @@ header a:focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
+
+@media (max-width: 767px) {
+  .mobile-menu {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition:
+      max-height var(--motion-duration-normal, 250ms) var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1)),
+      opacity var(--motion-duration-normal, 250ms) var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1));
+  }
+
+  .mobile-menu.mobile-menu-open {
+    max-height: 320px;
+    opacity: 1;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}

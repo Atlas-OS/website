@@ -9,7 +9,7 @@ const tabsId = `tabs-${Math.random().toString(36).substring(2, 11)}`;
 ---
 
 <div class="tabs-container" data-tabs-id={tabsId}>
-  <div class="tabs-list mb-4 flex flex-nowrap gap-2 overflow-x-auto border-b border-white/10" role="tablist">
+  <div class="tabs-list mb-4 flex flex-nowrap gap-2 overflow-x-auto" style="border-bottom: 1px solid var(--docs-surface-border);" role="tablist">
     {
       items.map((item) => (
         <button

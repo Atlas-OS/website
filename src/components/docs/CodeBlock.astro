@@ -1,0 +1,119 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  /** Optional title/label above the code (e.g. "Run the following command in CMD as administrator:") */
+  title?: string;
+  /** The code content to display and copy */
+  code: string;
+}
+
+const { title, code } = Astro.props;
+const blockId = `code-block-${Math.random().toString(36).slice(2, 9)}`;
+---
+
+<div
+  class="code-block docs-surface not-prose group relative my-6 overflow-hidden"
+  data-component="code-block"
+  data-code-block-id={blockId}
+>
+  {title ? (
+    <div
+      class="code-block-title flex items-center justify-between gap-3 border-b px-4 py-3 text-sm font-medium"
+      style="border-color: var(--docs-surface-border); color: var(--docs-text-secondary);"
+    >
+      <span>{title}</span>
+      <button
+        type="button"
+        class="code-block-copy flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--docs-radius-sm)] opacity-0 transition-opacity duration-200 hover:bg-white/10 focus:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-primary)] group-hover:opacity-100"
+        style="color: var(--docs-text-muted);"
+        aria-label="Copy code"
+        data-code={blockId}
+      >
+        <span class="code-block-copy-icon">
+          <Icon name="tabler:copy" class="h-4 w-4" aria-hidden="true" />
+        </span>
+        <span class="code-block-check-icon hidden">
+          <Icon name="tabler:check" class="h-4 w-4" aria-hidden="true" />
+        </span>
+      </button>
+    </div>
+  ) : null}
+  <div class="relative">
+    <pre class="code-block-pre m-0 overflow-x-auto p-4 font-mono text-sm leading-relaxed whitespace-pre" style="color: var(--docs-text-primary);"><code>{code}</code></pre>
+    {!title && (
+      <button
+        type="button"
+        class="code-block-copy absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-[var(--docs-radius-sm)] opacity-0 transition-opacity duration-200 hover:bg-white/10 focus:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-primary)] group-hover:opacity-100"
+        style="color: var(--docs-text-muted);"
+        aria-label="Copy code"
+        data-code={blockId}
+      >
+        <span class="code-block-copy-icon">
+          <Icon name="tabler:copy" class="h-4 w-4" aria-hidden="true" />
+        </span>
+        <span class="code-block-check-icon hidden">
+          <Icon name="tabler:check" class="h-4 w-4" aria-hidden="true" />
+        </span>
+      </button>
+    )}
+  </div>
+</div>
+
+<style is:global>
+  .code-block-pre {
+    font-family: var(--font-mono);
+  }
+
+  .code-block-pre code {
+    background: transparent;
+    border: none;
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+  }
+
+  .code-block-copy[data-copied='true'] .code-block-copy-icon {
+    display: none;
+  }
+
+  .code-block-copy[data-copied='true'] .code-block-check-icon {
+    display: block;
+  }
+
+  .code-block-copy .code-block-check-icon {
+    display: none;
+  }
+</style>
+
+<script>
+  function initCodeBlockCopy() {
+    document.querySelectorAll('.code-block-copy').forEach((btn) => {
+      if (btn.hasAttribute('data-initialized')) return;
+      btn.setAttribute('data-initialized', 'true');
+
+      const blockId = btn.getAttribute('data-code');
+      const block = document.querySelector(`[data-code-block-id="${blockId}"]`);
+      const codeEl = block?.querySelector('.code-block-pre code');
+      if (!codeEl) return;
+
+      btn.addEventListener('click', async () => {
+        const text = codeEl.textContent || '';
+        try {
+          await navigator.clipboard.writeText(text);
+          btn.setAttribute('aria-label', 'Copied!');
+          btn.setAttribute('data-copied', 'true');
+          setTimeout(() => {
+            btn.setAttribute('aria-label', 'Copy code');
+            btn.setAttribute('data-copied', 'false');
+          }, 2000);
+        } catch {
+          btn.setAttribute('aria-label', 'Copy failed');
+        }
+      });
+    });
+  }
+
+  document.addEventListener('astro:page-load', initCodeBlockCopy);
+  initCodeBlockCopy();
+</script>

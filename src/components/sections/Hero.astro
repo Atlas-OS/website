@@ -10,12 +10,12 @@ import Button from '@/components/ui/Button.astro';
 import DownloadModal from '@/components/ui/DownloadModal.astro';
 
 const links = {
-  faq: '/docs/faq/general/#performance',
+  faq: '/docs/faq/general/',
   install: '/docs/install/',
 };
 ---
 
-<section class="relative overflow-visible px-4 pt-14 md:pt-22" data-reveal>
+<section class="relative overflow-visible px-4 pt-14 md:pt-22" data-home-hero>
   <div class="absolute inset-0 -z-10 w-full" style="height: 100%;">
     <div
       class="absolute h-full w-full bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px)] mask-[linear-gradient(to_bottom,rgba(0,0,0,0.7),transparent_70%)] bg-size-[24px_24px]"
@@ -50,7 +50,8 @@ const links = {
     <div class="mx-auto max-w-4xl pb-12 text-center">
       <div
         class="isolation-isolate shadow-primary/20 relative z-0 mb-4 inline-flex w-max items-center justify-center overflow-hidden rounded-full px-4 py-1.5 text-sm leading-5 font-medium shadow-inner backdrop-blur-[6px]"
-        data-reveal
+        data-animate
+        data-animate-delay="2"
       >
         <Icon name="tabler:users" class="text-primary mr-2 h-4 w-4" />
         <span class="text-sm text-white"
@@ -59,18 +60,19 @@ const links = {
       </div>
       <h1
         class="mb-6 bg-linear-to-b from-white to-blue-200 bg-clip-text text-4xl font-semibold tracking-tight text-transparent md:text-7xl"
-        data-reveal
+        data-animate
+        data-animate-delay="4"
       >
         Optimized Windows. <br /> Designed for enthusiasts.
       </h1>
-      <p class="mx-auto mb-10 max-w-2xl leading-relaxed text-white/70" data-reveal>
+      <p class="mx-auto mb-10 max-w-2xl leading-relaxed text-white/70" data-animate data-animate-delay="6">
         AtlasOS is creating a "kinder" Windows experience. Reducing bloatware and optimizing performance for
         enthusiasts, gamers, and privacy-conscious individuals.
       </p>
-      <p class="mb-4 text-sm text-white/70" data-reveal>
+      <p class="mb-4 text-sm text-white/70" data-animate data-animate-delay="7">
         The latest version is <span class="font-semibold text-white">Atlas v0.5.0 (October 21 2025)</span>
       </p>
-      <div class="flex flex-wrap items-center justify-center gap-4" data-reveal>
+      <div class="flex flex-wrap items-center justify-center gap-4" data-animate data-animate-delay="8">
         <Button variant="primary" size="lg" icon="tabler:chevron-right" iconPosition="after" id="get-started-btn">
           Get started
         </Button>
@@ -93,7 +95,7 @@ const links = {
     >
     </div>
 
-    <div class="wallpaper-container relative z-10 hidden rounded-t-lg md:block">
+    <div class="wallpaper-container relative z-10 hidden rounded-t-lg md:block" data-animate data-animate-delay="5">
       <div class="relative overflow-hidden rounded-t-lg">
         <Picture
           src={AtlasWallpaper}
@@ -110,8 +112,18 @@ const links = {
         />
       </div>
       <div class="wallpaper-animation pointer-events-none absolute inset-0 z-20 overflow-hidden rounded-t-lg">
-        <div class="wallpaper-animation-line absolute bottom-[-300px] h-[300px] w-[300px]"></div>
-        <div class="wallpaper-animation-line absolute bottom-[-300px] h-[300px] w-[300px]"></div>
+        <svg class="wallpaper-animation-svg" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="hero-wallpaper-runner-gradient" x1="0" y1="100%" x2="0" y2="0">
+              <stop offset="0%" stop-color="rgba(72, 167, 255, 0)" />
+              <stop offset="72%" stop-color="rgba(191, 223, 255, 0.88)" />
+              <stop offset="100%" stop-color="rgb(72, 167, 255)" />
+            </linearGradient>
+          </defs>
+          <path class="wallpaper-animation-track"></path>
+          <path class="wallpaper-animation-line"></path>
+          <path class="wallpaper-animation-line"></path>
+        </svg>
       </div>
     </div>
   </div>
@@ -127,7 +139,8 @@ const links = {
 
   <div
     class="mx-auto flex max-w-4xl flex-wrap items-center justify-center gap-x-8 gap-y-12 opacity-60 lg:gap-x-24"
-    data-reveal
+    data-animate
+    data-animate-delay="10"
   >
     <a
       href="https://www.techspot.com/news/97095-check-out-AtlasOS-redesigned-windows-10-version-gamers.html"
@@ -143,7 +156,7 @@ const links = {
         layout="constrained"
         draggable={false}
         class="max-h-8 w-auto select-none"
-        loading="lazy"
+        loading="eager"
         decoding="async"
       />
     </a>
@@ -207,69 +220,51 @@ const links = {
 <DownloadModal links={links} />
 
 <style>
-  .wallpaper-container,
-  [data-reveal] {
-    opacity: 0;
+  [data-home-hero] {
+    --motion-reveal-duration: 720ms;
+    --motion-reveal-step: 150ms;
+    --motion-reveal-distance: 34px;
+    --motion-reveal-blur: 8px;
+    --motion-reveal-scale-start: 0.98;
   }
 
-  @keyframes wallpaper-animation-line {
-    0% {
-      transform: matrix(1, 0, 0, 1, -150, 0);
-    }
-    18% {
-      transform: matrix(1, 0, 0, 1, -150, -440);
-    }
-    21% {
-      transform: matrix(0.7071, 0.7071, -0.7071, 0.7071, -150, -490);
-    }
-    30% {
-      transform: matrix(0, 1, -1, 0, 0, -610);
-    }
-    50% {
-      transform: matrix(0, 1, -1, 0, 500, -610);
-    }
-    68% {
-      transform: matrix(0, 1, -1, 0, 930, -610);
-    }
-    71% {
-      transform: matrix(-0.7071, 0.7071, -0.7071, -0.7071, 950, -610);
-    }
-    80% {
-      transform: matrix(-1, 0, 0, -1, 1100, -440);
-    }
-    100% {
-      transform: matrix(-1, 0, 0, -1, 1100, 0);
-    }
+  .wallpaper-container[data-animate] {
+    transform: scale(0.96);
+    filter: blur(6px);
+  }
+
+  .wallpaper-container[data-animate].animate-in {
+    transform: scale(1);
+    filter: blur(0);
   }
 
   .wallpaper-animation {
     padding: 2px 2px 0;
-    -webkit-mask:
-      linear-gradient(#fff 0 0) content-box,
-      linear-gradient(#fff 0 0);
-    mask:
-      linear-gradient(#fff 0 0) content-box,
-      linear-gradient(#fff 0 0);
-    mask-composite: xor;
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
+  }
+
+  .wallpaper-animation-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .wallpaper-animation-track {
+    fill: none;
+    stroke: rgba(164, 194, 255, 0.2);
+    stroke-width: 1;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
   }
 
   .wallpaper-animation-line {
-    will-change: transform;
-    animation: wallpaper-animation-line 12s linear infinite;
-    background-image: linear-gradient(
-      to top,
-      rgba(109, 46, 255, 0),
-      rgb(12, 21, 50),
-      rgb(187, 194, 204),
-      rgb(72, 167, 255) 99%,
-      rgba(12, 21, 50, 0) 100%
-    );
-  }
-
-  .wallpaper-animation-line:nth-child(1) {
-    animation-delay: 6s;
+    fill: none;
+    stroke: url(#hero-wallpaper-runner-gradient);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+    will-change: stroke-dashoffset;
   }
 
   .star {
@@ -476,72 +471,154 @@ const links = {
     const getStartedBtn = document.getElementById('get-started-btn');
     const downloadModal = document.getElementById('download-modal') as HTMLDialogElement;
 
-    if (getStartedBtn && downloadModal) {
+    if (getStartedBtn && downloadModal && !getStartedBtn.hasAttribute('data-download-bound')) {
       getStartedBtn.addEventListener('click', () => {
         document.body.classList.add('overflow-hidden');
         downloadModal.showModal();
       });
+      getStartedBtn.setAttribute('data-download-bound', 'true');
     }
   }
 
-  /**
-   * Lazy loads Motion and sets up scroll-triggered reveal animations
-   */
-  async function setupScrollAnimations(): Promise<void> {
-    try {
-      const { animate, inView } = (await import('motion')) as {
-        animate: (
-          element: string | Element,
-          keyframes: Record<string, unknown>,
-          options?: Record<string, unknown>
-        ) => unknown;
-        inView: (selector: string, callback: (element: Element) => void, options?: Record<string, unknown>) => void;
-      };
+  function createWallpaperRunnerPath(width: number, height: number, cornerRadius: number, inset: number): string {
+    const left = inset;
+    const top = inset;
+    const right = Math.max(left + 1, width - inset);
+    const bottom = Math.max(top + 1, height - inset);
+    const safeCornerRadius = Math.max(2, Math.min(cornerRadius, (right - left) / 2, bottom - top - 2));
 
-      // Wallpaper animation - runs once when element comes into view
-      inView(
-        '.wallpaper-container',
-        () => {
-          animate(
-            '.wallpaper-container',
-            {
-              opacity: [0, 1],
-              transform: ['scale(0.95)', 'scale(1)'],
-            },
-            {
-              duration: 1.2,
-              easing: 'ease-out',
-            }
-          );
-        },
-        { margin: '-100px' }
-      );
-
-      inView(
-        '[data-reveal]',
-        (element: Element) => {
-          animate(
-            element,
-            {
-              opacity: [0, 1],
-              transform: ['translateY(30px) scale(0.98)', 'translateY(0px) scale(1)'],
-            },
-            {
-              easing: 'ease-out',
-              duration: 0.8,
-            }
-          );
-        },
-        { margin: '-50px' }
-      );
-    } catch {
-      console.error('Error setting up scroll animations');
-    }
+    return [
+      `M ${left} ${bottom}`,
+      `L ${left} ${top + safeCornerRadius}`,
+      `Q ${left} ${top} ${left + safeCornerRadius} ${top}`,
+      `L ${right - safeCornerRadius} ${top}`,
+      `Q ${right} ${top} ${right} ${top + safeCornerRadius}`,
+      `L ${right} ${bottom}`,
+    ].join(' ');
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
+  function setupWallpaperAnimation(): void {
+    const container = document.querySelector('[data-home-hero] .wallpaper-container') as
+      | (HTMLElement & {
+          __refreshWallpaperAnimation?: () => void;
+          __wallpaperAnimationRaf?: number;
+          __wallpaperAnimations?: Animation[];
+          __wallpaperResizeObserver?: ResizeObserver;
+        })
+      | null;
+    const animationLayer = container?.querySelector<HTMLElement>('.wallpaper-animation');
+    const animationSvg = animationLayer?.querySelector<SVGSVGElement>('.wallpaper-animation-svg');
+    const track = animationLayer?.querySelector<SVGPathElement>('.wallpaper-animation-track');
+    const runners = animationLayer?.querySelectorAll<SVGPathElement>('.wallpaper-animation-line');
+
+    if (!container || !animationLayer || !animationSvg || !runners || runners.length === 0) {
+      return;
+    }
+
+    const runAnimation = () => {
+      const width = Math.round(animationSvg.clientWidth);
+      const height = Math.round(animationSvg.clientHeight);
+
+      if (width <= 0 || height <= 0) {
+        return;
+      }
+
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const runnerLength = Math.round(Math.max(130, Math.min(width * 0.19, height * 0.72, 260)));
+      const layerStyles = window.getComputedStyle(animationLayer);
+      const sampleRunner = runners[0]!;
+      const runnerStyles = window.getComputedStyle(sampleRunner);
+      const strokeWidth = Math.max(1, parseFloat(runnerStyles.strokeWidth) || 1.5);
+      const strokeInset = Math.max(0.5, strokeWidth / 2);
+      const paddingLeft = parseFloat(layerStyles.paddingLeft) || 0;
+      const paddingRight = parseFloat(layerStyles.paddingRight) || 0;
+      const rawTopLeftRadius = parseFloat(layerStyles.borderTopLeftRadius) || 8;
+      const rawTopRightRadius = parseFloat(layerStyles.borderTopRightRadius) || 8;
+      const baseCornerRadius = Math.max(2, Math.min(rawTopLeftRadius, rawTopRightRadius) - Math.max(paddingLeft, paddingRight) - strokeInset);
+      const enhancedCornerRadius = baseCornerRadius * 1.45;
+      const pathData = createWallpaperRunnerPath(width, height, enhancedCornerRadius, strokeInset);
+
+      animationSvg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+      if (track) {
+        track.setAttribute('d', pathData);
+      }
+      runners.forEach((runner) => {
+        runner.setAttribute('d', pathData);
+      });
+
+      const pathLength = runners[0]?.getTotalLength() || 0;
+      if (pathLength <= 0) {
+        return;
+      }
+
+      const gapLength = Math.max(pathLength - runnerLength, 1);
+
+      container.__wallpaperAnimations?.forEach((animation) => animation.cancel());
+      container.__wallpaperAnimations = [];
+
+      if (reducedMotion) {
+        runners.forEach((runner, index) => {
+          runner.style.strokeDasharray = `${runnerLength} ${gapLength}`;
+          runner.style.strokeDashoffset = String(-(pathLength * (index / runners.length)));
+        });
+        return;
+      }
+
+      const animations: Animation[] = [];
+      runners.forEach((runner, index) => {
+        const startOffset = -(pathLength * (index / runners.length));
+        runner.style.strokeDasharray = `${runnerLength} ${gapLength}`;
+        runner.style.strokeDashoffset = `${startOffset}`;
+
+        const animation = runner.animate(
+          [
+            { strokeDashoffset: `${startOffset}` },
+            { strokeDashoffset: `${startOffset - pathLength}` },
+          ],
+          {
+            duration: 12000,
+            easing: 'linear',
+            iterations: Infinity,
+            fill: 'both',
+          }
+        );
+        animations.push(animation);
+      });
+
+      container.__wallpaperAnimations = animations;
+    };
+
+    const scheduleAnimation = () => {
+      if (container.__wallpaperAnimationRaf) {
+        cancelAnimationFrame(container.__wallpaperAnimationRaf);
+      }
+
+      container.__wallpaperAnimationRaf = requestAnimationFrame(() => {
+        container.__wallpaperAnimationRaf = undefined;
+        runAnimation();
+      });
+    };
+
+    if (!container.__refreshWallpaperAnimation) {
+      container.__refreshWallpaperAnimation = scheduleAnimation;
+      container.__wallpaperResizeObserver = new ResizeObserver(scheduleAnimation);
+      container.__wallpaperResizeObserver.observe(animationLayer);
+    }
+
+    container.__refreshWallpaperAnimation();
+  }
+
+  function initHero(): void {
     updateHeroDownloadCount();
     setupGetStartedButton();
-    setTimeout(() => setupScrollAnimations(), 100);
-  });
+    setupWallpaperAnimation();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHero);
+  } else {
+    initHero();
+  }
+
+  document.addEventListener('astro:page-load', initHero);
 </script>

@@ -1,0 +1,14 @@
+---
+interface Props {
+  /** Link text. Default: "our guide to restore the Atlas folder" */
+  text?: string;
+  /** Use for same-page links (e.g. post-install). Renders "Restoring the Atlas folder" with anchor-only href. */
+  samePage?: boolean;
+}
+
+const { text = 'our guide to restore the Atlas folder', samePage = false } = Astro.props;
+const href = samePage ? '#restoring-the-atlas-folder' : '/docs/faq/post-install/#restoring-the-atlas-folder';
+const displayText = samePage ? 'Restoring the Atlas folder' : text;
+---
+
+<a href={href} class="text-primary font-medium hover:underline">{displayText}</a>

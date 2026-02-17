@@ -9,7 +9,7 @@ import { Image } from 'astro:assets';
 
 <section class="relative mx-auto mt-32 mb-32 max-w-7xl px-4">
   <div class="grid grid-cols-1 items-center gap-16 md:grid-cols-2 md:gap-24">
-    <div class="order-1 md:order-1">
+    <div class="order-1 md:order-1" data-animate>
       <SectionTitle>Trusted by the Pros</SectionTitle>
       <h2 class="mb-6 text-4xl font-semibold tracking-tight text-white md:text-5xl">
         The choice for <span class="text-primary">peak performance</span>
@@ -20,21 +20,21 @@ import { Image } from 'astro:assets';
         response, crucial in both practice and pro play.
       </p>
       <ul class="space-y-6 leading-relaxed text-white/70">
-        <li class="flex items-start">
+        <li class="flex items-start" data-animate data-animate-delay="1">
           <Icon name="tabler:clock-pause" class="text-primary-300 mt-1 mr-3 h-5 w-5 shrink-0" />
           <div class="grow">
             <h3 class="mb-1 font-semibold text-white">Smooth performance</h3>
             <p class="text-sm">Maintain focus with consistent, hitch-free gameplay.</p>
           </div>
         </li>
-        <li class="flex items-start">
+        <li class="flex items-start" data-animate data-animate-delay="2">
           <Icon name="tabler:pointer" class="text-primary-300 mt-1 mr-3 h-5 w-5 shrink-0" />
           <div class="grow">
             <h3 class="mb-1 font-semibold text-white">Instant input</h3>
             <p class="text-sm">React faster with reduced input lag for critical moments.</p>
           </div>
         </li>
-        <li class="flex items-start">
+        <li class="flex items-start" data-animate data-animate-delay="3">
           <Icon name="tabler:cpu" class="text-primary-300 mt-1 mr-3 h-5 w-5 shrink-0" />
           <div class="grow">
             <h3 class="mb-1 font-semibold text-white">Optimized response</h3>
@@ -44,7 +44,7 @@ import { Image } from 'astro:assets';
       </ul>
     </div>
 
-    <div class="order-2 overflow-hidden md:order-2">
+    <div class="order-2 overflow-hidden md:order-2" data-animate data-animate-delay="2">
       <p class="mb-4 text-xs text-white/50">
         Are you a pro who uses Atlas or wants to get started? <a
           href="mailto:contact@atlasos.net"
@@ -66,7 +66,7 @@ import { Image } from 'astro:assets';
               height={600}
               class="absolute inset-0 -z-10 h-full w-full rounded-lg object-cover"
               quality={80}
-              loading="eager"
+              loading="lazy"
             />
             <div class="absolute inset-0 z-0 rounded-lg bg-linear-to-t from-black/70 to-transparent"></div>
             <div class="absolute bottom-4 left-4 z-10">
@@ -80,7 +80,8 @@ import { Image } from 'astro:assets';
                   aria-label="Mistic X"
                   class="text-white/70 transition hover:text-white"
                 >
-                  <Icon name="tabler:brand-x" class="h-4 w-4" />
+                  <Icon name="tabler:brand-x" class="h-4 w-4" aria-hidden="true" />
+                  <span class="sr-only">Mistic X</span>
                 </a>
                 <a
                   href="https://www.twitch.tv/mistic"
@@ -89,7 +90,8 @@ import { Image } from 'astro:assets';
                   aria-label="Mistic Twitch"
                   class="text-white/70 transition hover:text-white"
                 >
-                  <Icon name="tabler:brand-twitch" class="h-4 w-4" />
+                  <Icon name="tabler:brand-twitch" class="h-4 w-4" aria-hidden="true" />
+                  <span class="sr-only">Mistic Twitch</span>
                 </a>
               </div>
             </div>
@@ -120,7 +122,8 @@ import { Image } from 'astro:assets';
                   aria-label="al0rante X"
                   class="text-white/70 transition hover:text-white"
                 >
-                  <Icon name="tabler:brand-x" class="h-4 w-4" />
+                  <Icon name="tabler:brand-x" class="h-4 w-4" aria-hidden="true" />
+                  <span class="sr-only">al0rante X</span>
                 </a>
                 <a
                   href="https://www.twitch.tv/al0rante"
@@ -129,7 +132,8 @@ import { Image } from 'astro:assets';
                   aria-label="al0rante Twitch"
                   class="text-white/70 transition hover:text-white"
                 >
-                  <Icon name="tabler:brand-twitch" class="h-4 w-4" />
+                  <Icon name="tabler:brand-twitch" class="h-4 w-4" aria-hidden="true" />
+                  <span class="sr-only">al0rante Twitch</span>
                 </a>
               </div>
             </div>
@@ -159,7 +163,8 @@ import { Image } from 'astro:assets';
                   aria-label="Starwraith X"
                   class="text-white/70 transition hover:text-white"
                 >
-                  <Icon name="tabler:brand-x" class="h-4 w-4" />
+                  <Icon name="tabler:brand-x" class="h-4 w-4" aria-hidden="true" />
+                  <span class="sr-only">Starwraith X</span>
                 </a>
                 <a
                   href="https://www.twitch.tv/starwraith"
@@ -168,7 +173,8 @@ import { Image } from 'astro:assets';
                   aria-label="Starwraith Twitch"
                   class="text-white/70 transition hover:text-white"
                 >
-                  <Icon name="tabler:brand-twitch" class="h-4 w-4" />
+                  <Icon name="tabler:brand-twitch" class="h-4 w-4" aria-hidden="true" />
+                  <span class="sr-only">Starwraith Twitch</span>
                 </a>
               </div>
             </div>

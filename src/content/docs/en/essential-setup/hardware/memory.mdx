@@ -1,7 +1,7 @@
 ---
 title: RAM & XMP
-metaDescription: Enable XMP (Intel) or DOCP (AMD) to unlock your RAM's full speed potential in AtlasOS. Learn how to enable memory profiles in BIOS and run stress tests.
-description: Enable XMP or DOCP to unlock your RAM's full speed.
+metaDescription: "AtlasOS XMP (Intel) or DOCP (AMD): enable memory profiles in BIOS, run stress tests."
+description: Enable XMP or DOCP for full RAM speed.
 order: 2
 ---
 
@@ -10,9 +10,9 @@ import CodeInline from '@/components/docs/CodeInline.astro';
 
 # RAM & XMP/DOCP
 
-Enable XMP (Extreme Memory Profile) for Intel or DOCP (Direct Overclock Profile) for AMD to unlock your RAM's full speed potential. High-performance RAM often has a speed rating (e.g., 3200MHz), but it runs at a slower default speed when first installed.
+Enable XMP (Intel) or DOCP (AMD) to unlock your RAM's full speed. High-performance RAM has a speed rating (e.g., 3200MHz) but runs at a slower default when first installed.
 
-Enabling XMP or DOCP in your BIOS allows the RAM to run at its advertised speed, which can significantly improve performance, especially in games and applications that require fast data transfers.
+XMP or DOCP in BIOS lets RAM run at its advertised speed, which can improve performance in games and data-heavy applications.
 
 <Callout type="info" title="Update BIOS First">
   Before enabling XMP/DOCP, [update your BIOS](/docs/essential-setup/hardware/bios-update/). If you
@@ -35,7 +35,7 @@ Enabling XMP or DOCP in your BIOS allows the RAM to run at its advertised speed,
 
 ## How to run a stress test
 
-Memory profiles can sometimes be unstable and cause crashes. Run a stress test for at least **1 hour** to verify stability before finalizing your setup.
+Memory profiles can be unstable and cause crashes. Run a stress test for at least **1 hour** to verify stability.
 
 1. [Download OCCT](https://www.ocbase.com/download/edition:Personal) and install it
 
@@ -57,4 +57,4 @@ Memory profiles can sometimes be unstable and cause crashes. Run a stress test f
 After enabling XMP/DOCP:
 
 - **[Enable Resizable BAR](/docs/essential-setup/hardware/gpu/)** (optional) - Improve GPU performance if you have a compatible graphics card
-- **Configure [Atlas settings](/docs/atlas-configuration/)** to customize your installation
+- **[Configure Atlas settings](/docs/atlas-configuration/)** - Customize your installation

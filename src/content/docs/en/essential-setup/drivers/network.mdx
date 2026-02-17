@@ -1,0 +1,46 @@
+---
+title: Network drivers
+metaDescription: "AtlasOS network drivers: Wi-Fi and Ethernet. Find and install from manufacturer."
+description: Install Wi-Fi and Ethernet drivers.
+order: 2
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+
+# Network drivers
+
+Network drivers (Wi-Fi and Ethernet) are required for internet. Without them you cannot connect after installing Atlas. If you followed the [Playbook guide](/docs/install/playbook/#step-2-prepare-network-drivers-recommended), you may have already downloaded them to a USB drive.
+
+## Finding your network adapter
+
+1. Open **Device Manager** (press <CodeInline text="Win + X" /> <CodeInline text="Enter" /> or search in Start)
+2. Expand **Network adapters**
+3. Note the name of your Wi-Fi or Ethernet adapter (e.g., Intel Wi-Fi 6, Realtek PCIe GbE)
+
+## Installing from manufacturer website
+
+Download network drivers from your motherboard or device manufacturer's support page.
+
+1. Search for "_your motherboard model_ support" or "_your laptop model_ drivers"
+2. Find the **LAN** or **Wi-Fi** driver section
+3. Download the latest driver for your adapter
+4. Run the installer and follow the setup instructions
+5. Restart your computer if prompted
+
+<Callout type="info" title="Can't Find Drivers?">
+  Search for your network adapter name (from Device Manager) plus "driver". Intel, Realtek, and
+  Qualcomm provide generic drivers for their adapters.
+</Callout>
+
+## Common network adapter manufacturers
+
+- **Intel** - [Intel Download Center](https://www.intel.com/content/www/us/en/download/18231/intel-network-adapter-driver-for-microsoft-windows-11.html)
+- **Realtek** - Search your motherboard manufacturer's support page (Realtek often doesn't offer direct downloads)
+- **Qualcomm/Atheros** - Usually available from your laptop or motherboard manufacturer
+
+## Troubleshooting
+
+- **No internet after install:** Download network drivers before reinstalling Windows. If you have another device with internet, download there and transfer via USB.
+- **Driver won't install:** Run the installer as administrator (right-click <CodeInline text="Run as administrator" />).
+- **Still no connection:** Try [Snappy Driver Installer Origin](/docs/essential-setup/drivers/other/#snappy-driver-installer-origin-sdio) as a backup, select only your network adapter driver.

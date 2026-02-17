@@ -1,0 +1,71 @@
+---
+import Callout from '@/components/docs/Callout.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+import IconArrow from '@/components/ui/IconArrow.astro';
+import TabPanel from '@/components/ui/TabPanel.astro';
+import Tabs from '@/components/ui/Tabs.astro';
+
+interface Props {
+  /** Include AME Beta as a download option (for ISO injection guide) */
+  includeAmeBeta?: boolean;
+}
+
+const { includeAmeBeta = false } = Astro.props;
+---
+
+<Callout type="tip" title="Which version?">
+  {includeAmeBeta ? (
+    <>For AMD and Intel CPUs, download the x86_64 (x64) version. For Qualcomm Snapdragon or other
+    supported ARM SoCs, download the ARM64 version.{' '}
+    <a href="https://www.tenforums.com/tutorials/132836-check-what-processor-cpu-windows-pc.html#option1">Check your CPU architecture</a>.</>
+  ) : (
+    <>Intel/AMD CPUs use x64. ARM (Snapdragon) systems use ARM64. Make sure you
+    download the correct ISO for your CPU architecture.</>
+  )}
+</Callout>
+
+<Tabs items={includeAmeBeta
+  ? [
+      { label: 'Microsoft website', value: 'microsoft-site' },
+      { label: 'Media Creation Tool', value: 'media-creation-tool' },
+      { label: 'AME Beta', value: 'ame-beta' },
+    ]
+  : [
+      { label: 'Microsoft website', value: 'microsoft-site' },
+      { label: 'Media Creation Tool', value: 'media-creation-tool' },
+    ]
+} defaultTab="microsoft-site">
+  <TabPanel value="microsoft-site" default>
+    <ol>
+      <li>Visit <a href="https://www.microsoft.com/en-us/software-download/windows11">Microsoft's Windows 11 download page</a></li>
+      <li>Choose <strong>Download Windows 11 Disk Image (ISO) for x64 devices</strong> (or ARM64 for ARM systems)</li>
+      <li>Select <strong>Windows 11 (multi-edition ISO)</strong><IconArrow /><strong>Confirm</strong></li>
+      <li>Choose your language<IconArrow /><strong>Confirm</strong></li>
+      <li>Click <strong>64-bit Download</strong> (or <strong>ARM64 Download</strong> for ARM) to begin</li>
+    </ol>
+  </TabPanel>
+
+  <TabPanel value="media-creation-tool">
+    <ol>
+      <li>Download the <a href="https://go.microsoft.com/fwlink/?linkid=2156295">Windows 11 Media Creation Tool</a>, then open it</li>
+      <li>Click <strong>Accept</strong> to agree to the license terms</li>
+      <li>Select <strong>Create installation media (USB flash drive, DVD, or ISO file) for another PC</strong>, click <strong>Next</strong>, and choose your language and <strong>Windows 11</strong></li>
+      <li>Choose the <strong>ISO file</strong> option, then choose the download location</li>
+      <li>After the download completes, click <strong>Finish</strong></li>
+    </ol>
+  </TabPanel>
+
+  {includeAmeBeta && (
+    <TabPanel value="ame-beta">
+      <ol>
+        <li>Go to <a href="https://atlasos.net">atlasos.net</a>, click <strong>Get started</strong>, then <strong>Already following the guide?</strong></li>
+        <li>Download <strong>Atlas Playbook</strong> and <strong>AME Beta</strong>, then extract both to your desktop</li>
+        <li>Open <CodeInline text="AME Beta.exe" /> from the AME Beta folder</li>
+        <li>If SmartScreen warns, see <a href="/docs/faq/ame/#ame-beta-deleted-or-closed-suddenly">AME Beta deleted</a>. Click <strong>More info</strong> and <strong>Run anyway</strong></li>
+        <li>Click <strong>Updates</strong> at the top and ensure AME Beta is up to date</li>
+        <li>Click <strong>More Options</strong><IconArrow /><strong>Download ISO</strong><IconArrow />Select <strong>Windows 11</strong><IconArrow /><strong>OK</strong></li>
+      </ol>
+      <p class="mt-4">This downloads the latest Windows 11 ISO.</p>
+    </TabPanel>
+  )}
+</Tabs>

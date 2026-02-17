@@ -1,7 +1,7 @@
 ---
 title: GPU settings
-metaDescription: Enable Resizable BAR (Smart Access Memory) for improved GPU performance in AtlasOS. Learn requirements, how to check status, and BIOS configuration for NVIDIA and AMD.
-description: Enable Resizable BAR for improved GPU performance.
+metaDescription: "AtlasOS Resizable BAR (SAM): requirements, status check, BIOS config for NVIDIA and AMD."
+description: Enable Resizable BAR for GPU performance.
 order: 3
 ---
 
@@ -10,7 +10,7 @@ import CodeInline from '@/components/docs/CodeInline.astro';
 
 # GPU settings - Resizable BAR
 
-Enable Resizable BAR (Base Address Register), also known as Smart Access Memory (SAM) on AMD systems, to improve communication between your CPU and GPU. This can significantly improve in-game FPS, sometimes by up to 15%, by allowing your CPU to access the GPU's entire frame buffer at once.
+Enable Resizable BAR (Base Address Register), or Smart Access Memory (SAM) on AMD, to improve CPU–GPU communication. It can improve in-game FPS by up to 15% by letting the CPU access the GPU's entire frame buffer at once.
 
 ## How it works
 
@@ -28,7 +28,7 @@ Resizable BAR requires the following graphics cards:
 - AMD Radeon RX 6000 Series or newer
 
 <Callout type="warning" title="Hardware Requirements">
-  If you do not meet these specifications, it's recommended to not enable the feature.
+  Do not enable this feature if you do not meet these specifications.
 </Callout>
 
 <Callout type="info" title="Update BIOS First">
@@ -63,5 +63,5 @@ Resizable BAR requires the following graphics cards:
 
 After enabling Resizable BAR:
 
-- **Configure [Atlas settings](/docs/atlas-configuration/)** to customize your installation
-- **Explore [optional tweaks](/docs/atlas-configuration/tweaks/)** to personalize your experience
+- **[Configure Atlas settings](/docs/atlas-configuration/)** - Customize your installation
+- **[Optional tweaks](/docs/atlas-configuration/tweaks/)** - Personalize your experience

@@ -1,11 +1,14 @@
 ---
 title: General FAQ
-metaDescription: Get answers to general questions about AtlasOS including version checking, performance improvements, compatibility with Windows Store apps, and Windows Update.
-description: General questions about AtlasOS features and usage.
+metaDescription: "AtlasOS general FAQ: version check, performance, compatibility, Windows Update."
+description: General AtlasOS questions.
+type: faq
 order: 29
 ---
 
 import Callout from '@/components/docs/Callout.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+import IconArrow from '@/components/ui/IconArrow.astro';
 import Table from '@/components/ui/Table.astro';
 import TableRow from '@/components/ui/TableRow.astro';
 import TableCell from '@/components/ui/TableCell.astro';
@@ -17,15 +20,15 @@ General questions about AtlasOS features, updates, and usage.
 
 ## Keeping AtlasOS updated
 
-Keeping your AtlasOS installation current ensures you benefit from the latest features, security updates, and compatibility improvements. Update options depend on your current version.
+Keep your AtlasOS installation current for the latest features, security updates, and compatibility. Update options depend on your version.
 
-Check the table below to see the update options available for your version:
+Update options by version:
 
 <Table headers={['Version', 'Windows Update', 'Updating Atlas', 'Support from Atlas Team']}>
   <TableRow>
     <TableCell>v0.3.x</TableCell>
     <TableCell>
-      <Icon name="tabler:x" class="inline h-4 w-4" /> Can't upgrade to v0.5.0
+      <Icon name="tabler:x" class="inline h-4 w-4" /> Cannot upgrade to v0.5.0
     </TableCell>
     <TableCell>
       <Icon name="tabler:x" class="inline h-4 w-4" /> No support
@@ -37,7 +40,7 @@ Check the table below to see the update options available for your version:
   <TableRow>
     <TableCell>v0.4.0</TableCell>
     <TableCell>
-      <Icon name="tabler:x" class="inline h-4 w-4" /> Can't upgrade to v0.5.0
+      <Icon name="tabler:x" class="inline h-4 w-4" /> Cannot upgrade to v0.5.0
     </TableCell>
     <TableCell>
       <Icon name="tabler:x" class="inline h-4 w-4" /> No support
@@ -74,23 +77,21 @@ Check the table below to see the update options available for your version:
 
 ## Checking your AtlasOS version
 
-To check your AtlasOS version:
+Atlas does not display its version in Windows Settings. To check your version:
 
-1. Open **Settings** <Icon name="tabler:arrow-right" class="inline h-4 w-4 mx-1" /> **System** <Icon name="tabler:arrow-right" class="inline h-4 w-4 mx-1" /> **About**
-2. Look for the Windows version information
-3. Check if it mentions AtlasOS or Atlas version
-
-Alternatively, you can check the version in the Atlas folder or run system information tools.
+1. **Compare installation date:** Check the [Atlas releases page](https://github.com/Atlas-OS/Atlas/releases) - if you installed before a release date, you're on that version or earlier
+2. **Check the Playbook:** If you still have the Atlas Playbook file (<CodeInline text=".apbx" />) you used to install, its filename often includes the version (e.g., <CodeInline text="Atlas Playbook 0.5.x" />)
+3. **Atlas folder:** Open the Atlas folder on your Desktop or at <CodeInline text="C:\Windows\AtlasDesktop" /> - some scripts may reference the version; otherwise, use the methods above
 
 ## Performance
 
 ### Will AtlasOS improve my gaming performance?
 
-AtlasOS includes optimizations that may improve gaming performance by reducing background processes and system overhead. Results vary by hardware and usage patterns.
+Atlas includes optimizations that may improve gaming performance by reducing background processes and system overhead. Results vary by hardware and usage.
 
 ### How much faster is AtlasOS?
 
-Performance improvements vary depending on your hardware and usage patterns. Many users report:
+Performance improvements vary by hardware and usage. Many users report:
 
 - Reduced RAM usage
 - Lower CPU overhead
@@ -99,7 +100,7 @@ Performance improvements vary depending on your hardware and usage patterns. Man
 
 ### What optimizations does AtlasOS include?
 
-AtlasOS applies various privacy, usability, and performance tweaks:
+Atlas applies privacy, usability, and performance tweaks:
 
 - Removes telemetry and unnecessary services
 - Optimizes system processes
@@ -114,8 +115,65 @@ Yes, Windows Store apps work normally with AtlasOS.
 
 ### Will my existing software work?
 
-Most Windows software works normally with AtlasOS. Some enterprise software may require specific Windows features that have been optimized.
+Most Windows software works with Atlas. Some enterprise software may require specific Windows features that Atlas has optimized.
 
 ### Can I use Windows Update?
 
 Yes, Windows Update works normally. You can configure driver updates through the Atlas folder.
+
+## Enabling TPM
+
+Windows 11 requires **Trusted Platform Module (TPM) 2.0** to be enabled. If you encounter an error that your PC doesn't meet the requirements during installation, you may need to enable TPM in your BIOS/UEFI.
+
+<Callout type="warning" title="Proceed with caution">
+  Modifying BIOS/UEFI settings incorrectly can cause system instability. Only change settings you
+  understand. Consult your motherboard or manufacturer's documentation if unsure.
+</Callout>
+
+### Steps
+
+1. **Restart your computer** and immediately press the BIOS/UEFI key repeatedly (common keys: <CodeInline text="DEL" />, <CodeInline text="F2" />, <CodeInline text="F10" />, <CodeInline text="F12" />, <CodeInline text="ESC" /> - check your manual or startup screen).
+
+2. **Find the TPM setting** - Look in sections like Security, Advanced, Trusted Computing, or CPU Configuration. Setting names may include:
+   - <CodeInline text="TPM" /> / <CodeInline text="TPM Device" /> / <CodeInline text="TPM State" />
+   - **Intel CPUs:** <CodeInline text="PTT" /> (Platform Trust Technology)
+   - **AMD CPUs:** <CodeInline text="fTPM" /> or <CodeInline text="AMD fTPM switch" />
+
+3. **Enable TPM** - Change from <CodeInline text="Disabled" /> to <CodeInline text="Enabled" /> (or <CodeInline text="On" /> / <CodeInline text="Available" /> / <CodeInline text="Firmware TPM" />).
+
+4. **Save and exit** - Use Save Changes and Exit (often <CodeInline text="F10" />), then retry the Windows installation.
+
+## Security and AtlasOS
+
+Atlas aims to be as secure as you want, including the ability to toggle Windows Defender, [mitigations](/docs/atlas-configuration/security/#mitigations), and automatic Windows updates. Power users can customize security and convenience. Atlas alerts you through pre-install prompts, [documentation](/docs/atlas-configuration/security/), and Atlas folder scripts. You can always change security post-install.
+
+**Compared to unmodified Windows:** Microsoft Windows is the most trusted and secure. Atlas aims for similar security while being transparent. [Atlas is open source](https://github.com/Atlas-OS/Atlas); AME Beta's [backend is open source under MIT](https://github.com/Ameliorated-LLC/trusted-uninstaller-cli).
+
+**Legacy versions (v0.3 and earlier):** Insecure and unsupported. [Reinstall Windows and upgrade](/docs/install/requirements/) to the latest version. Newer versions add Windows Update, Defender, UAC by default, Core isolation, and improved transparency.
+
+## Resetting Atlas
+
+The Windows "Reset this PC" feature **does not work** with Atlas. Atlas makes deep changes that Reset cannot handle—it will likely fail or leave your system broken.
+
+**To start fresh with Atlas:** Follow the [Installation Guide](/docs/install/requirements/) (clean install).
+
+**To remove Atlas:** Follow the [Reverting Atlas](/docs/faq/reverting/) guide.
+
+## Game troubleshooting
+
+### Roblox not launching
+
+1. **Change time and date:** **Settings**<IconArrow />Date & time - turn off "Set time automatically", add one day to the date, then re-enable automatic time after a day.
+2. **Enable TPM and Secure Boot** in BIOS.
+3. **Enable UAC:** **Control Panel**<IconArrow />Change User Account Control settings - set to Level 1, 2, or 3. If UAC was disabled (Level 0), reinstall Roblox after enabling it.
+
+### FIFA and EAFC not launching
+
+FIFA and EAFC require Windows Defender to be enabled. Open the Atlas folder, go to <CodeInline text="7. Security" /><IconArrow /><CodeInline text="Defender" />, and run <CodeInline text="Toggle Defender.cmd" />.
+
+## Microsoft Store
+
+The Microsoft Store works the same as on unmodified Windows. If you have issues, they are usually unrelated to Atlas. Try:
+
+1. Press **Win + R**, type <CodeInline text="wsreset -i" />, press **Enter**
+2. Open Microsoft Store, go to **Downloads and Updates**, wait for it to update

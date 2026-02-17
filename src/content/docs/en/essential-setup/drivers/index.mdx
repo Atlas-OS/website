@@ -1,10 +1,11 @@
 ---
 title: Drivers
-metaDescription: Complete guide to installing drivers for AtlasOS. Learn which drivers you need, installation order, and how to install graphics, chipset, network, audio, and Bluetooth.
-description: Complete guide to installing drivers for AtlasOS.
+metaDescription: "Install AtlasOS drivers: graphics, chipset, network, audio, Bluetooth. Order and guides."
+description: Install drivers for AtlasOS.
 order: 1
 ---
 
+import AtlasFolderRestoreLink from '@/components/docs/AtlasFolderRestoreLink.astro';
 import Callout from '@/components/docs/Callout.astro';
 import QuickLinkCard from '@/components/docs/QuickLinkCard.astro';
 import QuickLinksGrid from '@/components/docs/QuickLinksGrid.astro';
@@ -12,43 +13,41 @@ import CodeInline from '@/components/docs/CodeInline.astro';
 
 # Drivers guide
 
-Get your hardware working properly by installing the necessary drivers. Since you chose manual driver installation during setup, this guide will walk you through installing all essential drivers.
+Install the drivers your hardware needs. You chose manual installation during setup; this guide walks you through it.
 
 ## Why manual installation?
 
-You chose manual installation for:
+Manual installation gives you:
 
 - **Full control** over driver versions
-- **Potentially lower system resource usage**
-- **Fewer potentially unwanted applications**
+- **Potentially lower** system resource usage
+- **Fewer** potentially unwanted applications
 
-If you'd prefer to switch to automatic installation via Windows Update, you can do so using the files in the <CodeInline text="2. Drivers" /> directory in the Atlas folder. See [our FAQ](/docs/faq/general/) if you can't find the Atlas folder.
+To switch to automatic installation via Windows Update, use the files in the <CodeInline text="2. Drivers" /> directory in the Atlas folder. See <AtlasFolderRestoreLink /> if you cannot find it.
 
 <Callout type="info" title="Want to Switch to Automatic?">
-  You can switch to automatic driver installation using the files in the{' '}
-  <CodeInline text="2. Drivers" /> directory in the Atlas folder. This will allow Windows Update to
-  handle driver installation automatically.
+  Use the files in the <CodeInline text="2. Drivers" /> directory in the Atlas folder to let
+  Windows Update handle driver installation.
 </Callout>
 
 ## Which drivers do I need?
 
-Start with the essential drivers your system needs to function properly:
+Start with the drivers your system needs:
 
-- **Graphics (GPU/iGPU)** - Required for display output and gaming performance
-- **Audio** - For sound output from speakers or headphones
-- **Wi-Fi/Network** - Required for internet connectivity
-- **Bluetooth** - For wireless peripherals (only if you use Bluetooth devices)
-- **Chipset** - Important for system stability and performance
+- **Graphics (GPU/iGPU)** – Display output and gaming
+- **Audio** – Sound from speakers or headphones
+- **Wi-Fi/Network** – Internet connectivity
+- **Bluetooth** – Wireless peripherals (only if you use them)
+- **Chipset** – System stability and performance
 
 <Callout type="warning" title="Multiple Graphics Cards">
-  If you have both integrated and dedicated graphics (e.g., Intel CPU with NVIDIA GPU), you must
-  install drivers for both. This ensures proper functionality and allows you to switch between GPUs
-  as needed.
+  If you have both integrated and dedicated graphics (e.g., Intel CPU with NVIDIA GPU), install
+  drivers for both so you can switch between GPUs.
 </Callout>
 
 <Callout type="tip">
-  Install drivers in this order: Graphics → Network → Audio → Chipset → Other (Bluetooth, etc.).
-  This ensures your display and internet work first, then other functionality.
+  Install in this order: Graphics → Network → Audio → Chipset → Other (Bluetooth, etc.). Display
+  and internet work first, then the rest.
 </Callout>
 
 ## Driver installation guides
@@ -61,12 +60,26 @@ Start with the essential drivers your system needs to function properly:
     description="NVIDIA, AMD, and Intel GPU drivers"
   />
 
-<QuickLinkCard
-  href="/docs/essential-setup/drivers/chipset/"
-  icon="tabler:cpu"
-  title="Chipset Drivers"
-  description="Install chipset drivers for better performance"
-/>
+  <QuickLinkCard
+    href="/docs/essential-setup/drivers/network/"
+    icon="tabler:network"
+    title="Network Drivers"
+    description="Wi-Fi and Ethernet drivers for internet connectivity"
+  />
+
+  <QuickLinkCard
+    href="/docs/essential-setup/drivers/audio/"
+    icon="tabler:speakerphone"
+    title="Audio Drivers"
+    description="Sound drivers for speakers and headphones"
+  />
+
+  <QuickLinkCard
+    href="/docs/essential-setup/drivers/chipset/"
+    icon="tabler:cpu"
+    title="Chipset Drivers"
+    description="Install chipset drivers for better performance"
+  />
 
   <QuickLinkCard
     href="/docs/essential-setup/drivers/other/"
@@ -78,8 +91,8 @@ Start with the essential drivers your system needs to function properly:
 
 ## Next steps
 
-After installing all necessary drivers:
+After installing drivers:
 
 - **[Optimize hardware](/docs/essential-setup/hardware/)** (optional) - Enable XMP/DOCP and Resizable BAR for better performance
-- **Configure [Atlas settings](/docs/atlas-configuration/)** to customize your installation
+- **[Configure Atlas settings](/docs/atlas-configuration/)** - Customize your installation
 - **Explore [optional tweaks](/docs/atlas-configuration/tweaks/)** to personalize your experience

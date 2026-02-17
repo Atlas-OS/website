@@ -1,0 +1,66 @@
+---
+title: System Information
+metaDescription: "AtlasOS system info tools: HWiNFO, CPU-Z, GPU-Z, MSI Afterburner. Monitor temperatures and performance."
+description: Recommended system information software.
+order: 7
+---
+
+import Callout from '@/components/docs/Callout.astro';
+
+# System Information
+
+System info tools show temperatures, CPU usage, RAM usage, and more. Useful for debugging and troubleshooting.
+
+<Callout type="tip" title="Built-in option">
+  Windows Task Manager (below) is pre-installed and may be sufficient for basic monitoring. Use the
+  dedicated tools for detailed hardware data like temperatures.
+</Callout>
+
+## Task Manager
+
+Task Manager is pre-installed in Windows. It monitors system performance, CPU usage, RAM usage, and helps identify issues. It may not provide as much data as dedicated tools (e.g., temperatures).
+
+## HWiNFO
+
+HWiNFO provides in-depth analysis of your system: temperature, CPU usage, RAM usage, and more. A lightweight, customizable alternative to Task Manager.
+
+```
+winget install -e --id REALiX.HWiNFO
+```
+
+[Download HWiNFO](https://www.hwinfo.com/)
+
+## CPU-Z
+
+CPU-Z shows CPU sensors, usage, and other details. Useful for debugging CPU issues.
+
+```
+winget install -e --id CPUID.CPU-Z
+```
+
+[Download CPU-Z](https://www.cpuid.com/softwares/cpu-z.html)
+
+## GPU-Z
+
+GPU-Z shows GPU sensors, usage, and other details. Useful for debugging GPU issues.
+
+```
+winget install -e --id TechPowerUp.GPU-Z
+```
+
+[Download GPU-Z](https://www.techpowerup.com/gpuz/)
+
+## MSI Afterburner
+
+MSI Afterburner is for overclocking but also displays GPU stats while gaming: FPS, CPU%, GPU%, RAM. For info only (no overclocking), HWiNFO or GPU-Z may be better.
+
+```
+winget install -e --id Guru3D.Afterburner
+```
+
+[Download MSI Afterburner](https://www.msi.com/Landing/afterburner)
+
+## Next steps
+
+- **[Software overview](/docs/essential-setup/software/)** - More recommended apps
+- **[Configure Atlas](/docs/atlas-configuration/)** - Customize your installation

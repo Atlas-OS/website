@@ -1,0 +1,13 @@
+/* Reusable docs surface - cards, panels, details */
+.docs-surface {
+  background: var(--docs-surface-bg);
+  border: 1px solid var(--docs-surface-border);
+  border-radius: var(--docs-radius-md);
+}
+
+/* Inline code/chips */
+.docs-inline {
+  background: var(--docs-surface-bg);
+  border: 1px solid var(--docs-surface-border);
+  border-radius: var(--docs-radius-sm);
+}

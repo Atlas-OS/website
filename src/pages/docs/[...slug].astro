@@ -1,37 +1,30 @@
 ---
 import { DEFAULT_LOCALE } from '@/constants';
 import DocsLayout from '@/layouts/DocsLayout.astro';
-import { getLocaleFromId, getSlugFromId } from '@/utils/navigation';
+import { getSlugFromEntry } from '@/utils/navigation';
 import type { CollectionEntry } from 'astro:content';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
   const defaultLocale = DEFAULT_LOCALE;
-  const docs = await getCollection('docs');
+  const docs = await getCollection('docs', entry => !entry.data.draft);
 
   const paths = docs
-    .map((entry) => {
-      const locale = getLocaleFromId(entry.id, defaultLocale);
-      const slug = getSlugFromId(entry.id, defaultLocale);
+    .map(entry => {
+      const slug = getSlugFromEntry(entry, defaultLocale);
 
       if (slug === '/docs/' || slug === '/docs') {
         return null;
       }
 
-      let slugString = slug
+      const paramsSlug = slug
         .replace(/^\/docs\/?/, '')
         .replace(/^\/+/, '')
         .replace(/\/+$/, '');
 
-      if (!slugString) {
-        return null;
-      }
-
-      const paramsSlug = locale ? `${locale}/${slugString}` : slugString;
-
       return {
         params: { slug: paramsSlug },
-        props: { entry, locale: locale || defaultLocale },
+        props: { entry },
       };
     })
     .filter((path): path is NonNullable<typeof path> => path !== null);
@@ -41,14 +34,13 @@ export async function getStaticPaths() {
 
 interface Props {
   entry: CollectionEntry<'docs'>;
-  locale?: string;
 }
 
 const defaultLocale = DEFAULT_LOCALE;
-const { entry, locale: entryLocale } = Astro.props;
-const locale = entryLocale || defaultLocale;
+const { entry } = Astro.props;
 const { Content, headings } = await render(entry);
-const slug = getSlugFromId(entry.id, defaultLocale);
+const slug = getSlugFromEntry(entry, defaultLocale);
+const locale = Astro.currentLocale || defaultLocale;
 
 // Calculate OG image URL - matches the og-image.png.ts endpoint path
 const site = Astro.site || 'https://atlasos.net';

@@ -12,12 +12,12 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
   filteredHeadings.length > 0 && (
     <aside
       id="toc"
-      class="fixed top-12 right-0 hidden h-[calc(100vh-3rem)] w-64 overflow-y-auto border-l border-white/10 p-6 backdrop-blur-md xl:block"
-      style="background-color: oklch(0.12 0.0421 264.82 / 0.6);"
+      class="fixed right-0 z-20 hidden overflow-y-auto px-5 py-6 xl:block"
+      style="top: var(--docs-header-height); width: var(--docs-toc-width); height: calc(100vh - var(--docs-header-height)); background-color: oklch(0.1 0.04 265); border-left: 1px solid var(--docs-surface-border);"
     >
-      <nav class="sticky top-8 z-10 -mr-2 max-h-[calc(100vh-4rem)] overflow-y-auto px-2" aria-label="On this page">
+      <nav class="sticky top-6 z-10 -mr-2 max-h-[calc(100vh-4rem)] overflow-y-auto px-2" aria-label="On this page">
         <div class="space-y-4">
-          <h2 class="mb-4 text-xs font-semibold tracking-wider text-white/50 uppercase">On this page</h2>
+          <h2 class="mb-4 text-xs font-semibold tracking-wider uppercase" style="color: var(--docs-text-muted);">On this page</h2>
           <div class="relative">
             <div
               id="toc-marker"
@@ -34,7 +34,7 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
                     href={`#${heading.slug}`}
                     class={`toc-link block w-full text-left text-sm transition-colors duration-200 ${
                       heading.depth === 3 ? 'pl-6' : 'pl-4'
-                    } text-white/60 hover:text-white hover:opacity-100`}
+                    } hover:text-[var(--docs-text-primary)]`}
                     style="scroll-behavior: smooth;"
                   >
                     {heading.text}
@@ -42,6 +42,26 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
                 </li>
               ))}
             </ul>
+          </div>
+
+          <div class="toc-utilities mt-6 flex flex-col gap-2 border-t border-white/[0.06] pt-4">
+            <button
+              type="button"
+              id="toc-copy-link"
+              class="toc-utility-link text-left text-sm transition-colors duration-200 hover:text-[var(--docs-text-primary)]"
+              style="color: var(--docs-text-muted);"
+            >
+              Copy link
+            </button>
+            <a
+              href="https://github.com/Atlas-OS/website/issues"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="toc-utility-link text-sm transition-colors duration-200 hover:text-[var(--docs-text-primary)]"
+              style="color: var(--docs-text-muted);"
+            >
+              Share feedback
+            </a>
           </div>
         </div>
       </nav>
@@ -72,6 +92,10 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
   #toc::-webkit-scrollbar-thumb:hover {
     background-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .toc-link {
+    color: var(--docs-text-muted);
   }
 
   .toc-active {
@@ -119,14 +143,12 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
       tocLinks.forEach((link) => {
         link.classList.remove('toc-active', 'text-white');
-        link.classList.add('text-white/60');
       });
 
       if (activeHeadingId) {
         const activeLink = tocLinks.find((link) => link.getAttribute('href') === `#${activeHeadingId}`) as HTMLElement;
 
         if (activeLink) {
-          activeLink.classList.remove('text-white/60');
           activeLink.classList.add('toc-active', 'text-white');
 
           const linkRect = activeLink.getBoundingClientRect();
@@ -151,6 +173,31 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
     updateActiveLink();
   }
 
-  document.addEventListener('astro:page-load', setupTableOfContents);
+  function setupCopyLink() {
+    const btn = document.getElementById('toc-copy-link');
+    if (!btn) return;
+
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        const originalText = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => {
+          btn.textContent = originalText;
+        }, 2000);
+      } catch {
+        btn.textContent = 'Copy failed';
+        setTimeout(() => {
+          btn.textContent = 'Copy link';
+        }, 2000);
+      }
+    });
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    setupTableOfContents();
+    setupCopyLink();
+  });
   setupTableOfContents();
+  setupCopyLink();
 </script>

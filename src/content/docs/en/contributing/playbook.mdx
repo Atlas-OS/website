@@ -1,8 +1,8 @@
 ---
 title: Playbook
-metaDescription: Learn how to contribute to the AtlasOS Playbook. Understand structure, build process, testing methods, and development tools needed to modify and improve AtlasOS.
-description: Learn how to contribute to the AtlasOS Playbook.
-order: 33
+metaDescription: "Contribute to Atlas Playbook: structure, build process, testing, development tools."
+description: Contribute to the Atlas Playbook.
+order: 41
 ---
 
 import Callout from '@/components/docs/Callout.astro';
@@ -10,7 +10,7 @@ import CodeInline from '@/components/docs/CodeInline.astro';
 
 # Contributing to the Atlas Playbook
 
-This guide covers how to modify, test, and build Atlas. Before contributing, read the [Contribution Guidelines](/docs/contributing/).
+This guide covers modifying, testing, and building Atlas. Read the [Contribution Guidelines](/docs/contributing/) first.
 
 ## How the Playbook works
 
@@ -20,7 +20,7 @@ AME Playbooks are bundles of regular scripts, executables, and other files along
 
 [AME Beta](https://ameliorated.io/) is the easy-to-use GUI for users to run Playbooks, and it uses the open-source [TrustedUninstaller](https://github.com/Ameliorated-LLC/trusted-uninstaller-cli) as its backend.
 
-To start adding to Atlas, we recommend browsing our repository's source code to get familiar with how we've structured Atlas.
+Browse the [repository source code](https://github.com/Atlas-OS/Atlas) to see how Atlas is structured.
 
 ### What Atlas uses internally
 
@@ -30,7 +30,7 @@ The Atlas Playbook primarily uses the following three languages:
 2. [Batch scripting](https://ss64.com/nt/syntax.html)
 3. [YAML](https://gettaurus.org/docs/YAMLTutorial/) - Yet Another Markup Language
 
-For development tools and resources, we recommend using:
+Development tools and resources:
 
 - [Visual Studio Code](https://code.visualstudio.com/learn)
   - The Atlas repo contains VSCode configs by default for building, syntax highlighting, and more
@@ -43,7 +43,7 @@ For development tools and resources, we recommend using:
 
 ## How to build a Playbook
 
-If you want to test existing builds, consider viewing our [GitHub Actions](https://github.com/Atlas-OS/Atlas/actions/workflows/apbx.yaml), which builds a Playbook for each commit. Otherwise, clone the <CodeInline text="Atlas-OS/Atlas" /> repo before continuing or using your fork.
+To test existing builds, check [GitHub Actions](https://github.com/Atlas-OS/Atlas/actions/workflows/apbx.yaml), which builds a Playbook for each commit. Otherwise, clone the <CodeInline text="Atlas-OS/Atlas" /> repo or your fork.
 
 ### Using VSCode
 
@@ -67,9 +67,7 @@ If you want to test existing builds, consider viewing our [GitHub Actions](https
 
 ## How to run your built Playbooks
 
-For testing, we primarily use virtual machines unless we are testing for a final release, in which case we test on real hardware.
-
-This section will tell you how we set up virtual machines for testing.
+We use virtual machines for testing unless testing a final release on real hardware. This section explains how we set up VMs.
 
 ### Virtualization software
 
@@ -80,9 +78,7 @@ We recommend:
 
 ### Snapshotting
 
-Snapshotting is a feature in most virtual machine software that saves the current memory, disk, and settings of a virtual machine so that you can restore it later.
-
-Snapshots are handy for Atlas as you can test one Playbook and revert to unmodified Windows to test another Playbook once finished. Additionally, you can save a snapshot for testing something specific and return to it later.
+Snapshotting saves the current memory, disk, and settings of a VM so you can restore it later. For Atlas, test one Playbook, revert to unmodified Windows, then test another. You can also save snapshots for specific tests.
 
 ### Which snapshots to make
 
@@ -97,7 +93,7 @@ We recommend making three initial snapshots:
 
 - Stock Windows **without** Windows Updates installed
   - For testing installing Windows Updates after installing Atlas
-  - To ensure updates don't install, [pause updates indefinitely](https://github.com/Atlas-OS/docs/blob/main/docs/assets/other/pause-updates.reg) before connecting to the internet. Un-pause them later in Windows Settings
+  - To ensure updates don't install, [pause updates indefinitely](/assets/other/pause-updates.reg) before connecting to the internet. Un-pause them later in Windows Settings
 - Stock Windows **with** Windows Updates installed
   - Consider updating Windows and remaking the snapshot every so often
 - **Optional:** A current release Atlas snapshot if you need to test anything there
@@ -105,4 +101,4 @@ We recommend making three initial snapshots:
 
 ### That's it!
 
-Any Atlas Playbook should be ready to get tested now. Ensure that you extensively test what you're working on.
+Your Atlas Playbook should be ready for testing. Test what you are working on thoroughly.

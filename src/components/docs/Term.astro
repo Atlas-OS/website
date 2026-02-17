@@ -1,0 +1,18 @@
+---
+interface Props {
+  /** The term or phrase to display (with dotted underline) */
+  term: string;
+  /** The definition or explanation shown on hover (native browser tooltip) */
+  definition: string;
+}
+
+const { term, definition } = Astro.props;
+---
+
+<span
+  class="cursor-help whitespace-nowrap border-b border-dotted border-current/60 transition-colors duration-150 hover:border-current focus-visible:rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--color-primary)]"
+  title={definition}
+  tabindex="0"
+>
+  {term}
+</span>

@@ -1,7 +1,7 @@
 ---
 title: BIOS update
-metaDescription: Complete guide to safely updating your BIOS for AtlasOS. Learn how to check your current version, download updates, and use Windows-based or BIOS flash utilities safely.
-description: Complete guide to safely updating your BIOS.
+metaDescription: "AtlasOS BIOS update: check version, download, Windows or BIOS flash method."
+description: Safely update your BIOS.
 order: 1
 ---
 
@@ -11,7 +11,7 @@ import FeatureList from '@/components/ui/FeatureList.astro';
 
 # BIOS update
 
-Keeping your BIOS up to date is important for compatibility, performance, and security. This should be done first before enabling other hardware optimizations like XMP/DOCP and Resizable BAR, as BIOS updates can reset these settings.
+Keep your BIOS up to date for compatibility, performance, and security. Update BIOS first—before XMP/DOCP and Resizable BAR—because updates can reset those settings.
 
 <Callout type="warning" title="Important Warning">
   Incorrect BIOS updates can permanently damage your motherboard. Only update if necessary, follow
@@ -48,8 +48,8 @@ You need to know your exact motherboard model:
 4. Download the latest BIOS file (usually a <CodeInline text=".zip" /> or <CodeInline text=".exe" /> file)
 
 <Callout type="info">
-  Read the BIOS update notes/changelog - only update if the new version fixes issues you're
-  experiencing or adds features you need.
+  Read the BIOS update notes. Update only if the new version fixes issues you have or adds features
+  you need.
 </Callout>
 
 ### Step 2: Prepare for update
@@ -142,7 +142,7 @@ If the update process was interrupted:
 
 ## Best practices
 
-- **Only update if necessary** - Don't update just because a new version exists
+- **Update only when necessary** – Do not update just because a new version exists
 - **Read release notes** - Understand what the update fixes or adds
 - **Use stable power** - Ensure uninterrupted power supply
 - **Follow manufacturer instructions** - Each manufacturer has specific procedures
@@ -154,4 +154,4 @@ After updating your BIOS:
 
 - **[Enable XMP/DOCP](/docs/essential-setup/hardware/memory/)** - Unlock your RAM's full speed
 - **[Enable Resizable BAR](/docs/essential-setup/hardware/gpu/)** - Improve GPU performance if you have a compatible graphics card
-- **Configure [Atlas settings](/docs/atlas-configuration/)** to customize your installation
+- **[Configure Atlas settings](/docs/atlas-configuration/)** - Customize your installation

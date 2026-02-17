@@ -1,84 +1,84 @@
 ---
 title: Atlas folder
-metaDescription: Learn about the Atlas Folder structure and configuration files. Customize General.ini, Advanced.ini, and add custom scripts to personalize your AtlasOS installation.
-description: Learn about the Atlas Folder structure.
+metaDescription: "Atlas folder at C:\\Windows\\AtlasDesktop: structure, scripts, customization."
+description: Atlas folder structure and scripts.
 order: 20
 ---
 
 import Callout from '@/components/docs/Callout.astro';
+import CodeBlock from '@/components/docs/CodeBlock.astro';
 import CodeInline from '@/components/docs/CodeInline.astro';
 import { Icon } from 'astro-icon/components';
 
 # Atlas folder configuration
 
-The Atlas Folder is located at <CodeInline text="C:\Atlas" /> and contains configuration files and scripts that control your AtlasOS installation.
+The Atlas folder is at <CodeInline text="C:\Windows\AtlasDesktop" />. It holds configuration scripts and utilities. The Desktop or Start Menu shortcut opens it.
 
 ## Folder structure
 
-The Atlas Folder contains the following structure:
+<CodeBlock
+  title="Folder structure"
+  code={`C:\\Windows\\AtlasDesktop
+├── 1. Software
+├── 2. Drivers
+├── 3. General Configuration
+├── 4. Interface Tweaks
+├── 5. Windows Settings
+├── 6. Advanced Configuration
+├── 7. Security
+├── 8. Additional Tools
+└── 9. Troubleshooting`}
+/>
 
-```
-C:\Atlas\
-├── Config\
-│   ├── General.ini
-│   └── Advanced.ini
-├── Scripts\
-│   └── CustomScripts.ps1
-└── Logs\
-```
-
-## Configuration files
-
-### General.ini
-
-Contains general system settings and preferences for common tweaks and optimizations.
-
-<Callout type="info">
-  Edit <CodeInline text="General.ini" /> with a text editor like Notepad to customize basic AtlasOS
-  settings.
-</Callout>
-
-### Advanced.ini
-
-Contains advanced configuration options for power users who want fine-grained control over AtlasOS behavior.
-
-<Callout type="warning" title="Advanced Users Only">
-  Only modify <CodeInline text="Advanced.ini" /> if you understand the implications of each setting.
-  Incorrect changes may affect system stability.
-</Callout>
-
-## Customization
-
-### Editing configuration files
-
-1. Navigate to <CodeInline text="C:\Atlas\Config" />
-2. Open the desired <CodeInline text=".ini" /> file with a text editor
-3. Modify settings according to your preferences
-4. Save the file
-5. Restart your computer for changes to take effect
+Each section contains <CodeInline text=".cmd" /> scripts and shortcuts. Double-click a script to run it. Most changes require a restart to take effect.
 
 <Callout type="tip">
-  Always make a backup of configuration files before editing. You can copy them to another location
-  for safekeeping.
+  Scripts marked with <CodeInline text="(default)" /> indicate Atlas's default configuration. Use the paired script without "(default)" to change the setting.
 </Callout>
 
-### Custom scripts
+## Section overview
 
-The <CodeInline text="Scripts" /> folder allows you to add custom PowerShell scripts that run during AtlasOS initialization.
+| Section | Description |
+|---------|-------------|
+| **1. Software** | Install AtlasOS Toolbox and other software |
+| **2. Drivers** | GPU drivers and Windows Update driver options |
+| **3. General Configuration** | File sharing, power-saving, updates, Copilot, and more |
+| **4. Interface Tweaks** | Visual effects, context menus, File Explorer, Start Menu |
+| **5. Windows Settings** | Shortcuts to common Windows configuration pages |
+| **6. Advanced Configuration** | Services (Bluetooth, Printing, Network Discovery, NVIDIA Display Container, SuperFetch, SMB), Boot Configuration, Driver Configuration (MSI, Affinity), Microsoft Store, Process Explorer |
+| **7. Security** | Defender, mitigations, Core Isolation (VBS) |
+| **8. Additional Tools** | Links to HWMonitor, HWiNFO, Everything Search, Autoruns |
+| **9. Troubleshooting** | Network reset, Repair Windows Components, Safe Mode, and more |
 
-1. Place your <CodeInline text=".ps1" /> script in <CodeInline text="C:\Atlas\Scripts" />
-2. Ensure scripts follow PowerShell best practices
-3. Scripts will execute automatically during system startup
+## Sections 8 and 9
 
-<Callout type="warning" title="Script Safety">
-  Only run scripts from trusted sources. Malicious scripts can compromise your system security.
+The shortcuts in <CodeInline text="8. Additional Tools" /> and <CodeInline text="9. Troubleshooting" /> provide quick access to utilities and recovery options:
+
+### 8. Additional Tools
+
+Links to useful system utilities:
+
+- **HWMonitor** / **HWInfo** - Monitor temperatures, voltages, and system performance
+- **Everything Search** - Fast file search (alternative to Windows Search)
+- **Autoruns** - View and manage startup programs (Microsoft Sysinternals)
+
+These are shortcuts to download or documentation pages. Install them separately if needed.
+
+### 9. Troubleshooting
+
+Scripts and shortcuts for common recovery tasks:
+
+- **Network** - Reset network settings to Atlas defaults or Windows defaults
+- **Repair Windows Components** - Fix corrupted Windows components
+- **Set services to defaults** - Restore Atlas services to their default state
+- **Fix Errors 2502 and 2503** - Resolve installer permission errors
+- **Safe Mode** - Boot into Safe Mode (with or without networking) or exit Safe Mode
+- **Telemetry Components** - Manage telemetry-related settings
+
+<Callout type="warning" title="Reset this PC">
+  Atlas disables "Reset this PC" because it is unreliable with Atlas modifications. To fully reinstall
+  Windows or remove Atlas, follow the [Reverting Atlas](/docs/faq/reverting/) guide.
 </Callout>
-
-## Logs
-
-The <CodeInline text="Logs" /> folder contains diagnostic information and error logs that can help troubleshoot issues with your AtlasOS installation.
-
-If you encounter problems, check the logs directory for error messages and diagnostic information.
 
 ## Related configuration
 

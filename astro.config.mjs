@@ -1,18 +1,41 @@
-import { defineConfig } from 'astro/config';
+import mdx from '@astrojs/mdx';
 import partytown from '@astrojs/partytown';
+import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import icon from 'astro-icon';
-import mdx from '@astrojs/mdx';
-import sitemap from '@astrojs/sitemap';
-import pagefind from 'astro-pagefind';
-import { fileURLToPath } from 'url';
+import { defineConfig, fontProviders } from 'astro/config';
 import path from 'path';
-import seoValidation from './src/integrations/seo-validation';
+import { fileURLToPath } from 'url';
+import pagefindIntegration from './src/integrations/pagefind';
 
 export default defineConfig({
   site: 'https://atlasos.net',
   output: 'static',
   trailingSlash: 'always',
+
+  fonts: [
+    {
+      name: 'Inter',
+      cssVariable: '--font-sans-source',
+      provider: fontProviders.fontsource(),
+      weights: [400, 500, 600, 700],
+      subsets: ['latin'],
+    },
+    {
+      name: 'Archivo',
+      cssVariable: '--font-display-source',
+      provider: fontProviders.fontsource(),
+      weights: [400, 500, 600, 700],
+      subsets: ['latin'],
+    },
+    {
+      name: 'Fira Code',
+      cssVariable: '--font-mono-source',
+      provider: fontProviders.fontsource(),
+      weights: [400, 500, 600, 700],
+      subsets: ['latin'],
+    },
+  ],
 
   i18n: {
     defaultLocale: 'en',
@@ -25,9 +48,14 @@ export default defineConfig({
   build: {
     format: 'directory',
     assets: '_assets',
+    inlineStylesheets: 'auto',
   },
 
   compressHTML: true,
+
+  security: {
+    checkOrigin: true,
+  },
 
   image: {
     service: {
@@ -60,12 +88,23 @@ export default defineConfig({
         },
       },
     }),
-    seoValidation(),
-    pagefind(),
+    pagefindIntegration({
+      rootSelector: '[data-pagefind-body], main, article, html',
+      excludeSelectors: ['[data-pagefind-ignore]'],
+      outputSubdir: 'pagefind',
+      failOnError: true,
+    }),
   ],
 
   vite: {
     plugins: [tailwindcss()],
+    server: {
+      headers: {
+        'Content-Security-Policy':
+          "default-src * data: blob: 'unsafe-inline' 'unsafe-eval'; frame-ancestors 'none';",
+        'X-Frame-Options': 'DENY',
+      },
+    },
     resolve: {
       alias: {
         '@': path.resolve(path.dirname(fileURLToPath(import.meta.url)), './src'),

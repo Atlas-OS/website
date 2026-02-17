@@ -1,41 +1,24 @@
 ---
 title: Optional tweaks
-metaDescription: Personalize your Windows interface with optional AtlasOS tweaks. Customize Alt-Tab, File Explorer, context menus, lock screen, and more for your ideal desktop experience.
-description: Personalize your Windows interface with optional tweaks.
+metaDescription: "AtlasOS interface tweaks: File Explorer, context menus, lock screen, and more."
+description: Personalize your Windows interface.
 order: 23
 ---
 
+import AtlasFolderRestoreLink from '@/components/docs/AtlasFolderRestoreLink.astro';
 import Callout from '@/components/docs/Callout.astro';
 import CodeInline from '@/components/docs/CodeInline.astro';
 import IconArrow from '@/components/ui/IconArrow.astro';
 
 # Optional tweaks
 
-Personalize your Windows interface and experience with these optional tweaks. From changing your Alt-Tab menu style to customizing File Explorer, these tweaks let you make AtlasOS feel exactly how you want it.
+Personalize your Windows interface with these optional tweaks: File Explorer, context menus, lock screen, and more.
 
-All configuration files listed here are located in the **4. Optional Tweaks** folder within the Atlas folder on your Desktop. If you can't find the Atlas folder, see [our guide to restore it](/docs/faq/post-install/).
+Most configuration files listed here are in the <CodeInline text="4. Interface Tweaks" /> folder within the Atlas folder on your Desktop. Delivery Optimization is in <CodeInline text="3. General Configuration" />. If you can't find the Atlas folder, see <AtlasFolderRestoreLink />.
 
-<Callout type="info">
+<Callout type="info" title="Restart required">
   Most tweaks require a restart to take effect. These are purely cosmetic and functional preferences
   that don't affect system stability.
-</Callout>
-
-## Alt-Tab
-
-**When to use:** Switch to modern Alt-Tab if you prefer Windows 11's task switcher appearance.
-
-Choose between the classic Alt-Tab menu (default in AtlasOS) or Windows 11's modern Alt-Tab interface.
-
-**Default:** AtlasOS uses the legacy (classic) Alt-Tab menu.
-
-**To use modern Alt-Tab:**
-
-1. Run the <CodeInline text="Modern Alt-Tab.reg" /> file
-2. Restart your system
-
-<Callout type="tip">
-  The modern Alt-Tab provides a more visual interface, while the classic version is faster and more
-  compact.
 </Callout>
 
 ## Delivery optimization
@@ -44,7 +27,7 @@ Choose between the classic Alt-Tab menu (default in AtlasOS) or Windows 11's mod
 
 Delivery Optimization speeds up Windows Updates by sharing update data with other Windows machines on your local network. It's disabled by default to reduce background network usage.
 
-To enable Delivery Optimization, run the <CodeInline text="Enable Delivery Optimization.reg" /> file and restart.
+To enable Delivery Optimization, run the <CodeInline text="Enable Delivery Optimization.cmd" /> script in <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="Delivery Optimization" /> and restart.
 
 <Callout type="info">
   Delivery Optimization only shares data with devices on your local network, not the internet. It
@@ -63,16 +46,8 @@ Windows 11 introduced larger padding in File Explorer. AtlasOS uses compact view
 
 **To revert to default spacing:**
 
-- Option 1: In File Explorer, go to **View** <IconArrow /> **Compact View** to toggle it
-- Option 2: Run the <CodeInline text="Disable Compact View.reg" /> file
-
-### Folders in This PC
-
-**When to use:** Restore if you want to see default folders (Desktop, Documents, Downloads, etc.) in File Explorer's "This PC" section.
-
-By default, AtlasOS removes default folders from "This PC" in favor of Quick Access. If you prefer the traditional layout, restore them.
-
-To restore folders, run the <CodeInline text="Restore all folders in This PC.reg" /> file and restart.
+- Option 1: In File Explorer, go to **View**<IconArrow />**Compact View** to toggle it
+- Option 2: Run the <CodeInline text="Disable Compact View.cmd" /> script in <CodeInline text="File Explorer Customization" /><IconArrow /><CodeInline text="Compact View" />
 
 ### Gallery
 
@@ -80,7 +55,7 @@ To restore folders, run the <CodeInline text="Restore all folders in This PC.reg
 
 The Gallery feature provides an image viewing experience in File Explorer. It's disabled by default in AtlasOS.
 
-To enable Gallery, run the <CodeInline text="Enable Gallery.reg" /> file and restart.
+To enable Gallery, run the <CodeInline text="Enable Gallery.cmd" /> script in <CodeInline text="File Explorer Customization" /><IconArrow /><CodeInline text="Gallery" /> and restart.
 
 ### Quick Access
 
@@ -88,7 +63,7 @@ To enable Gallery, run the <CodeInline text="Enable Gallery.reg" /> file and res
 
 Quick Access shows your pinned folders at the top of File Explorer. It's enabled by default.
 
-To remove Quick Access, run the <CodeInline text="Remove Quick Access.reg" /> file and restart.
+To remove Quick Access, run the <CodeInline text="Remove Quick Access.cmd" /> script in <CodeInline text="File Explorer Customization" /><IconArrow /><CodeInline text="Quick Access" /> and restart.
 
 ### Removable drives in sidebar
 
@@ -96,7 +71,7 @@ To remove Quick Access, run the <CodeInline text="Remove Quick Access.reg" /> fi
 
 By default, removable drives may not appear in the File Explorer sidebar. Enable this to make them visible.
 
-To enable, run the <CodeInline text="Enable Removable Drives in Sidebar.reg" /> file and restart.
+To enable, run the <CodeInline text="Enable Removable Drives in Sidebar.cmd" /> script in <CodeInline text="File Explorer Customization" /><IconArrow /><CodeInline text="Removable Drives in Sidebar" /> and restart.
 
 ## Lock screen
 
@@ -104,7 +79,7 @@ To enable, run the <CodeInline text="Enable Removable Drives in Sidebar.reg" /> 
 
 The lock screen is enabled by default in AtlasOS. You can disable it to go directly to the sign-in screen.
 
-To disable the lock screen, run the <CodeInline text="Hide Lock Screen.reg" /> file and restart.
+To disable the lock screen, run the <CodeInline text="Hide Lock Screen.cmd" /> script in <CodeInline text="Lock Screen" /> and restart.
 
 <Callout type="info">
   Disabling the lock screen goes directly to sign-in, skipping the lock screen with background image
@@ -117,7 +92,7 @@ To disable the lock screen, run the <CodeInline text="Hide Lock Screen.reg" /> f
 
 This tweak adds an option to set application priority (high, normal, low, etc.) directly from the context menu when right-clicking executable files.
 
-To enable, run the <CodeInline text="Add Run With Priority In Context Menu.reg" /> file and restart.
+To enable, run the <CodeInline text="Add Run With Priority In Context Menu.cmd" /> script in <CodeInline text="Context Menus" /><IconArrow /><CodeInline text="Run With Priority" /> and restart.
 
 <Callout type="tip">
   Useful for running specific applications with higher or lower priority to manage system resource
@@ -130,7 +105,7 @@ To enable, run the <CodeInline text="Add Run With Priority In Context Menu.reg" 
 
 Reduce clutter in the "Send to" context menu by removing default items you don't use.
 
-To clean up the menu, run the <CodeInline text="Debloat Send To Context Menu.cmd" /> file.
+To clean up the menu, run the <CodeInline text="Debloat Send To Context Menu.cmd" /> script in <CodeInline text="Context Menus" /><IconArrow /><CodeInline text="Send To" />.
 
 ## Shortcut icon
 
@@ -144,7 +119,7 @@ Customize how shortcut icons appear. Options include Windows default, classic st
 - **Classic** - Traditional shortcut arrow indicator
 - **None** - No visual indicator (not recommended)
 
-To change to classic style, run the <CodeInline text="Classic.reg" /> file.
+To change to classic style, run the <CodeInline text="Classic.cmd" /> script in <CodeInline text="Shortcut Icon" />.
 
 <Callout type="warning" title="Security Risk">
   Disabling shortcut icons entirely ("None" option) is a security risk because you won't be able to
@@ -158,7 +133,7 @@ To change to classic style, run the <CodeInline text="Classic.reg" /> file.
 
 Shortcut text labels are disabled by default in AtlasOS. Enable this to show text under Start menu shortcut icons.
 
-To enable shortcut text, run the <CodeInline text="Restore Shortcut Text.reg" /> file and restart.
+To enable shortcut text, run the <CodeInline text="Restore Shortcut Text.cmd" /> script in <CodeInline text="Shortcut Text" /> and restart.
 
 ## Windows 11 context menu
 
@@ -170,7 +145,7 @@ AtlasOS uses the classic context menu by default for faster access to options. S
 
 **To use Windows 11 context menu:**
 
-1. Run the <CodeInline text="New Context Menu.reg" /> file
+1. Run the <CodeInline text="New Context Menu.cmd" /> script in <CodeInline text="Context Menus" /><IconArrow /><CodeInline text="Windows 11" />
 2. Restart your system
 
 <Callout type="tip">
@@ -190,3 +165,7 @@ The Atlas folder includes a shortcut to Explorer Patcher for easy access. Learn 
   Explorer Patcher is a third-party tool that requires installation. It's included as a convenient
   shortcut for users who want to customize their Windows interface further.
 </Callout>
+
+## Additional tweaks
+
+The Atlas folder contains more interface tweaks not documented here, including Old Flyouts (Battery, Volume, Date/Time), Snap Layouts, Verbose Status Messages, Edge Swipe, Unlock Recent Items, and App Icons on Thumbnails. Explore the <CodeInline text="4. Interface Tweaks" /> folder to discover and try them.

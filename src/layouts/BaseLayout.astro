@@ -1,5 +1,6 @@
 ---
 import '@/styles/global.css';
+import { Font } from 'astro:assets';
 import { getCurrentLocale, getLangCode } from '@/utils/navigation';
 
 interface Props {
@@ -10,21 +11,47 @@ interface Props {
 const { locale: providedLocale, currentPath = Astro.url.pathname } = Astro.props;
 const currentLocale = providedLocale || getCurrentLocale(currentPath);
 const langCode = getLangCode(currentLocale);
+const kapaLogoUrl = 'https://avatars.githubusercontent.com/u/78708182?s=128';
 ---
 
 <!doctype html>
 <html lang={langCode}>
   <head>
     <meta charset="UTF-8" />
+    <Font cssVariable="--font-sans-source" preload />
+    <Font cssVariable="--font-display-source" preload />
+    <Font cssVariable="--font-mono-source" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
     <meta property="xml:lang" content={langCode} />
 
+    <script is:inline>
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('motion-ready');
+      }
+    </script>
+
     <!-- Resource Hints - Preconnect for critical third-party domains -->
     <link rel="preconnect" href="https://pla.atlasos.net" crossorigin />
     <link rel="preconnect" href="https://api.atlasos.net" crossorigin />
+    <link rel="preconnect" href="https://widget.kapa.ai" crossorigin />
     <link rel="dns-prefetch" href="https://pla.atlasos.net" />
     <link rel="dns-prefetch" href="https://api.atlasos.net" />
+    <link rel="dns-prefetch" href="https://widget.kapa.ai" />
+
+    <script
+      is:inline
+      async
+      src="https://widget.kapa.ai/kapa-widget.bundle.js"
+      data-website-id="d6dd374d-575e-4d3a-9462-00878d18f937"
+      data-project-name="AtlasOS"
+      data-modal-title="AtlasOS AI"
+      data-project-color="#2894F3"
+      data-project-logo={kapaLogoUrl}
+      data-modal-image={kapaLogoUrl}
+      data-button-image={kapaLogoUrl}
+      data-modal-example-questions-col-span="12"
+    ></script>
 
     <!-- Favicons -->
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
@@ -37,13 +64,13 @@ const langCode = getLangCode(currentLocale);
     <!-- SEO Slot - DefaultLayout and DocsLayout provides the SEO component here -->
     <slot name="head" />
 
-    <!-- Partytown -->
-    <script is:inline type="text/partytown" src="https://pla.atlasos.net/js/script.js" data-domain="atlasos.net"
-    ></script>
   </head>
   <body class="overflow-x-hidden">
     <slot name="body" />
     <slot />
+    <!-- Partytown -->
+    <script is:inline type="text/partytown" src="https://pla.atlasos.net/js/script.js" data-domain="atlasos.net"
+    ></script>
   </body>
 </html>
 

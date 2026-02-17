@@ -1,10 +1,11 @@
 ---
 title: Atlas configuration
-metaDescription: Complete guide to customizing AtlasOS. Configure basic settings, optional tweaks, advanced options, security features, and Windows settings to match your preferences.
-description: Complete guide to customizing AtlasOS.
+metaDescription: "Customize AtlasOS: basic settings, tweaks, advanced options, security, and Windows settings."
+description: Customize your AtlasOS installation.
 order: 19
 ---
 
+import AtlasFolderRestoreLink from '@/components/docs/AtlasFolderRestoreLink.astro';
 import Callout from '@/components/docs/Callout.astro';
 import CodeInline from '@/components/docs/CodeInline.astro';
 import QuickLinkCard from '@/components/docs/QuickLinkCard.astro';
@@ -13,25 +14,24 @@ import DirectoryTree from '@/components/docs/DirectoryTree.astro';
 
 # Atlas configuration
 
-Customize your AtlasOS installation to match your preferences and needs. All configuration options are conveniently located in the Atlas folder on your Desktop or in the Start Menu, giving you full control over your system's behavior.
+Customize your AtlasOS installation. All configuration options live in the Atlas folder on your Desktop or in the Start Menu.
 
-<Callout type="info" title="Missing Atlas Folder?">
-  If you can't find the Atlas folder, check out [our FAQ guide](/docs/faq/post-install/) for
-  instructions on restoring it.
+<Callout type="info" title="Missing Atlas folder?">
+  If you can't find the Atlas folder, see <AtlasFolderRestoreLink />.
 </Callout>
 
 ## What you can configure
 
-AtlasOS provides several ways to customize your installation:
+You can customize:
 
-- **Basic Settings** - Enable or disable Windows features like Bluetooth, Game Mode, and notifications
-- **Optional Tweaks** - Personalize your interface with context menu styles, Alt-Tab appearance, and more
-- **Advanced Options** - Fine-tune system behavior for power users who want detailed control
-- **Security Settings** - Configure security features and privacy options
-- **Windows Settings** - Quick access to common Windows configuration options
+- **Basic Settings** – Enable or disable Windows features (Bluetooth, Game Mode, notifications)
+- **Optional Tweaks** – Context menu styles, Alt-Tab appearance, and more
+- **Advanced Options** – Fine-tune system behavior (power users)
+- **Security Settings** – Security features and privacy options
+- **Windows Settings** – Shortcuts to common Windows configuration
 
 <Callout type="tip">
-  Most configuration changes require a restart to take effect. You'll see a reminder when needed.
+  Most changes require a restart. A reminder appears when needed.
 </Callout>
 
 ## Configuration sections
@@ -40,37 +40,37 @@ AtlasOS provides several ways to customize your installation:
   <QuickLinkCard
     href="/docs/atlas-configuration/atlas-folder/"
     icon="tabler:folder"
-    title="Atlas Folder Overview"
+    title="Atlas folder overview"
     description="Understanding the Atlas folder structure and organization"
   />
 
-<QuickLinkCard
-  href="/docs/atlas-configuration/settings/"
-  icon="tabler:settings"
-  title="Basic Settings"
-  description="Enable or disable Windows features and system options"
-/>
+  <QuickLinkCard
+    href="/docs/atlas-configuration/settings/"
+    icon="tabler:settings"
+    title="Basic Settings"
+    description="Enable or disable Windows features and system options"
+  />
 
-<QuickLinkCard
-  href="/docs/atlas-configuration/tweaks/"
-  icon="tabler:sparkles"
-  title="Optional Tweaks"
-  description="Personalize your Windows interface and experience"
-/>
+  <QuickLinkCard
+    href="/docs/atlas-configuration/tweaks/"
+    icon="tabler:sparkles"
+    title="Optional Tweaks"
+    description="Personalize your Windows interface and experience"
+  />
 
-<QuickLinkCard
-  href="/docs/atlas-configuration/advanced/"
-  icon="tabler:code"
-  title="Advanced Options"
-  description="Fine-tune system behavior for experienced users"
-/>
+  <QuickLinkCard
+    href="/docs/atlas-configuration/advanced/"
+    icon="tabler:code"
+    title="Advanced Options"
+    description="Fine-tune system behavior for experienced users"
+  />
 
-<QuickLinkCard
-  href="/docs/atlas-configuration/security/"
-  icon="tabler:shield"
-  title="Security Settings"
-  description="Configure security features and privacy options"
-/>
+  <QuickLinkCard
+    href="/docs/atlas-configuration/security/"
+    icon="tabler:shield"
+    title="Security Settings"
+    description="Configure security features and privacy options"
+  />
 
   <QuickLinkCard
     href="/docs/atlas-configuration/windows/"
@@ -82,32 +82,34 @@ AtlasOS provides several ways to customize your installation:
 
 ## Understanding the Atlas folder
 
-The Atlas folder is located at <CodeInline text="C:\Atlas\" /> and contains all configuration files organized into logical sections:
+The Atlas folder is at <CodeInline text="C:\Windows\AtlasDesktop" />. It holds configuration scripts and utilities in numbered sections. The Desktop and Start Menu shortcut opens it.
 
 <DirectoryTree>
-C:\Atlas
-├── Config
-│   ├── General.ini
-│   └── Advanced.ini
-├── Scripts
-│   └── CustomScripts.ps1
-└── Logs
+C:\Windows\AtlasDesktop
+├── 1. Software
+├── 2. Drivers
+├── 3. General Configuration
+├── 4. Interface Tweaks
+├── 5. Windows Settings
+├── 6. Advanced Configuration
+├── 7. Security
+├── 8. Additional Tools
+└── 9. Troubleshooting
 </DirectoryTree>
 
-Each section of the configuration guide explains where to find specific files and what they do.
+Each section has <CodeInline text=".cmd" /> scripts and shortcuts. Run a script to enable or disable a feature. Most changes require a restart.
 
 <Callout type="warning" title="Modify with Caution">
-  Only modify configuration settings if you understand what they do. Incorrect changes may affect
-  system stability or functionality. When in doubt, consult the documentation or ask for help in our
-  [Discord community](https://discord.com/invite/atlasos).
+  Change settings only if you understand them. Incorrect changes can affect stability or
+  functionality. When unsure, check the docs or ask in [Discord](https://discord.com/invite/atlasos).
 </Callout>
 
 ## Getting started
 
-Ready to customize your AtlasOS installation? Start with:
+Start with:
 
-1. **[Atlas Folder Overview](/docs/atlas-configuration/atlas-folder/)** - Learn about the folder structure
-2. **[Basic Settings](/docs/atlas-configuration/settings/)** - Enable or disable features you need
-3. **[Optional Tweaks](/docs/atlas-configuration/tweaks/)** - Personalize your interface
+1. **[Atlas folder overview](/docs/atlas-configuration/atlas-folder/)** – Folder structure
+2. **[Basic Settings](/docs/atlas-configuration/settings/)** – Enable or disable features
+3. **[Optional Tweaks](/docs/atlas-configuration/tweaks/)** – Personalize your interface
 
-Most settings include clear instructions on when and why you might want to use them.
+Most settings explain when and why to use them.

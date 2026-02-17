@@ -1,10 +1,12 @@
 ---
 title: Post-install FAQ
-metaDescription: Get help with common post-installation questions for AtlasOS. Learn about the Atlas folder location, driver installation, enabling Bluetooth, and Windows Update.
-description: Common post-installation questions and answers.
+metaDescription: "AtlasOS post-install: Atlas folder, drivers, Bluetooth, Windows Update."
+description: Post-installation questions.
+type: faq
 order: 28
 ---
 
+import AtlasFolderRestoreLink from '@/components/docs/AtlasFolderRestoreLink.astro';
 import Callout from '@/components/docs/Callout.astro';
 import CodeInline from '@/components/docs/CodeInline.astro';
 import IconArrow from '@/components/ui/IconArrow.astro';
@@ -17,11 +19,19 @@ Common questions about configuring and using AtlasOS after installation.
 
 ### Where is the Atlas folder?
 
-The Atlas folder is located at <CodeInline text="C:\Atlas" /> and can also be found on your Desktop or in the Start Menu.
+The Atlas folder is at <CodeInline text="C:\Windows\AtlasDesktop" />. It also appears on your Desktop or in the Start Menu.
 
 ### I can't find the Atlas folder
 
-If you can't find the Atlas folder, see the [FAQ guide](/docs/faq/post-install/#restoring-the-atlas-folder) for instructions to restore it.
+If you cannot find the Atlas folder, see <AtlasFolderRestoreLink samePage={true} /> below.
+
+### Restoring the Atlas folder
+
+If the Atlas folder is missing (e.g., the desktop shortcut was deleted or the folder was removed):
+
+**If only the desktop shortcut was deleted:** The folder may still exist at <CodeInline text="C:\Windows\AtlasDesktop" />. Open File Explorer, navigate to <CodeInline text="C:\Windows" />, right-click the AtlasDesktop folder, and select **Send to**<IconArrow />**Desktop (create shortcut)**.
+
+**If the folder at <CodeInline text="C:\Windows\AtlasDesktop" /> is missing:** Re-apply the Atlas Playbook using AME Beta. Download the latest [Atlas Playbook](https://atlasos.net) and [AME Beta](https://ameliorated.io/), then drag the playbook into AME Beta. This will restore the Atlas folder without reinstalling Windows.
 
 ### What's in the Atlas folder?
 
@@ -39,7 +49,7 @@ The Atlas folder contains configuration files, scripts, and utilities for custom
 It depends on which installation method you chose:
 
 - **Windows Update method**: Drivers install automatically
-- **Manual method**: You'll need to install drivers manually
+- **Manual method**: Install drivers manually
 
 See the [Drivers Guide](/docs/essential-setup/drivers/) for detailed instructions.
 
@@ -58,19 +68,19 @@ Essential drivers typically include:
 ### How do I enable Bluetooth?
 
 1. Open the Atlas folder
-2. Go to <CodeInline text="3. Configuration" /> <IconArrow /> <CodeInline text="Bluetooth" />
+2. Go to <CodeInline text="6. Advanced Configuration" /><IconArrow /><CodeInline text="Services" /><IconArrow /><CodeInline text="Bluetooth" />
 3. Run <CodeInline text="Enable Bluetooth.cmd" />
 4. Restart your computer
 
 ### How do I enable Windows Update for drivers?
 
 1. Open the Atlas folder
-2. Go to <CodeInline text="2. Drivers" /> folder
+2. Go to <CodeInline text="2. Drivers" /><IconArrow /><CodeInline text="Drivers from Windows Update" />
 3. Run the appropriate script to enable Windows Update driver installation
 4. Restart your computer
 
 ### How do I restore Windows visual effects?
 
 1. Open the Atlas folder
-2. Go to <CodeInline text="3. Configuration" /> <IconArrow /> <CodeInline text="Visual Effects" />
+2. Go to <CodeInline text="4. Interface Tweaks" /><IconArrow /><CodeInline text="Visual Effects (Animations)" />
 3. Run <CodeInline text="Default Windows Visual Effects.cmd" />

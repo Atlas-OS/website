@@ -8,6 +8,7 @@ interface Props {
   width?: number;
   height?: number;
   formats?: ('avif' | 'webp' | 'png' | 'jpg')[];
+  fallbackFormat?: 'avif' | 'webp' | 'png' | 'jpg';
   loading?: 'lazy' | 'eager';
   layout?: 'full-width' | 'constrained' | 'fixed';
   sizes?: string;
@@ -21,6 +22,7 @@ const {
   width,
   height,
   formats = ['avif', 'webp'],
+  fallbackFormat = 'webp',
   loading = 'lazy',
   layout = 'constrained',
   sizes,
@@ -37,6 +39,7 @@ const hasDimensions = width && height;
   width={width}
   height={height}
   formats={formats}
+  fallbackFormat={fallbackFormat}
   loading={loading}
   layout={layout}
   sizes={sizes}

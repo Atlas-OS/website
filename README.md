@@ -1,6 +1,6 @@
 # AtlasOS Website
 
-AtlasOS is an optimized modification of Microsoft Windows tailored for gaming and performance. This repo contains the source code for the official website (https://atlasos.net), built with Astro, Tailwind CSS, and Bun.
+AtlasOS is an optimized modification of Microsoft Windows tailored for gaming and performance. This repo contains the source code for the official website (https://atlasos.net), built with Astro 6, Tailwind CSS, and Bun.
 
 ---
 
@@ -17,7 +17,7 @@ AtlasOS is an optimized modification of Microsoft Windows tailored for gaming an
 ## Prerequisites
 
 - **Bun** ≥ 1.3.0
-- **Node.js** ≥ 22.0.0
+- **Node.js** ≥ 22.12.0
 
 ## Installation
 
@@ -27,18 +27,21 @@ bun install
 
 ## Available Scripts
 
-| Command         | Description                          |
-| --------------- | ------------------------------------ |
-| `bun dev`       | Start local Astro development server |
-| `bun run build` | Build production site & run Jampack  |
-| `bun preview`   | Preview production build locally     |
-| `bun format`    | Format files with Prettier           |
-| `bun run lint`  | Lint code with ESLint                |
-| `bun run check` | Runs the Astro check command         |
+| Command                      | Description                                                                          |
+| ---------------------------- | ------------------------------------------------------------------------------------ |
+| `bun dev`                    | Start local Astro development server                                                 |
+| `bun run build`              | Build production site, generate Pagefind index, run Jampack, then precompress assets |
+| `bun run build:raw`          | Build production site only (no Jampack pass)                                         |
+| `bun run compress:postbuild` | Rebuild precompressed sidecars (`.gz`, `.br`, `.zst`) for `dist`                     |
+| `bun preview`                | Preview production build locally                                                     |
+| `bun format`                 | Format files with Prettier                                                           |
+| `bun run lint`               | Lint code with ESLint                                                                |
+| `bun run check`              | Runs the Astro check command                                                         |
+| `bun run search:index`       | Rebuild Pagefind index in `dist/pagefind`                                            |
 
 ## Configuration
 
-- **Astro config**: `astro.config.mjs` (integrations, `site`)
+- **Astro config**: `astro.config.mjs` (integrations, `site`, Pagefind indexing)
 - **Tailwind config**: `globals.css` (minimal config, theme)
 - **ESLint config**: `eslint.config.js` (Astro + TypeScript rules, flat config)
 - **EditorConfig**: `.editorconfig` (consistent editor settings)

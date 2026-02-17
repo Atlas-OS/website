@@ -1,0 +1,60 @@
+---
+title: Screenshotting
+metaDescription: "AtlasOS screenshot tools: Snipping Tool, ShareX, Lightshot, Flameshot."
+description: Recommended screenshot software.
+order: 6
+---
+
+import Callout from '@/components/docs/Callout.astro';
+
+# Screenshotting
+
+## Snipping Tool
+
+The modern Snipping Tool (Snip & Sketch on Windows 10) is included in Windows by default.
+
+<Callout type="info" title="Removed during Atlas setup?">
+  You may have been asked to remove Snipping Tool during Atlas configuration. You can reinstall it
+  using the command below.
+</Callout>
+
+```
+winget install -e --id 9MZ95KL8MR0L
+```
+
+[Download Snipping Tool](https://apps.microsoft.com/store/detail/9MZ95KL8MR0L) (Microsoft Store)
+
+## ShareX
+
+ShareX captures screenshots and screen recordings. It offers editing and enhancement options. Best for most users.
+
+```
+winget install -e --id ShareX.ShareX
+```
+
+[Download ShareX](https://apps.microsoft.com/store/detail/9NBLGGH4Z1SP) (Microsoft Store)
+
+## Lightshot
+
+Lightshot is a lightweight proprietary tool for capturing and editing screenshots. We recommend ShareX, but some users prefer Lightshot.
+
+```
+winget install -e --id Skillbrains.Lightshot
+```
+
+[Download Lightshot](https://app.prntscr.com/en/index.html)
+
+## Flameshot
+
+Powerful yet simple open-source screenshot software with basic capture, upload, and annotation tools.
+
+```
+winget install -e --id Flameshot.Flameshot
+```
+
+[Download Flameshot](https://flameshot.org/#download)
+
+## Next steps
+
+- **[Software overview](/docs/essential-setup/software/)** - More recommended apps
+- **[Configure Atlas](/docs/atlas-configuration/)** - Customize your installation

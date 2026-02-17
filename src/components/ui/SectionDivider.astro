@@ -1,11 +1,12 @@
 ---
 interface Props {
   class?: string;
+  id?: string;
 }
 
-const { class: className = '' } = Astro.props;
+const { class: className = '', id } = Astro.props;
 ---
 
-<div class={`border-t border-white/10 pt-8 mt-8 ${className}`}>
+<div id={id} class={`border-t border-white/[0.06] pt-8 mt-8 ${className}`}>
   <slot />
 </div>

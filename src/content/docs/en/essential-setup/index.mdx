@@ -1,7 +1,7 @@
 ---
 title: Essential setup
-metaDescription: Complete essential setup for AtlasOS. Install drivers manually or via Windows Update, then optimize hardware with BIOS updates, XMP/DOCP, and Resizable BAR.
-description: "Complete essential setup: drivers and hardware optimization."
+metaDescription: "AtlasOS essential setup: drivers (manual or Windows Update), hardware optimization (BIOS, XMP/DOCP, Resizable BAR)."
+description: Drivers and hardware optimization.
 order: 10
 ---
 
@@ -12,32 +12,31 @@ import IconArrow from '@/components/ui/IconArrow.astro';
 
 # Essential setup
 
-Welcome! After installing AtlasOS, complete these essential setup steps to ensure your hardware works properly and your system performs at its best.
+After installing AtlasOS, complete these steps so your hardware works and your system performs well.
 
 ## What you chose during installation
 
-During installation, you chose how drivers should be installed. Follow the path below based on your choice:
+During installation you chose how drivers install. Follow the path below:
 
 ### If you chose Windows Update (automatic)
 
-Drivers are being installed automatically via Windows Update. Verify everything is up to date:
+Windows Update installs drivers automatically. Verify everything is up to date:
 
-1. Open **Settings** <IconArrow /> **Windows Update**
+1. Open **Settings**<IconArrow />**Windows Update**
 2. Click **Check for updates**
 3. Install all available updates, including optional updates (especially driver updates)
 4. Restart if prompted, then check for updates again until no more are available
 
 <Callout type="tip">
-  If your internet is working and your display is functioning, Windows Update likely installed your
-  drivers automatically. You can skip the drivers section and proceed to hardware optimization
-  (optional).
+  If internet and display work, Windows Update likely installed your drivers. Skip the drivers
+  section and go to hardware optimization (optional).
 </Callout>
 
 **Next:** Skip drivers and proceed to [Hardware Optimization](/docs/essential-setup/hardware/) (optional)
 
 ### If you chose manual installation
 
-You'll need to install drivers yourself for full control over versions.
+Install drivers yourself for full control over versions.
 
 **Next:** Follow the [Drivers Guide](/docs/essential-setup/drivers/) to install all essential drivers, then proceed to hardware optimization (optional)
 
@@ -57,17 +56,24 @@ You'll need to install drivers yourself for full control over versions.
     title="Hardware Optimization"
     description="Optional - BIOS updates, RAM XMP, and GPU settings"
   />
+
+  <QuickLinkCard
+    href="/docs/essential-setup/software/"
+    icon="tabler:download"
+    title="Software"
+    description="Recommended apps - browsers, antivirus, media players, and more"
+  />
 </QuickLinksGrid>
 
 <Callout type="info">
-  Hardware optimization is optional but recommended. It can significantly improve system
-  performance, especially for gaming.
+  Hardware optimization is optional but recommended. It can improve performance, especially for
+  gaming.
 </Callout>
 
 ## Next steps
 
-Once you've completed essential setup:
+After completing essential setup:
 
-- **Configure [Atlas settings](/docs/atlas-configuration/)** to customize your installation
-- **Check the [FAQ](/docs/faq/)** if you encounter any issues
+- **[Configure Atlas settings](/docs/atlas-configuration/)** - Customize your installation
+- **[FAQ](/docs/faq/)** - Get help if you encounter any issues
 - **Explore [optional tweaks](/docs/atlas-configuration/tweaks/)** to personalize your experience

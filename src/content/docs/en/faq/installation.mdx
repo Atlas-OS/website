@@ -1,52 +1,53 @@
 ---
 title: Installation FAQ
-metaDescription: Find answers to common installation questions for AtlasOS. Learn about prerequisites, installation time, BitLocker errors, Windows Update issues, and post-installation.
-description: Common installation questions and troubleshooting.
+metaDescription: "AtlasOS installation FAQ: prerequisites, time, BitLocker, Windows Update, post-install."
+description: Installation questions and troubleshooting.
+type: faq
 order: 27
 ---
 
 import Callout from '@/components/docs/Callout.astro';
-import { Icon } from 'astro-icon/components';
+import IconArrow from '@/components/ui/IconArrow.astro';
 
-# Installation FAQ
+<h1 class="sr-only">Installation FAQ</h1>
 
 Common questions and troubleshooting for AtlasOS installation.
 
-## Prerequisites
+## What do I need before installing?
 
-### What do I need to install AtlasOS?
+- **Windows 11**: Pro, Pro for Workstations, or Enterprise (Home is not supported; you can [upgrade via product key](https://www.microsoft.com/windows/get-windows-11) if needed)
+- **64-bit CPU (x64) or ARM CPU (ARM64)**: Use the matching Windows ISO for your architecture ([how to check](https://support.microsoft.com/en-us/windows/which-version-of-windows-operating-system-am-i-running-628bec99-476a-2c13-5296-9dd081cdd808))
+- **A backup of all important data**: Atlas installs by reinstalling Windows; your current setup will be replaced
+- **USB drive**: Only needed for the [ISO injection method](/docs/install/iso/). The [Playbook method](/docs/install/playbook/) (recommended) installs directly from Windows with no USB required
 
-- Windows 11 license (Pro, Pro for Workstations, or Enterprise)
-- 64-bit CPU (x64) or ARM CPU (ARM64) - Use x64 Windows ISO for Intel/AMD CPUs, or ARM64 Windows ISO for ARM systems
-- USB drive (only if installing from USB)
-- Backup of important data
+For a full checklist, see [Installation requirements](/docs/install/requirements/).
 
-### Can I install on a virtual machine?
+## Who is Atlas designed for?
 
-Yes, but some optimizations may not apply. Use the Playbook installation method.
+Atlas is for enthusiasts who want better privacy, performance, and control over Windows. We don't recommend installing if:
 
-### Which Windows editions are supported?
+- You don't fully own the computer
+- You're not comfortable troubleshooting Windows issues
+- You're not willing to reinstall Windows to remove Atlas
 
-- Windows Pro
-- Windows Pro for Workstations
-- Windows Enterprise (excluding LTSC, IoT LTSC)
+## Can I install on a virtual machine?
 
-<Callout type="info">
-  Windows Home is not supported. You can upgrade to Pro later by changing your product key.
-</Callout>
+Yes. Use the [Playbook method](/docs/install/playbook/). Some optimizations may not apply in a VM, but it works for testing.
 
-## Installation process
+## Where is the Atlas ISO file?
 
-### How long does installation take?
+Atlas does not distribute a modified ISO. You use a stock Windows ISO and [AME Beta](https://ameliorated.io/) to install Atlas. See [Where is the Atlas ISO file?](/docs/faq/atlas-iso-files/) for details.
+
+## How long does installation take?
 
 About 30-45 minutes, depending on your hardware and internet speed.
 
-### What if I get a BitLocker error?
+## What if I get a BitLocker error?
 
 If you see "Make sure BitLocker Drive Encryption is suspended":
 
 1. Boot back into your original Windows
-2. **Control Panel** <Icon name="tabler:arrow-right" class="inline h-4 w-4 mx-1" /> **BitLocker Drive Encryption**
+2. **Control Panel**<IconArrow />**BitLocker Drive Encryption**
 3. Click **Suspend protection** for your system drive
 4. Restart and continue installation
 
@@ -54,17 +55,26 @@ If you see "Make sure BitLocker Drive Encryption is suspended":
   The drive stays encrypted; you can resume BitLocker after installation.
 </Callout>
 
-### What if Windows Update fails?
+## What if Windows Update fails?
 
 1. Check your internet connection
-2. Run Windows Update Troubleshooter (**Settings** <Icon name="tabler:arrow-right" class="inline h-4 w-4 mx-1" /> **Update & Security** <Icon name="tabler:arrow-right" class="inline h-4 w-4 mx-1" /> **Troubleshoot**)
+2. Run Windows Update Troubleshooter (**Settings**<IconArrow />**System**<IconArrow />**Troubleshoot**)
 3. Restart and try again
 
-### Why disconnect internet during Windows installation?
+## What was removed from Windows?
+
+Atlas disables many components for performance and privacy. See the [Atlas source code](https://github.com/Atlas-OS/Atlas) for exact changes. Key removals:
+
+- **Smart App Control** - Permanently disabled (requires reinstall to restore)
+- **Telemetry** - Toggleable in Atlas folder
+- **Microsoft account syncing, ads, tips** - Disabled
+- **Apps uninstalled by default:** Internet Explorer, OneDrive (if not set up), Edge (optional), Steps Recorder, legacy Media Player, and various Store apps (Mail, Weather, News, etc.). Most can be reinstalled from the Microsoft Store.
+
+## Why disconnect internet during Windows installation?
 
 Prevents Windows from auto-installing drivers and updates, giving you more control over the process.
 
-### What if installation fails?
+## What if installation fails?
 
 Common causes:
 
@@ -73,21 +83,23 @@ Common causes:
 - BitLocker enabled (suspend it first)
 - Hardware incompatibility (check Windows 11 requirements)
 
-## Post-installation
+## How do I remove Windows.old?
 
-### How do I remove Windows.old?
-
-1. **Settings** <Icon name="tabler:arrow-right" class="inline h-4 w-4 mx-1" /> **System** <Icon name="tabler:arrow-right" class="inline h-4 w-4 mx-1" /> **Storage**
+1. **Settings**<IconArrow />**System**<IconArrow />**Storage**
 2. Click **Temporary files**
-3. Select **Previous version of Windows** <Icon name="tabler:arrow-right" class="inline h-4 w-4 mx-1" /> **Remove files**
+3. Select **Previous version of Windows**<IconArrow />**Remove files**
 
 <Callout type="tip">
   This frees up significant disk space after you've retrieved any needed data.
 </Callout>
 
-### What should I do after installation?
+## What should I do after installation?
 
 After installation, follow these guides:
 
 - [Essential Setup](/docs/essential-setup/) - Install drivers and optimize hardware
-- [Atlas Configuration](/docs/atlas-configuration/) - Configure Atlas Folder settings
+- [Atlas Configuration](/docs/atlas-configuration/) - Configure Atlas folder settings
+
+## How do I uninstall AtlasOS?
+
+Atlas requires a full Windows reinstall to uninstall. See our [Reverting Atlas](/docs/faq/reverting/) guide for step-by-step instructions.

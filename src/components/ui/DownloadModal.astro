@@ -14,15 +14,16 @@ const { links } = Astro.props;
 
 <dialog
   id="download-modal"
+  aria-labelledby="download-modal-title"
   class="m-auto max-h-screen max-w-screen border-none bg-transparent px-4 backdrop:bg-black/45 backdrop:backdrop-blur-md"
 >
   <div
-    class="relative m-4 flex w-full max-w-lg flex-col overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-zinc-900/90 to-zinc-950/95"
+    class="relative m-4 flex w-full max-w-lg flex-col overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-b from-zinc-900/90 to-zinc-950/95"
   >
-    <div class="flex items-center justify-between border-b border-white/10 bg-white/[0.02] p-5 md:p-6">
+    <div class="flex items-center justify-between border-b border-white/[0.06] bg-white/[0.02] p-5 md:p-6">
       <div class="flex items-center gap-3">
         <Icon name="tabler:download" class="text-white/70" size={22} />
-        <h1 class="text-xl font-semibold tracking-tight text-white">Installing AtlasOS</h1>
+        <h2 id="download-modal-title" class="text-xl font-semibold tracking-tight text-white">Installing AtlasOS</h2>
       </div>
       <button class="cursor-pointer rounded-md p-2 transition-opacity duration-200 hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2" id="modal-close" aria-label="Close">
         <Icon name="tabler:x" class="text-white/70" size={16} />
@@ -30,7 +31,8 @@ const { links } = Astro.props;
     </div>
 
     <div class="p-6">
-      <div id="docs-view" class="animate-fade flex flex-col gap-6">
+      <div id="modal-views-wrapper" class="modal-views-wrapper relative">
+        <div id="docs-view" class="modal-view modal-view-active flex flex-col gap-6" data-view="docs">
         <p class="text-base text-white/70">
           To get started, you are required to follow our installation guide. <br />
           <br />We have made it as easy to follow as possible, with all the steps to get you up and running.
@@ -75,9 +77,9 @@ const { links } = Astro.props;
             class="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5"
           />
         </button>
-      </div>
+        </div>
 
-      <div id="downloads-view" class="animate-fade hidden flex-col gap-6">
+        <div id="downloads-view" class="modal-view modal-view-exit flex flex-col gap-6" data-view="downloads">
         <p class="text-base text-white/70">
           <strong class="font-semibold text-white"
             >Warning: You should only download these files when instructed to by the install guide.</strong
@@ -85,19 +87,24 @@ const { links } = Astro.props;
           If you aren't following the guide, please go back and read it first.
         </p>
 
-        <div class="flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.02] p-3">
-          <label class="relative flex cursor-pointer items-center">
-            <input type="checkbox" id="confirm-guide" class="peer sr-only" />
+        <div class="flex items-center gap-2 rounded-lg border border-white/[0.06] bg-white/[0.02] p-3">
+          <div class="relative flex items-center">
+            <input
+              type="checkbox"
+              id="confirm-guide"
+              aria-label="I confirm I am following the installation guide"
+              class="peer sr-only"
+            />
             <div
-              class="peer-checked:border-primary peer-checked:bg-primary peer-focus:ring-primary h-4 w-4 rounded border border-white/20 bg-white/5 transition-colors peer-focus:ring-2 peer-focus:ring-offset-1 peer-focus:ring-offset-zinc-900"
+              class="peer-checked:border-primary peer-checked:bg-primary peer-focus:ring-primary h-4 w-4 rounded border border-white/[0.08] bg-white/5 transition-colors peer-focus:ring-2 peer-focus:ring-offset-1 peer-focus:ring-offset-zinc-900"
             >
             </div>
             <Icon
               name="tabler:check"
               class="absolute top-0 left-0 h-4 w-4 text-zinc-900 opacity-0 transition-opacity peer-checked:opacity-100"
             />
-          </label>
-          <label for="confirm-guide" class="cursor-pointer text-sm text-white/70"
+          </div>
+          <p class="text-sm text-white/70"
             >I confirm I am following the <a
               href={links.install}
               target="_blank"
@@ -105,7 +112,7 @@ const { links } = Astro.props;
               class="text-primary"
             >
               installation guide</a
-            >.</label
+            >.</p
           >
         </div>
 
@@ -153,6 +160,7 @@ const { links } = Astro.props;
           />
           <span>Back to the install guide</span>
         </button>
+        </div>
       </div>
     </div>
   </div>
@@ -176,6 +184,7 @@ const { links } = Astro.props;
       confirmGuide: HTMLInputElement;
     };
     downloadCountElement: HTMLElement;
+    viewsWrapper: HTMLElement;
     currentView: 'docs' | 'downloads';
 
     /**
@@ -199,6 +208,7 @@ const { links } = Astro.props;
         confirmGuide: this.getElement<HTMLInputElement>('confirm-guide'),
       };
       this.downloadCountElement = this.getElement<HTMLElement>('download-count');
+      this.viewsWrapper = this.getElement<HTMLElement>('modal-views-wrapper');
       this.currentView = 'docs';
 
       this.setupEventListeners();
@@ -243,6 +253,7 @@ const { links } = Astro.props;
       this.buttons.showDocs.addEventListener('click', () => this.switchView('docs'));
       this.buttons.confirmGuide.addEventListener('change', () => this.updateConfirmState());
       this.buttons.playbook.addEventListener('click', () => this.handleDownload());
+      window.addEventListener('resize', () => this.syncWrapperHeight());
 
       this.modal.addEventListener('close', () => {
         document.body.classList.remove('overflow-hidden');
@@ -260,10 +271,24 @@ const { links } = Astro.props;
      * Resets views to the documentation state and disables downloads.
      */
     initializeViews(): void {
-      this.views.docs.style.display = 'flex';
-      this.views.downloads.style.display = 'none';
+      this.setViewActive('docs');
+      this.setViewInactive('downloads');
+      this.currentView = 'docs';
       this.buttons.confirmGuide.checked = false;
       this.toggleDownloadButtons(false);
+      this.syncWrapperHeight();
+    }
+
+    setViewActive(view: 'docs' | 'downloads'): void {
+      const el = this.views[view];
+      el.classList.remove('modal-view-exit', 'modal-view-enter');
+      el.classList.add('modal-view-active');
+    }
+
+    setViewInactive(view: 'docs' | 'downloads'): void {
+      const el = this.views[view];
+      el.classList.remove('modal-view-active', 'modal-view-enter');
+      el.classList.add('modal-view-exit');
     }
 
     /**
@@ -273,13 +298,23 @@ const { links } = Astro.props;
     switchView(viewName: 'docs' | 'downloads'): void {
       if (this.currentView === viewName) return;
 
-      this.currentView = viewName;
       const viewToShow = this.views[viewName];
-      const viewToHide = viewName === 'docs' ? this.views.downloads : this.views.docs;
+      const viewToHide = this.views[this.currentView];
 
-      viewToHide.style.display = 'none';
-      viewToShow.style.display = 'flex';
+      this.syncWrapperHeight();
 
+      viewToHide.classList.remove('modal-view-active', 'modal-view-enter');
+      viewToHide.classList.add('modal-view-exit');
+
+      viewToShow.classList.remove('modal-view-exit');
+      viewToShow.classList.add('modal-view-enter');
+
+      this.currentView = viewName;
+      requestAnimationFrame(() => {
+        viewToShow.classList.remove('modal-view-enter');
+        viewToShow.classList.add('modal-view-active');
+        this.syncWrapperHeight();
+      });
       this.buttons.confirmGuide.checked = false;
       this.toggleDownloadButtons(false);
 
@@ -311,6 +346,7 @@ const { links } = Astro.props;
      */
     async updateDownloadCount(): Promise<void> {
       this.downloadCountElement.textContent = 'Loading...';
+      if (this.currentView === 'downloads') this.syncWrapperHeight();
       try {
         const count = await this.fetchDownloadCount();
         this.downloadCountElement.textContent =
@@ -320,6 +356,16 @@ const { links } = Astro.props;
       } catch {
         this.downloadCountElement.textContent = 'Could not load download count.';
       }
+
+      if (this.currentView === 'downloads') this.syncWrapperHeight();
+    }
+
+    /**
+     * Syncs wrapper height to the active view content.
+     */
+    syncWrapperHeight(): void {
+      const activeView = this.views[this.currentView];
+      this.viewsWrapper.style.height = `${activeView.scrollHeight}px`;
     }
 
     /**
@@ -346,7 +392,9 @@ const { links } = Astro.props;
       try {
         const response = await fetch(incrementUrl, { method: 'POST' });
         if (!response.ok) throw new Error(`Increment request failed with status ${response.status}`);
-      } catch {}
+      } catch (error) {
+        console.warn('Failed to increment Atlas download count.', error);
+      }
     }
 
     /**
@@ -398,22 +446,42 @@ const { links } = Astro.props;
   dialog[open] {
     display: grid;
     place-items: center;
-    animation: show 250ms cubic-bezier(0.2, 0, 0, 1);
+    animation: show 250ms var(--motion-ease-spring, cubic-bezier(0.32, 0.72, 0, 1));
   }
 
-  .animate-fade {
-    animation: fade 250ms ease-out;
+  .modal-views-wrapper {
+    contain: layout style;
+    transition: height var(--motion-duration-normal, 250ms) var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1));
   }
 
-  @keyframes fade {
-    from {
-      opacity: 0;
-      transform: translateY(2px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  .modal-view {
+    position: absolute;
+    inset: 0;
+    transition:
+      opacity var(--motion-duration-normal, 250ms) var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1)),
+      transform var(--motion-duration-normal, 250ms) var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1)),
+      filter var(--motion-duration-normal, 250ms) var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1));
+  }
+
+  .modal-view-enter {
+    opacity: 0;
+    transform: translateY(8px);
+    filter: blur(4px);
+    pointer-events: none;
+  }
+
+  .modal-view-active {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+    pointer-events: auto;
+  }
+
+  .modal-view-exit {
+    opacity: 0;
+    transform: translateY(-8px);
+    filter: blur(4px);
+    pointer-events: none;
   }
 
   @media (max-width: 640px) {

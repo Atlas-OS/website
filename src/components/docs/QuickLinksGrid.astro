@@ -30,6 +30,79 @@ if (marginY === '6') {
 }
 ---
 
-<div class={`not-prose overflow-visible -mb-4 pb-4 ${gridClasses}`}>
+<div class={`quick-links-grid not-prose -mb-4 pb-4 pr-2 ${gridClasses}`} data-animate>
   <slot />
 </div>
+
+<style is:global>
+  .quick-links-grid {
+    contain: layout style;
+  }
+
+  html.motion-ready .quick-links-grid[data-animate] {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+    will-change: auto;
+  }
+
+  html.motion-ready .quick-links-grid[data-animate] > * {
+    opacity: 0;
+    transform: translateY(var(--motion-reveal-distance, 20px)) scale(var(--motion-reveal-scale-start, 1));
+    filter: blur(var(--motion-reveal-blur, 4px));
+    transition:
+      opacity var(--motion-reveal-duration, var(--motion-duration-normal))
+        var(--motion-reveal-ease, var(--motion-ease-out)),
+      transform var(--motion-reveal-duration, var(--motion-duration-normal))
+        var(--motion-reveal-ease, var(--motion-ease-out)),
+      filter var(--motion-reveal-duration, var(--motion-duration-normal))
+        var(--motion-reveal-ease, var(--motion-ease-out));
+  }
+
+  html.motion-ready .quick-links-grid[data-animate].animate-in > * {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+
+  html.motion-ready .quick-links-grid[data-animate] > :nth-child(1) {
+    transition-delay: calc(var(--motion-reveal-step, 100ms) * 1);
+  }
+
+  html.motion-ready .quick-links-grid[data-animate] > :nth-child(2) {
+    transition-delay: calc(var(--motion-reveal-step, 100ms) * 2);
+  }
+
+  html.motion-ready .quick-links-grid[data-animate] > :nth-child(3) {
+    transition-delay: calc(var(--motion-reveal-step, 100ms) * 3);
+  }
+
+  html.motion-ready .quick-links-grid[data-animate] > :nth-child(4) {
+    transition-delay: calc(var(--motion-reveal-step, 100ms) * 4);
+  }
+
+  html.motion-ready .quick-links-grid[data-animate] > :nth-child(5) {
+    transition-delay: calc(var(--motion-reveal-step, 100ms) * 5);
+  }
+
+  html.motion-ready .quick-links-grid[data-animate] > :nth-child(6) {
+    transition-delay: calc(var(--motion-reveal-step, 100ms) * 6);
+  }
+
+  html.motion-ready .quick-links-grid[data-animate] > :nth-child(7) {
+    transition-delay: calc(var(--motion-reveal-step, 100ms) * 7);
+  }
+
+  html.motion-ready .quick-links-grid[data-animate] > :nth-child(8) {
+    transition-delay: calc(var(--motion-reveal-step, 100ms) * 8);
+  }
+
+  html.motion-ready .quick-links-grid[data-animate] > :nth-child(9) {
+    transition-delay: calc(var(--motion-reveal-step, 100ms) * 9);
+  }
+
+  html.motion-ready .quick-links-grid[data-animate] > :nth-child(10) {
+    transition-delay: calc(var(--motion-reveal-step, 100ms) * 10);
+  }
+</style>

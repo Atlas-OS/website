@@ -1,0 +1,87 @@
+---
+title: Media Playback
+metaDescription: "AtlasOS media players: VLC, mpv, Windows Media Player, foobar2000, MusicBee, Dopamine, Elisa."
+description: Recommended media players.
+order: 4
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+
+# Media Playback
+
+## VLC Media Player
+
+VLC is a simple, well-known media player. It includes the codecs you need for playback.
+
+```
+winget install -e --id VideoLAN.VLC
+```
+
+[Download VLC Media Player](https://www.videolan.org/vlc/) (Microsoft Store also available)
+
+## mpv
+
+mpv is a minimal player that supports almost all codecs. Advanced features: scripting and customization.
+
+[Download mpv](https://mpv.io/installation/)
+
+### mpv.net
+
+mpv.net is a fork of mpv with a more user-friendly graphical interface.
+
+```
+winget install -e --id mpv.net
+```
+
+## Windows Media Player
+
+Microsoft has updated Windows Media Player with a modern interface. It is available by default on the latest Windows versions.
+
+<Callout type="info" title="Codec support">
+  Unlike mpv or VLC, Windows Media Player does not support all codecs by default. You may need to
+  install the HEVC codec from the Microsoft Store for some video files.
+</Callout>
+
+```
+winget install -e --id 9WZDNCRFJ3PT
+```
+
+[Download HEVC Codec](https://apps.microsoft.com/store/detail/9NMZLZ57R3T7) (Microsoft Store)
+
+## foobar2000
+
+foobar2000 plays local and online music. It handles multi-track audio and is user-friendly.
+
+```
+winget install -e --id PeterPawlowski.foobar2000
+```
+
+[Download foobar2000](https://www.foobar2000.org/)
+
+## MusicBee
+
+MusicBee is a lightweight alternative to foobar2000 with a more modern feel.
+
+```
+winget install -e --id MusicBee.MusicBee
+```
+
+[Download MusicBee](https://www.getmusicbee.com/)
+
+## Dopamine 2
+
+Dopamine 2 is an audio player for organizing and listening to music. Simple, visually appealing, with many features.
+
+[Download Dopamine 2](https://github.com/digimezzo/dopamine-windows/releases/latest)
+
+## Elisa
+
+Elisa is a KDE music player with a simple interface and internet radio support.
+
+[Download Elisa](https://apps.microsoft.com/store/detail/9pb5md7zh8tl) (Microsoft Store)
+
+## Next steps
+
+- **[Software overview](/docs/essential-setup/software/)** - More recommended apps
+- **[Configure Atlas](/docs/atlas-configuration/)** - Customize your installation

@@ -1,0 +1,90 @@
+---
+title: Reverting Atlas
+metaDescription: Uninstall AtlasOS and return to stock Windows. Step-by-step reinstall guide.
+description: Uninstall Atlas and return to stock Windows.
+type: faq
+order: 33
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import WindowsSetupTabs from '@/components/docs/install/WindowsSetupTabs.astro';
+import Video from '@/components/ui/Video.astro';
+
+# Reverting Atlas
+
+Atlas disables "Reset this PC" because it is unreliable and not a full reinstall. This page explains how to reinstall Windows to uninstall Atlas and return to stock Windows.
+
+## Before uninstalling
+
+If you are on an [outdated Atlas version](https://github.com/Atlas-OS/Atlas/releases), we cannot help. If you have issues on the latest version, try these first:
+
+- The documentation you're on currently
+- [Our Discord server](https://discord.com/invite/atlasos)
+- [Atlas GitHub Discussions](https://github.com/Atlas-OS/Atlas/discussions)
+
+### Still having problems?
+
+We are improving Atlas. Consider reporting your problem on [Atlas GitHub Issues](https://github.com/Atlas-OS/Atlas/issues) so we can fix it. You can also give feedback in GitHub Discussions or Discord.
+
+<Callout type="tip" title="Looking to reinstall Atlas?">
+  Follow the [Atlas installation guide](/docs/install/requirements/) instead. This page is for
+  reverting Atlas.
+</Callout>
+
+## 1. Download a Windows ISO
+
+You need a clean Windows 11 ISO to reinstall. Choose your desired Windows version.
+
+<Callout type="tip" title="Which version?">
+  For AMD and Intel CPUs, download the x86_64 (x64) version. For Qualcomm Snapdragon or other
+  supported ARM SoCs, download the ARM64 version. [Check your CPU architecture](https://www.tenforums.com/tutorials/132836-check-what-processor-cpu-windows-pc.html#option1).
+</Callout>
+
+**Official Microsoft Sources**
+
+1. Visit [Microsoft's Windows 11 download page](https://www.microsoft.com/en-us/software-download/windows11)
+2. Choose the appropriate ISO in the dropdown:
+   - For Intel/AMD CPUs: **Windows 11 (multi-edition ISO for x64 devices)**
+   - For ARM systems: **Windows 11 (multi-edition ISO for ARM64 devices)**
+3. Click **Confirm**, select your desired language, then **Confirm** again
+4. Click **64-bit Download** (or **ARM64 Download** for ARM) to begin your download
+
+**Windows Media Creation Tool**
+
+1. Download the [Windows 11 Media Creation Tool](https://go.microsoft.com/fwlink/?linkid=2156295), then open it
+2. Click **Accept** to agree to the Microsoft license terms
+3. Select **Create installation media (USB flash drive, DVD, or ISO file) for another PC**, click **Next**, and choose:
+   - **Language:** Your desired language
+   - **Edition:** Windows 11
+4. Choose the **ISO file** option, then choose the download location
+5. After the ISO has completed downloading, click **Finish**
+
+## 2. Network drivers
+
+By default, Windows may not have your computer's network drivers. After reinstalling, your computer could have no internet connection.
+
+Either:
+
+- Download your network drivers beforehand and store them on external storage, or
+- Have the ability to download and transfer network drivers from another device later
+
+**Where do I get my network drivers?**
+
+Search for your device or motherboard's official support page. If you can't find it, search online for your network device's name in Device Manager. If multiple driver versions are available, download them all.
+
+## 3. Reinstall Windows
+
+Back up valuable data to an external drive or cloud storage before continuing.
+
+<WindowsSetupTabs variant="reverting" />
+
+
+## 4. Initial setup (OOBE)
+
+Follow the Windows 11 out-of-box experience (OOBE) on screen.
+
+<Video src="/assets/videos/win11-OOBE.mp4" muted spacing={true} rounded={true} />
+
+## 5. Continue with setup
+
+You should now be at the regular Windows desktop and back on stock Windows.

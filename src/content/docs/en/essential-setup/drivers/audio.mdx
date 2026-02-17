@@ -1,0 +1,44 @@
+---
+title: Audio drivers
+metaDescription: "AtlasOS audio drivers: find and install from manufacturer for speakers and headphones."
+description: Install audio drivers for sound output.
+order: 3
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+
+# Audio drivers
+
+Audio drivers enable sound from speakers, headphones, or monitor. Most systems use onboard audio (Realtek, Intel, or AMD) on the motherboard. No sound after installing Atlas? Install audio drivers.
+
+## Finding your audio device
+
+1. Open **Device Manager** (press <CodeInline text="Win + X" /> <CodeInline text="Enter" /> or search in Start)
+2. Expand **Sound, video and game controllers**
+3. Note the name of your audio device (e.g., Realtek High Definition Audio, Intel Display Audio)
+
+## Installing from manufacturer website
+
+Download audio drivers from your motherboard or device manufacturer's support page.
+
+1. Search for "_your motherboard model_ support" or "_your laptop model_ drivers"
+2. Find the **Audio** or **Sound** driver section
+3. Download the latest driver
+4. Run the installer and follow the setup instructions
+5. Restart your computer if prompted
+
+<Callout type="info" title="Can't Find Drivers?">
+  Search for your audio device name (from Device Manager) plus "driver". Realtek drivers are often
+  on motherboard manufacturer support pages.
+</Callout>
+
+## HDMI/DisplayPort audio
+
+If you use audio from your monitor (e.g., built-in speakers), the driver may be included with your [graphics drivers](/docs/essential-setup/drivers/gpu/). For NVIDIA and AMD, install HDMI/DisplayPort audio components during GPU driver setup.
+
+## Troubleshooting
+
+- **No sound:** Verify the correct playback device is selected (right-click speaker icon in taskbar <CodeInline text="Open sound settings" /> <CodeInline text="Choose output device" />).
+- **Driver won't install:** Run the installer as administrator (right-click <CodeInline text="Run as administrator" />).
+- **Still no sound:** Try [Snappy Driver Installer Origin](/docs/essential-setup/drivers/other/#snappy-driver-installer-origin-sdio) as a backup, select only your audio driver.

@@ -1,7 +1,7 @@
 ---
 title: Install Atlas
-metaDescription: Complete step-by-step guide to installing AtlasOS. Learn requirements, choose installation methods, and follow detailed instructions for a successful installation.
-description: Step-by-step guide to installing AtlasOS on your system.
+metaDescription: "Step-by-step guide to installing AtlasOS: requirements, methods, and instructions."
+description: Install AtlasOS on your system.
 order: 2
 ---
 
@@ -12,11 +12,10 @@ import QuickLinksGrid from '@/components/docs/QuickLinksGrid.astro';
 import FeatureList from '@/components/ui/FeatureList.astro';
 import SectionDivider from '@/components/ui/SectionDivider.astro';
 import Grid from '@/components/ui/Grid.astro';
-import IconCheck from '@/components/ui/IconCheck.astro';
 
 # Installation guide
 
-Follow this guide to install AtlasOS on your system. The entire process typically takes 30–45 minutes.
+Follow this guide to install Atlas on your system. The entire process typically takes 30–45 minutes.
 
 ## Quick links
 
@@ -29,13 +28,13 @@ Follow this guide to install AtlasOS on your system. The entire process typicall
     description="Verify system requirements"
   />
 
-<QuickLinkCard
-  href="/docs/install/playbook/"
-  icon="tabler:book"
-  label="Step 2"
-  title="Playbook Method"
-  description="Recommended installation method"
-/>
+  <QuickLinkCard
+    href="/docs/install/playbook/"
+    icon="tabler:book"
+    label="Step 2"
+    title="Playbook Method"
+    description="Recommended installation method"
+  />
 
   <QuickLinkCard
     href="/docs/install/setup/"
@@ -48,12 +47,10 @@ Follow this guide to install AtlasOS on your system. The entire process typicall
 
 ## Before you start
 
-Ensure you have:
-
-- <IconCheck /> Windows 11 license (Pro, Pro for Workstations, or Enterprise)
-- <IconCheck /> 64-bit CPU (x64) or ARM CPU (ARM64) - Use the matching Windows ISO
-- <IconCheck /> **All important data backed up**
-- <IconCheck /> USB drive (only if installing from USB)
+- Windows 11 license (Pro, Pro for Workstations, or Enterprise)
+- 64-bit CPU (x64) or ARM CPU (ARM64) - Use the matching Windows ISO
+- **All important data backed up**
+- USB drive (only if installing from USB)
 
 <Callout type="info" title="Note">
   Windows Home is not supported. You can upgrade to Pro later by changing your product key.
@@ -66,18 +63,19 @@ Ensure you have:
     {
       icon: 'tabler:book',
       title: 'Playbook Method (Recommended)',
-      description: 'Install directly from Windows. No USB drive needed. Perfect for most users.',
+      description: 'Install directly from Windows. No USB drive needed. Best for most users.',
+      href: '/docs/install/playbook/',
     },
     {
       icon: 'tabler:disc',
       title: 'ISO Injection',
-      description: 'Advanced method for experienced users. Coming soon',
-      disabled: true,
+      description: 'For experienced users. Pre-configure Atlas in a Windows ISO before installation.',
+      href: '/docs/install/iso/',
     },
   ]}
 />
 
-<SectionDivider>
+<SectionDivider id="community-resources">
   <Grid columns={{ md: 2 }} gap="4" spacing>
     <CommunityLink
       href="https://discord.com/invite/atlasos"
@@ -92,6 +90,5 @@ Ensure you have:
       title="GitHub Discussions"
       description="Ask questions and report issues"
     />
-
   </Grid>
 </SectionDivider>

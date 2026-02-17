@@ -4,6 +4,8 @@ function initSlideshow(): void {
   const dotsContainer = document.getElementById('slideshow-dots') as HTMLElement | null;
   if (!container || !slideshow || !dotsContainer) return;
 
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   const config: {
     slideDuration: number;
     activeClasses: { slide: string; dot: string };
@@ -201,6 +203,10 @@ function initSlideshow(): void {
    * Starts the auto-advance interval for the slideshow.
    */
   function startInterval(): void {
+    if (prefersReducedMotion) {
+      return;
+    }
+
     if (state.interval) clearInterval(state.interval);
     state.interval = window.setInterval(nextSlide, config.slideDuration);
   }

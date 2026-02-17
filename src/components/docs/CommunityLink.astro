@@ -9,13 +9,15 @@ interface Props {
 }
 
 const { href, icon, title, description } = Astro.props;
+
+const isExternal = href.startsWith('http://') || href.startsWith('https://');
 ---
 
 <a
   href={href}
-  target="_blank"
-  rel="noopener noreferrer"
-  class="community-link community-link-animated not-prose group flex items-start gap-3 rounded-lg border border-white/10 bg-white/5 p-5 transition-opacity duration-200 hover:opacity-80"
+  target={isExternal ? '_blank' : undefined}
+  rel={isExternal ? 'noopener noreferrer' : undefined}
+  class="community-link community-link-animated docs-surface not-prose group flex items-start gap-3 p-5 transition-opacity duration-200 hover:opacity-80"
   data-component="community-link"
 >
   <div class="community-link-icon-wrapper flex-shrink-0">
@@ -25,11 +27,12 @@ const { href, icon, title, description } = Astro.props;
     <p class="text-base font-semibold text-white transition-opacity group-hover:opacity-80">
       {title}
     </p>
-    <p class="mt-2 text-sm text-white/60">{description}</p>
+    <p class="mt-2 text-sm" style="color: var(--docs-text-muted);">{description}</p>
   </div>
   <Icon
-    name="tabler:arrow-up-right"
-    class="h-4 w-4 flex-shrink-0 text-white/40 transition-opacity group-hover:opacity-80"
+    name={isExternal ? 'tabler:arrow-up-right' : 'tabler:arrow-right'}
+    class="h-4 w-4 flex-shrink-0 transition-opacity group-hover:opacity-80"
+    style="color: var(--docs-text-muted);"
   />
 </a>
 

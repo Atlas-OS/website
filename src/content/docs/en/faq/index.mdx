@@ -1,7 +1,7 @@
 ---
 title: FAQ
-metaDescription: Find answers to frequently asked questions about AtlasOS installation, configuration, troubleshooting, and usage. Get help with common issues and learn about features.
-description: Answers to frequently asked questions about AtlasOS.
+metaDescription: "AtlasOS installation, configuration, troubleshooting, and usage. Common issues and features."
+description: Frequently asked questions about AtlasOS.
 order: 26
 ---
 
@@ -11,7 +11,7 @@ import QuickLinksGrid from '@/components/docs/QuickLinksGrid.astro';
 
 # Frequently asked questions
 
-Find answers to common questions about AtlasOS installation, configuration, and troubleshooting. Can't find what you're looking for? Check our [community resources](/docs/install/#community-resources) for additional help.
+Common questions about AtlasOS installation, configuration, and troubleshooting. For more help, see [community resources](/docs/install/#community-resources).
 
 <QuickLinksGrid columns={{ md: 2 }}>
   <QuickLinkCard
@@ -21,19 +21,19 @@ Find answers to common questions about AtlasOS installation, configuration, and 
     description="Questions about installing AtlasOS"
   />
 
-<QuickLinkCard
-  href="/docs/faq/post-install/"
-  icon="tabler:settings"
-  title="Post-Install FAQ"
-  description="Questions after installation"
-/>
+  <QuickLinkCard
+    href="/docs/faq/post-install/"
+    icon="tabler:settings"
+    title="Post-Install FAQ"
+    description="Questions after installation"
+  />
 
-<QuickLinkCard
-  href="/docs/faq/general/"
-  icon="tabler:question-mark"
-  title="General FAQ"
-  description="General questions about AtlasOS"
-/>
+  <QuickLinkCard
+    href="/docs/faq/general/"
+    icon="tabler:question-mark"
+    title="General FAQ"
+    description="General questions about AtlasOS"
+  />
 
   <QuickLinkCard
     href="/docs/faq/ame/"
@@ -41,22 +41,43 @@ Find answers to common questions about AtlasOS installation, configuration, and 
     title="AME FAQ"
     description="AME Beta questions"
   />
+
+  <QuickLinkCard
+    href="/docs/faq/atlas-iso-files/"
+    icon="tabler:disc"
+    title="Atlas ISO Files"
+    description="Where to get the Windows ISO for Atlas"
+  />
+
+  <QuickLinkCard
+    href="/docs/faq/itunes-compatibility/"
+    icon="tabler:brand-apple"
+    title="iTunes & Apple Devices"
+    description="Fix iTunes not recognizing Apple devices"
+  />
+
+  <QuickLinkCard
+    href="/docs/faq/reverting/"
+    icon="tabler:arrow-back"
+    title="Reverting Atlas"
+    description="How to uninstall AtlasOS"
+  />
 </QuickLinksGrid>
 
 ## Quick answers
 
 ### What is AtlasOS?
 
-AtlasOS is an open-source project that enhances Windows by applying privacy, usability, and performance optimizations while maintaining functionality and customizability.
+AtlasOS is an open-source modification of Windows that applies privacy, usability, and performance optimizations while keeping functionality and customizability.
 
 ### Is AtlasOS safe?
 
-Yes, AtlasOS is open-source and community-reviewed. All modifications are transparent and available for inspection on GitHub.
+Yes. AtlasOS is open-source and community-reviewed. You can inspect all modifications on GitHub.
 
 ### Which Windows versions are supported?
 
-AtlasOS is designed for **Windows 11** (Pro, Pro for Workstations, or Enterprise editions).
+Atlas supports **Windows 11** Pro, Pro for Workstations, and Enterprise.
 
 <Callout type="warning" title="Windows Home Not Supported">
-  Windows Home is not supported. You can upgrade to Pro by changing your product key.
+  Atlas does not support Windows Home. Upgrade to Pro by changing your product key.
 </Callout>

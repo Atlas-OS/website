@@ -7,9 +7,8 @@ import Breadcrumbs from '@/components/docs/Breadcrumbs.astro';
 import PageNav from '@/components/docs/PageNav.astro';
 import SEO from '@/components/core/SEO.astro';
 import Spotlight from '@/components/ui/Spotlight.astro';
-import { ClientRouter } from 'astro:transitions';
 import { getCollection } from 'astro:content';
-import { getPrevNextPages } from '@/utils/navigation';
+import { getPrevNextPages, getSectionLabelFromSlug } from '@/utils/navigation';
 import { getLangCode } from '@/utils/navigation';
 import { DEFAULT_LOCALE } from '@/constants';
 import '@/styles/prose.css';
@@ -42,10 +41,12 @@ const {
 
 const defaultLocale = DEFAULT_LOCALE;
 const langCode = getLangCode(locale);
+const hasTableOfContents = headings.length > 0;
 
 const showSidebar = true;
 const allDocs = await getCollection('docs');
 const { prev, next } = getPrevNextPages(allDocs, currentSlug, locale === defaultLocale ? null : locale, defaultLocale);
+const sectionLabel = getSectionLabelFromSlug(currentSlug, defaultLocale);
 ---
 
 <BaseLayout locale={locale} currentPath={currentSlug}>
@@ -61,61 +62,113 @@ const { prev, next } = getPrevNextPages(allDocs, currentSlug, locale === default
       type={type}
       currentSlug={currentSlug}
     />
-    <ClientRouter />
   </Fragment>
 
   <Fragment slot="body">
     <a href="#main-content" class="skip-link">Skip to main content</a>
-    <div class="fixed inset-0 -z-10 h-full w-full">
+    <div class="fixed inset-0 -z-10 h-full w-full" aria-hidden="true">
       <div
-        class="absolute h-full w-full bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px)] mask-[linear-gradient(to_bottom,rgba(0,0,0,0.7),transparent_70%)] bg-size-[24px_24px]"
-      >
-      </div>
+        class="absolute h-full w-full bg-[linear-gradient(rgba(255,255,255,0.012)_1px,transparent_1px),linear-gradient(to_right,rgba(255,255,255,0.012)_1px,transparent_1px)] mask-[linear-gradient(to_bottom,rgba(0,0,0,0.6),transparent_70%)] bg-size-[24px_24px]"
+      />
     </div>
     <Navbar currentPath={currentSlug} locale={locale} isDocsPage={true} data-pagefind-ignore />
-    <div class="relative z-10 flex pt-12">
+    <div
+      class="docs-shell relative z-10"
+      style="--docs-header-height: 3.5rem; --docs-sidebar-width: 18rem; --docs-toc-width: 18rem;"
+    >
       {
         showSidebar && (
           <Sidebar currentSlug={currentSlug} locale={locale === defaultLocale ? null : locale} data-pagefind-ignore />
         )
       }
       <main
-        class={`flex-1 overflow-auto scroll-pt-20 xl:mr-64 ${showSidebar ? 'lg:ml-64' : ''}`}
+        class={`docs-main scroll-pt-24 ${showSidebar ? 'docs-main--with-sidebar' : ''} ${hasTableOfContents ? 'docs-main--with-toc' : ''}`}
         id="main-content"
         tabindex="-1"
         style="overflow-anchor: none; scroll-behavior: smooth;"
       >
-        <div class="flex-1">
-          <div class="mx-auto max-w-7xl space-y-8">
-            <div class="mx-auto flex max-w-5xl">
-              <div
-                class="max-w-4xl min-w-0 flex-1 space-y-8 px-4 py-6 sm:px-6 sm:py-8 md:px-8 lg:px-10 lg:py-10 xl:px-12 xl:py-12"
-              >
-                <Breadcrumbs currentSlug={currentSlug} data-pagefind-ignore />
-                <div class="prose prose-lg max-w-none" data-pagefind-body>
-                  <slot />
-                </div>
-                <div class="prose prose-lg max-w-none">
-                  {showPageNav && <PageNav prev={prev || undefined} next={next || undefined} data-pagefind-ignore />}
-                </div>
-              </div>
+        <div class="docs-main-inner">
+          <article class="docs-article">
+            <Breadcrumbs currentSlug={currentSlug} data-pagefind-ignore />
+            <p
+              class="docs-section-label mb-2 text-xs font-medium tracking-wider uppercase"
+              style="color: var(--docs-text-muted);"
+              data-pagefind-ignore
+            >
+              {sectionLabel}
+            </p>
+            <div class="prose md:prose-lg max-w-none" data-pagefind-body>
+              <slot />
             </div>
-          </div>
+            {showPageNav && <PageNav prev={prev || undefined} next={next || undefined} data-pagefind-ignore />}
+          </article>
         </div>
       </main>
       <TableOfContents headings={headings} data-pagefind-ignore />
     </div>
     <script>
-      import { initScrollAnimations } from '@/utils/scroll-animations';
+      import { initCopyCodeButtons } from '@/utils/copy-code';
+import { initScrollAnimations } from '@/utils/scroll-animations';
 
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initScrollAnimations);
-      } else {
+      function init() {
         initScrollAnimations();
+        initCopyCodeButtons();
       }
 
-      document.addEventListener('astro:page-load', initScrollAnimations);
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+
+      document.addEventListener('astro:page-load', init);
     </script>
     <Spotlight />
   </Fragment>
 </BaseLayout>
+
+<style>
+  .docs-shell {
+    min-height: calc(100vh - var(--docs-header-height));
+  }
+
+  .docs-main {
+    min-height: calc(100vh - var(--docs-header-height));
+    overflow-x: clip;
+    padding: clamp(2rem, 4vw, 3rem) clamp(1rem, 2.5vw, 2rem) clamp(2rem, 4vw, 3rem);
+  }
+
+
+  .docs-main-inner {
+    margin: 0 auto;
+    width: min(100%, 76rem);
+  }
+
+  .docs-article {
+    max-width: 56rem;
+    padding-inline: clamp(0.125rem, 1vw, 0.5rem);
+  }
+
+  @media (min-width: 1024px) {
+    .docs-main--with-sidebar {
+      padding-left: calc(var(--docs-sidebar-width) + 1.5rem);
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .docs-main--with-toc {
+      padding-right: calc(var(--docs-toc-width) + 1.5rem);
+    }
+  }
+
+  @media (max-width: 639px) {
+    .docs-main {
+      padding-inline: 1rem;
+      padding-top: 1.25rem;
+    }
+
+    .docs-article {
+      padding-inline: 0;
+    }
+  }
+</style>

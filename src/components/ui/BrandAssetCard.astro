@@ -1,7 +1,7 @@
 ---
-import Image from '@/components/ui/Image.astro';
-import Heading from '@/components/ui/Heading.astro';
 import Button from '@/components/ui/Button.astro';
+import Heading from '@/components/ui/Heading.astro';
+import Image from '@/components/ui/Image.astro';
 
 interface Props {
   image: {
@@ -27,7 +27,7 @@ const { image, title, buttons = [], singleButton, class: className = '' } = Astr
 ---
 
 <div
-  class={`not-prose flex flex-col items-center text-center space-y-4 p-6 bg-white/5 rounded-lg border border-white/10 transition-opacity duration-200 ${className}`}
+  class={`not-prose flex flex-col items-center text-center space-y-4 p-6 bg-white/5 rounded-lg border border-white/[0.06] transition-opacity duration-200 ${className}`}
 >
   <Image src={image.src} alt={image.alt} class={image.class || 'w-32 h-32'} loading="lazy" />
   <div class="w-full">

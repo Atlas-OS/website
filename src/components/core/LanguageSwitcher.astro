@@ -55,7 +55,7 @@ const localeLinks = availableLocales.map((locale) => {
         aria-label={hasMultipleLocales ? 'Select language' : 'Current language'}
         aria-haspopup={hasMultipleLocales}
         aria-expanded={hasMultipleLocales ? 'false' : undefined}
-        class={`inline-flex h-9 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-md border border-white/10 px-3 text-sm font-medium whitespace-nowrap text-white transition-opacity duration-200 outline-none hover:opacity-80 ${
+        class={`inline-flex h-9 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-md border border-white/[0.06] px-3 text-sm font-medium whitespace-nowrap text-white transition-opacity duration-200 outline-none hover:opacity-80 ${
           hasMultipleLocales ? '' : 'cursor-default'
         }`}
         style="background-color: var(--bg-primary);"
@@ -70,7 +70,7 @@ const localeLinks = availableLocales.map((locale) => {
       {hasMultipleLocales && (
         <div
           id="language-switcher-menu"
-          class="absolute top-full right-0 z-50 mt-2 hidden w-48 rounded-md border border-white/10 shadow-lg"
+          class="absolute top-full right-0 z-50 mt-2 hidden w-48 rounded-md border border-white/[0.06] shadow-lg"
           style="background-color: var(--bg-primary);"
           role="menu"
           aria-orientation="vertical"

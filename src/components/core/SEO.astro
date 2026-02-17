@@ -59,8 +59,11 @@ for (const loc of availableLocales) {
       alternateUrl = new URL(`/${loc}/${localePath}`, site).href;
     }
 
-    const hreflangCode = loc === 'en' ? 'en-US' : loc;
-    hreflangLinks.push({ href: alternateUrl, hreflang: hreflangCode });
+    const hreflangCodes = loc === 'en' ? ['en', 'en-US'] : [loc];
+
+    for (const hreflangCode of hreflangCodes) {
+      hreflangLinks.push({ href: alternateUrl, hreflang: hreflangCode });
+    }
   } catch {
     // Ignore invalid URLs
   }

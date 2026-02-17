@@ -40,12 +40,16 @@ const mainNavItems = [
   { label: 'FAQ', href: '/docs/faq/', isExternal: false },
   { label: 'Support us', href: 'https://ko-fi.com/atlasos', isExternal: true },
 ];
+
+const docsSubNavItems = mainNavItems.filter(item => item.href === '/docs/install/' || item.href === '/docs/faq/');
+const hasActiveDocsSubItem = docsSubNavItems.some(item => isActive(item.href, currentPath));
+const isDocumentationActive = isOnDocsPage && !hasActiveDocsSubItem;
 ---
 
 <header
   id="main-header"
-  class="bg-background sticky top-0 z-50 w-full border-b border-white/10 backdrop-blur-md transition-all duration-300"
-  style="background-color: oklch(0.12 0.0421 264.82 / 0.6);"
+  class={`bg-background sticky top-0 z-50 w-full border-b border-white/[0.06] transition-all duration-300 ${isOnDocsPage ? '' : 'backdrop-blur-md'}`}
+  style={isOnDocsPage ? 'background-color: oklch(0.12 0.0421 264.82);' : 'background-color: oklch(0.12 0.0421 264.82 / 0.6);'}
 >
   <div class="mx-auto flex h-14 items-center justify-between px-4 sm:px-6">
     <div class="flex min-w-0 flex-1 items-center gap-6">
@@ -73,7 +77,7 @@ const mainNavItems = [
       </a>
 
       <nav class="hidden items-center gap-1 lg:flex">
-        <NavLink href="/docs/" isActive={isOnDocsPage || isActive('/docs/', currentPath)}> Documentation </NavLink>
+        <NavLink href="/docs/" isActive={isDocumentationActive}> Documentation </NavLink>
 
         {
           mainNavItems.slice(1).map((item) => (
@@ -129,24 +133,29 @@ const mainNavItems = [
 
   {
     !isOnDocsPage && (
-      <div id="mobile-menu" class="hidden border-t border-white/10 md:hidden">
+      <div id="mobile-menu" class="mobile-menu md:hidden" hidden inert>
         <div
           id="mobile-menu-content"
-          class="space-y-1 px-4 py-3 backdrop-blur-xl transition-all duration-300"
+          class="space-y-1 px-4 py-3 backdrop-blur-xl"
           style="background-color: oklch(0.12 0.0421 264.82 / 0.9);"
         >
-          {mainNavItems.map((item) => (
-            <a
-              href={item.href}
-              target={item.isExternal ? '_blank' : undefined}
-              rel={item.isExternal ? 'noopener noreferrer' : undefined}
-              class={`block rounded-md px-4 py-2.5 text-sm font-medium text-white transition-colors duration-200 ${
-                isActive(item.href, currentPath) ? 'text-primary bg-white/5' : 'hover:bg-white/5'
-              }`}
-            >
-              {item.label}
-            </a>
-          ))}
+          {mainNavItems.map((item) => {
+            const itemIsActive =
+              item.href === '/docs/' ? isDocumentationActive : !item.isExternal && isActive(item.href, currentPath);
+
+            return (
+              <a
+                href={item.href}
+                target={item.isExternal ? '_blank' : undefined}
+                rel={item.isExternal ? 'noopener noreferrer' : undefined}
+                class={`block rounded-md px-4 py-2.5 text-sm font-medium text-white transition-colors duration-200 ${
+                  itemIsActive ? 'text-primary bg-white/5' : 'hover:bg-white/5'
+                }`}
+              >
+                {item.label}
+              </a>
+            );
+          })}
         </div>
       </div>
     )

@@ -1,8 +1,8 @@
 ---
-import { Icon } from 'astro-icon/components';
-import { Image } from 'astro:assets';
 import LinusThumbnail from '@/assets/linus-tech-tips-video-thumbnail.webp';
 import SectionTitle from '@/components/sections/common/SectionTitle.astro';
+import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
 
 const links = {
   linusvideo: 'https://www.youtube.com/watch?v=dc7CIkZcWYE',
@@ -11,16 +11,16 @@ const videoTitle = "You don't need a new PC - AtlasOS E-Waste PC refresh";
 ---
 
 <section class="relative mx-auto mt-32 mb-32 max-w-7xl px-4">
-  <div class="text-center">
+  <div class="text-center" data-animate>
     <SectionTitle>Linus Tech Tips</SectionTitle>
   </div>
-  <div class="mb-16 text-center">
+  <div class="mb-16 text-center" data-animate data-animate-delay="1">
     <h3 class="mb-6 text-4xl font-semibold tracking-tight text-white italic md:text-5xl">
       <span class="text-white/70">"</span>
       If you can run Windows with <span class="text-primary">this kind of performance</span>... Jeepers Creepers.
       <span class="text-white/70">"</span>
     </h3>
-    <p class="mt-4 text-base text-white/45 md:text-lg">— Linus Sebastian</p>
+    <p class="mt-4 text-base text-white/45 md:text-lg">- Linus Sebastian</p>
   </div>
 
   <a
@@ -29,6 +29,8 @@ const videoTitle = "You don't need a new PC - AtlasOS E-Waste PC refresh";
     rel="noreferrer noopener"
     aria-label="Watch what Linus said about Atlas OS"
     class="group block"
+    data-animate
+    data-animate-delay="2"
   >
     <div class="relative mx-auto h-64 max-w-full overflow-hidden rounded-t-lg md:h-[546px]">
       <div
@@ -46,7 +48,7 @@ const videoTitle = "You don't need a new PC - AtlasOS E-Waste PC refresh";
         />
         <div class="absolute inset-0 z-10 flex items-center justify-center">
           <div
-            class="flex h-[120px] w-[120px] items-center justify-center rounded-full border border-white/20 bg-black/40 backdrop-blur-lg transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:border-white/30 group-hover:bg-black/50 group-hover:shadow-[0_8px_30px_rgba(0,0,0,0.4)]"
+            class="flex h-[120px] w-[120px] items-center justify-center rounded-full border border-white/[0.08] bg-black/40 backdrop-blur-lg transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:border-white/[0.12] group-hover:bg-black/50 group-hover:shadow-[0_8px_30px_rgba(0,0,0,0.4)]"
           >
             <Icon
               name="tabler:player-play"
@@ -61,7 +63,7 @@ const videoTitle = "You don't need a new PC - AtlasOS E-Waste PC refresh";
       </div>
     </div>
   </a>
-  <div class="mt-4 text-center">
+  <div class="mt-4 text-center" data-animate data-animate-delay="3">
     <p class="text-sm text-white/60 md:text-base">({videoTitle})</p>
   </div>
 </section>

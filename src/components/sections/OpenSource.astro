@@ -13,27 +13,31 @@ const links = {
 <section
   class="relative z-10 mx-auto mt-32 mb-32 flex max-w-7xl flex-col items-end px-4 lg:flex-row lg:justify-between"
 >
-  <div class="github-wrapper relative hidden h-[330px] w-[587px] lg:block">
+  <div class="github-wrapper relative hidden h-[330px] w-[587px] lg:block" data-animate>
     <Picture
       src={GitHub}
       alt="GitHub repository"
       formats={['avif', 'webp']}
+      fallbackFormat="webp"
       layout="constrained"
       width={587}
       height={330}
+      widths={[587, 1174]}
+      sizes="587px"
+      quality={72}
       class="h-auto w-full rounded-md select-none"
       loading="lazy"
       draggable={false}
     />
     <div
       id="gh-stars-wrap"
-      class="bg-secondary/80 absolute right-[-60px] bottom-[-7px] w-[300px] cursor-pointer rounded-md border border-white/10 text-gray-400 backdrop-blur-md transition-[border-radius] duration-200"
+      class="bg-secondary/80 absolute right-[-60px] bottom-[-7px] w-[300px] cursor-pointer rounded-md border border-white/[0.06] text-gray-400 backdrop-blur-md transition-[border-radius] duration-200"
     >
       <button
         id="toggle-star-list-btn"
         aria-controls="gh-star-list"
         aria-expanded="false"
-        class="w-full border-none bg-transparent p-0 text-left transition-opacity duration-200 hover:opacity-80 outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2"
+        class="focus-visible:ring-primary/50 w-full border-none bg-transparent p-0 text-left transition-opacity duration-200 outline-none hover:opacity-80 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
         type="button"
       >
         <div class="flex w-full cursor-pointer justify-between">
@@ -56,21 +60,23 @@ const links = {
           <div class="flex items-center">
             <div class="ml-2 h-full w-px bg-white/10"></div>
             <div class="flex h-full items-center justify-center px-4 py-2">
-              <Icon name="tabler:chevron-down" class="h-5 w-5 transition-transform" />
+              <Icon name="tabler:chevron-down" class="h-5 w-5 transition-transform duration-200" />
             </div>
           </div>
         </div>
       </button>
       <div
         id="gh-star-list"
-        class="absolute top-full left-0 z-[999] -ml-[1px] h-0 w-[calc(100%+2px)] overflow-hidden rounded-b-md border border-t-0 border-white/10 opacity-0 transition-all duration-200 ease-in-out"
+        class="gh-star-dropdown absolute top-full left-0 z-[999] -ml-[1px] w-[calc(100%+2px)] rounded-b-md border border-t-0 border-white/[0.06]"
       >
-        <div id="gh-star-list-items" class="bg-secondary/80 flex flex-col gap-4 px-5 py-5 backdrop-blur-md"></div>
+        <div class="gh-star-dropdown-inner min-h-0 overflow-hidden">
+          <div id="gh-star-list-items" class="bg-secondary/80 flex flex-col gap-4 px-5 py-5 backdrop-blur-md"></div>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="max-w-lg text-right">
+  <div class="max-w-lg text-right" data-animate data-animate-delay="2">
     <h2 class="mb-6 ml-auto max-w-md text-4xl font-semibold tracking-tight text-white md:text-5xl">
       An open-source, <span class="text-primary">GPL-3.0</span> project
     </h2>
@@ -139,23 +145,10 @@ const links = {
       toggleBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         const isOpen = starList.classList.toggle('show');
-
-        if (isOpen) {
-          starList.style.height = 'auto';
-          starList.style.opacity = '1';
-          wrapper.style.borderBottomLeftRadius = '0';
-          wrapper.style.borderBottomRightRadius = '0';
-        } else {
-          starList.style.height = '0';
-          starList.style.opacity = '0';
-          wrapper.style.borderBottomLeftRadius = '';
-          wrapper.style.borderBottomRightRadius = '';
-        }
-
-        wrapper.classList.toggle('toggled');
-        toggleBtn.classList.toggle('toggled');
+        wrapper.classList.toggle('toggled', isOpen);
+        toggleBtn.classList.toggle('toggled', isOpen);
         const icon = toggleBtn.querySelector('svg');
-        if (icon) icon.classList.toggle('rotate-180');
+        if (icon) icon.classList.toggle('rotate-180', isOpen);
         toggleBtn.setAttribute('aria-expanded', isOpen.toString());
       });
 
@@ -163,12 +156,6 @@ const links = {
         const target = event.target as Node;
         if (!wrapper.contains(target)) {
           starList.classList.remove('show');
-
-          starList.style.height = '0';
-          starList.style.opacity = '0';
-          wrapper.style.borderBottomLeftRadius = '';
-          wrapper.style.borderBottomRightRadius = '';
-
           wrapper.classList.remove('toggled');
           toggleBtn.classList.remove('toggled');
           const icon = toggleBtn.querySelector('svg');
@@ -257,3 +244,40 @@ const links = {
     setTimeout(() => new GitHubStarsManager(), 1);
   }
 </script>
+
+<style>
+  .gh-star-dropdown {
+    display: grid;
+    grid-template-rows: 0fr;
+    transform-origin: top center;
+    transition:
+      grid-template-rows var(--motion-duration-normal, 250ms) var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1));
+  }
+
+  .gh-star-dropdown-inner {
+    opacity: 0;
+    transform: translateY(-6px);
+    filter: blur(2px);
+    transition:
+      opacity var(--motion-duration-normal, 250ms) var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1)),
+      transform var(--motion-duration-normal, 250ms) var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1)),
+      filter var(--motion-duration-normal, 250ms) var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1));
+  }
+
+  .gh-star-dropdown.show {
+    grid-template-rows: 1fr;
+  }
+
+  .gh-star-dropdown.show .gh-star-dropdown-inner {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+
+  #gh-stars-wrap.toggled {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    transition: border-radius var(--motion-duration-normal, 250ms) var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1));
+  }
+
+</style>

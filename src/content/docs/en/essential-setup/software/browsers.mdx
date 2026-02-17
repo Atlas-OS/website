@@ -1,0 +1,72 @@
+---
+title: Web Browsers
+metaDescription: "AtlasOS browsers: Edge, Brave, LibreWolf, Firefox, Chrome. Privacy, open source, features."
+description: Recommended web browsers.
+order: 3
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import Table from '@/components/ui/Table.astro';
+import TableRow from '@/components/ui/TableRow.astro';
+import TableCell from '@/components/ui/TableCell.astro';
+import { Icon } from 'astro-icon/components';
+
+# Web Browsers
+
+During Atlas installation you can optionally remove Edge and install a recommended browser. Prioritize privacy when choosing; also consider speed, ease of use, and features.
+
+## Comparison
+
+<Table headers={['Feature', 'Edge', 'Brave', 'LibreWolf', 'Firefox', 'Chrome']}>
+  <TableRow>
+    <TableCell>Privacy respecting</TableCell>
+    <TableCell><Icon name="tabler:x" class="inline h-4 w-4" /></TableCell>
+    <TableCell><Icon name="tabler:check" class="inline h-4 w-4" /></TableCell>
+    <TableCell><Icon name="tabler:check" class="inline h-4 w-4" /></TableCell>
+    <TableCell><Icon name="tabler:check" class="inline h-4 w-4" /></TableCell>
+    <TableCell><Icon name="tabler:x" class="inline h-4 w-4" /></TableCell>
+  </TableRow>
+  <TableRow>
+    <TableCell>Open source</TableCell>
+    <TableCell><Icon name="tabler:x" class="inline h-4 w-4" /></TableCell>
+    <TableCell><Icon name="tabler:check" class="inline h-4 w-4" /></TableCell>
+    <TableCell><Icon name="tabler:check" class="inline h-4 w-4" /></TableCell>
+    <TableCell><Icon name="tabler:check" class="inline h-4 w-4" /></TableCell>
+    <TableCell><Icon name="tabler:x" class="inline h-4 w-4" /></TableCell>
+  </TableRow>
+  <TableRow>
+    <TableCell>Easy to use</TableCell>
+    <TableCell><Icon name="tabler:check" class="inline h-4 w-4" /></TableCell>
+    <TableCell><Icon name="tabler:check" class="inline h-4 w-4" /></TableCell>
+    <TableCell><Icon name="tabler:alert-triangle" class="inline h-4 w-4" /></TableCell>
+    <TableCell><Icon name="tabler:check" class="inline h-4 w-4" /></TableCell>
+    <TableCell><Icon name="tabler:check" class="inline h-4 w-4" /></TableCell>
+  </TableRow>
+  <TableRow>
+    <TableCell>Anti-tracking by default</TableCell>
+    <TableCell><Icon name="tabler:x" class="inline h-4 w-4" /></TableCell>
+    <TableCell><Icon name="tabler:check" class="inline h-4 w-4" /></TableCell>
+    <TableCell><Icon name="tabler:check" class="inline h-4 w-4" /></TableCell>
+    <TableCell><Icon name="tabler:x" class="inline h-4 w-4" /></TableCell>
+    <TableCell><Icon name="tabler:x" class="inline h-4 w-4" /></TableCell>
+  </TableRow>
+  <TableRow>
+    <TableCell>Ad-blocking by default</TableCell>
+    <TableCell><Icon name="tabler:x" class="inline h-4 w-4" /></TableCell>
+    <TableCell><Icon name="tabler:check" class="inline h-4 w-4" /></TableCell>
+    <TableCell><Icon name="tabler:check" class="inline h-4 w-4" /></TableCell>
+    <TableCell><Icon name="tabler:x" class="inline h-4 w-4" /></TableCell>
+    <TableCell><Icon name="tabler:x" class="inline h-4 w-4" /></TableCell>
+  </TableRow>
+</Table>
+
+**Notes:**
+
+- [Chrome](https://tosdr.org/en/service/217) and [Edge](https://tosdr.org/en/service/244) collect significant telemetry and user data.
+- LibreWolf's privacy protections may require turning off protections for specific websites.
+- See [privacytests.org](https://privacytests.org/) for tracking prevention comparisons.
+
+## Next steps
+
+- **[Software overview](/docs/essential-setup/software/)** - More recommended apps
+- **[Configure Atlas](/docs/atlas-configuration/)** - Customize your installation

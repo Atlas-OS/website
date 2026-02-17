@@ -1,8 +1,8 @@
 ---
 title: Other drivers
-metaDescription: Install Bluetooth, printer, and other device drivers for AtlasOS. Learn how to find manufacturer drivers and use Snappy Driver Installer Origin (SDIO) as a backup option.
-description: Install Bluetooth, printer, and other device drivers.
-order: 3
+metaDescription: "AtlasOS drivers: Bluetooth, printer, peripherals. Manufacturer drivers or SDIO backup."
+description: Bluetooth, printer, and other device drivers.
+order: 5
 ---
 
 import Callout from '@/components/docs/Callout.astro';
@@ -10,7 +10,7 @@ import CodeInline from '@/components/docs/CodeInline.astro';
 
 # Other drivers
 
-Install drivers for additional devices like Bluetooth, printers, scanners, and other peripherals. Always try to download drivers directly from the device manufacturer first, as they're optimized for your specific hardware. Use Snappy Driver Installer Origin (SDIO) as a backup option if you can't find manufacturer drivers.
+Install drivers for Bluetooth, printers, scanners, and other peripherals. Download from the device manufacturer first—they are optimized for your hardware. Use Snappy Driver Installer Origin (SDIO) as a backup if you cannot find manufacturer drivers.
 
 ## Manufacturer drivers (recommended)
 
@@ -23,11 +23,11 @@ Search for your device model or motherboard manufacturer, as they provide driver
 
 ## Snappy Driver Installer Origin (SDIO)
 
-Snappy Driver Installer Origin (SDIO) can help you find drivers that are compatible with your hardware. SDIO scans your system for missing or outdated drivers and installs the most up-to-date ones for you.
+Snappy Driver Installer Origin (SDIO) finds compatible drivers. It scans for missing or outdated drivers and installs the latest ones.
 
 <Callout type="warning" title="Important">
-  Do not install all drivers that SDIO lists. Only install, update, or change drivers if you're
-  experiencing specific device issues.
+  Do not install all drivers SDIO lists. Only install, update, or change drivers when you have
+  specific device issues.
 </Callout>
 
 ### SDIO installation steps
@@ -44,5 +44,5 @@ Snappy Driver Installer Origin (SDIO) can help you find drivers that are compati
 After installing all necessary drivers:
 
 - **[Optimize hardware](/docs/essential-setup/hardware/)** (optional) - Enable XMP/DOCP and Resizable BAR for better performance
-- **Configure [Atlas settings](/docs/atlas-configuration/)** to customize your installation
+- **[Configure Atlas settings](/docs/atlas-configuration/)** - Customize your installation
 - **Explore [optional tweaks](/docs/atlas-configuration/tweaks/)** to personalize your experience

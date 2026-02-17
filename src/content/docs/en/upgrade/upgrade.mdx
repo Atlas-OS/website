@@ -1,7 +1,7 @@
 ---
 title: Upgrade process
-metaDescription: Step-by-step instructions for upgrading AtlasOS. Download assets, launch AME Beta, perform the upgrade, and re-apply configuration. Includes troubleshooting.
-description: Step-by-step instructions for upgrading AtlasOS.
+metaDescription: "AtlasOS upgrade steps: download assets, launch AME Beta, upgrade, re-apply configuration. Troubleshooting."
+description: Upgrade AtlasOS step by step.
 order: 9
 ---
 
@@ -13,20 +13,20 @@ import IconArrow from '@/components/ui/IconArrow.astro';
 
 # Upgrade process
 
-Follow these steps to upgrade your AtlasOS installation to a newer version.
+Follow these steps to upgrade AtlasOS.
 
 ## Step 1: Download assets
 
 1. Visit [atlasos.net](https://atlasos.net)
-2. Click **Get started** <IconArrow /> **Already following the guide?**
+2. Click **Get started**<IconArrow />**Already following the guide?**
 3. Download the newest **Atlas Playbook** and **AME Beta**
 
 ## Step 2: Launch AME Beta
 
 1. Extract both downloads to your desktop
 2. Run <CodeInline text="AME Beta.exe" />
-3. If SmartScreen warning: **More info** <IconArrow /> **Run anyway** (safe to ignore)
-4. Click **Updates** <IconArrow /> Update AME Beta if available
+3. If SmartScreen warning: **More info**<IconArrow />**Run anyway** (safe to ignore)
+4. Click **Updates**<IconArrow />Update AME Beta if available
 
 ## Step 3: Upgrade AtlasOS
 
@@ -37,18 +37,18 @@ Follow these steps to upgrade your AtlasOS installation to a newer version.
 5. Your PC will reboot automatically
 
 <Callout type="info" title="How It Works">
-  AME Beta compares your current installation with the new Playbook and only applies the necessary
-  changes. This ensures a smooth upgrade process without reinstalling everything.
+  AME Beta compares your installation with the new Playbook and applies only the necessary
+  changes. No full reinstall.
 </Callout>
 
 ## After upgrade
 
-### Re-apply Atlas Folder configuration
+### Re-apply Atlas folder configuration
 
-If upgrading from **0.4.x <IconArrow /> 0.5.x**, you'll need to re-apply your Atlas Folder configuration:
+If upgrading from **0.4.x<IconArrow />0.5.x**, re-apply your Atlas folder configuration:
 
-1. Navigate to <CodeInline text="C:\Atlas\Config" />
-2. Review and re-apply your settings from [Atlas Configuration](/docs/atlas-configuration/)
+1. Open the Atlas folder at <CodeInline text="C:\Windows\AtlasDesktop" />
+2. Review and re-apply your settings from the numbered sections (see [Atlas Configuration](/docs/atlas-configuration/))
 
 <Callout type="tip">
   This limitation only applies to upgrades from 0.4.x. Upgrades from 0.5.x+ will preserve your
@@ -59,12 +59,12 @@ If upgrading from **0.4.x <IconArrow /> 0.5.x**, you'll need to re-apply your At
 
 ### AME Beta doesn't show upgrade option
 
-- Verify you're on Atlas 0.4.x or newer using the [Checking Atlas Version](/docs/faq/general/) guide
-- Ensure you're using the latest version of AME Beta
+- Verify you are on Atlas 0.4.1 or newer using the [version check guide](/docs/faq/general/#checking-your-atlasos-version)
+- Use the latest AME Beta
 
 ### Systems on 0.3.x
 
-Systems on **0.3.x** cannot be upgraded in-place. Follow the [Installation guide](/docs/install/) for a clean reinstall instead.
+**0.3.x** systems cannot be upgraded in-place. Follow the [Installation guide](/docs/install/) for a clean reinstall.
 
 ## Need help?
 

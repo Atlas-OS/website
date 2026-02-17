@@ -1,26 +1,26 @@
 ---
 title: Testing guide
-metaDescription: Comprehensive testing guide for AtlasOS contributors. Learn what to test including Windows features, user accounts, applications, Windows Update, and Atlas folder.
-description: Comprehensive testing guide for AtlasOS contributors.
-order: 36
+metaDescription: "AtlasOS testing guide: Windows features, apps, Windows Update, Atlas folder."
+description: Testing guide for AtlasOS contributors.
+order: 44
 ---
 
 import Callout from '@/components/docs/Callout.astro';
 
 # Testing guide
 
-This guide covers recommended testing for alpha or release candidate builds. If you find problems, see [the reporting issues page](/docs/contributing/reporting/).
+This guide covers recommended testing for alpha or release candidate builds. Found problems? See [the reporting issues page](/docs/contributing/reporting/).
 
 If you need to set up a virtual machine, see the [Playbook contributing page](/docs/contributing/playbook/) for instructions. You can also test on real hardware, especially for release candidates.
 
 <Callout type="info" title="Test on Stock Windows First">
-  To reduce the amount of false reports, please verify that any issues encountered on Atlas do not
-  happen in the same environment and configuration on unmodified Windows.
+  Verify that issues on Atlas do not occur on unmodified Windows in the same environment. This
+  reduces false reports.
 </Callout>
 
 ## Your personally used Windows features
 
-Testing the features you use is recommended, especially if it's different from a typical configuration or usage. Some examples of this include:
+Test the features you use, especially if your setup differs from typical. Examples:
 
 - Non-English languages
   - Multiple languages & keyboard layouts
@@ -31,17 +31,15 @@ Testing the features you use is recommended, especially if it's different from a
 
 ## New user accounts
 
-Try making then logging into new user accounts, and making sure that all tweaks apply.
+Try creating new user accounts and logging into them, and verify that all tweaks apply.
 
 ## Your personally used apps/games
 
-We recommend testing all software and games you use in a realistic environment to ensure that Atlas has not introduced incompatibilities.
-
-Please ensure you install drivers properly beforehand and can't reproduce any encountered issues on stock Windows in the same environment.
+Test all software and games you use in a realistic environment. Install drivers properly first. Ensure you cannot reproduce issues on stock Windows in the same environment.
 
 ## Windows Update
 
-As Atlas supports Windows Update, consider testing the following that all make use of Windows Update's components:
+Atlas supports Windows Update. Consider testing these components:
 
 - From the base ISO (no updates), installing all Windows Updates post-Atlas
 - Language pack installation
@@ -53,20 +51,20 @@ As Atlas supports Windows Update, consider testing the following that all make u
 Consider testing local network features such as:
 
 - Windows file sharing
-  - Enable with the [Atlas script](/docs/atlas-configuration/settings/) first
+  - Enable with the [Atlas script](/docs/atlas-configuration/settings/#network-discovery) first
   - Ensure that it works on stock Windows
 - Screencasting
 - Remote Desktop
 
 ## Atlas folder
 
-We recommend doing lots of testing in the Atlas folder. For this, we recommend the following:
+Test the Atlas folder thoroughly:
 
 - Testing each script and checking if it does its functionality
   - Especially the significant scripts like disabling Defender
   - If prompted for anything, test various inputs
   - Make sure to restart if prompted
-- Suggesting where we can:
-  - Improve the structure
-  - Improve user experience
-  - Simplify the folder
+- Suggesting improvements for:
+  - Structure
+  - User experience
+  - Folder organization

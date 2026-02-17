@@ -1,11 +1,11 @@
 import type { APIRoute } from 'astro';
-import satori from 'satori';
-import sharp from 'sharp';
-import { getCollection } from 'astro:content';
 import { DEFAULT_LOCALE } from '@/constants';
-import { getLocaleFromId, getSlugFromId, getSectionFromSlug } from '@/utils/navigation';
+import { getSectionFromSlug, getSlugFromEntry } from '@/utils/navigation';
+import { getCollection } from 'astro:content';
 import { readFile } from 'fs/promises';
 import { resolve } from 'path';
+import satori from 'satori';
+import sharp from 'sharp';
 
 let interFontData: ArrayBuffer | null = null;
 let interBoldFontData: ArrayBuffer | null = null;
@@ -28,12 +28,11 @@ async function loadInterBoldFont(): Promise<ArrayBuffer> {
 
 export async function getStaticPaths() {
   const defaultLocale = DEFAULT_LOCALE;
-  const docs = await getCollection('docs');
+  const docs = await getCollection('docs', entry => !entry.data.draft);
 
   const paths = docs
     .map(entry => {
-      const locale = getLocaleFromId(entry.id, defaultLocale);
-      const slug = getSlugFromId(entry.id, defaultLocale);
+      const slug = getSlugFromEntry(entry, defaultLocale);
 
       if (slug === '/docs/' || slug === '/docs') {
         return null;
@@ -48,11 +47,9 @@ export async function getStaticPaths() {
         return null;
       }
 
-      const paramsSlug = locale ? `${locale}/${slugString}` : slugString;
-
       return {
-        params: { slug: paramsSlug },
-        props: { entry, locale: locale || defaultLocale },
+        params: { slug: slugString },
+        props: { entry },
       };
     })
     .filter((path): path is NonNullable<typeof path> => path !== null);
@@ -97,12 +94,11 @@ function getSectionIconPath(section: string | null): string {
 export const GET: APIRoute = async function get({ props }) {
   const { entry } = props as {
     entry: { data: { title: string; description?: string }; id: string };
-    locale: string;
   };
   const title = entry.data.title || 'AtlasOS Documentation';
   const description = entry.data.description || '';
 
-  const slug = getSlugFromId(entry.id, DEFAULT_LOCALE);
+  const slug = getSlugFromEntry(entry, DEFAULT_LOCALE);
   const section = getSectionFromSlug(slug);
   const sectionIconPath = getSectionIconPath(section);
 
@@ -245,7 +241,7 @@ export const GET: APIRoute = async function get({ props }) {
           },
         ].filter(Boolean),
       },
-    } as any,
+    } as Parameters<typeof satori>[0],
     {
       width: 1200,
       height: 630,

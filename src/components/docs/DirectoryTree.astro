@@ -7,7 +7,8 @@ const { class: className = '' } = Astro.props;
 ---
 
 <div
-  class={`directory-tree not-prose mb-6 overflow-x-auto rounded-lg border border-white/10 bg-white/5 p-5 font-mono text-sm leading-relaxed text-white/90 ${className}`}
+  class={`directory-tree docs-surface not-prose mb-6 overflow-x-auto p-5 font-mono text-sm leading-relaxed ${className}`}
+  style="color: var(--docs-text-primary);"
   data-component="directory-tree"
 >
   <pre class="m-0 font-mono text-sm leading-relaxed whitespace-pre"><slot /></pre>
@@ -16,7 +17,7 @@ const { class: className = '' } = Astro.props;
 <style>
   .directory-tree pre {
     font-family: var(--font-mono);
-    color: rgb(255 255 255 / 0.9);
+    color: var(--docs-text-primary);
     margin: 0;
     padding: 0;
     background: transparent;

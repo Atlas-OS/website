@@ -1,30 +1,61 @@
 ---
 title: ISO injection
-metaDescription: ISO injection method for installing AtlasOS (coming soon). This advanced installation method will allow experienced users to inject AtlasOS directly into a Windows ISO.
-description: ISO injection method for installing AtlasOS (coming soon).
+metaDescription: "AtlasOS ISO injection: download Windows ISO, inject Playbook, reinstall with Atlas pre-configured."
+description: ISO injection for experienced users.
 order: 5
 ---
 
 import Callout from '@/components/docs/Callout.astro';
-import SectionDivider from '@/components/ui/SectionDivider.astro';
-import Link from '@/components/ui/Link.astro';
-import { Icon } from 'astro-icon/components';
+import CodeInline from '@/components/docs/CodeInline.astro';
+import IconArrow from '@/components/ui/IconArrow.astro';
+import WindowsIsoDownload from '@/components/docs/install/WindowsIsoDownload.astro';
+import WindowsSetupTabs from '@/components/docs/install/WindowsSetupTabs.astro';
 
 # ISO injection
 
-This installation method is currently under development and will be available soon.
+Inject the Atlas Playbook into a Windows ISO before installation. For experienced users who want pre-configured installation media.
 
-<Callout type="info" title="Coming Soon">
-  The ISO injection method will allow advanced users to inject AtlasOS directly into a Windows ISO
-  file before installation.
+<Callout type="danger" title="Experimental">
+  ISO injection is an experimental feature added in Atlas Playbook 0.5.0. Previous versions do not
+  support it. Report any bugs on our [Issue Tracker](https://github.com/Atlas-OS/Atlas/issues).
 </Callout>
 
-## Recommended method
+<Callout type="warning" title="Support">
+  We only offer support for Atlas Playbook on the latest, non-beta Windows 11. For older or
+  unsupported versions, follow our [installation guide](/docs/install/requirements/) to get the
+  latest release.
+</Callout>
 
-For now, please use the [Playbook installation method](/docs/install/playbook/), which is the recommended approach for installing AtlasOS.
+## Step 1: Download Windows ISO
 
-<SectionDivider class="mt-6 pt-6">
-  <Link href="/docs/install/playbook/" icon="tabler:arrow-left" iconPosition="left">
-    Back to Playbook Installation
-  </Link>
-</SectionDivider>
+Download a Windows ISO first. Choose your version.
+
+<WindowsIsoDownload includeAmeBeta={true} />
+
+## Step 2: Inject the playbook
+
+1. Go to [atlasos.net](https://atlasos.net), click **Get started**, then **Already following the guide?**
+2. Download **Atlas Playbook** and **AME Beta**, then extract both to your desktop
+3. Open <CodeInline text="AME Beta.exe" />. If SmartScreen warns, see [AME Beta deleted](/docs/faq/ame/#ame-beta-deleted-or-closed-suddenly). Click **More info** and **Run anyway**
+4. Click **Updates** and ensure AME Beta is up to date
+5. Drag your downloaded ISO into AME Beta, then drag <CodeInline text="Atlas Playbook.apbx" /> from your desktop
+6. Select the Windows 11 ISO from the left, click **Select a playbook to modify**, ensure AtlasOS is selected, then **OK**
+7. Click **Next** and configure options as you would for a normal playbook install. Keep **Include additional network drivers** selected when prompted
+8. When asked for username and password, enter them and click **Next** (leave password empty if you prefer none)
+9. Wait for the injection to finish
+
+## Step 3: Reinstall Windows
+
+Back up valuable data to an external drive or cloud storage before continuing.
+
+<WindowsSetupTabs variant="iso" />
+
+## Step 4: Post-install
+
+**OOBE:** AME uses a custom out-of-box experience. Follow the on-screen instructions. Connect to the internet when asked—AtlasOS needs it to install. Wait for the new user script to run before continuing.
+
+**Windows.old cleanup:** If earlier steps mentioned <CodeInline text="Windows.old" />, your previous data is at the start of your Windows drive. After retrieving what you need:
+
+1. Open **Windows Settings**<IconArrow />**System**<IconArrow />**Storage**
+2. Click **Temporary files** and wait for the scan
+3. Select **Previous version of Windows**, then click **Remove files**

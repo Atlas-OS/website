@@ -1,0 +1,86 @@
+---
+title: Software
+metaDescription: "Install software on AtlasOS with WinGet: browsers, antivirus, media players, text editors, and more."
+description: Recommended software and installation.
+order: 1
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeBlock from '@/components/docs/CodeBlock.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+import QuickLinkCard from '@/components/docs/QuickLinkCard.astro';
+import QuickLinksGrid from '@/components/docs/QuickLinksGrid.astro';
+
+# Software
+
+Use a package manager to install software. You can also install executables directly from official sources.
+
+We use **WinGet** (Windows Package Manager), which comes pre-installed on Windows.
+
+## What is WinGet?
+
+WinGet is Microsoft's Windows package manager, installed via the App Installer package on the Microsoft Store. The community runs the repository. It works like apt-get on Linux and Homebrew on macOS.
+
+## Installing software with WinGet
+
+Go to the <CodeInline text="1. Software" /> folder in the Atlas folder and run <CodeInline text="Install Software.cmd" />. Or install manually:
+
+<CodeBlock
+  title="Install with winget:"
+  code="winget install <package name>"
+/>
+
+Find package names on the [winstall.app](https://winstall.app/) website.
+
+## Recommended software
+
+<QuickLinksGrid columns={{ md: 2 }}>
+  <QuickLinkCard
+    href="/docs/essential-setup/software/anti-virus/"
+    icon="tabler:shield"
+    title="Antivirus"
+    description="Windows Defender and alternative antivirus options"
+  />
+
+  <QuickLinkCard
+    href="/docs/essential-setup/software/browsers/"
+    icon="tabler:world"
+    title="Web Browsers"
+    description="Privacy-respecting browser recommendations"
+  />
+
+  <QuickLinkCard
+    href="/docs/essential-setup/software/media-playback/"
+    icon="tabler:player-play"
+    title="Media Playback"
+    description="VLC, mpv, and music players"
+  />
+
+  <QuickLinkCard
+    href="/docs/essential-setup/software/text-editors/"
+    icon="tabler:file-code"
+    title="Text Editors"
+    description="Notepad++, VS Code, and more"
+  />
+
+  <QuickLinkCard
+    href="/docs/essential-setup/software/screenshotting/"
+    icon="tabler:camera"
+    title="Screenshotting"
+    description="Snipping Tool, ShareX, and alternatives"
+  />
+
+  <QuickLinkCard
+    href="/docs/essential-setup/software/system-info/"
+    icon="tabler:chart-dots"
+    title="System Information"
+    description="HWiNFO, CPU-Z, GPU-Z"
+  />
+
+  <QuickLinkCard
+    href="/docs/essential-setup/software/image-viewer/"
+    icon="tabler:photo"
+    title="Image Viewer"
+    description="qView, IrfanView, and more"
+  />
+</QuickLinksGrid>

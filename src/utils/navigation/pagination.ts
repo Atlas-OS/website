@@ -1,136 +1,99 @@
-import type { DocsEntry, NavItem, SectionNavItem, PrevNextPages } from './types';
-import { buildNavigationTree } from './tree-builder';
-import { normalizeSlug, getSlugFromId } from './slugs';
-import { sortSectionsByPriority } from './sidebar';
 import { DEFAULT_LOCALE } from '@/constants';
+import { normalizeSlug } from './slugs';
+import { sortSectionsByPriority } from './sidebar';
+import { buildNavigationTree } from './tree-builder';
+import type { DocsEntry, NavItem, PrevNextPages, SectionNavItem } from './types';
 
-/**
- * Flatten a navigation tree into a linear list of pages.
- * Used for determining prev/next navigation.
- *
- * @param navTree - The navigation tree to flatten
- * @returns Flat array of nav items in order
- */
-function flattenNavigationTree(navTree: SectionNavItem[]): NavItem[] {
-  let totalSize = 0;
-  for (const section of navTree) {
-    for (const item of section.items) {
-      totalSize++;
-      if (item.children) {
-        totalSize += item.children.length;
-      }
-    }
-  }
+function flattenItems(items: NavItem[]): NavItem[] {
+  const flattened: NavItem[] = [];
 
-  const flattened: NavItem[] = new Array(totalSize);
-  let index = 0;
+  for (const item of items) {
+    flattened.push({
+      title: item.title,
+      slug: item.slug,
+      description: item.description,
+      order: item.order,
+    });
 
-  for (const section of navTree) {
-    for (const item of section.items) {
-      flattened[index++] = {
-        title: item.title,
-        slug: item.slug,
-        order: item.order,
-      };
-
-      if (item.children) {
-        for (const child of item.children) {
-          flattened[index++] = {
-            title: child.title,
-            slug: child.slug,
-            order: child.order,
-          };
-        }
-      }
+    if (item.children?.length) {
+      flattened.push(...flattenItems(item.children));
     }
   }
 
   return flattened;
 }
 
-/**
- * Get the previous and next pages for navigation.
- *
- * @param entries - All documentation entries
- * @param currentSlug - Current page slug
- * @param locale - Current locale
- * @param defaultLocale - Default locale code
- * @returns Object with prev and next page links
- *
- * @example
- * const { prev, next } = getPrevNextPages(entries, '/docs/install/');
- * // prev: { href: '/docs/', title: 'Home' }
- * // next: { href: '/docs/install/requirements/', title: 'Requirements' }
- */
+function flattenNavigationTree(navTree: SectionNavItem[]): NavItem[] {
+  const pages: NavItem[] = [];
+
+  for (const section of navTree) {
+    pages.push({
+      title: section.sectionTitle,
+      slug: section.sectionSlug,
+      description: section.sectionDescription,
+      order: section.order,
+    });
+
+    const sectionItems = section.items.filter(
+      item => normalizeSlug(item.slug) !== normalizeSlug(section.sectionSlug),
+    );
+    pages.push(...flattenItems(sectionItems));
+  }
+
+  const uniqueBySlug = new Map<string, NavItem>();
+  for (const page of pages) {
+    const key = normalizeSlug(page.slug);
+    if (!uniqueBySlug.has(key)) {
+      uniqueBySlug.set(key, page);
+    }
+  }
+
+  return [...uniqueBySlug.values()];
+}
+
 export function getPrevNextPages(
   entries: DocsEntry[],
   currentSlug: string,
   locale: string | null = null,
   defaultLocale: string = DEFAULT_LOCALE,
 ): PrevNextPages {
-  // Build full navigation tree
   const navTree = buildNavigationTree(entries, {
     scope: 'full',
     locale,
     defaultLocale,
   }) as SectionNavItem[];
 
-  // Sort by section priorities
-  const sortedTree = sortSectionsByPriority(navTree);
-
-  // Flatten for linear navigation
-  const flattened = flattenNavigationTree(sortedTree);
-
-  if (flattened.length === 0) {
+  if (navTree.length === 0) {
     return { prev: null, next: null };
   }
 
-  // Find current page index
+  const sortedTree = sortSectionsByPriority(navTree);
+  const flattened = flattenNavigationTree(sortedTree);
   const normalizedCurrent = normalizeSlug(currentSlug, defaultLocale);
+  const currentIndex = flattened.findIndex(
+    item => normalizeSlug(item.slug, defaultLocale) === normalizedCurrent,
+  );
 
-  let currentIndex = -1;
-  for (let i = 0; i < flattened.length; i++) {
-    if (normalizeSlug(flattened[i]?.slug ?? '', defaultLocale) === normalizedCurrent) {
-      currentIndex = i;
-      break;
-    }
-  }
-
-  if (currentIndex === -1) {
+  if (currentIndex < 0) {
     return { prev: null, next: null };
   }
 
   const prevItem = currentIndex > 0 ? flattened[currentIndex - 1] : null;
   const nextItem = currentIndex < flattened.length - 1 ? flattened[currentIndex + 1] : null;
 
-  // Build entry slug map for descriptions
-  const entrySlugMap = new Map<string, DocsEntry>();
-  for (const e of entries) {
-    const slug = normalizeSlug(getSlugFromId(e.id, defaultLocale), defaultLocale);
-    if (!entrySlugMap.has(slug)) {
-      entrySlugMap.set(slug, e);
-    }
-  }
-
-  const getDescription = (slug: string): string | undefined => {
-    const normalized = normalizeSlug(slug, defaultLocale);
-    const entry = entrySlugMap.get(normalized);
-    return entry?.data.description;
-  };
-
   return {
     prev: prevItem
       ? {
           href: prevItem.slug,
           title: prevItem.title,
-          description: getDescription(prevItem.slug),
+          description: prevItem.description,
         }
       : null,
     next: nextItem
       ? {
           href: nextItem.slug,
           title: nextItem.title,
-          description: getDescription(nextItem.slug),
+          description: nextItem.description,
         }
       : null,
   };

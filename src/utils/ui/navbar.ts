@@ -50,10 +50,18 @@ function setupMobileMenu(): void {
 
   if (!mobileMenuButton || !mobileMenu) return;
 
+  mobileMenu.hidden = true;
+
   const mobileMenuHandler = () => {
-    const isExpanded = mobileMenu.classList.contains('hidden');
-    mobileMenu.classList.toggle('hidden');
-    mobileMenuButton.setAttribute('aria-expanded', isExpanded.toString());
+    mobileMenu.classList.toggle('mobile-menu-open');
+    const isExpanded = mobileMenu.classList.contains('mobile-menu-open');
+    mobileMenu.hidden = !isExpanded;
+    if (isExpanded) {
+      mobileMenu.removeAttribute('inert');
+    } else {
+      mobileMenu.setAttribute('inert', '');
+    }
+    mobileMenuButton.setAttribute('aria-expanded', String(isExpanded));
   };
 
   addTrackedEventListener(mobileMenuButton, 'click', mobileMenuHandler);
@@ -66,8 +74,10 @@ function closeMobileMenu(): void {
   const mobileMenu = document.getElementById('mobile-menu');
   const mobileMenuButton = document.getElementById('mobile-menu-button');
 
-  if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
-    mobileMenu.classList.add('hidden');
+  if (mobileMenu && mobileMenu.classList.contains('mobile-menu-open')) {
+    mobileMenu.classList.remove('mobile-menu-open');
+    mobileMenu.hidden = true;
+    mobileMenu.setAttribute('inert', '');
     if (mobileMenuButton) {
       mobileMenuButton.setAttribute('aria-expanded', 'false');
     }

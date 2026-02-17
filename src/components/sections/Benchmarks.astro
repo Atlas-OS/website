@@ -5,7 +5,7 @@ import Button from '@/components/ui/Button.astro';
 ---
 
 <section class="relative mx-auto mt-32 mb-32 max-w-7xl px-4">
-  <div class="mb-8 text-center">
+  <div class="mb-8 text-center" data-animate>
     <SectionTitle>Benchmarks</SectionTitle>
     <h2 class="mb-6 text-4xl font-semibold tracking-tight text-white md:text-5xl">
       <span class="text-primary">AtlasOS</span> vs. <span class="text-white/70">Stock Windows</span>
@@ -16,7 +16,7 @@ import Button from '@/components/ui/Button.astro';
     </p>
   </div>
 
-  <div class="mb-12 text-center">
+  <div class="mb-12 text-center" data-animate data-animate-delay="1">
     <Button
       href="https://github.com/orgs/Atlas-OS/discussions/1161"
       icon="tabler:arrow-up-right"
@@ -30,7 +30,7 @@ import Button from '@/components/ui/Button.astro';
   </div>
 
   <div class="grid grid-cols-1 gap-16 md:grid-cols-3 md:gap-20">
-    <div class="relative py-2">
+    <div class="relative py-2" data-animate data-animate-delay="2">
       <div class="flex h-12 w-12 items-center justify-center rounded-md bg-white/5">
         <Icon name="tabler:cpu" class="h-6 w-6 text-white/80" />
       </div>
@@ -45,7 +45,7 @@ import Button from '@/components/ui/Button.astro';
       </div>
     </div>
 
-    <div class="relative py-2">
+    <div class="relative py-2" data-animate data-animate-delay="3">
       <div class="flex h-12 w-12 items-center justify-center rounded-md bg-white/5">
         <Icon name="tabler:database" class="h-6 w-6 text-white/80" />
       </div>
@@ -60,7 +60,7 @@ import Button from '@/components/ui/Button.astro';
       </div>
     </div>
 
-    <div class="relative py-2">
+    <div class="relative py-2" data-animate data-animate-delay="4">
       <div class="flex h-12 w-12 items-center justify-center rounded-md bg-white/5">
         <Icon name="tabler:gauge" class="h-6 w-6 text-white/80" />
       </div>
