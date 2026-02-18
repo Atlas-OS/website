@@ -8,6 +8,8 @@ export interface Env {
   ASSETS: AssetsBinding;
   /** Cloudflare Browser Rendering binding (wrangler.jsonc: browser.binding) */
   BROWSER?: unknown;
+  /** KV store for ISO links (global replication). Create with: wrangler kv namespace create "MS_ISO_LINKS" */
+  MS_ISO_LINKS?: { get(key: string): Promise<string | null>; put(key: string, value: string, options?: { expirationTtl?: number }): Promise<void> };
 }
 
 const MS_CONNECTOR_BASE = 'https://www.microsoft.com/software-download-connector/api';
@@ -275,24 +277,21 @@ export default {
       const skuId = url.searchParams.get('skuId') ?? '';
       if (!skuId) return errorResponse('Missing skuId parameter.');
 
-      // Cache key is arch+skuId only so all clients reuse the same link (sessionId is irrelevant for links).
-      const cacheKey = new URL(url.pathname, url.origin);
-      cacheKey.searchParams.set('arch', arch);
-      cacheKey.searchParams.set('skuId', skuId);
-      const cacheRequest = new Request(cacheKey.toString(), { method: 'GET' });
-
-      // Reuse a recently generated link for the same arch+skuId to avoid spawning extra browsers.
-      const cached = await caches.default.match(cacheRequest);
-      if (cached) {
-        const body = await cached.clone().text();
-        return new Response(body, {
-          status: 200,
-          headers: {
-            'Content-Type': 'application/json',
-            'Cache-Control': 'no-store',
-            ...CORS_HEADERS,
-          },
-        });
+      // KV is globally replicated; Cache API is per–data center, so same locale in another region would spawn a new browser.
+      const kv = env.MS_ISO_LINKS;
+      const kvKey = `ms-iso:${arch}:${skuId}`;
+      if (kv) {
+        const cached = await kv.get(kvKey);
+        if (cached) {
+          return new Response(cached, {
+            status: 200,
+            headers: {
+              'Content-Type': 'application/json',
+              'Cache-Control': 'no-store',
+              ...CORS_HEADERS,
+            },
+          });
+        }
       }
 
       const viaBrowser = await getIsoLinkViaBrowser(env, arch, skuId);
@@ -312,14 +311,9 @@ export default {
         ],
       };
       const body = JSON.stringify(payload);
-      const cacheResponse = new Response(body, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Cache-Control': `private, max-age=${LINK_CACHE_MAX_AGE_SEC}`,
-          ...CORS_HEADERS,
-        },
-      });
-      await caches.default.put(cacheRequest, cacheResponse);
+      if (kv) {
+        await kv.put(kvKey, body, { expirationTtl: LINK_CACHE_MAX_AGE_SEC });
+      }
 
       return new Response(body, {
         status: 200,

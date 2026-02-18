@@ -4,13 +4,17 @@
   "main": "src/worker.ts",
   "compatibility_date": "2026-02-18",
   "compatibility_flags": ["nodejs_compat_v2"],
-  "browser": {
-    "binding": "BROWSER"
-  },
+  "browser": { "binding": "BROWSER" },
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
     "html_handling": "force-trailing-slash",
     "not_found_handling": "404-page"
-  }
+  },
+  "kv_namespaces": [
+    {
+      "binding": "MS_ISO_LINKS",
+      "id": "5c778e1859c64276b5fe5b4291deb857"
+    }
+  ]
 }
