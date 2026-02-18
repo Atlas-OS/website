@@ -1,10 +1,3 @@
-/**
- * Navbar UI utilities.
- * Handles mobile menu, header scroll effects, and navbar-specific interactions.
- *
- * @module ui/navbar
- */
-
 const SCROLL_THRESHOLD = 10;
 
 type EventListenerEntry = {
@@ -15,9 +8,6 @@ type EventListenerEntry = {
 
 let eventListeners: EventListenerEntry[] = [];
 
-/**
- * Clean up all tracked event listeners.
- */
 function cleanupEventListeners(): void {
   eventListeners.forEach(({ element, event, handler }) => {
     element.removeEventListener(event, handler);
@@ -25,9 +15,6 @@ function cleanupEventListeners(): void {
   eventListeners = [];
 }
 
-/**
- * Add an event listener and track it for cleanup.
- */
 function addTrackedEventListener(
   element: EventTarget,
   event: string,
@@ -37,13 +24,6 @@ function addTrackedEventListener(
   eventListeners.push({ element, event, handler });
 }
 
-// ============================================================================
-// Mobile Menu
-// ============================================================================
-
-/**
- * Set up mobile menu toggle behavior.
- */
 function setupMobileMenu(): void {
   const mobileMenuButton = document.getElementById('mobile-menu-button');
   const mobileMenu = document.getElementById('mobile-menu');
@@ -67,9 +47,6 @@ function setupMobileMenu(): void {
   addTrackedEventListener(mobileMenuButton, 'click', mobileMenuHandler);
 }
 
-/**
- * Close mobile menu.
- */
 function closeMobileMenu(): void {
   const mobileMenu = document.getElementById('mobile-menu');
   const mobileMenuButton = document.getElementById('mobile-menu-button');
@@ -84,14 +61,6 @@ function closeMobileMenu(): void {
   }
 }
 
-// ============================================================================
-// Header Scroll Effect
-// ============================================================================
-
-/**
- * Set up header scroll styling.
- * Adds a class when scrolled past threshold for visual feedback.
- */
 function setupHeaderScroll(): void {
   const header = document.getElementById('main-header');
   if (!header) return;
@@ -108,13 +77,6 @@ function setupHeaderScroll(): void {
   addTrackedEventListener(window, 'scroll', updateHeaderStyle);
 }
 
-// ============================================================================
-// Keyboard Events
-// ============================================================================
-
-/**
- * Handle Escape key to close mobile menu.
- */
 function handleMobileMenuKeyboard(): void {
   const keyboardHandler = (e: Event) => {
     const keyEvent = e as KeyboardEvent;
@@ -126,33 +88,17 @@ function handleMobileMenuKeyboard(): void {
   addTrackedEventListener(document, 'keydown', keyboardHandler);
 }
 
-// ============================================================================
-// Main Initialization
-// ============================================================================
-
-/**
- * Check if current page is a docs page (has sidebar toggle).
- */
 function isDocsPage(): boolean {
   return document.getElementById('sidebar-toggle-button') !== null;
 }
 
-/**
- * Initialize navbar functionality.
- * Call this on page load and after Astro page transitions.
- *
- * Note: On docs pages, sidebar initialization is handled by initSidebar().
- * This function only handles mobile menu on non-docs pages.
- */
 export function initNavbar(): void {
   cleanupEventListeners();
 
-  // Mobile menu only on non-docs pages
   if (!isDocsPage()) {
     setupMobileMenu();
     handleMobileMenuKeyboard();
   }
 
-  // Header scroll effect on all pages
   setupHeaderScroll();
 }

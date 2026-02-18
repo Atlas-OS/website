@@ -57,10 +57,6 @@ function initSlideshow(): void {
   container.addEventListener('mouseenter', () => clearInterval(state.interval));
   container.addEventListener('mouseleave', startInterval);
 
-  /**
-   * Handles touch start event to capture initial touch position.
-   * @param {TouchEvent} e - The touch event.
-   */
   function handleTouchStart(e: TouchEvent): void {
     if (e.touches.length !== 1) return;
     const touch = e.touches[0];
@@ -71,10 +67,6 @@ function initSlideshow(): void {
     clearInterval(state.interval);
   }
 
-  /**
-   * Handles touch move event to track drag progress.
-   * @param {TouchEvent} e - The touch event.
-   */
   function handleTouchMove(e: TouchEvent): void {
     if (!state.isDragging || e.touches.length !== 1) return;
     const touch = e.touches[0];
@@ -86,10 +78,6 @@ function initSlideshow(): void {
     }
   }
 
-  /**
-   * Handles touch end event to detect swipe gesture and change slide.
-   * @param {TouchEvent} e - The touch event.
-   */
   function handleTouchEnd(e: TouchEvent): void {
     if (!state.isDragging) return;
     state.isDragging = false;
@@ -130,11 +118,6 @@ function initSlideshow(): void {
   container.addEventListener('touchmove', handleTouchMove, { passive: false });
   container.addEventListener('touchend', handleTouchEnd, { passive: true });
 
-  /**
-   * Creates a navigation dot button for the slide at the given index.
-   * @param {number} index - The slide index for this dot.
-   * @returns {HTMLButtonElement} The dot button element.
-   */
   function createDot(index: number): HTMLButtonElement {
     const button = document.createElement('button');
     button.classList.add('nav-dot-button', 'relative', 'p-1.5', 'cursor-pointer');
@@ -170,10 +153,6 @@ function initSlideshow(): void {
     return button;
   }
 
-  /**
-   * Activates the slide at the given index and updates dot indicators.
-   * @param {number} index - The index of the slide to show.
-   */
   function setSlide(index: number): void {
     state.slides.forEach((slide, i) => {
       const slideEl = slide as HTMLElement;
@@ -192,16 +171,10 @@ function initSlideshow(): void {
     state.currentIndex = index;
   }
 
-  /**
-   * Advances to the next slide in the sequence.
-   */
   function nextSlide(): void {
     setSlide((state.currentIndex + 1) % state.slides.length);
   }
 
-  /**
-   * Starts the auto-advance interval for the slideshow.
-   */
   function startInterval(): void {
     if (prefersReducedMotion) {
       return;
@@ -211,9 +184,6 @@ function initSlideshow(): void {
     state.interval = window.setInterval(nextSlide, config.slideDuration);
   }
 
-  /**
-   * Resets the auto-advance interval, clearing and restarting it.
-   */
   function resetInterval(): void {
     clearInterval(state.interval);
     startInterval();

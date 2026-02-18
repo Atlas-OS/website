@@ -113,17 +113,13 @@ const links = {
 </section>
 
 <script>
-  /**
-   * Manages fetching and displaying GitHub star count and recent stargazer list.
-   */
-  class GitHubStarsManager {
-    starListItems: HTMLElement | null;
-    starCountEl: HTMLElement | null;
-    starBadgeEl: HTMLElement | null;
+  import { ATLAS_API_URL } from '@/constants';
 
-    /**
-     * Initializes the dropdown and loads star info in production.
-     */
+  class GitHubStarsManager {
+    private starListItems: HTMLElement | null;
+    private starCountEl: HTMLElement | null;
+    private starBadgeEl: HTMLElement | null;
+
     constructor() {
       this.starListItems = document.getElementById('gh-star-list-items');
       this.starCountEl = document.getElementById('star-amount-tag');
@@ -133,10 +129,7 @@ const links = {
       this.updateStarInfo();
     }
 
-    /**
-     * Sets up the interactive star dropdown and outside-click handling.
-     */
-    initDropdown() {
+    private initDropdown(): void {
       const toggleBtn = document.getElementById('toggle-star-list-btn');
       const starList = document.getElementById('gh-star-list');
       const wrapper = document.getElementById('gh-stars-wrap');
@@ -165,24 +158,13 @@ const links = {
       });
     }
 
-    /**
-     * Fetches JSON data from a given URL.
-     * @param {string} url - The endpoint to query.
-     * @returns {Promise<any>} Parsed JSON response.
-     */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async fetchData(url: string): Promise<any> {
+    private async fetchData<T>(url: string): Promise<T> {
       const res = await fetch(url);
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-      return res.json();
+      return res.json() as Promise<T>;
     }
 
-    /**
-     * Creates a DOM element for a stargazer entry.
-     * @param {{username: string, avatar: string}} star - The stargazer info.
-     * @returns {HTMLElement} A flex container with avatar and username.
-     */
-    createStarElement(star: { username: string; avatar: string }): HTMLElement {
+    private createStarElement(star: { username: string; avatar: string }): HTMLElement {
       const el = document.createElement('div');
       el.className = 'flex items-center gap-2';
       const img = document.createElement('img');
@@ -197,12 +179,9 @@ const links = {
       return el;
     }
 
-    /**
-     * Loads star count and recent stargazers, updating the badge and list.
-     */
-    async updateStarInfo() {
+    private async updateStarInfo(): Promise<void> {
       try {
-        const starsResponse = await this.fetchData('https://api.atlasos.net/stars');
+        const starsResponse = await this.fetchData<{ count: number }>(`${ATLAS_API_URL}stars`);
         if (!starsResponse || typeof starsResponse.count !== 'number') {
           throw new Error('Invalid star count data received');
         }
@@ -215,14 +194,14 @@ const links = {
           this.starBadgeEl.textContent = `${(count / 1000).toFixed(1)}k`;
         }
 
-        const recentStars = await this.fetchData('https://api.atlasos.net/recent-stars');
+        const recentStars = await this.fetchData<{ username: string; avatar: string }[]>(
+          `${ATLAS_API_URL}recent-stars`,
+        );
         if (!Array.isArray(recentStars)) {
           throw new Error('Invalid recent stars data received');
         }
 
-        const items = recentStars
-          .slice(0, 4)
-          .map((stargazer: { username: string; avatar: string }) => this.createStarElement(stargazer));
+        const items = recentStars.slice(0, 4).map((stargazer) => this.createStarElement(stargazer));
 
         if (this.starListItems) {
           this.starListItems.replaceChildren(...items);
@@ -236,13 +215,17 @@ const links = {
     }
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
+  function init(): void {
     new GitHubStarsManager();
-  });
-
-  if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    setTimeout(() => new GitHubStarsManager(), 1);
   }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+  document.addEventListener('astro:page-load', init);
 </script>
 
 <style>

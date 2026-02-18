@@ -5,10 +5,6 @@ function revealAllElements(): void {
   animatedElements.forEach(el => el.classList.add('animate-in'));
 }
 
-/**
- * Initialize scroll animations for elements with [data-animate] attribute.
- * Respects prefers-reduced-motion and progressively enhances when observers are available.
- */
 export function initScrollAnimations(): void {
   if (typeof window === 'undefined') return;
 

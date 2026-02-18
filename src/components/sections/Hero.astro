@@ -8,6 +8,7 @@ import TechSpotLogomark from '@/assets/techspot-logomark.svg';
 import WePCLogomark from '@/assets/wepc-logomark.svg';
 import Button from '@/components/ui/Button.astro';
 import DownloadModal from '@/components/ui/DownloadModal.astro';
+import { ATLAS_RELEASE_LABEL } from '@/constants';
 
 const links = {
   faq: '/docs/faq/general/',
@@ -70,7 +71,7 @@ const links = {
         enthusiasts, gamers, and privacy-conscious individuals.
       </p>
       <p class="mb-4 text-sm text-white/70" data-animate data-animate-delay="7">
-        The latest version is <span class="font-semibold text-white">Atlas v0.5.0 (October 21 2025)</span>
+        The latest version is <span class="font-semibold text-white">{ATLAS_RELEASE_LABEL}</span>
       </p>
       <div class="flex flex-wrap items-center justify-center gap-4" data-animate data-animate-delay="8">
         <Button variant="primary" size="lg" icon="tabler:chevron-right" iconPosition="after" id="get-started-btn">
@@ -436,9 +437,8 @@ const links = {
 </style>
 
 <script>
-  /**
-   * Fetches the Atlas download count from the API and updates the hero section counter.
-   */
+  import { ATLAS_API_URL } from '@/constants';
+
   async function updateHeroDownloadCount(): Promise<void> {
     const countElement = document.getElementById('hero-download-count');
     if (!countElement) {
@@ -446,7 +446,7 @@ const links = {
     }
 
     try {
-      const response = await fetch('https://api.atlasos.net/');
+      const response = await fetch(ATLAS_API_URL);
       if (!response.ok) {
         throw new Error(`API request failed with status ${response.status}`);
       }
@@ -464,9 +464,6 @@ const links = {
     }
   }
 
-  /**
-   * Attaches the Get Started button click listener to open the download modal.
-   */
   function setupGetStartedButton(): void {
     const getStartedBtn = document.getElementById('get-started-btn');
     const downloadModal = document.getElementById('download-modal') as HTMLDialogElement;
