@@ -1,6 +1,7 @@
 ---
 import '@/styles/global.css';
 import { Font } from 'astro:assets';
+import { ClientRouter } from 'astro:transitions';
 
 interface Props {
   currentPath?: string;
@@ -13,6 +14,7 @@ const kapaLogoUrl = 'https://avatars.githubusercontent.com/u/78708182?s=128';
 <html lang="en-US">
   <head>
     <meta charset="UTF-8" />
+    <ClientRouter />
     <Font cssVariable="--font-sans-source" preload />
     <Font cssVariable="--font-display-source" preload />
     <Font cssVariable="--font-mono-source" />
