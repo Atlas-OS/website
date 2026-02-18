@@ -75,20 +75,9 @@ const breadcrumbStructuredData = {
 {
   breadcrumbs.length > 1 && (
     <nav aria-label="Breadcrumb" class="breadcrumbs-animated mb-5">
-      <ol
-        class="flex flex-wrap items-center text-sm"
-        style="color: var(--docs-text-muted);"
-        itemscope
-        itemtype="https://schema.org/BreadcrumbList"
-      >
+      <ol class="flex flex-wrap items-center text-sm" style="color: var(--docs-text-muted);">
         {breadcrumbs.map((crumb, index) => (
-          <li
-            class="breadcrumb-item flex items-center"
-            itemprop="itemListElement"
-            itemscope
-            itemtype="https://schema.org/ListItem"
-            style={`animation-delay: ${index * 50}ms`}
-          >
+          <li class="breadcrumb-item flex items-center" style={`animation-delay: ${index * 50}ms`}>
             {index > 0 && (
               <Icon
                 name="tabler:chevron-right"
@@ -98,20 +87,16 @@ const breadcrumbStructuredData = {
               />
             )}
             {index === breadcrumbs.length - 1 ? (
-              <span class="font-medium" style="color: var(--docs-text-secondary);" itemprop="name">
-                {crumb.title}
-              </span>
+              <span class="font-medium" style="color: var(--docs-text-secondary);">{crumb.title}</span>
             ) : (
               <a
                 href={crumb.href}
                 class="focus-visible:ring-primary/50 py-1 transition-opacity duration-200 hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                 style="border-radius: var(--docs-radius-sm);"
-                itemprop="item"
               >
-                <span itemprop="name">{crumb.title}</span>
+                <span>{crumb.title}</span>
               </a>
             )}
-            <meta itemprop="position" content={String(index + 1)} />
           </li>
         ))}
       </ol>

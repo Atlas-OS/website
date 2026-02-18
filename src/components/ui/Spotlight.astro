@@ -17,6 +17,7 @@ import { Icon } from 'astro-icon/components';
   aria-labelledby="spotlight-title"
   style="background-color: var(--bg-primary);"
 >
+  <h2 id="spotlight-title" class="sr-only">Search documentation</h2>
   <div
     id="spotlight-input-container"
     class="flex flex-shrink-0 cursor-text items-center gap-3 border-b border-white/[0.06] px-4 py-3 transition-colors duration-200"
@@ -25,12 +26,14 @@ import { Icon } from 'astro-icon/components';
     <input
       type="text"
       id="spotlight-input"
+      aria-describedby="spotlight-title"
       class="flex-1 bg-transparent text-sm text-white placeholder:text-white/40 focus:ring-0 focus:outline-none"
       placeholder="Search documentation..."
       autocomplete="off"
       autocorrect="off"
       spellcheck="false"
     />
+    <label for="spotlight-input" class="sr-only">Search documentation</label>
     <kbd
       class="hidden flex-shrink-0 items-center gap-1 rounded-md border border-white/[0.06] bg-white/5 px-2 py-1 font-mono text-xs text-white/50 sm:inline-flex"
     >

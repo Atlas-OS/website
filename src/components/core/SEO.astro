@@ -84,7 +84,7 @@ const faqPageSchema =
     : null;
 
 const articleSchema =
-  type === 'article'
+  type === 'article' && publishedTime
     ? {
         '@context': 'https://schema.org',
         '@type': 'TechArticle',
