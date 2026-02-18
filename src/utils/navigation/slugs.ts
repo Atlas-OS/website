@@ -230,15 +230,10 @@ export function isActivePage(currentSlug: string, pageSlug: string): boolean {
 
 export function normalizeSlugForDisplay(
   slug: string,
-  locale: string | null,
+  _locale: string | null,
   defaultLocale: string = DEFAULT_LOCALE,
 ): string {
-  const normalized = normalizePath(slug);
-  if (!locale || locale === defaultLocale || !normalized.startsWith('/docs/')) {
-    return normalized;
-  }
-
-  return normalized;
+  return normalizeSlug(slug, defaultLocale);
 }
 
 export function clearSlugCache(): void {

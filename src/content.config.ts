@@ -1,6 +1,6 @@
-import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { defineCollection } from 'astro:content';
 
 const docsSidebarSchema = z
   .object({
@@ -8,7 +8,6 @@ const docsSidebarSchema = z
     order: z.coerce.number().int().min(0).max(9999).optional(),
     badge: z.string().min(1).max(30).optional(),
     hidden: z.boolean().optional().default(false),
-    collapsed: z.boolean().optional().default(false),
   })
   .optional();
 
