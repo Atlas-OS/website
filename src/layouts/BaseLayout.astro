@@ -14,18 +14,12 @@ const kapaLogoUrl = 'https://avatars.githubusercontent.com/u/78708182?s=128';
 <html lang="en-US">
   <head>
     <meta charset="UTF-8" />
-    <ClientRouter />
+    <ClientRouter fallback="swap" />
     <Font cssVariable="--font-sans-source" preload />
     <Font cssVariable="--font-display-source" preload />
     <Font cssVariable="--font-mono-source" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
-
-    <script is:inline>
-      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        document.documentElement.classList.add('motion-ready');
-      }
-    </script>
 
     <!-- Resource Hints - Preconnect for critical third-party domains -->
     <link rel="preconnect" href="https://pla.atlasos.net" crossorigin />
