@@ -15,12 +15,22 @@
 
 .prose > h2:not(.not-prose):not(.not-prose *),
 .prose h2:not(.not-prose):not(.not-prose *) {
-  @apply mt-12 mb-3 text-2xl font-semibold text-white;
+  @apply mb-3 text-2xl font-semibold text-white;
   font-family: var(--font-display);
   scroll-margin-top: 6rem;
   letter-spacing: -0.01em;
   line-height: 1.2;
   font-size: 1.5rem !important;
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgb(255 255 255 / 0.08);
+}
+
+.prose > h2:first-of-type:not(.not-prose),
+.prose h2:first-of-type:not(.not-prose) {
+  margin-top: 2rem;
+  padding-top: 0;
+  border-top: none;
 }
 
 .prose > h3:not(.not-prose):not(.not-prose *),

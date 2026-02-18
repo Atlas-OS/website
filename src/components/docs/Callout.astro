@@ -138,11 +138,34 @@ const displayTitle = title || style.defaultTitle;
   .callout-content ol {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
-    margin-left: 1.25rem;
-    padding-left: 0;
+    margin-left: 0;
+    padding-left: 1.25rem;
+    list-style: none;
   }
 
-  .callout-content li {
+  .callout-content ol {
+    list-style-type: decimal;
+    list-style-position: outside;
+  }
+
+  .callout-content ul li {
+    position: relative;
+    margin-bottom: 0.25rem;
+    color: rgb(255 255 255 / 0.9);
+  }
+
+  .callout-content ul li::before {
+    content: "";
+    position: absolute;
+    left: -1.25rem;
+    top: 0.65em;
+    width: 0.35em;
+    height: 0.35em;
+    background: var(--color-primary);
+    border-radius: 2px;
+  }
+
+  .callout-content ol li {
     margin-bottom: 0.25rem;
     color: rgb(255 255 255 / 0.9);
   }
