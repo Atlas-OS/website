@@ -183,7 +183,7 @@ const tabItems = [
 
   <TabPanel value="microsoft-site">
     <ol>
-      <li>Visit <a href="https://www.microsoft.com/en-us/software-download/windows11">Microsoft's Windows 11 download page</a></li>
+      <li>Visit <a href="https://www.microsoft.com/software-download/windows11">Microsoft's Windows 11 download page</a></li>
       <li>Choose <strong>Download Windows 11 Disk Image (ISO) for x64 devices</strong> (or ARM64 for ARM systems)</li>
       <li>Select <strong>Windows 11 (multi-edition ISO)</strong><IconArrow /><strong>Confirm</strong></li>
       <li>Choose your language<IconArrow /><strong>Confirm</strong></li>
@@ -217,7 +217,6 @@ const tabItems = [
 </Tabs>
 
 <style>
-  /* Step transitions — Jakub recipe: opacity + translateY + blur */
   .msdl-widget [data-msdl-step] {
     animation: msdl-in 220ms cubic-bezier(0.33, 1, 0.68, 1) both;
   }
@@ -239,7 +238,6 @@ const tabItems = [
     }
   }
 
-  /* Custom dropdown panel — origin-aware enter from top */
   .msdl-select-panel {
     transform-origin: top center;
     animation: msdl-dropdown-in 180ms cubic-bezier(0.33, 1, 0.68, 1) both;
@@ -259,7 +257,6 @@ const tabItems = [
     }
   }
 
-  /* Thin scrollbar for option list */
   .msdl-options-scroll {
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.08) transparent;
@@ -271,7 +268,6 @@ const tabItems = [
     border-radius: 2px;
   }
 
-  /* Respect reduced motion */
   @media (prefers-reduced-motion: reduce) {
     .msdl-widget [data-msdl-step],
     .msdl-select-panel {
@@ -281,28 +277,24 @@ const tabItems = [
 </style>
 
 <script>
-  // AGPL-3.0-or-later https://spdx.org/licenses/AGPL-3.0-or-later.html
-  // Integrates with Gravesoft MSDL https://github.com/gravesoft/msdl
-
-  const API_URL = 'https://api.gravesoft.dev/msdl/';
-
-  // Product IDs sourced from https://github.com/gravesoft/msdl/blob/main/data/products.json
-  const PRODUCT_IDS: Record<string, number> = {
-    x64: 3113,    // Windows 11 24H2
-    arm64: 3131,  // Windows 11 24H2 ARM64
-  };
-
   const ARCH_LABELS: Record<string, string> = {
-    x64: 'Windows 11 24H2 · x64',
-    arm64: 'Windows 11 24H2 · ARM64',
+    x64: 'Windows 11 25H2 · x64',
+    arm64: 'Windows 11 25H2 · ARM64',
   };
+
+  interface SkuInfo {
+    Id: string | number;
+    Language: string;
+    LocalizedLanguage: string;
+    FriendlyFileNames?: string[];
+  }
 
   let panelIdCounter = 0;
 
   function buildSelectPanel(
     wrapper: HTMLElement,
-    skus: Array<{ Id: number; LocalizedLanguage: string }>,
-    onSelect: (id: number, label: string) => void,
+    skus: SkuInfo[],
+    onSelect: (id: string | number, label: string, language: string, friendlyFileNames?: string[]) => void,
   ) {
     const trigger = wrapper.querySelector<HTMLButtonElement>('[data-msdl-select-trigger]')!;
     const chevron = wrapper.querySelector<SVGElement>('[data-msdl-select-chevron]')!;
@@ -341,7 +333,7 @@ const tabItems = [
       panel = document.createElement('div');
       panel.id = panelId;
       panel.className = 'msdl-select-panel overflow-hidden rounded-md border border-white/[0.08]';
-      panel.style.cssText = 'position: fixed; z-index: 9999; background: oklch(0.14 0.038 264);';
+      panel.style.cssText = 'position: fixed; z-index: 9999; background-color: var(--bg-primary);';
       panel.setAttribute('role', 'listbox');
       panel.setAttribute('aria-label', 'Select language');
 
@@ -358,7 +350,7 @@ const tabItems = [
         opt.className =
           'w-full cursor-pointer px-3 py-2.5 text-left text-sm text-white/65 transition-colors duration-100 hover:bg-white/[0.06] hover:text-white/90 focus:outline-none focus:bg-white/[0.06] focus:text-white/90';
 
-        opt.addEventListener('click', () => selectOption(sku.Id, sku.LocalizedLanguage));
+        opt.addEventListener('click', () => selectOption(sku.Id, sku.LocalizedLanguage, sku.Language, sku.FriendlyFileNames));
 
         opt.addEventListener('keydown', (e) => {
           const opts = getOptions();
@@ -387,11 +379,11 @@ const tabItems = [
       }, 0);
     }
 
-    function selectOption(id: number, label: string) {
+    function selectOption(id: string | number, label: string, language: string, friendlyFileNames?: string[]) {
       valueEl.textContent = label;
       valueEl.classList.remove('text-white/35');
       valueEl.classList.add('text-white/85');
-      onSelect(id, label);
+      onSelect(id, label, language, friendlyFileNames);
       closePanel();
       trigger.focus();
     }
@@ -441,7 +433,9 @@ const tabItems = [
 
   function initMsdlWidget(root: HTMLElement) {
     let currentArch: string | null = null;
-    let currentSkuId: number | null = null;
+    let currentSkuId: string | number | null = null;
+    let currentLanguage: string | null = null;
+    let currentFriendlyFileNames: string[] | null = null;
     let retryAction: (() => void) | null = null;
     let selectControl: ReturnType<typeof buildSelectPanel> | null = null;
 
@@ -461,25 +455,29 @@ const tabItems = [
     async function fetchLanguages(arch: string) {
       currentArch = arch;
       currentSkuId = null;
+      currentLanguage = null;
       showStep('loading-langs');
 
-      const productId = PRODUCT_IDS[arch];
       try {
-        const res = await fetch(`${API_URL}skuinfo?product_id=${productId}`);
+        const res = await fetch(`/api/ms-iso/skus?arch=${arch}`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
-        if (data.Errors?.length) throw new Error(data.Errors[0].Value ?? 'API error');
+        const skuError =
+          data.Errors?.[0]?.Value ??
+          data.ValidationContainer?.Errors?.[0]?.Value ??
+          data.ValidationContainer?.ErrorList?.[0]?.Value;
+        if (skuError) throw new Error(skuError);
         renderLanguageSelect(data, arch);
       } catch {
         showError(
-          'Could not fetch languages. The MSDL service may be temporarily unavailable — try another method below.',
+          'Could not fetch languages. The download service may be temporarily unavailable — try another method below.',
           () => fetchLanguages(arch),
         );
       }
     }
 
     function renderLanguageSelect(
-      data: { Skus?: Array<{ Id: number; LocalizedLanguage: string }> },
+      data: { Skus?: SkuInfo[] },
       arch: string,
     ) {
       const archLabel = root.querySelector<HTMLElement>('[data-msdl-arch-label]');
@@ -494,23 +492,31 @@ const tabItems = [
 
       selectControl?.reset();
 
-      selectControl = buildSelectPanel(wrapper, skus, (id) => {
+      selectControl = buildSelectPanel(wrapper, skus, (id, _label, language, friendlyFileNames) => {
         currentSkuId = id;
+        currentLanguage = language;
+        currentFriendlyFileNames = friendlyFileNames ?? null;
         getDownloadBtn.disabled = false;
       });
 
       currentSkuId = null;
+      currentLanguage = null;
+      currentFriendlyFileNames = null;
       getDownloadBtn.disabled = true;
       showStep('select-lang');
     }
 
     async function fetchDownload() {
-      if (!currentArch || currentSkuId === null) return;
+      if (!currentArch || currentSkuId === null || !currentLanguage) return;
       showStep('loading-download');
 
-      const productId = PRODUCT_IDS[currentArch];
+      const params = new URLSearchParams({
+        arch: currentArch,
+        skuId: String(currentSkuId),
+        language: currentLanguage,
+      });
       try {
-        const res = await fetch(`${API_URL}proxy?product_id=${productId}&sku_id=${currentSkuId}`);
+        const res = await fetch(`/api/ms-iso/links?${params}`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         renderDownloads(data);
@@ -528,10 +534,33 @@ const tabItems = [
       LocalizedLanguage: string;
     }
 
-    function renderDownloads(data: { ProductDownloadOptions?: DownloadOption[] }) {
+    interface ProxyError {
+      Key?: string;
+      Value?: string;
+      Type?: number;
+    }
+
+    function getProxyErrorMessage(errors: ProxyError[]): string {
+      const first = errors[0];
+      if (!first?.Value) return 'The download service is temporarily unavailable. Please try again in a moment or use the Microsoft website tab.';
+      if (first.Key === 'ErrorSettings.SentinelReject') {
+        return 'The download service is temporarily unavailable. Please try again in a moment or use the Microsoft website tab.';
+      }
+      if (first.Key === 'ErrorSettings.ProductKeyValidationError') {
+        return 'This language could not be retrieved from the download service. Try a different language or use the Microsoft website tab.';
+      }
+      return first.Value;
+    }
+
+    function renderDownloads(data: { ProductDownloadOptions?: DownloadOption[]; Errors?: ProxyError[] }) {
       const linksContainer = root.querySelector<HTMLElement>('[data-msdl-download-links]');
       if (!linksContainer) return;
       linksContainer.innerHTML = '';
+
+      if (data.Errors?.length) {
+        showError(getProxyErrorMessage(data.Errors), fetchDownload);
+        return;
+      }
 
       const options = data.ProductDownloadOptions;
       if (!options || options.length === 0) {
@@ -539,10 +568,12 @@ const tabItems = [
         return;
       }
 
-      options.forEach((option) => {
+      const preferredFilename = currentFriendlyFileNames?.[0];
+      let didAutoDownload = false;
+      options.forEach((option, index) => {
         const uriBase = option.Uri.split('?')[0] ?? option.Uri;
         const parts = uriBase.split('/');
-        const filename = parts[parts.length - 1] ?? 'Windows.iso';
+        const filename = preferredFilename ?? (parts[parts.length - 1] ?? 'Windows.iso');
 
         const link = document.createElement('a');
         link.href = option.Uri;
@@ -553,12 +584,15 @@ const tabItems = [
         link.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/><path d="M7 11l5 5 5-5"/><path d="M12 4v12"/></svg><span class="truncate font-medium">${filename}</span>`;
         linksContainer.appendChild(link);
 
-        const autoLink = document.createElement('a');
-        autoLink.href = option.Uri;
-        autoLink.download = filename;
-        document.body.appendChild(autoLink);
-        autoLink.click();
-        document.body.removeChild(autoLink);
+        if (!didAutoDownload && index === 0) {
+          const autoLink = document.createElement('a');
+          autoLink.href = option.Uri;
+          autoLink.download = filename;
+          document.body.appendChild(autoLink);
+          autoLink.click();
+          document.body.removeChild(autoLink);
+          didAutoDownload = true;
+        }
       });
 
       showStep('done');
@@ -569,6 +603,8 @@ const tabItems = [
       selectControl = null;
       currentArch = null;
       currentSkuId = null;
+      currentLanguage = null;
+      currentFriendlyFileNames = null;
       retryAction = null;
       showStep('idle');
     }
