@@ -436,6 +436,7 @@ const tabItems = [
     let currentSkuId: string | number | null = null;
     let currentLanguage: string | null = null;
     let currentFriendlyFileNames: string[] | null = null;
+    let currentSessionId: string | null = null;
     let retryAction: (() => void) | null = null;
     let selectControl: ReturnType<typeof buildSelectPanel> | null = null;
 
@@ -456,10 +457,11 @@ const tabItems = [
       currentArch = arch;
       currentSkuId = null;
       currentLanguage = null;
+      currentSessionId = crypto.randomUUID();
       showStep('loading-langs');
 
       try {
-        const res = await fetch(`/api/ms-iso/skus?arch=${arch}`);
+        const res = await fetch(`/api/ms-iso/skus?arch=${arch}&sessionId=${currentSessionId}`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         const skuError =
@@ -510,7 +512,10 @@ const tabItems = [
       if (!currentArch || currentSkuId === null) return;
       showStep('loading-download');
 
-      const params = new URLSearchParams({ skuId: String(currentSkuId) });
+      const params = new URLSearchParams({
+        skuId: String(currentSkuId),
+        ...(currentSessionId ? { sessionId: currentSessionId } : {}),
+      });
       try {
         const res = await fetch(`/api/ms-iso/links?${params}`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -601,6 +606,7 @@ const tabItems = [
       currentSkuId = null;
       currentLanguage = null;
       currentFriendlyFileNames = null;
+      currentSessionId = null;
       retryAction = null;
       showStep('idle');
     }

@@ -64,7 +64,7 @@ async function proxyMsApi(url: URL): Promise<Response> {
   return jsonResponse(data);
 }
 
-async function handleSkus(arch: string): Promise<Response> {
+async function handleSkus(arch: string, sessionId: string): Promise<Response> {
   const productId = PRODUCT_IDS[arch];
   if (!productId) return errorResponse('Invalid architecture. Use x64 or arm64.');
 
@@ -74,12 +74,12 @@ async function handleSkus(arch: string): Promise<Response> {
   url.searchParams.set('SKU', 'undefined');
   url.searchParams.set('friendlyFileName', 'undefined');
   url.searchParams.set('Locale', 'en-US');
-  url.searchParams.set('sessionID', crypto.randomUUID());
+  url.searchParams.set('sessionID', sessionId);
 
   return proxyMsApi(url);
 }
 
-async function handleLinks(skuId: string): Promise<Response> {
+async function handleLinks(skuId: string, sessionId: string): Promise<Response> {
   if (!skuId) return errorResponse('Missing skuId parameter.');
 
   const url = new URL(`${MS_CONNECTOR_BASE}/GetProductDownloadLinksBySku`);
@@ -88,7 +88,7 @@ async function handleLinks(skuId: string): Promise<Response> {
   url.searchParams.set('SKU', skuId);
   url.searchParams.set('friendlyFileName', 'undefined');
   url.searchParams.set('Locale', 'en-US');
-  url.searchParams.set('sessionID', crypto.randomUUID());
+  url.searchParams.set('sessionID', sessionId);
 
   return proxyMsApi(url);
 }
@@ -107,12 +107,14 @@ export default {
 
     if (url.pathname === '/api/ms-iso/skus') {
       const arch = url.searchParams.get('arch') ?? '';
-      return handleSkus(arch);
+      const sessionId = url.searchParams.get('sessionId') ?? crypto.randomUUID();
+      return handleSkus(arch, sessionId);
     }
 
     if (url.pathname === '/api/ms-iso/links') {
       const skuId = url.searchParams.get('skuId') ?? '';
-      return handleLinks(skuId);
+      const sessionId = url.searchParams.get('sessionId') ?? crypto.randomUUID();
+      return handleLinks(skuId, sessionId);
     }
 
     return env.ASSETS.fetch(request);
