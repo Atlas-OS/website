@@ -45,6 +45,9 @@ const CORS_HEADERS: Record<string, string> = {
   'Access-Control-Max-Age': '86400',
 };
 
+/** Reuse the same download link until near expiry. Microsoft ISO links expire 1 day after creation. */
+const LINK_CACHE_MAX_AGE_SEC = 86_400; // 24 hours
+
 function jsonResponse(data: unknown, status = 200): Response {
   return new Response(JSON.stringify(data), {
     status,
@@ -272,13 +275,34 @@ export default {
       const skuId = url.searchParams.get('skuId') ?? '';
       if (!skuId) return errorResponse('Missing skuId parameter.');
 
+      // Cache key is arch+skuId only so all clients reuse the same link (sessionId is irrelevant for links).
+      const cacheKey = new URL(url.pathname, url.origin);
+      cacheKey.searchParams.set('arch', arch);
+      cacheKey.searchParams.set('skuId', skuId);
+      const cacheRequest = new Request(cacheKey.toString(), { method: 'GET' });
+
+      // Reuse a recently generated link for the same arch+skuId to avoid spawning extra browsers.
+      const cached = await caches.default.match(cacheRequest);
+      if (cached) {
+        const body = await cached.clone().text();
+        return new Response(body, {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+            'Cache-Control': 'no-store',
+            ...CORS_HEADERS,
+          },
+        });
+      }
+
       const viaBrowser = await getIsoLinkViaBrowser(env, arch, skuId);
       if (!viaBrowser.ok) {
         return jsonResponse({
           Errors: [{ Key: 'ErrorSettings.BrowserRenderingFailed', Value: viaBrowser.error, Type: 9 }],
         });
       }
-      return jsonResponse({
+
+      const payload = {
         ProductDownloadOptions: [
           {
             Uri: viaBrowser.href,
@@ -286,6 +310,24 @@ export default {
             LocalizedLanguage: viaBrowser.label,
           },
         ],
+      };
+      const body = JSON.stringify(payload);
+      const cacheResponse = new Response(body, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': `private, max-age=${LINK_CACHE_MAX_AGE_SEC}`,
+          ...CORS_HEADERS,
+        },
+      });
+      await caches.default.put(cacheRequest, cacheResponse);
+
+      return new Response(body, {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-store',
+          ...CORS_HEADERS,
+        },
       });
     }
 
