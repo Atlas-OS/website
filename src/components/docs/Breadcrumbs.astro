@@ -1,6 +1,5 @@
 ---
-import { DEFAULT_LOCALE } from '@/constants';
-import { getLocaleFromSlug, getSlugFromEntry, normalizeSlug } from '@/utils/navigation';
+import { getSlugFromEntry, normalizeSlug } from '@/utils/navigation';
 import { Icon } from 'astro-icon/components';
 import { getCollection } from 'astro:content';
 
@@ -14,7 +13,7 @@ const docs = await getCollection('docs', entry => !entry.data.draft);
 const titleBySlug = new Map<string, string>();
 
 for (const entry of docs) {
-  const slug = normalizeSlug(getSlugFromEntry(entry, DEFAULT_LOCALE), DEFAULT_LOCALE);
+  const slug = normalizeSlug(getSlugFromEntry(entry));
   titleBySlug.set(slug, entry.data.sidebar?.label || entry.data.title);
 }
 
@@ -27,33 +26,29 @@ function toTitleFromSegment(segment: string): string {
 }
 
 function buildBreadcrumbs(slug: string): Array<{ title: string; href: string }> {
-  const normalized = normalizeSlug(slug, DEFAULT_LOCALE);
+  const normalized = normalizeSlug(slug);
   if (!normalized.startsWith('/docs/')) {
     return [];
   }
 
-  const locale = getLocaleFromSlug(normalized, DEFAULT_LOCALE);
-  const normalizedWithoutPrefix = normalized
+  const withoutPrefix = normalized
     .replace(/^\/docs\/?/, '')
     .replace(/^\/+/, '')
     .replace(/\/+$/, '');
 
-  const rawSegments = normalizedWithoutPrefix ? normalizedWithoutPrefix.split('/').filter(Boolean) : [];
-  const segments = locale && rawSegments[0] === locale ? rawSegments.slice(1) : rawSegments;
-  const localePrefix = locale ? `${locale}/` : '';
-  const homeHref = locale ? `/docs/${locale}/` : '/docs/';
+  const segments = withoutPrefix ? withoutPrefix.split('/').filter(Boolean) : [];
 
   const breadcrumbs: Array<{ title: string; href: string }> = [
     {
-      title: titleBySlug.get(homeHref) || 'Home',
-      href: homeHref,
+      title: titleBySlug.get('/docs/') || 'Home',
+      href: '/docs/',
     },
   ];
 
   let currentPath = '';
   for (const segment of segments) {
     currentPath += `/${segment}`;
-    const href = `/docs/${localePrefix}${currentPath.replace(/^\/+/, '')}/`;
+    const href = `/docs${currentPath}/`;
 
     breadcrumbs.push({
       title: titleBySlug.get(href) || toTitleFromSegment(segment),

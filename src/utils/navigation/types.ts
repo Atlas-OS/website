@@ -23,8 +23,6 @@ export type DocsEntry = CollectionEntry<'docs'>;
 export interface BuildNavigationOptions {
   scope: 'full' | 'section';
   section?: string | null;
-  locale?: string | null;
-  defaultLocale?: string;
 }
 
 export interface PageNavLink {

@@ -1,4 +1,4 @@
-import { DEFAULT_LOCALE, SECTION_PRIORITIES } from '@/constants';
+import { SECTION_PRIORITIES } from '@/constants';
 import { getSectionFromSlug, normalizeSlug, normalizeSlugForDisplay } from './slugs';
 import type { NavItem, SectionNavItem } from './types';
 
@@ -54,20 +54,16 @@ export function sortSectionsByPriority(sections: SectionNavItem[]): SectionNavIt
     });
 }
 
-export function normalizeNavItemsForDisplay(
-  sections: SectionNavItem[],
-  locale: string | null,
-  defaultLocale: string = DEFAULT_LOCALE,
-): SectionNavItem[] {
+export function normalizeNavItemsForDisplay(sections: SectionNavItem[]): SectionNavItem[] {
   return sections.map(section => ({
     ...section,
-    sectionSlug: normalizeSlugForDisplay(section.sectionSlug, locale, defaultLocale),
+    sectionSlug: normalizeSlugForDisplay(section.sectionSlug),
     items: section.items.map(item => ({
       ...item,
-      slug: normalizeSlugForDisplay(item.slug, locale, defaultLocale),
+      slug: normalizeSlugForDisplay(item.slug),
       children: item.children?.map(child => ({
         ...child,
-        slug: normalizeSlugForDisplay(child.slug, locale, defaultLocale),
+        slug: normalizeSlugForDisplay(child.slug),
       })),
     })),
   }));
@@ -93,12 +89,8 @@ export function filterDuplicateItems(sections: SectionNavItem[]): SectionNavItem
   });
 }
 
-export function prepareSidebarNavigation(
-  sections: SectionNavItem[],
-  locale: string | null,
-  defaultLocale: string = DEFAULT_LOCALE,
-): SectionNavItem[] {
-  const normalized = normalizeNavItemsForDisplay(sections, locale, defaultLocale);
+export function prepareSidebarNavigation(sections: SectionNavItem[]): SectionNavItem[] {
+  const normalized = normalizeNavItemsForDisplay(sections);
   const unique = filterDuplicateItems(normalized);
   return sortSectionsByPriority(unique);
 }

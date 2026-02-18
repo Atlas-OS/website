@@ -1,17 +1,15 @@
 ---
-import { DEFAULT_LOCALE } from '@/constants';
 import DocsLayout from '@/layouts/DocsLayout.astro';
 import { getSlugFromEntry } from '@/utils/navigation';
 import type { CollectionEntry } from 'astro:content';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
-  const defaultLocale = DEFAULT_LOCALE;
   const docs = await getCollection('docs', entry => !entry.data.draft);
 
   const paths = docs
     .map(entry => {
-      const slug = getSlugFromEntry(entry, defaultLocale);
+      const slug = getSlugFromEntry(entry);
 
       if (slug === '/docs/' || slug === '/docs') {
         return null;
@@ -36,15 +34,12 @@ interface Props {
   entry: CollectionEntry<'docs'>;
 }
 
-const defaultLocale = DEFAULT_LOCALE;
 const { entry } = Astro.props;
 const { Content, headings } = await render(entry);
-const slug = getSlugFromEntry(entry, defaultLocale);
-const locale = Astro.currentLocale || defaultLocale;
+const slug = getSlugFromEntry(entry);
 
 // Calculate OG image URL - matches the og-image.png.ts endpoint path
 const site = Astro.site || 'https://atlasos.net';
-// Ensure trailing slash before appending og-image.png
 const slugWithSlash = slug.endsWith('/') ? slug : `${slug}/`;
 const ogImageUrl = new URL(`${slugWithSlash}og-image.png`, site).href;
 ---
@@ -55,7 +50,6 @@ const ogImageUrl = new URL(`${slugWithSlash}og-image.png`, site).href;
   metaDescription={entry.data.metaDescription}
   currentSlug={slug}
   headings={headings}
-  locale={locale}
   ogImage={ogImageUrl}
   type="article"
 >

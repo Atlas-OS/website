@@ -1,7 +1,4 @@
-import { DEFAULT_LOCALE } from '@/constants';
-
 const DOCS_PREFIX = '/docs';
-const LOCALE_SEGMENT = /^[a-z]{2}(?:-[a-z]{2})?$/i;
 const FILE_EXT_REGEX = /\.(md|mdx)$/i;
 
 const slugCache = new Map<string, string>();
@@ -35,61 +32,6 @@ function normalizePath(path: string): string {
   return collapsed.replace(/\/+$/, '') || '/';
 }
 
-function getLocaleFromSegments(segments: string[], defaultLocale: string): string | null {
-  const first = segments[0];
-  if (!first || !LOCALE_SEGMENT.test(first)) {
-    return null;
-  }
-
-  return first.toLowerCase() === defaultLocale.toLowerCase() ? null : first;
-}
-
-function normalizeIdSegments(
-  id: string,
-  defaultLocale: string,
-): { locale: string | null; segments: string[] } {
-  const rawSegments = toPathSegments(id);
-  if (rawSegments.length === 0) {
-    return { locale: null, segments: [] };
-  }
-
-  const locale = getLocaleFromSegments(rawSegments, defaultLocale);
-  const withoutLocale = locale ? rawSegments.slice(1) : rawSegments;
-  const defaultLocalePrefix = defaultLocale.toLowerCase();
-  const normalized =
-    withoutLocale[0]?.toLowerCase() === defaultLocalePrefix
-      ? withoutLocale.slice(1)
-      : withoutLocale;
-
-  const withoutTrailingIndex =
-    normalized[normalized.length - 1] === 'index' ? normalized.slice(0, -1) : normalized;
-
-  return {
-    locale,
-    segments: withoutTrailingIndex,
-  };
-}
-
-function normalizeDocsSegments(segments: string[], defaultLocale: string): string[] {
-  if (segments.length === 0) {
-    return [];
-  }
-
-  const first = segments[0];
-  if (!first) {
-    return segments;
-  }
-
-  if (first.toLowerCase() === defaultLocale.toLowerCase()) {
-    return segments.slice(1);
-  }
-
-  const locale = getLocaleFromSegments(segments, defaultLocale);
-  const withoutLocale = locale ? segments.slice(1) : segments;
-
-  return withoutLocale;
-}
-
 export function addDocsPrefix(slug: string): string {
   const normalized = normalizePath(slug);
   if (normalized === '/') {
@@ -113,56 +55,33 @@ export function removeDocsPrefix(slug: string): string {
   return normalizePath(withoutPrefix || '/');
 }
 
-export function normalizeSlug(slug: string, defaultLocale: string = DEFAULT_LOCALE): string {
+export function normalizeSlug(slug: string): string {
   if (slug === '/') {
     return '/';
   }
 
-  const cacheKey = `normalize:${slug}:${defaultLocale}`;
+  const cacheKey = `normalize:${slug}`;
   const cached = slugCache.get(cacheKey);
   if (cached) {
     return cached;
   }
 
-  const normalized = normalizePath(slug);
-  if (!normalized.startsWith('/docs/')) {
-    slugCache.set(cacheKey, normalized);
-    return normalized;
-  }
-
-  const withoutDocs = removeDocsPrefix(normalized);
-  const segments = toPathSegments(withoutDocs);
-  const normalizedSegments = normalizeDocsSegments(segments, defaultLocale);
-  const result =
-    normalizedSegments.length > 0 ? addDocsPrefix(`/${normalizedSegments.join('/')}/`) : '/docs/';
-
+  const result = normalizePath(slug);
   slugCache.set(cacheKey, result);
   return result;
 }
 
-export function getLocaleFromSlug(
-  slug: string,
-  defaultLocale: string = DEFAULT_LOCALE,
-): string | null {
-  const normalized = normalizePath(slug);
-  if (!normalized.startsWith('/docs/')) {
-    return null;
-  }
-
-  const segments = toPathSegments(removeDocsPrefix(normalized));
-  return getLocaleFromSegments(segments, defaultLocale);
-}
-
-export function getSlugFromId(id: string, defaultLocale: string = DEFAULT_LOCALE): string {
-  const cacheKey = `id:${id}:${defaultLocale}`;
+export function getSlugFromId(id: string): string {
+  const cacheKey = `id:${id}`;
   const cached = slugCache.get(cacheKey);
   if (cached) {
     return cached;
   }
 
-  const { locale, segments } = normalizeIdSegments(id, defaultLocale);
-  const pathSegments = locale ? [locale, ...segments] : segments;
-  const result = pathSegments.length > 0 ? addDocsPrefix(`/${pathSegments.join('/')}/`) : '/docs/';
+  const segments = toPathSegments(id);
+  const withoutIndex =
+    segments[segments.length - 1] === 'index' ? segments.slice(0, -1) : segments;
+  const result = withoutIndex.length > 0 ? addDocsPrefix(`/${withoutIndex.join('/')}/`) : '/docs/';
 
   slugCache.set(cacheKey, result);
   return result;
@@ -170,34 +89,23 @@ export function getSlugFromId(id: string, defaultLocale: string = DEFAULT_LOCALE
 
 export function getSlugFromEntry(
   entry: { id: string; data?: ({ slug?: string } & Record<string, unknown>) | undefined },
-  defaultLocale: string = DEFAULT_LOCALE,
 ): string {
   const customSlug = entry.data?.slug?.trim();
   if (!customSlug) {
-    return getSlugFromId(entry.id, defaultLocale);
+    return getSlugFromId(entry.id);
   }
 
-  const locale = getLocaleFromId(entry.id, defaultLocale);
-  const localePrefix = locale ? `${locale}/` : '';
-  return addDocsPrefix(`/${localePrefix}${customSlug}/`);
+  return addDocsPrefix(`/${customSlug}/`);
 }
 
-export function getLocaleFromId(id: string, defaultLocale: string = DEFAULT_LOCALE): string | null {
-  return normalizeIdSegments(id, defaultLocale).locale;
-}
-
-export function getSectionFromSlug(
-  slug: string,
-  defaultLocale: string = DEFAULT_LOCALE,
-): string | null {
-  const normalized = normalizeSlug(slug, defaultLocale);
+export function getSectionFromSlug(slug: string): string | null {
+  const normalized = normalizeSlug(slug);
   if (normalized === '/docs/') {
     return null;
   }
 
   const segments = toPathSegments(removeDocsPrefix(normalized));
-  const normalizedSegments = normalizeDocsSegments(segments, defaultLocale);
-  return normalizedSegments[0] || null;
+  return segments[0] || null;
 }
 
 function humanizeSectionSegment(segment: string): string {
@@ -212,11 +120,8 @@ function humanizeSectionSegment(segment: string): string {
     .join(' ');
 }
 
-export function getSectionLabelFromSlug(
-  slug: string,
-  defaultLocale: string = DEFAULT_LOCALE,
-): string {
-  const section = getSectionFromSlug(slug, defaultLocale);
+export function getSectionLabelFromSlug(slug: string): string {
+  const section = getSectionFromSlug(slug);
   if (!section) {
     return 'Documentation';
   }
@@ -228,12 +133,8 @@ export function isActivePage(currentSlug: string, pageSlug: string): boolean {
   return normalizeSlug(currentSlug) === normalizeSlug(pageSlug);
 }
 
-export function normalizeSlugForDisplay(
-  slug: string,
-  _locale: string | null,
-  defaultLocale: string = DEFAULT_LOCALE,
-): string {
-  return normalizeSlug(slug, defaultLocale);
+export function normalizeSlugForDisplay(slug: string): string {
+  return normalizeSlug(slug);
 }
 
 export function clearSlugCache(): void {

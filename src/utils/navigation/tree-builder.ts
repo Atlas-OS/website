@@ -1,8 +1,5 @@
-import { DEFAULT_LOCALE } from '@/constants';
 import {
   addDocsPrefix,
-  getLocaleFromId,
-  getLocaleFromSlug,
   getSectionFromSlug,
   getSlugFromEntry,
   normalizeSlug,
@@ -66,8 +63,8 @@ function humanizeSegment(segment: string): string {
     .join(' ');
 }
 
-function slugToPathSegments(slug: string, defaultLocale: string): string[] {
-  const normalized = normalizeSlug(slug, defaultLocale);
+function slugToPathSegments(slug: string): string[] {
+  const normalized = normalizeSlug(slug);
   if (normalized === '/docs/') {
     return [];
   }
@@ -81,29 +78,15 @@ function slugToPathSegments(slug: string, defaultLocale: string): string[] {
     return [];
   }
 
-  const segments = withoutDocsPrefix.split('/').filter(Boolean);
-  const localeFromSlug = getLocaleFromSlug(normalized, defaultLocale);
-
-  if (localeFromSlug && segments[0] === localeFromSlug) {
-    return segments.slice(1);
-  }
-
-  return segments;
+  return withoutDocsPrefix.split('/').filter(Boolean);
 }
 
-function normalizeEntries(
-  entries: DocsEntry[],
-  locale: string | null,
-  defaultLocale: string,
-): NormalizedDocEntry[] {
-  const selectedLocale = locale && locale !== defaultLocale ? locale : null;
-
+function normalizeEntries(entries: DocsEntry[]): NormalizedDocEntry[] {
   return entries
     .filter(entry => !isHiddenInNavigation(entry))
-    .filter(entry => getLocaleFromId(entry.id, defaultLocale) === selectedLocale)
     .map(entry => {
-      const slug = normalizeSlug(getSlugFromEntry(entry, defaultLocale), defaultLocale);
-      const segments = slugToPathSegments(slug, defaultLocale);
+      const slug = normalizeSlug(getSlugFromEntry(entry));
+      const segments = slugToPathSegments(slug);
       const section = segments[0] || null;
 
       return {
@@ -119,19 +102,12 @@ function normalizeEntries(
     });
 }
 
-function buildPseudoSlug(
-  section: string,
-  group: string,
-  locale: string | null,
-  defaultLocale: string,
-): string {
-  const localePrefix = locale && locale !== defaultLocale ? `${locale}/` : '';
-  return addDocsPrefix(`/${localePrefix}${section}/${group}/`);
+function buildPseudoSlug(section: string, group: string): string {
+  return addDocsPrefix(`/${section}/${group}/`);
 }
 
-function buildSectionSlug(section: string, locale: string | null, defaultLocale: string): string {
-  const localePrefix = locale && locale !== defaultLocale ? `${locale}/` : '';
-  return addDocsPrefix(`/${localePrefix}${section}/`);
+function buildSectionSlug(section: string): string {
+  return addDocsPrefix(`/${section}/`);
 }
 
 function toNavItem(doc: NormalizedDocEntry): NavItem {
@@ -147,8 +123,6 @@ function toNavItem(doc: NormalizedDocEntry): NavItem {
 function buildSectionItems(
   sectionEntries: NormalizedDocEntry[],
   section: string,
-  locale: string | null,
-  defaultLocale: string,
 ): NavItem[] {
   const entriesWithoutSectionIndex = sectionEntries.filter(doc => doc.relativeSegments.length > 0);
   if (entriesWithoutSectionIndex.length === 0) {
@@ -201,7 +175,7 @@ function buildSectionItems(
     const syntheticOrder = children[0]?.order ?? FALLBACK_ORDER;
     sectionItems.push({
       title: humanizeSegment(groupName),
-      slug: buildPseudoSlug(section, groupName, locale, defaultLocale),
+      slug: buildPseudoSlug(section, groupName),
       order: syntheticOrder,
       children,
     });
@@ -213,14 +187,12 @@ function buildSectionItems(
 function buildSection(
   sectionEntries: NormalizedDocEntry[],
   section: string,
-  locale: string | null,
-  defaultLocale: string,
 ): SectionNavItem {
   const sectionIndex = sectionEntries.find(doc => doc.relativeSegments.length === 0);
-  const sectionItems = buildSectionItems(sectionEntries, section, locale, defaultLocale);
+  const sectionItems = buildSectionItems(sectionEntries, section);
 
   const sectionTitle = sectionIndex?.title || humanizeSegment(section);
-  const sectionSlug = sectionIndex?.slug || buildSectionSlug(section, locale, defaultLocale);
+  const sectionSlug = sectionIndex?.slug || buildSectionSlug(section);
   const sectionOrder = sectionIndex?.order ?? sectionItems[0]?.order ?? FALLBACK_ORDER;
 
   return {
@@ -233,40 +205,29 @@ function buildSection(
   };
 }
 
-function buildHomeSection(
-  normalizedEntries: NormalizedDocEntry[],
-  locale: string | null,
-  defaultLocale: string,
-): SectionNavItem | null {
+function buildHomeSection(normalizedEntries: NormalizedDocEntry[]): SectionNavItem | null {
   const homeEntry = normalizedEntries.find(doc => doc.segments.length === 0);
   if (!homeEntry) {
     return null;
   }
 
-  const localePrefix = locale && locale !== defaultLocale ? `${locale}/` : '';
-  const homeSlug = localePrefix ? addDocsPrefix(`/${localePrefix}`) : '/docs/';
-
   return {
     sectionTitle: homeEntry.title,
-    sectionSlug: homeSlug,
+    sectionSlug: '/docs/',
     sectionDescription: homeEntry.description,
     badge: homeEntry.badge,
     items: [
       {
         ...toNavItem(homeEntry),
-        slug: homeSlug,
+        slug: '/docs/',
       },
     ],
     order: homeEntry.order,
   };
 }
 
-function buildFullTree(
-  entries: DocsEntry[],
-  locale: string | null,
-  defaultLocale: string,
-): SectionNavItem[] {
-  const normalizedEntries = normalizeEntries(entries, locale, defaultLocale);
+function buildFullTree(entries: DocsEntry[]): SectionNavItem[] {
+  const normalizedEntries = normalizeEntries(entries);
   if (normalizedEntries.length === 0) {
     return [];
   }
@@ -285,7 +246,7 @@ function buildFullTree(
   }
 
   const builtSections = [...sectionsByName.entries()].map(([section, docs]) =>
-    buildSection(docs, section, locale, defaultLocale),
+    buildSection(docs, section),
   );
 
   const sortedSections = [...builtSections].sort((a, b) => {
@@ -299,7 +260,7 @@ function buildFullTree(
     return a.sectionTitle.localeCompare(b.sectionTitle);
   });
 
-  const homeSection = buildHomeSection(normalizedEntries, locale, defaultLocale);
+  const homeSection = buildHomeSection(normalizedEntries);
   if (!homeSection) {
     return sortedSections;
   }
@@ -311,13 +272,13 @@ export function buildNavigationTree(
   entries: DocsEntry[],
   options: BuildNavigationOptions,
 ): SectionNavItem[] | NavItem[] {
-  const { scope, section = null, locale = null, defaultLocale = DEFAULT_LOCALE } = options;
+  const { scope, section = null } = options;
 
   if (entries.length === 0) {
     return [];
   }
 
-  const fullTree = buildFullTree(entries, locale, defaultLocale);
+  const fullTree = buildFullTree(entries);
   if (scope === 'full') {
     return fullTree;
   }
@@ -328,7 +289,7 @@ export function buildNavigationTree(
 
   const normalizedSection = section.trim().toLowerCase();
   const matchingSection = fullTree.find(item => {
-    const sectionFromSlug = getSectionFromSlug(item.sectionSlug, defaultLocale);
+    const sectionFromSlug = getSectionFromSlug(item.sectionSlug);
     return sectionFromSlug?.toLowerCase() === normalizedSection;
   });
 

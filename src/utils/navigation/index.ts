@@ -3,7 +3,6 @@
  *
  * This module provides all navigation-related functionality including:
  * - Slug manipulation and normalization
- * - Locale detection and handling
  * - Navigation tree building
  * - Prev/next page navigation
  * - Sidebar utilities
@@ -42,17 +41,12 @@ export {
   removeDocsPrefix,
   getSlugFromId,
   getSlugFromEntry,
-  getLocaleFromId,
-  getLocaleFromSlug,
   getSectionFromSlug,
   getSectionLabelFromSlug,
   isActivePage,
   normalizeSlugForDisplay,
   clearSlugCache,
 } from './slugs';
-
-// Locale utilities
-export { getCurrentLocale, getLangCode, isDefaultLocale, getLocalePrefix } from './locale';
 
 // Tree building
 export { buildNavigationTree, getPageTitle } from './tree-builder';

@@ -1,5 +1,4 @@
 ---
-import { DEFAULT_LOCALE } from '@/constants';
 import {
   buildNavigationTree,
   isActivePage,
@@ -15,25 +14,17 @@ import '@/styles/sidebar.css';
 
 interface Props {
   currentSlug: string;
-  locale?: string | null;
 }
 
-const { currentSlug, locale = null } = Astro.props;
-const defaultLocale = DEFAULT_LOCALE;
+const { currentSlug } = Astro.props;
 
 const allDocs = await getCollection('docs');
 const sectionNavItems = prepareSidebarNavigation(
-  buildNavigationTree(allDocs, {
-    scope: 'full',
-    locale,
-    defaultLocale,
-  }) as SectionNavItem[],
-  locale,
-  defaultLocale,
+  buildNavigationTree(allDocs, { scope: 'full' }) as SectionNavItem[],
 );
 
-const homeSection = sectionNavItems.find(section => normalizeSlug(section.sectionSlug, defaultLocale) === '/docs/');
-const regularSections = sectionNavItems.filter(section => normalizeSlug(section.sectionSlug, defaultLocale) !== '/docs/');
+const homeSection = sectionNavItems.find(section => normalizeSlug(section.sectionSlug) === '/docs/');
+const regularSections = sectionNavItems.filter(section => normalizeSlug(section.sectionSlug) !== '/docs/');
 
 function hasActiveDescendant(item: NavItem): boolean {
   if (!item.children || item.children.length === 0) {

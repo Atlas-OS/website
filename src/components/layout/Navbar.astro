@@ -1,23 +1,18 @@
 ---
 import { Image } from 'astro:assets';
 import AtlasLogomark from '@/assets/atlas-logomark.svg';
-// import LanguageSwitcher from '@/components/core/LanguageSwitcher.astro';
 import NavLink from '@/components/ui/NavLink.astro';
 import IconButton from '@/components/ui/IconButton.astro';
 import SearchButton from '@/components/ui/SearchButton.astro';
 import SocialIconLink from '@/components/ui/SocialIconLink.astro';
-// import { getCurrentLocale } from '@/utils/locale';
 import '@/styles/navbar.css';
 
 interface Props {
   currentPath?: string;
-  locale?: string;
   isDocsPage?: boolean;
 }
 
 const { currentPath = '/', isDocsPage } = Astro.props;
-
-// const currentLocale = locale || getCurrentLocale(currentPath);
 
 const isOnDocsPage = isDocsPage ?? currentPath.startsWith('/docs');
 
@@ -99,8 +94,6 @@ const isDocumentationActive = isOnDocsPage && !hasActiveDocsSubItem;
           </>
         )
       }
-
-      <!-- <LanguageSwitcher currentLocale={currentLocale} currentSlug={currentPath} /> -->
 
       <div class="hidden items-center gap-2 sm:flex">
         <SocialIconLink href="https://github.com/Atlas-OS/Atlas" icon="tabler:brand-github" label="GitHub" />

@@ -1,21 +1,16 @@
 ---
 import '@/styles/global.css';
 import { Font } from 'astro:assets';
-import { getCurrentLocale, getLangCode } from '@/utils/navigation';
 
 interface Props {
-  locale?: string;
   currentPath?: string;
 }
 
-const { locale: providedLocale, currentPath = Astro.url.pathname } = Astro.props;
-const currentLocale = providedLocale || getCurrentLocale(currentPath);
-const langCode = getLangCode(currentLocale);
 const kapaLogoUrl = 'https://avatars.githubusercontent.com/u/78708182?s=128';
 ---
 
 <!doctype html>
-<html lang={langCode}>
+<html lang="en-US">
   <head>
     <meta charset="UTF-8" />
     <Font cssVariable="--font-sans-source" preload />

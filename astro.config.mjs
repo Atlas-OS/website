@@ -37,14 +37,6 @@ export default defineConfig({
     },
   ],
 
-  i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
-    routing: {
-      prefixDefaultLocale: false,
-    },
-  },
-
   build: {
     format: 'directory',
     assets: '_assets',
@@ -81,12 +73,6 @@ export default defineConfig({
     sitemap({
       changefreq: 'weekly',
       priority: 0.8,
-      i18n: {
-        defaultLocale: 'en',
-        locales: {
-          en: 'en-US',
-        },
-      },
     }),
     pagefindIntegration({
       rootSelector: '[data-pagefind-body]',

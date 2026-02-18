@@ -3,10 +3,7 @@ import SEO from '@/components/core/SEO.astro';
 import Footer from '@/components/layout/Footer.astro';
 import Navbar from '@/components/layout/Navbar.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getCurrentLocale } from '@/utils/navigation';
-
 const currentPath = Astro.url.pathname;
-const currentLocale = getCurrentLocale(currentPath);
 
 const defaultTitle = 'AtlasOS | Optimized Windows for enthusiasts';
 const defaultDescription =
@@ -14,7 +11,7 @@ const defaultDescription =
 const defaultImage = 'https://atlasos.net/defaultimg.png';
 ---
 
-<BaseLayout locale={currentLocale} currentPath={currentPath}>
+<BaseLayout currentPath={currentPath}>
   <Fragment slot="head">
     <SEO
       title={defaultTitle}
@@ -87,7 +84,7 @@ const defaultImage = 'https://atlasos.net/defaultimg.png';
   <Fragment slot="body">
     <header>
       <a href="#main-content" class="sr-only focus:not-sr-only">Skip to main content</a>
-      <Navbar currentPath={currentPath} locale={currentLocale} isDocsPage={false} />
+      <Navbar currentPath={currentPath} isDocsPage={false} />
     </header>
     <main id="main-content" role="main">
       <slot />

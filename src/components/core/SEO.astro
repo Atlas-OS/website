@@ -1,6 +1,5 @@
 ---
-import { AVAILABLE_LOCALES, DEFAULT_LOCALE, DEFAULT_META_DESCRIPTION } from '@/constants';
-import { getCurrentLocale, getLangCode } from '@/utils/navigation';
+import { DEFAULT_META_DESCRIPTION } from '@/constants';
 
 interface Props {
   title: string;
@@ -29,50 +28,15 @@ const {
   modifiedTime,
   author,
   tags = [],
-  currentSlug,
   faqItems = [],
   softwareApp = false,
 } = Astro.props;
 
-const defaultLocale = DEFAULT_LOCALE;
 const site = Astro.site || 'https://atlasos.net';
 const fullTitle = title.includes('|') ? title : `${title} | AtlasOS Documentation`;
 const pageURL = canonicalURL || new URL(Astro.url.pathname, site).href;
 const ogImage = image || `${site}/defaultimg.png`;
 const finalMetaDescription = metaDescription || description || DEFAULT_META_DESCRIPTION;
-const currentLocale = currentSlug ? getCurrentLocale(currentSlug) : defaultLocale;
-const langCode = getLangCode(currentLocale);
-
-const availableLocales = AVAILABLE_LOCALES;
-
-const hreflangLinks: Array<{ href: string; hreflang: string }> = [];
-const currentPath = currentSlug || Astro.url.pathname;
-
-for (const loc of availableLocales) {
-  try {
-    let alternateUrl: string;
-
-    if (loc === defaultLocale) {
-      alternateUrl = new URL(currentPath, site).href;
-    } else {
-      const localePath = currentPath.startsWith('/') ? currentPath.slice(1) : currentPath;
-      alternateUrl = new URL(`/${loc}/${localePath}`, site).href;
-    }
-
-    const hreflangCodes = loc === 'en' ? ['en', 'en-US'] : [loc];
-
-    for (const hreflangCode of hreflangCodes) {
-      hreflangLinks.push({ href: alternateUrl, hreflang: hreflangCode });
-    }
-  } catch {
-    // Ignore invalid URLs
-  }
-}
-
-if (hreflangLinks.length > 0) {
-  const defaultUrl = hreflangLinks.find((link) => link.hreflang.startsWith(defaultLocale))?.href || pageURL;
-  hreflangLinks.push({ href: defaultUrl, hreflang: 'x-default' });
-}
 
 const organizationSchema = {
   '@type': 'Organization',
@@ -156,8 +120,6 @@ const structuredData = {
 
 <link rel="canonical" href={pageURL} />
 
-{hreflangLinks.map((link) => <link rel="alternate" hreflang={link.hreflang} href={link.href} />)}
-
 <meta property="og:type" content={type} />
 <meta property="og:url" content={pageURL} />
 <meta property="og:title" content={title} />
@@ -167,7 +129,7 @@ const structuredData = {
 <meta property="og:image:height" content="630" />
 <meta property="og:image:alt" content={finalMetaDescription} />
 <meta property="og:site_name" content="AtlasOS Documentation" />
-<meta property="og:locale" content={langCode} />
+<meta property="og:locale" content="en-US" />
 
 {
   type === 'article' && (

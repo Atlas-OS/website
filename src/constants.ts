@@ -2,10 +2,6 @@
  * Centralized constants for the AtlasOS documentation site
  */
 
-export const DEFAULT_LOCALE = 'en' as const;
-
-export const AVAILABLE_LOCALES = ['en'] as const;
-
 export const SECTION_PRIORITIES: Record<string, number> = {
   install: 1,
   upgrade: 2,

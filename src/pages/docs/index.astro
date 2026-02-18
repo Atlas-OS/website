@@ -1,19 +1,16 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import DocsLayout from '@/layouts/DocsLayout.astro';
-import { render } from 'astro:content';
-import { DEFAULT_LOCALE } from '@/constants';
 import { getSlugFromEntry } from '@/utils/navigation';
 
 const allDocs = await getCollection('docs', doc => !doc.data.draft);
-const entry = allDocs.find(doc => getSlugFromEntry(doc, DEFAULT_LOCALE) === '/docs/');
+const entry = allDocs.find(doc => getSlugFromEntry(doc) === '/docs/');
 
 if (!entry) {
   throw new Error('Home page not found. Expected a docs entry that resolves to /docs/.');
 }
 
 const { Content, headings } = await render(entry);
-const defaultLocale = DEFAULT_LOCALE;
 ---
 
 <DocsLayout
@@ -21,7 +18,6 @@ const defaultLocale = DEFAULT_LOCALE;
   description={entry.data.description}
   currentSlug="/docs/"
   headings={headings}
-  locale={defaultLocale}
 >
   <Content />
 </DocsLayout>

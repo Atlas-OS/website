@@ -1,5 +1,4 @@
 import type { APIRoute } from 'astro';
-import { DEFAULT_LOCALE } from '@/constants';
 import { getSectionFromSlug, getSlugFromEntry } from '@/utils/navigation';
 import { getCollection } from 'astro:content';
 import { readFile } from 'fs/promises';
@@ -27,12 +26,11 @@ async function loadInterBoldFont(): Promise<ArrayBuffer> {
 }
 
 export async function getStaticPaths() {
-  const defaultLocale = DEFAULT_LOCALE;
   const docs = await getCollection('docs', entry => !entry.data.draft);
 
   const paths = docs
     .map(entry => {
-      const slug = getSlugFromEntry(entry, defaultLocale);
+      const slug = getSlugFromEntry(entry);
 
       if (slug === '/docs/' || slug === '/docs') {
         return null;
@@ -98,7 +96,7 @@ export const GET: APIRoute = async function get({ props }) {
   const title = entry.data.title || 'AtlasOS Documentation';
   const description = entry.data.description || '';
 
-  const slug = getSlugFromEntry(entry, DEFAULT_LOCALE);
+  const slug = getSlugFromEntry(entry);
   const section = getSectionFromSlug(slug);
   const sectionIconPath = getSectionIconPath(section);
 

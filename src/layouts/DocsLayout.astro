@@ -9,7 +9,6 @@ import SEO from '@/components/core/SEO.astro';
 import Spotlight from '@/components/ui/Spotlight.astro';
 import { getCollection } from 'astro:content';
 import { getPrevNextPages, getSectionLabelFromSlug } from '@/utils/navigation';
-import { DEFAULT_LOCALE } from '@/constants';
 import '@/styles/prose.css';
 
 interface Props {
@@ -22,7 +21,6 @@ interface Props {
   ogImage?: string;
   type?: 'website' | 'article';
   showPageNav?: boolean;
-  locale?: string;
 }
 
 const {
@@ -35,18 +33,16 @@ const {
   ogImage,
   type,
   showPageNav = true,
-  locale = DEFAULT_LOCALE,
 } = Astro.props;
 
-const defaultLocale = DEFAULT_LOCALE;
 const hasTableOfContents = headings.length > 0;
 
 const allDocs = await getCollection('docs');
-const { prev, next } = getPrevNextPages(allDocs, currentSlug, locale === defaultLocale ? null : locale, defaultLocale);
-const sectionLabel = getSectionLabelFromSlug(currentSlug, defaultLocale);
+const { prev, next } = getPrevNextPages(allDocs, currentSlug);
+const sectionLabel = getSectionLabelFromSlug(currentSlug);
 ---
 
-<BaseLayout locale={locale} currentPath={currentSlug}>
+<BaseLayout currentPath={currentSlug}>
   <Fragment slot="head">
     <meta name="apple-mobile-web-app-title" content="AtlasOS Docs" />
     <SEO
@@ -67,12 +63,12 @@ const sectionLabel = getSectionLabelFromSlug(currentSlug, defaultLocale);
         class="absolute h-full w-full bg-[linear-gradient(rgba(255,255,255,0.012)_1px,transparent_1px),linear-gradient(to_right,rgba(255,255,255,0.012)_1px,transparent_1px)] mask-[linear-gradient(to_bottom,rgba(0,0,0,0.6),transparent_70%)] bg-size-[24px_24px]"
       />
     </div>
-    <Navbar currentPath={currentSlug} locale={locale} isDocsPage={true} />
+    <Navbar currentPath={currentSlug} isDocsPage={true} />
     <div
       class="docs-shell relative z-10"
       style="--docs-header-height: 3.5rem; --docs-sidebar-width: 18rem; --docs-toc-width: 18rem;"
     >
-      <Sidebar currentSlug={currentSlug} locale={locale === defaultLocale ? null : locale} />
+      <Sidebar currentSlug={currentSlug} />
       <main
         class={`docs-main scroll-pt-24 docs-main--with-sidebar ${hasTableOfContents ? 'docs-main--with-toc' : ''}`}
         id="main-content"
