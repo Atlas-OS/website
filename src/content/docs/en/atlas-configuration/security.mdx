@@ -16,12 +16,12 @@ Disabling security features is at **your own risk**, and you should only disable
 - You know what it does
 - You know how to keep yourself safe without it
 
-**Atlas is not responsible** for any damages caused by disabling security features against our recommendations.
+**Atlas isn't responsible** for any damages caused by disabling security features against our recommendations.
 </Callout>
 
 This section lists Security options in the Atlas folder, how to change them, and their defaults.
 
-All of the configuration files listed here are located in the <CodeInline text="7. Security" /> folder within the Atlas folder on your Desktop.
+All configuration files listed here are in the <CodeInline text="7. Security" /> folder within the Atlas folder on your Desktop.
 
 ## Mitigations
 
@@ -29,27 +29,27 @@ Mitigations are software or hardware techniques that address security vulnerabil
 
 Atlas provides scripts and a prompt to enable or disable mitigations within Windows. Some older CPUs see significant performance gains from disabling mitigations. However, this benefit applies mainly to older CPUs. Newer CPUs (like [Zen 4 CPUs](https://www.phoronix.com/news/AMD-Zen-4-Mitigations-Off)) can be negatively impacted if you disable mitigations, as they are designed to work with these mitigations.
 
-There is also [Fault Tolerant Heap](https://learn.microsoft.com/en-us/windows/win32/win7appqual/fault-tolerant-heap 'Microsoft FTH documentation') that is disabled on Atlas by default, which applies non-CPU mitigations to processes that are repeatedly crashing, at the cost of significantly reduced performance. If you are having consistent application crashes, try enabling FTH.
+Atlas disables [Fault Tolerant Heap](https://learn.microsoft.com/en-us/windows/win32/win7appqual/fault-tolerant-heap 'Microsoft FTH documentation') by default. FTH applies non-CPU mitigations to repeatedly crashing processes, at the cost of significantly reduced performance. If you have consistent application crashes, try enabling FTH.
 
-If you have disabled mitigations and face issues with anticheat software, run the <CodeInline text="Set Windows Default Mitigations.cmd" /> script in the <CodeInline text="Mitigations" /> folder. Alternatively, if you want the maximum security, you can use <CodeInline text="Enable All Mitigations.cmd" />, but that forces all mitigations to be enabled (unlike the Windows default), which can reduce performance significantly and may potentially reduce compatibility.
+If you have disabled mitigations and face issues with anticheat software, run the <CodeInline text="Set Windows Default Mitigations.cmd" /> script in the <CodeInline text="Mitigations" /> folder. Alternatively, if you want the maximum security, you can use <CodeInline text="Enable All Mitigations.cmd" />, but that forces all mitigations to be enabled (unlike the Windows default), which can reduce performance significantly and may reduce compatibility.
 
 ## Defender
 
-Defender protects against many threats (ransomware, spyware). Some users disable it for privacy and performance on older hardware. Disabling Defender increases infection risk; Atlas does not recommend it.
+Defender protects against many threats (ransomware, spyware). Some users disable it for privacy and performance on older hardware. Disabling Defender increases infection risk; Atlas doesn't recommend it.
 
-If you use another trustworthy antivirus program, you do not need to disable Defender.
+If you use another trustworthy antivirus program, you don't need to disable Defender.
 
-As Atlas believes in user freedom, we have given the option to fully toggle Defender at a component level. You can toggle Defender by using the script in the <CodeInline text="Defender" /> folder and running <CodeInline text="Toggle Defender.cmd" /> for disabling or enabling Defender. The folder also contains tweaks that you can run related to Defender or Windows Security.
+Atlas lets you fully toggle Defender at a component level. Run <CodeInline text="Toggle Defender.cmd" /> in the <CodeInline text="Defender" /> folder to enable or disable it. The folder also contains tweaks for Defender and Windows Security.
 
 ## Core isolation
 
-[Core isolation](https://support.microsoft.com/en-us/windows/core-isolation-e30ed737-17d8-42f3-a2a9-87521df09b78) is a security feature of Windows that protects important core processes of Windows from malicious software by isolating them in memory. It does this by running those core processes in a virtualized environment.
+[Core isolation](https://support.microsoft.com/en-us/windows/core-isolation-e30ed737-17d8-42f3-a2a9-87521df09b78) is a Windows security feature that protects core processes from malicious software by running them in a virtualized environment.
 
 Core isolation protects against vulnerabilities in Windows core processes. It has a [significant performance cost](https://www.tomshardware.com/news/windows-11-gaming-benchmarks-performance-vbs-hvci-security), especially on older CPUs. We recommend disabling it for most users—the performance impact outweighs the security benefits.
 
 For Windows 11 users, Core isolation features are typically enabled by default, as long as your CPU supports Windows 11.
 
-In the <CodeInline text="Core Isolation (VBS)" /> folder, we provide the <CodeInline text="Current Configuration.ps1" /> script to check which Core isolation features are available, enabled and configured, along with other shortcuts to Core isolation features. Additionally, there is a prompt in AME Beta for disabling Core isolation features.
+The <CodeInline text="Core Isolation (VBS)" /> folder contains <CodeInline text="Current Configuration.ps1" /> to check which Core isolation features are available and configured, plus shortcuts to Core isolation settings. AME Beta also has a prompt to disable Core isolation.
 
 ### Core isolation features
 
@@ -64,7 +64,7 @@ Note that not all features may be available, depending on your hardware security
 
 ## UAC
 
-UAC (User Account Control) is a feature in Windows that helps control what changes software can make to your computer. This helps protect against applications malfunctioning and doing harmful changes to your computer.
+UAC (User Account Control) is a feature in Windows that helps control what changes software can make to your computer. It helps protect against applications malfunctioning or making harmful changes to your computer.
 
 Note that most sophisticated malware can bypass UAC easily. The only reliable way to protect yourself against UAC bypasses is to set UAC to the maximum level.
 

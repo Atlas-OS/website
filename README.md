@@ -1,6 +1,6 @@
 # AtlasOS Website
 
-AtlasOS is an optimized modification of Microsoft Windows tailored for gaming and performance. This repo contains the source code for the official website (https://atlasos.net), built with Astro 6, Tailwind CSS, and Bun.
+This repository contains the source code for [atlasos.net](https://atlasos.net), the official website for AtlasOS—an optimized Windows modification for gaming and performance. The site uses Astro 6, Tailwind CSS, and Bun.
 
 ---
 
@@ -16,8 +16,8 @@ AtlasOS is an optimized modification of Microsoft Windows tailored for gaming an
 
 ## Prerequisites
 
-- **Bun** ≥ 1.3.0
-- **Node.js** ≥ 22.12.0
+- Bun ≥ 1.3.0
+- Node.js ≥ 22.12.0
 
 ## Installation
 
@@ -27,54 +27,58 @@ bun install
 
 ## Available Scripts
 
-| Command                      | Description                                                                          |
-| ---------------------------- | ------------------------------------------------------------------------------------ |
-| `bun dev`                    | Start local Astro development server                                                 |
-| `bun run build`              | Build production site, generate Pagefind index, run Jampack, then precompress assets |
-| `bun run build:raw`          | Build production site only (no Jampack pass)                                         |
-| `bun run compress:postbuild` | Rebuild precompressed sidecars (`.gz`, `.br`, `.zst`) for `dist`                     |
-| `bun preview`                | Preview production build locally                                                     |
-| `bun format`                 | Format files with Prettier                                                           |
-| `bun run lint`               | Lint code with ESLint                                                                |
-| `bun run check`              | Runs the Astro check command                                                         |
-| `bun run search:index`       | Rebuild Pagefind index in `dist/pagefind`                                            |
+| Command                      | Description                                      |
+| ---------------------------- | ------------------------------------------------ |
+| `bun dev`                    | Start the development server                     |
+| `bun run build`              | Build for production with optimization           |
+| `bun run build:raw`          | Build for production without optimization        |
+| `bun run compress:postbuild` | Compress assets in `dist` (`.gz`, `.br`, `.zst`) |
+| `bun preview`                | Preview the production build locally             |
+| `bun format`                 | Format code with Prettier                        |
+| `bun run lint`               | Lint code with ESLint                            |
+| `bun run check`              | Run Astro type checking                          |
+| `bun run search:index`       | Build the Pagefind search index                  |
 
 ## Configuration
 
-- **Astro config**: `astro.config.mjs` (integrations, `site`, Pagefind indexing)
-- **Tailwind config**: `globals.css` (minimal config, theme)
-- **ESLint config**: `eslint.config.js` (Astro + TypeScript rules, flat config)
-- **EditorConfig**: `.editorconfig` (consistent editor settings)
-- **Gitignore**: ignores Jampack cache in `.jampack/`, build output, lockfiles, etc.
+| File               | Purpose                                           |
+| ------------------ | ------------------------------------------------- |
+| `astro.config.mjs` | Astro settings, site URL, and Pagefind indexing   |
+| `globals.css`      | Tailwind theme and global styles                  |
+| `eslint.config.js` | ESLint rules for Astro and TypeScript             |
+| `.editorconfig`    | Editor settings for consistent formatting         |
+| `.gitignore`       | Excludes `.jampack/`, build output, and lockfiles |
 
 ## Project Structure
 
-### Component Organization
+### Components
 
-Components are organized by purpose and usage pattern:
+Components live in `src/components/` and follow a purpose-based organization:
 
-- **`src/components/ui/`** - Reusable UI primitives (Button, Card, Link, etc.)
-- **`src/components/layout/`** - Layout-specific components (Navbar, Footer, Sidebar)
-- **`src/components/sections/`** - Page sections used on the homepage
-- **`src/components/docs/`** - Documentation-specific components (Breadcrumbs, TableOfContents, etc.)
-- **`src/components/core/`** - Core functionality components (SEO, LanguageSwitcher)
+| Directory   | Contents                                                |
+| ----------- | ------------------------------------------------------- |
+| `ui/`       | Reusable primitives (Button, Card, Link)                |
+| `layout/`   | Layout elements (Navbar, Footer, Sidebar)               |
+| `sections/` | Homepage sections                                       |
+| `docs/`     | Documentation components (Breadcrumbs, TableOfContents) |
+| `core/`     | Core functionality (SEO, LanguageSwitcher)              |
 
-### Utility Functions
+### Utilities
 
-All utility functions are organized in `src/utils/` by domain:
+Utilities in `src/utils/`:
 
-- `navigation.ts` - Navigation and routing utilities
-- `locale.ts` - Internationalization utilities
-- `navbar.ts` - Navbar interaction logic
-- `sidebar.ts` - Sidebar behavior and state management
-- `scroll-animations.ts` - Scroll-based animation utilities
+- `navigation.ts` — Routing and navigation
+- `locale.ts` — Internationalization
+- `navbar.ts` — Navbar interactions
+- `sidebar.ts` — Sidebar state
+- `scroll-animations.ts` — Animation utilities
 
-Barrel exports are available via `src/utils/index.ts` for cleaner imports.
+Import utilities through `src/utils/index.ts`.
 
 ### Constants
 
-Site-wide constants are centralized in `src/constants.ts` and organized by domain (locale, navigation, site metadata).
+Site constants live in `src/constants.ts`, organized by domain.
 
 ## License
 
-This project is licensed under the **Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International** (CC BY-NC-ND 4.0). See the `LICENSE` file for details.
+This project uses the **Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International** (CC BY-NC-ND 4.0) license. See `LICENSE` for details.

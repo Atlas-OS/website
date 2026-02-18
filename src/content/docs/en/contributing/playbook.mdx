@@ -85,7 +85,7 @@ Snapshotting saves the current memory, disk, and settings of a VM so you can res
 <Callout type="tip" title="Setup your snapshots ready for a Playbook">
   It's best to make your initial snapshots already set up with [AME
   Beta](https://download.ameliorated.io/AME%20Beta.zip) and some essential utilities (e.g.
-  [Sysinternals](https://learn.microsoft.com/sysinternals/downloads/)) so that you can just
+  [Sysinternals](https://learn.microsoft.com/sysinternals/downloads/)) so you can just
   drag-and-drop a Playbook as soon as you go to a snapshot.
 </Callout>
 
@@ -93,7 +93,7 @@ We recommend making three initial snapshots:
 
 - Stock Windows **without** Windows Updates installed
   - For testing installing Windows Updates after installing Atlas
-  - To ensure updates don't install, [pause updates indefinitely](/assets/other/pause-updates.reg) before connecting to the internet. Un-pause them later in Windows Settings
+  - To prevent updates from installing, [pause updates indefinitely](/assets/other/pause-updates.reg) before connecting to the internet. Un-pause them later in Windows Settings
 - Stock Windows **with** Windows Updates installed
   - Consider updating Windows and remaking the snapshot every so often
 - **Optional:** A current release Atlas snapshot if you need to test anything there
