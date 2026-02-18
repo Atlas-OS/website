@@ -4,12 +4,19 @@ type AssetsBinding = {
   fetch(request: Request): Response | Promise<Response>;
 };
 
+type BrowserBinding = {
+  fetch: typeof fetch;
+};
+
 export interface Env {
   ASSETS: AssetsBinding;
   /** Cloudflare Browser Rendering binding (wrangler.jsonc: browser.binding) */
-  BROWSER?: unknown;
+  BROWSER?: BrowserBinding;
   /** KV store for ISO links (global replication). Create with: wrangler kv namespace create "MS_ISO_LINKS" */
-  MS_ISO_LINKS?: { get(key: string): Promise<string | null>; put(key: string, value: string, options?: { expirationTtl?: number }): Promise<void> };
+  MS_ISO_LINKS?: {
+    get(key: string): Promise<string | null>;
+    put(key: string, value: string, options?: { expirationTtl?: number }): Promise<void>;
+  };
 }
 
 const MS_CONNECTOR_BASE = 'https://www.microsoft.com/software-download-connector/api';
@@ -20,7 +27,7 @@ const BROWSER_STEP_TIMEOUT_MS = 30_000;
 const BROWSER_LINK_TIMEOUT_MS = 45_000;
 
 const PRODUCT_IDS: Record<string, number> = {
-  x64: 3262,   // Windows 11 25H2
+  x64: 3262, // Windows 11 25H2
   arm64: 3265, // Windows 11 25H2 ARM64
 };
 
@@ -119,11 +126,13 @@ async function handleSkus(arch: Arch, sessionId: string): Promise<Response> {
   return proxyMsApi(url, pageUrl);
 }
 
-type BrowserLinkResult =
-  | { ok: true; href: string; label: string }
-  | { ok: false; error: string };
+type BrowserLinkResult = { ok: true; href: string; label: string } | { ok: false; error: string };
 
-async function getIsoLinkViaBrowserOnce(env: Env, arch: string, skuId: string): Promise<BrowserLinkResult> {
+async function getIsoLinkViaBrowserOnce(
+  env: Env,
+  arch: string,
+  skuId: string,
+): Promise<BrowserLinkResult> {
   const safeArch = asArch(arch);
   if (!safeArch) return { ok: false, error: 'Invalid architecture. Use x64 or arm64.' };
 
@@ -133,7 +142,7 @@ async function getIsoLinkViaBrowserOnce(env: Env, arch: string, skuId: string): 
 
   // Cloudflare Browser Rendering runs a real headless Chromium session.
   // We use it only for the final signed URL generation (Sentinel fingerprinting).
-  const browser = await puppeteer.launch(env.BROWSER as any);
+  const browser = await puppeteer.launch(env.BROWSER);
   const page = await browser.newPage();
   try {
     await page.setUserAgent(MS_FETCH_HEADERS_BASE['User-Agent'] ?? '');
@@ -141,82 +150,98 @@ async function getIsoLinkViaBrowserOnce(env: Env, arch: string, skuId: string): 
     await page.goto(pageUrl, { waitUntil: 'domcontentloaded', timeout: BROWSER_LAUNCH_TIMEOUT_MS });
 
     // Give Microsoft's anti-bot scripts a brief moment to initialize.
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    await new Promise(resolve => setTimeout(resolve, 1500));
 
     const editionValue = String(productId);
 
     // Wait for product edition selector to be present.
     await page.waitForFunction(
-      (val) => {
+      val => {
         const selects = Array.from(document.querySelectorAll('select'));
-        return selects.some((s) => Array.from(s.options).some((o) => o.value === val));
+        return selects.some(s => Array.from(s.options).some(o => o.value === val));
       },
       { timeout: BROWSER_STEP_TIMEOUT_MS },
       editionValue,
     );
 
     // Select the product edition and click the first Confirm.
-    await page.evaluate((val) => {
+    await page.evaluate(val => {
       const selects = Array.from(document.querySelectorAll('select'));
-      const sel = selects.find((s) => Array.from(s.options).some((o) => o.value === val)) as HTMLSelectElement | undefined;
+      const sel = selects.find(s => Array.from(s.options).some(o => o.value === val)) as
+        | HTMLSelectElement
+        | undefined;
       if (!sel) return;
       sel.value = val;
       sel.dispatchEvent(new Event('change', { bubbles: true }));
 
-      const btn = Array.from(document.querySelectorAll('button')).find((b) => (b.textContent ?? '').trim() === 'Confirm') as
-        | HTMLButtonElement
-        | undefined;
+      const btn = Array.from(document.querySelectorAll('button')).find(
+        b => (b.textContent ?? '').trim() === 'Confirm',
+      ) as HTMLButtonElement | undefined;
       btn?.click();
     }, editionValue);
 
     // After confirming the edition, the next dropdown is populated asynchronously.
-    await page.waitForNetworkIdle({ idleTime: 750, timeout: BROWSER_STEP_TIMEOUT_MS }).catch(() => {});
+    await page
+      .waitForNetworkIdle({ idleTime: 750, timeout: BROWSER_STEP_TIMEOUT_MS })
+      .catch(() => {});
 
     // Wait for language selector to populate. Its option values are JSON containing the SKU id.
     await page.waitForFunction(
-      (skuIdStr) => {
+      skuIdStr => {
         const needle = `"id":"${skuIdStr}"`;
         const selects = Array.from(document.querySelectorAll('select'));
-        return selects.some((s) => Array.from(s.options).some((o) => o.value === skuIdStr || o.value.includes(needle)));
+        return selects.some(s =>
+          Array.from(s.options).some(o => o.value === skuIdStr || o.value.includes(needle)),
+        );
       },
       { timeout: BROWSER_STEP_TIMEOUT_MS },
       String(skuId),
     );
 
     // Select language by SKU id (matches Microsoft UI behavior) and click Confirm again.
-    await page.evaluate((skuIdStr) => {
+    await page.evaluate(skuIdStr => {
       const needle = `"id":"${skuIdStr}"`;
       const selects = Array.from(document.querySelectorAll('select'));
-      const langSel = selects.find((s) => Array.from(s.options).some((o) => o.value === skuIdStr || o.value.includes(needle))) as
-        | HTMLSelectElement
-        | undefined;
+      const langSel = selects.find(s =>
+        Array.from(s.options).some(o => o.value === skuIdStr || o.value.includes(needle)),
+      ) as HTMLSelectElement | undefined;
       if (!langSel) return;
 
-      const opt = Array.from(langSel.options).find((o) => o.value === skuIdStr || o.value.includes(needle));
+      const opt = Array.from(langSel.options).find(
+        o => o.value === skuIdStr || o.value.includes(needle),
+      );
       if (!opt) return;
       langSel.value = opt.value;
       langSel.dispatchEvent(new Event('change', { bubbles: true }));
 
-      const btns = Array.from(document.querySelectorAll('button')).filter((b) => (b.textContent ?? '').trim() === 'Confirm') as HTMLButtonElement[];
+      const btns = Array.from(document.querySelectorAll('button')).filter(
+        b => (b.textContent ?? '').trim() === 'Confirm',
+      ) as HTMLButtonElement[];
       const btn = btns[btns.length - 1] ?? btns[0];
       btn?.click();
     }, String(skuId));
 
-    await page.waitForNetworkIdle({ idleTime: 750, timeout: BROWSER_STEP_TIMEOUT_MS }).catch(() => {});
+    await page
+      .waitForNetworkIdle({ idleTime: 750, timeout: BROWSER_STEP_TIMEOUT_MS })
+      .catch(() => {});
 
     const expectedLinkText = safeArch === 'arm64' ? 'ARM64 Download' : '64-bit Download';
     await page.waitForFunction(
-      (text) => {
+      text => {
         const anchors = Array.from(document.querySelectorAll('a'));
-        return anchors.some((a) => (a.textContent ?? '').includes(text) && !!(a as HTMLAnchorElement).href);
+        return anchors.some(
+          a => (a.textContent ?? '').includes(text) && !!(a as HTMLAnchorElement).href,
+        );
       },
       { timeout: BROWSER_LINK_TIMEOUT_MS },
       expectedLinkText,
     );
 
-    const href = await page.evaluate((text) => {
+    const href = await page.evaluate(text => {
       const anchors = Array.from(document.querySelectorAll('a'));
-      const a = anchors.find((el) => (el.textContent ?? '').includes(text)) as HTMLAnchorElement | undefined;
+      const a = anchors.find(el => (el.textContent ?? '').includes(text)) as
+        | HTMLAnchorElement
+        | undefined;
       return a?.href ?? null;
     }, expectedLinkText);
 
@@ -239,14 +264,19 @@ async function getIsoLinkViaBrowserOnce(env: Env, arch: string, skuId: string): 
   }
 }
 
-async function getIsoLinkViaBrowser(env: Env, arch: string, skuId: string, attempts = BROWSER_RETRY_ATTEMPTS): Promise<BrowserLinkResult> {
+async function getIsoLinkViaBrowser(
+  env: Env,
+  arch: string,
+  skuId: string,
+  attempts = BROWSER_RETRY_ATTEMPTS,
+): Promise<BrowserLinkResult> {
   let lastError = 'Browser Rendering failed.';
   for (let i = 0; i < attempts; i++) {
     const res = await getIsoLinkViaBrowserOnce(env, arch, skuId);
     if (res.ok) return res;
     lastError = res.error;
     // Brief backoff; Microsoft pages can be flaky to render under load.
-    await new Promise((resolve) => setTimeout(resolve, 400 + i * 350));
+    await new Promise(resolve => setTimeout(resolve, 400 + i * 350));
   }
   return { ok: false, error: lastError };
 }
@@ -297,7 +327,9 @@ export default {
       const viaBrowser = await getIsoLinkViaBrowser(env, arch, skuId);
       if (!viaBrowser.ok) {
         return jsonResponse({
-          Errors: [{ Key: 'ErrorSettings.BrowserRenderingFailed', Value: viaBrowser.error, Type: 9 }],
+          Errors: [
+            { Key: 'ErrorSettings.BrowserRenderingFailed', Value: viaBrowser.error, Type: 9 },
+          ],
         });
       }
 

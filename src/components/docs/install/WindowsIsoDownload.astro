@@ -428,7 +428,8 @@ const tabItems = [
     let isOpen = false;
 
     function getOptions() {
-      return Array.from(panel?.querySelectorAll<HTMLElement>('[role="option"]') ?? []);
+      if (!panel) return [];
+      return Array.from(panel.querySelectorAll('[role="option"]')).filter((el): el is HTMLElement => el instanceof HTMLElement);
     }
 
     function focusOption(el: HTMLElement) {
@@ -527,7 +528,11 @@ const tabItems = [
     }
 
     trigger.addEventListener('click', () => {
-      isOpen ? closePanel() : openPanel();
+      if (isOpen) {
+        closePanel();
+      } else {
+        openPanel();
+      }
     });
 
     trigger.addEventListener('keydown', (e) => {
@@ -560,7 +565,7 @@ const tabItems = [
     let selectControl: ReturnType<typeof buildSelectPanel> | null = null;
 
     function showStep(step: string) {
-      root.querySelectorAll<HTMLElement>('[data-msdl-step]').forEach((el) => {
+      root.querySelectorAll('[data-msdl-step]').forEach((el) => {
         el.classList.toggle('hidden', el.getAttribute('data-msdl-step') !== step);
       });
     }
@@ -742,7 +747,8 @@ const tabItems = [
   }
 
   function initAllMsdlWidgets() {
-    document.querySelectorAll<HTMLElement>('[data-msdl-root]:not([data-msdl-initialized])').forEach((root) => {
+    document.querySelectorAll('[data-msdl-root]:not([data-msdl-initialized])').forEach((el) => {
+      const root = el as HTMLElement;
       root.setAttribute('data-msdl-initialized', 'true');
       initMsdlWidget(root);
     });

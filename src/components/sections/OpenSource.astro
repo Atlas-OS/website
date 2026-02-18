@@ -115,6 +115,9 @@ const links = {
 <script>
   import { ATLAS_API_URL } from '@/constants';
 
+  type StarsCountResponse = { count: number };
+  type RecentStar = { username: string; avatar: string };
+
   class GitHubStarsManager {
     private starListItems: HTMLElement | null;
     private starCountEl: HTMLElement | null;
@@ -181,7 +184,7 @@ const links = {
 
     private async updateStarInfo(): Promise<void> {
       try {
-        const starsResponse = await this.fetchData<{ count: number }>(`${ATLAS_API_URL}stars`);
+        const starsResponse = (await this.fetchData(`${ATLAS_API_URL}stars`)) as StarsCountResponse;
         if (!starsResponse || typeof starsResponse.count !== 'number') {
           throw new Error('Invalid star count data received');
         }
@@ -194,9 +197,9 @@ const links = {
           this.starBadgeEl.textContent = `${(count / 1000).toFixed(1)}k`;
         }
 
-        const recentStars = await this.fetchData<{ username: string; avatar: string }[]>(
+        const recentStars = (await this.fetchData(
           `${ATLAS_API_URL}recent-stars`,
-        );
+        )) as RecentStar[];
         if (!Array.isArray(recentStars)) {
           throw new Error('Invalid recent stars data received');
         }

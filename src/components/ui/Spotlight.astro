@@ -569,7 +569,11 @@ import { Icon } from 'astro-icon/components';
     if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
       e.preventDefault();
       const modal = document.getElementById('spotlight-modal');
-      modal?.classList.contains('open') ? closeSpotlight() : openSpotlight();
+      if (modal?.classList.contains('open')) {
+        closeSpotlight();
+      } else {
+        openSpotlight();
+      }
     }
     if (e.key === 'Escape') {
       const modal = document.getElementById('spotlight-modal');
