@@ -357,23 +357,6 @@ export default {
       });
     }
 
-    const response = await env.ASSETS.fetch(request);
-    if (!response.ok) return response;
-
-    const pathname = url.pathname;
-    if (
-      pathname.startsWith('/assets/') ||
-      pathname.startsWith('/pagefind/') ||
-      /\.(ico|png|svg|webp|woff2?|ttf|eot|webmanifest)(\?|$)/i.test(pathname)
-    ) {
-      const headers = new Headers(response.headers);
-      headers.set('Cache-Control', 'public, max-age=31536000, immutable');
-      return new Response(response.body, {
-        status: response.status,
-        statusText: response.statusText,
-        headers,
-      });
-    }
-    return response;
+    return env.ASSETS.fetch(request);
   },
 };
