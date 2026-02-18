@@ -15,152 +15,161 @@ const { links } = Astro.props;
 <dialog
   id="download-modal"
   aria-labelledby="download-modal-title"
-  class="m-auto max-h-screen max-w-screen border-none bg-transparent px-4 backdrop:bg-black/45 backdrop:backdrop-blur-md"
+  class="m-auto max-h-screen w-full max-w-screen border-none bg-transparent p-4 backdrop:bg-black/50 backdrop:backdrop-blur-md"
 >
   <div
-    class="relative m-4 flex w-full max-w-lg flex-col overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-b from-zinc-900/90 to-zinc-950/95"
+    class="relative mx-auto flex w-full max-w-xl flex-col overflow-hidden rounded-2xl border border-white/[0.07] bg-zinc-950 shadow-2xl shadow-black/60"
   >
-    <div class="flex items-center justify-between border-b border-white/[0.06] bg-white/[0.02] p-5 md:p-6">
+    <div class="flex items-center justify-between border-b border-white/[0.06] px-5 py-4">
       <div class="flex items-center gap-3">
-        <Icon name="tabler:download" class="text-white/70" size={22} />
-        <h2 id="download-modal-title" class="text-xl font-semibold tracking-tight text-white">Installing AtlasOS</h2>
+        <div class="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/15 ring-1 ring-inset ring-primary/20">
+          <Icon name="tabler:download" class="text-primary" size={14} />
+        </div>
+        <h2 id="download-modal-title" class="text-sm font-semibold tracking-tight text-white">Installing AtlasOS</h2>
       </div>
-      <button class="cursor-pointer rounded-md p-2 transition-opacity duration-200 hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2" id="modal-close" aria-label="Close">
-        <Icon name="tabler:x" class="text-white/70" size={16} />
+      <button
+        class="flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg text-white/40 transition-colors hover:bg-white/[0.06] hover:text-white/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+        id="modal-close"
+        aria-label="Close"
+      >
+        <Icon name="tabler:x" size={14} />
       </button>
     </div>
 
-    <div class="p-6">
+    <div class="p-5">
       <div id="modal-views-wrapper" class="modal-views-wrapper relative">
-        <div id="docs-view" class="modal-view modal-view-active flex flex-col gap-6" data-view="docs">
-        <p class="text-base text-white/70">
-          To get started, you are required to follow our installation guide. <br />
-          <br />We have made it as easy to follow as possible, with all the steps to get you up and running.
-        </p>
 
-        <div class="flex flex-col gap-2.5">
-          <Button
-            href={links.install}
-            external
-            variant="primary"
-            icon="tabler:arrow-up-right"
-            iconPosition="after"
-            size="lg"
-            fw
-          >
-            Installation Guide
-          </Button>
-          <Button
-            href={links.faq}
-            variant="secondary"
-            icon="tabler:arrow-up-right"
-            iconPosition="after"
-            size="lg"
-            fw
-          >
-            Install FAQ
-          </Button>
-        </div>
+        <div id="docs-view" class="modal-view modal-view-active flex flex-col gap-5" data-view="docs">
+          <p class="text-sm leading-relaxed text-white/55">
+            To get started, follow our installation guide. We've made it as straightforward as possible with all the steps to get you up and running.
+          </p>
 
-        <!-- Divider -->
-        <div class="relative mx-auto my-4 h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent">
-          <div class="absolute top-0 left-1/2 h-px w-[30px] -translate-x-1/2 bg-white/50"></div>
-        </div>
-
-        <button
-          id="show-downloads"
-          class="group focus-visible:outline-primary inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-md px-4 py-2 text-center text-sm font-medium text-white/70 transition-opacity duration-200 hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
-        >
-          <span>I'm following the guide, show me the downloads</span>
-          <Icon
-            name="tabler:arrow-right"
-            class="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5"
-          />
-        </button>
-        </div>
-
-        <div id="downloads-view" class="modal-view modal-view-exit flex flex-col gap-6" data-view="downloads">
-        <p class="text-base text-white/70">
-          <strong class="font-semibold text-white"
-            >Warning: You should only download these files when instructed to by the install guide.</strong
-          >
-          If you aren't following the guide, please go back and read it first.
-        </p>
-
-        <div class="flex items-center gap-2 rounded-lg border border-white/[0.06] bg-white/[0.02] p-3">
-          <div class="relative flex items-center">
-            <input
-              type="checkbox"
-              id="confirm-guide"
-              aria-label="I confirm I am following the installation guide"
-              class="peer sr-only"
-            />
-            <div
-              class="peer-checked:border-primary peer-checked:bg-primary peer-focus:ring-primary h-4 w-4 rounded border border-white/[0.08] bg-white/5 transition-colors peer-focus:ring-2 peer-focus:ring-offset-1 peer-focus:ring-offset-zinc-900"
-            >
-            </div>
-            <Icon
-              name="tabler:check"
-              class="absolute top-0 left-0 h-4 w-4 text-zinc-900 opacity-0 transition-opacity peer-checked:opacity-100"
-            />
-          </div>
-          <p class="text-sm text-white/70"
-            >I confirm I am following the <a
+          <div class="grid grid-cols-2 gap-2.5">
+            <a
               href={links.install}
               target="_blank"
               rel="noopener noreferrer"
-              class="text-primary"
+              class="group flex flex-col gap-3 rounded-xl border border-white/[0.07] bg-white/[0.025] p-4 transition-all duration-200 hover:border-primary/25 hover:bg-primary/[0.06]"
             >
-              installation guide</a
-            >.</p
+              <div class="flex items-start justify-between">
+                <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 ring-1 ring-inset ring-primary/15">
+                  <Icon name="tabler:book" class="text-primary/80" size={16} />
+                </div>
+                <Icon name="tabler:arrow-up-right" class="text-white/20 transition-colors duration-200 group-hover:text-primary/60" size={13} />
+              </div>
+              <div>
+                <p class="text-sm font-medium text-white/90">Installation Guide</p>
+                <p class="mt-0.5 text-xs text-white/40">Step-by-step setup</p>
+              </div>
+            </a>
+
+            <a
+              href={links.faq}
+              class="group flex flex-col gap-3 rounded-xl border border-white/[0.07] bg-white/[0.025] p-4 transition-all duration-200 hover:border-white/[0.14] hover:bg-white/[0.04]"
+            >
+              <div class="flex items-start justify-between">
+                <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-white/[0.06] ring-1 ring-inset ring-white/[0.07]">
+                  <Icon name="tabler:help-circle" class="text-white/50" size={16} />
+                </div>
+                <Icon name="tabler:arrow-up-right" class="text-white/20 transition-colors duration-200 group-hover:text-white/50" size={13} />
+              </div>
+              <div>
+                <p class="text-sm font-medium text-white/90">Install FAQ</p>
+                <p class="mt-0.5 text-xs text-white/40">Common questions</p>
+              </div>
+            </a>
+          </div>
+
+          <div class="border-t border-white/[0.05] pt-3">
+            <button
+              id="show-downloads"
+              class="group inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm text-white/40 transition-colors duration-200 hover:text-white/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+            >
+              <span>I'm following the guide, show me the downloads</span>
+              <Icon name="tabler:arrow-right" class="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
+            </button>
+          </div>
+        </div>
+
+        <div id="downloads-view" class="modal-view modal-view-exit flex flex-col gap-5" data-view="downloads">
+          <div class="flex gap-3 rounded-xl border border-amber-500/15 bg-amber-500/[0.06] px-4 py-3">
+            <Icon name="tabler:alert-triangle" class="mt-0.5 shrink-0 text-amber-400/80" size={15} />
+            <p class="text-sm leading-relaxed text-white/60">
+              <strong class="font-medium text-white/85">Only download when the guide tells you to.</strong>
+              {' '}If you haven't started the guide yet, please read it first.
+            </p>
+          </div>
+
+          <label
+            for="confirm-guide"
+            class="flex cursor-pointer items-center gap-3 rounded-xl border border-white/[0.07] bg-white/[0.025] px-4 py-3 transition-colors hover:border-white/[0.11] hover:bg-white/[0.04]"
           >
+            <div class="relative flex shrink-0 items-center">
+              <input
+                type="checkbox"
+                id="confirm-guide"
+                class="peer sr-only"
+              />
+              <div
+                class="peer-checked:border-primary peer-checked:bg-primary h-4 w-4 rounded border border-white/20 bg-white/5 transition-colors peer-focus:ring-2 peer-focus:ring-primary/50 peer-focus:ring-offset-1 peer-focus:ring-offset-zinc-950"
+              ></div>
+              <Icon
+                name="tabler:check"
+                class="pointer-events-none absolute top-0 left-0 h-4 w-4 text-zinc-950 opacity-0 transition-opacity peer-checked:opacity-100"
+              />
+            </div>
+            <p class="text-sm text-white/60">
+              I confirm I am following the{' '}
+              <a
+                href={links.install}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-primary/80 underline-offset-2 hover:text-primary hover:underline"
+                onclick="event.stopPropagation()"
+              >installation guide</a>.
+            </p>
+          </label>
+
+          <p id="download-count" class="text-center text-xs text-white/30">
+            Fetching download count...
+          </p>
+
+          <div class="flex flex-col gap-2">
+            <Button
+              variant="primary"
+              id="playbook-dl-btn"
+              icon="tabler:download"
+              iconPosition="after"
+              size="lg"
+              fw
+              disabled
+            >
+              Download Atlas Playbook
+            </Button>
+            <Button
+              href="https://download.ameliorated.io/AME%20Beta.zip"
+              variant="secondary"
+              id="wizard-dl-btn"
+              icon="tabler:download"
+              iconPosition="after"
+              size="lg"
+              fw
+            >
+              Download AME Wizard
+            </Button>
+          </div>
+
+          <div class="border-t border-white/[0.05] pt-1">
+            <button
+              id="show-docs"
+              class="group inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm text-white/40 transition-colors duration-200 hover:text-white/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+            >
+              <Icon name="tabler:arrow-left" class="h-3.5 w-3.5 transition-transform duration-200 group-hover:-translate-x-0.5" />
+              <span>Back to the install guide</span>
+            </button>
+          </div>
         </div>
 
-        <p id="download-count" class="rounded-lg bg-white/[0.02] p-2 text-center text-sm text-white/50">
-          Fetching download count...
-        </p>
-
-        <div class="flex flex-col gap-2.5">
-          <Button
-            variant="primary"
-            id="playbook-dl-btn"
-            icon="tabler:download"
-            iconPosition="after"
-            size="lg"
-            fw
-            disabled
-          >
-            Download Atlas Playbook
-          </Button>
-          <Button
-            href="https://download.ameliorated.io/AME%20Beta.zip"
-            variant="secondary"
-            id="wizard-dl-btn"
-            icon="tabler:download"
-            iconPosition="after"
-            size="lg"
-            fw
-          >
-            Download AME Wizard
-          </Button>
-        </div>
-
-        <!-- Divider -->
-        <div class="relative mx-auto my-4 h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent">
-          <div class="absolute top-0 left-1/2 h-px w-[30px] -translate-x-1/2 bg-white/50"></div>
-        </div>
-
-        <button
-          id="show-docs"
-          class="group focus-visible:outline-primary inline-flex cursor-pointer items-center justify-center gap-2 rounded-md px-4 py-2 text-center text-sm font-medium text-white/70 transition-colors duration-200 hover:text-white focus-visible:outline focus-visible:outline-offset-2"
-        >
-          <Icon
-            name="tabler:arrow-left"
-            class="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-0.5"
-          />
-          <span>Back to the install guide</span>
-        </button>
-        </div>
       </div>
     </div>
   </div>
@@ -217,20 +226,14 @@ const { links } = Astro.props;
       document.addEventListener('showModal', () => {
         this.modal.showModal();
         document.body.classList.add('overflow-hidden');
+        this.syncWrapperHeight();
         this.updateDownloadCount();
-        this.initializeViews();
       });
 
       this.buttons.close.addEventListener('click', () => this.closeModal());
 
       this.modal.addEventListener('click', (e: MouseEvent) => {
-        const rect = this.modal.getBoundingClientRect();
-        const isInDialog =
-          rect.top <= e.clientY &&
-          e.clientY <= rect.top + rect.height &&
-          rect.left <= e.clientX &&
-          e.clientX <= rect.left + rect.width;
-        if (!isInDialog) this.closeModal();
+        if (e.target === this.modal) this.closeModal();
       });
 
       this.buttons.showDownloads.addEventListener('click', () => this.switchView('downloads'));
@@ -241,6 +244,7 @@ const { links } = Astro.props;
 
       this.modal.addEventListener('close', () => {
         document.body.classList.remove('overflow-hidden');
+        this.initializeViews();
       });
     }
 
@@ -254,7 +258,6 @@ const { links } = Astro.props;
       this.currentView = 'docs';
       this.buttons.confirmGuide.checked = false;
       this.toggleDownloadButtons(false);
-      this.syncWrapperHeight();
     }
 
     private setViewActive(view: 'docs' | 'downloads'): void {
@@ -379,6 +382,9 @@ const { links } = Astro.props;
   }
 
   function init(): void {
+    const modal = document.getElementById('download-modal');
+    if (!modal || modal.dataset.initialized) return;
+    modal.dataset.initialized = 'true';
     new DownloadModal();
   }
 
@@ -416,7 +422,9 @@ const { links } = Astro.props;
 
   .modal-view {
     position: absolute;
-    inset: 0;
+    top: 0;
+    left: 0;
+    right: 0;
     transition:
       opacity var(--motion-duration-normal, 250ms) var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1)),
       transform var(--motion-duration-normal, 250ms) var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1)),
@@ -442,21 +450,6 @@ const { links } = Astro.props;
     transform: translateY(-8px);
     filter: blur(4px);
     pointer-events: none;
-  }
-
-  @media (max-width: 640px) {
-    dialog > div {
-      margin: 0.75rem;
-      border-radius: 1rem;
-    }
-
-    dialog > div > div:first-child {
-      padding: 1rem 1.25rem;
-    }
-
-    dialog > div > div:last-child {
-      padding: 1.25rem;
-    }
   }
 
   .disabled-link {

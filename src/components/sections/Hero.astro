@@ -117,7 +117,8 @@ const links = {
           <defs>
             <linearGradient id="hero-wallpaper-runner-gradient" x1="0" y1="100%" x2="0" y2="0">
               <stop offset="0%" stop-color="rgba(72, 167, 255, 0)" />
-              <stop offset="72%" stop-color="rgba(191, 223, 255, 0.88)" />
+              <stop offset="25%" stop-color="rgba(20, 80, 200, 0.55)" />
+              <stop offset="68%" stop-color="rgba(150, 210, 255, 0.9)" />
               <stop offset="100%" stop-color="rgb(72, 167, 255)" />
             </linearGradient>
           </defs>
@@ -251,7 +252,7 @@ const links = {
 
   .wallpaper-animation-track {
     fill: none;
-    stroke: rgba(164, 194, 255, 0.2);
+    stroke: rgba(8, 15, 35, 0.55);
     stroke-width: 1;
     stroke-linecap: round;
     stroke-linejoin: round;
@@ -261,7 +262,7 @@ const links = {
   .wallpaper-animation-line {
     fill: none;
     stroke: url(#hero-wallpaper-runner-gradient);
-    stroke-width: 1.5;
+    stroke-width: 2.5;
     stroke-linecap: round;
     stroke-linejoin: round;
     vector-effect: non-scaling-stroke;
@@ -470,8 +471,7 @@ const links = {
 
     if (getStartedBtn && downloadModal && !getStartedBtn.hasAttribute('data-download-bound')) {
       getStartedBtn.addEventListener('click', () => {
-        document.body.classList.add('overflow-hidden');
-        downloadModal.showModal();
+        document.dispatchEvent(new CustomEvent('showModal'));
       });
       getStartedBtn.setAttribute('data-download-bound', 'true');
     }
