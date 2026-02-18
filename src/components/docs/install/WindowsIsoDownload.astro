@@ -69,9 +69,11 @@ const tabItems = [
 
       <!-- Step: loading-langs -->
       <div data-msdl-step="loading-langs" class="hidden">
-        <div class="flex flex-col items-center gap-3 py-10">
-          <span class="loading-spinner h-4 w-4 shrink-0 opacity-40" aria-hidden="true"></span>
-          <span class="text-xs text-white/30">Fetching languages&hellip;</span>
+        <div class="iso-loading flex flex-col items-center gap-4 py-10">
+          <div class="iso-loading-spinner" aria-hidden="true"></div>
+          <p class="text-sm font-medium text-white/50">
+            Fetching languages<span class="iso-loading-ellipsis" aria-hidden="true"></span>
+          </p>
         </div>
       </div>
 
@@ -129,9 +131,11 @@ const tabItems = [
 
       <!-- Step: loading-download -->
       <div data-msdl-step="loading-download" class="hidden">
-        <div class="flex flex-col items-center gap-3 py-10">
-          <span class="loading-spinner h-4 w-4 shrink-0 opacity-40" aria-hidden="true"></span>
-          <span class="text-xs text-white/30">Generating link&hellip;</span>
+        <div class="iso-loading flex flex-col items-center gap-4 py-10">
+          <div class="iso-loading-spinner" aria-hidden="true"></div>
+          <p class="text-sm font-medium text-white/50">
+            Generating link<span class="iso-loading-ellipsis" aria-hidden="true"></span>
+          </p>
         </div>
       </div>
 
@@ -234,6 +238,30 @@ const tabItems = [
 
   .msdl-widget [data-msdl-step].hidden {
     display: none;
+  }
+
+  /* Loading states */
+  .iso-loading-spinner {
+    width: 32px;
+    height: 32px;
+    border: 2px solid rgb(255 255 255 / 0.08);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+    animation: iso-spin 0.7s linear infinite;
+  }
+
+  .iso-loading-ellipsis::after {
+    content: '...';
+    animation: iso-ellipsis-pulse 1.2s ease-in-out infinite;
+  }
+
+  @keyframes iso-spin {
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes iso-ellipsis-pulse {
+    0%, 100% { opacity: 0.35; }
+    50% { opacity: 1; }
   }
 
   @keyframes msdl-in {
@@ -350,7 +378,9 @@ const tabItems = [
     .msdl-select-panel,
     .iso-arch-btn,
     .iso-success-rings,
-    .iso-success-ring-outer {
+    .iso-success-ring-outer,
+    .iso-loading-spinner,
+    .iso-loading-ellipsis::after {
       animation: none;
       transition: none;
     }
