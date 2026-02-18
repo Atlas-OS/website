@@ -89,7 +89,7 @@ export default defineConfig({
       },
     }),
     pagefindIntegration({
-      rootSelector: '[data-pagefind-body], main, article, html',
+      rootSelector: '[data-pagefind-body]',
       excludeSelectors: ['[data-pagefind-ignore]'],
       outputSubdir: 'pagefind',
       failOnError: true,
