@@ -44,6 +44,7 @@ bun install
 | File               | Purpose                                           |
 | ------------------ | ------------------------------------------------- |
 | `astro.config.mjs` | Astro settings, site URL, and Pagefind indexing   |
+| `wrangler.jsonc`   | Cloudflare Workers deployment config             |
 | `globals.css`      | Tailwind theme and global styles                  |
 | `eslint.config.js` | ESLint rules for Astro and TypeScript             |
 | `.editorconfig`    | Editor settings for consistent formatting         |
