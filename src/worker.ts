@@ -79,17 +79,15 @@ async function handleSkus(arch: string): Promise<Response> {
   return proxyMsApi(url);
 }
 
-async function handleLinks(arch: string, skuId: string, language: string): Promise<Response> {
-  if (!skuId || !language) return errorResponse('Missing skuId or language parameter.');
+async function handleLinks(skuId: string): Promise<Response> {
+  if (!skuId) return errorResponse('Missing skuId parameter.');
 
-  const productId = PRODUCT_IDS[arch];
-  if (!productId) return errorResponse('Invalid architecture. Use x64 or arm64.');
-
-  const url = new URL(`${MS_CONNECTOR_BASE}/getproductdownloadlinksbysku`);
+  const url = new URL(`${MS_CONNECTOR_BASE}/GetProductDownloadLinksBySku`);
   url.searchParams.set('profile', PROFILE);
-  url.searchParams.set('ProductEditionId', String(productId));
-  url.searchParams.set('SkuId', skuId);
-  url.searchParams.set('Language', language);
+  url.searchParams.set('ProductEditionId', 'undefined');
+  url.searchParams.set('SKU', skuId);
+  url.searchParams.set('friendlyFileName', 'undefined');
+  url.searchParams.set('Locale', 'en-US');
   url.searchParams.set('sessionID', crypto.randomUUID());
 
   return proxyMsApi(url);
@@ -113,10 +111,8 @@ export default {
     }
 
     if (url.pathname === '/api/ms-iso/links') {
-      const arch = url.searchParams.get('arch') ?? '';
       const skuId = url.searchParams.get('skuId') ?? '';
-      const language = url.searchParams.get('language') ?? '';
-      return handleLinks(arch, skuId, language);
+      return handleLinks(skuId);
     }
 
     return env.ASSETS.fetch(request);

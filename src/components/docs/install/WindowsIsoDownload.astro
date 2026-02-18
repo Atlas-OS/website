@@ -507,14 +507,10 @@ const tabItems = [
     }
 
     async function fetchDownload() {
-      if (!currentArch || currentSkuId === null || !currentLanguage) return;
+      if (!currentArch || currentSkuId === null) return;
       showStep('loading-download');
 
-      const params = new URLSearchParams({
-        arch: currentArch,
-        skuId: String(currentSkuId),
-        language: currentLanguage,
-      });
+      const params = new URLSearchParams({ skuId: String(currentSkuId) });
       try {
         const res = await fetch(`/api/ms-iso/links?${params}`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
