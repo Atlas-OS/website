@@ -16,7 +16,7 @@ const { includeAmeBeta = false } = Astro.props;
 const msdlId = `msdl-${Math.random().toString(36).substring(2, 9)}`;
 
 const tabItems = [
-  { label: 'MSDL (Recommended)', value: 'msdl' },
+  { label: 'ISO Downloader (Recommended)', value: 'iso-downloader' },
   { label: 'Microsoft website', value: 'microsoft-site' },
   { label: 'Media Creation Tool', value: 'media-creation-tool' },
   ...(includeAmeBeta ? [{ label: 'AME Beta', value: 'ame-beta' }] : []),
@@ -34,71 +34,74 @@ const tabItems = [
   )}
 </Callout>
 
-<Tabs items={tabItems} defaultTab="msdl">
-  <TabPanel value="msdl" default>
+<Tabs items={tabItems} defaultTab="iso-downloader">
+  <TabPanel value="iso-downloader" default>
     <div class="msdl-widget not-prose" data-msdl-root={msdlId}>
 
       <!-- Step: idle — architecture selection -->
       <div data-msdl-step="idle">
-        <p class="mb-4 text-sm text-white/60">Select your CPU architecture</p>
-        <div class="flex gap-2">
+        <p class="mb-3 text-[11px] font-medium uppercase tracking-widest text-white/25">Architecture</p>
+        <div class="grid grid-cols-2 gap-2">
           <button
             type="button"
             data-msdl-arch-btn="x64"
-            class="flex-1 cursor-pointer rounded-md border border-white/[0.06] bg-white/[0.03] px-4 py-4 text-left transition-colors duration-150 hover:border-white/[0.12] hover:bg-white/[0.06] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+            class="iso-arch-btn group relative flex cursor-pointer flex-col gap-3 rounded-lg border border-white/[0.06] bg-white/[0.02] px-4 py-4 text-left focus-visible:outline-none active:scale-[0.98]"
           >
-            <Icon name="tabler:cpu" class="mb-2.5 h-4 w-4 text-white/25" />
-            <p class="text-sm font-medium text-white/90">x64</p>
-            <p class="text-xs text-white/35">Intel &amp; AMD</p>
+            <Icon name="tabler:cpu" class="h-5 w-5 text-white/30 transition-colors duration-200 group-hover:text-primary/70" />
+            <div>
+              <p class="text-sm font-semibold text-white/85">x64</p>
+              <p class="text-xs text-white/35">Intel &amp; AMD</p>
+            </div>
           </button>
           <button
             type="button"
             data-msdl-arch-btn="arm64"
-            class="flex-1 cursor-pointer rounded-md border border-white/[0.06] bg-white/[0.03] px-4 py-4 text-left transition-colors duration-150 hover:border-white/[0.12] hover:bg-white/[0.06] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+            class="iso-arch-btn group relative flex cursor-pointer flex-col gap-3 rounded-lg border border-white/[0.06] bg-white/[0.02] px-4 py-4 text-left focus-visible:outline-none active:scale-[0.98]"
           >
-            <Icon name="tabler:device-mobile" class="mb-2.5 h-4 w-4 text-white/25" />
-            <p class="text-sm font-medium text-white/90">ARM64</p>
-            <p class="text-xs text-white/35">Qualcomm Snapdragon</p>
+            <Icon name="tabler:device-mobile" class="h-5 w-5 text-white/30 transition-colors duration-200 group-hover:text-primary/70" />
+            <div>
+              <p class="text-sm font-semibold text-white/85">ARM64</p>
+              <p class="text-xs text-white/35">Qualcomm Snapdragon</p>
+            </div>
           </button>
         </div>
       </div>
 
       <!-- Step: loading-langs -->
       <div data-msdl-step="loading-langs" class="hidden">
-        <div class="flex items-center gap-2.5 py-6 text-xs text-white/40">
-          <span class="loading-spinner h-3.5 w-3.5 shrink-0" aria-hidden="true"></span>
-          <span>Fetching languages&hellip;</span>
+        <div class="flex flex-col items-center gap-3 py-10">
+          <span class="loading-spinner h-4 w-4 shrink-0 opacity-40" aria-hidden="true"></span>
+          <span class="text-xs text-white/30">Fetching languages&hellip;</span>
         </div>
       </div>
 
       <!-- Step: select-lang -->
       <div data-msdl-step="select-lang" class="hidden">
-        <div class="mb-4 flex items-center gap-2">
+        <div class="mb-4 flex items-center gap-1.5">
           <button
             type="button"
             data-msdl-back
-            class="flex items-center gap-1 rounded text-xs text-white/40 transition-colors duration-150 hover:text-white/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+            class="flex items-center gap-1 rounded text-xs text-white/35 transition-colors duration-150 hover:text-white/65 focus-visible:outline-none"
           >
             <Icon name="tabler:arrow-left" class="h-3.5 w-3.5" />
             Back
           </button>
-          <span class="text-white/20">/</span>
-          <span class="text-xs text-white/50" data-msdl-arch-label></span>
+          <span class="text-white/15">/</span>
+          <span class="text-[11px] font-medium text-white/40" data-msdl-arch-label></span>
         </div>
         <div class="space-y-3">
-
           <div data-msdl-select-wrapper>
             <button
               type="button"
               data-msdl-select-trigger
-              class="msdl-select-trigger flex w-full cursor-pointer items-center justify-between gap-2 rounded-md border border-white/[0.06] bg-white/[0.03] px-3 py-2 text-sm text-left transition-colors duration-150 hover:border-white/[0.10] hover:bg-white/[0.06] focus-visible:outline-none active:scale-[0.99]"
+              class="msdl-select-trigger flex w-full cursor-pointer items-center justify-between gap-2 rounded-lg border border-white/[0.07] bg-white/[0.03] px-3 py-2.5 text-sm text-left transition-colors duration-150 hover:border-white/[0.12] hover:bg-white/[0.05] focus-visible:outline-none active:scale-[0.99]"
               aria-haspopup="listbox"
               aria-expanded="false"
             >
-              <span data-msdl-select-value class="text-white/35">Choose a language&hellip;</span>
+              <span data-msdl-select-value class="text-white/30">Choose a language&hellip;</span>
               <svg
                 data-msdl-select-chevron
-                class="h-3.5 w-3.5 shrink-0 text-white/30 transition-transform duration-200"
+                class="h-3.5 w-3.5 shrink-0 text-white/25 transition-transform duration-200"
                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                 aria-hidden="true"
@@ -109,69 +112,77 @@ const tabItems = [
             <!-- Panel injected by JS -->
           </div>
 
-          <p class="text-xs text-white/35">
-            Choose the same language you use on Windows — check <strong class="font-medium text-white/50">Settings &rarr; Time &amp; language</strong>.
+          <p class="text-xs text-white/30">
+            Match your Windows display language — check <strong class="font-medium text-white/45">Settings &rarr; Time &amp; language</strong>.
           </p>
           <button
             type="button"
             data-msdl-get-download
             disabled
-            class="flex w-full items-center justify-center gap-2 rounded-md px-4 py-2.5 text-sm font-medium text-white transition-transform duration-100 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 disabled:cursor-not-allowed disabled:opacity-40"
-            style="background: linear-gradient(180deg, #2563eb 0%, #1e40af 100%);"
+            class="iso-get-download-btn flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-white transition-all duration-150 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-35"
           >
             Get download link
-            <Icon name="tabler:arrow-right" class="h-4 w-4" />
+            <Icon name="tabler:arrow-right" class="h-4 w-4 transition-transform duration-150" />
           </button>
         </div>
       </div>
 
       <!-- Step: loading-download -->
       <div data-msdl-step="loading-download" class="hidden">
-        <div class="flex items-center gap-2.5 py-6 text-xs text-white/40">
-          <span class="loading-spinner h-3.5 w-3.5 shrink-0" aria-hidden="true"></span>
-          <span>Generating link&hellip;</span>
+        <div class="flex flex-col items-center gap-3 py-10">
+          <span class="loading-spinner h-4 w-4 shrink-0 opacity-40" aria-hidden="true"></span>
+          <span class="text-xs text-white/30">Generating link&hellip;</span>
         </div>
       </div>
 
       <!-- Step: done -->
       <div data-msdl-step="done" class="hidden">
-        <div class="mb-3 flex items-center gap-2">
-          <Icon name="tabler:circle-check-filled" class="h-4 w-4 shrink-0 text-green-400" />
-          <p class="text-sm font-medium text-white/80">Download started</p>
+        <div class="flex flex-col items-center py-6 text-center">
+          <div class="iso-success-rings relative mb-4 flex h-14 w-14 items-center justify-center">
+            <div class="iso-success-ring-outer absolute inset-0 rounded-full border border-green-500/[0.12]"></div>
+            <div class="iso-success-ring-inner absolute inset-2 rounded-full border border-green-500/20 bg-green-500/[0.04]"></div>
+            <Icon name="tabler:check" class="relative z-10 h-5 w-5 text-green-400" />
+          </div>
+          <p class="mb-1 text-sm font-semibold text-white/90">Download started</p>
+          <p class="text-xs text-white/35">Your ISO file is being downloaded</p>
         </div>
-        <div class="mb-1 rounded-md border border-white/[0.06] bg-white/[0.03] p-3">
-          <p class="mb-2 text-xs text-white/35">Didn&rsquo;t start automatically?</p>
-          <div data-msdl-download-links class="space-y-1.5"></div>
+
+        <div class="rounded-lg border border-white/[0.05] bg-white/[0.02]">
+          <div class="border-b border-white/[0.04] px-3 py-2">
+            <p class="text-[10px] font-semibold uppercase tracking-widest text-white/20">Didn&rsquo;t start? Download manually</p>
+          </div>
+          <div data-msdl-download-links class="space-y-px p-2"></div>
         </div>
+
         <button
           type="button"
           data-msdl-restart
-          class="mt-2 flex items-center gap-1 rounded text-xs text-white/35 transition-colors duration-150 hover:text-white/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+          class="mt-4 flex items-center gap-1.5 text-xs text-white/25 transition-colors duration-150 hover:text-white/50 focus-visible:outline-none"
         >
-          <Icon name="tabler:arrow-left" class="h-3.5 w-3.5" />
+          <Icon name="tabler:arrow-left" class="h-3 w-3" />
           Start over
         </button>
       </div>
 
       <div data-msdl-step="error" class="hidden">
-        <div class="mb-3 flex items-start gap-2.5 rounded-md border border-red-500/[0.15] bg-red-500/[0.04] p-3">
-          <Icon name="tabler:alert-circle" class="mt-0.5 h-4 w-4 shrink-0 text-red-400/80" />
-          <p class="text-xs leading-relaxed text-white/55" data-msdl-error-msg></p>
+        <div class="mb-4 flex items-start gap-3 rounded-lg border border-red-500/[0.12] bg-red-500/[0.03] p-3.5">
+          <Icon name="tabler:alert-circle" class="mt-0.5 h-4 w-4 shrink-0 text-red-400/70" />
+          <p class="text-xs leading-relaxed text-white/50" data-msdl-error-msg></p>
         </div>
-        <div class="flex gap-2">
+        <div class="flex items-center gap-3">
           <button
             type="button"
             data-msdl-retry
-            class="flex items-center gap-1.5 rounded text-xs text-white/40 transition-colors duration-150 hover:text-white/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+            class="flex items-center gap-1.5 rounded text-xs text-white/35 transition-colors duration-150 hover:text-white/65 focus-visible:outline-none"
           >
             <Icon name="tabler:refresh" class="h-3.5 w-3.5" />
             Retry
           </button>
-          <span class="text-white/20">·</span>
+          <span class="h-3 w-px bg-white/10"></span>
           <button
             type="button"
             data-msdl-restart
-            class="flex items-center gap-1.5 rounded text-xs text-white/40 transition-colors duration-150 hover:text-white/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+            class="text-xs text-white/35 transition-colors duration-150 hover:text-white/65 focus-visible:outline-none"
           >
             Start over
           </button>
@@ -228,8 +239,8 @@ const tabItems = [
   @keyframes msdl-in {
     from {
       opacity: 0;
-      transform: translateY(5px);
-      filter: blur(3px);
+      transform: translateY(6px);
+      filter: blur(4px);
     }
     to {
       opacity: 1;
@@ -238,6 +249,72 @@ const tabItems = [
     }
   }
 
+  /* Architecture selection cards */
+  .iso-arch-btn {
+    transition:
+      border-color 180ms cubic-bezier(0.33, 1, 0.68, 1),
+      background-color 180ms cubic-bezier(0.33, 1, 0.68, 1),
+      box-shadow 180ms cubic-bezier(0.33, 1, 0.68, 1),
+      transform 100ms cubic-bezier(0.33, 1, 0.68, 1);
+  }
+
+  .iso-arch-btn:hover {
+    border-color: color-mix(in oklch, var(--color-primary) 35%, transparent);
+    background-color: color-mix(in oklch, var(--color-primary) 5%, transparent);
+    box-shadow:
+      0 0 0 1px color-mix(in oklch, var(--color-primary) 8%, transparent),
+      0 4px 16px color-mix(in oklch, var(--color-primary) 6%, transparent);
+  }
+
+  /* Get download link button */
+  .iso-get-download-btn {
+    background: linear-gradient(
+      160deg,
+      color-mix(in oklch, var(--color-primary) 90%, white 10%) 0%,
+      color-mix(in oklch, var(--color-primary) 70%, black 30%) 100%
+    );
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 0 0 1px color-mix(in oklch, var(--color-primary) 40%, transparent);
+  }
+
+  .iso-get-download-btn:not(:disabled):hover {
+    box-shadow: 0 2px 8px color-mix(in oklch, var(--color-primary) 25%, transparent), 0 0 0 1px color-mix(in oklch, var(--color-primary) 50%, transparent);
+    transform: translateY(-1px);
+  }
+
+  .iso-get-download-btn:not(:disabled):hover svg {
+    transform: translateX(2px);
+  }
+
+  .iso-get-download-btn:not(:disabled):active {
+    transform: scale(0.98) translateY(0);
+  }
+
+  /* Success state rings */
+  .iso-success-rings {
+    animation: iso-success-pop 400ms cubic-bezier(0.32, 0.72, 0, 1) both;
+  }
+
+  .iso-success-ring-outer {
+    animation: iso-ring-pulse 2.4s ease-in-out 300ms infinite;
+  }
+
+  @keyframes iso-success-pop {
+    from {
+      opacity: 0;
+      transform: scale(0.7);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes iso-ring-pulse {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.08); }
+  }
+
+  /* Dropdown panel */
   .msdl-select-panel {
     transform-origin: top center;
     animation: msdl-dropdown-in 180ms cubic-bezier(0.33, 1, 0.68, 1) both;
@@ -259,19 +336,23 @@ const tabItems = [
 
   .msdl-options-scroll {
     scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.08) transparent;
+    scrollbar-color: rgba(255, 255, 255, 0.06) transparent;
   }
-  .msdl-options-scroll::-webkit-scrollbar { width: 4px; }
+  .msdl-options-scroll::-webkit-scrollbar { width: 3px; }
   .msdl-options-scroll::-webkit-scrollbar-track { background: transparent; }
   .msdl-options-scroll::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.07);
     border-radius: 2px;
   }
 
   @media (prefers-reduced-motion: reduce) {
     .msdl-widget [data-msdl-step],
-    .msdl-select-panel {
+    .msdl-select-panel,
+    .iso-arch-btn,
+    .iso-success-rings,
+    .iso-success-ring-outer {
       animation: none;
+      transition: none;
     }
   }
 </style>
@@ -581,8 +662,8 @@ const tabItems = [
         link.target = '_blank';
         link.rel = 'noopener noreferrer';
         link.className =
-          'flex items-center gap-2 text-xs text-primary transition-opacity duration-150 hover:opacity-70';
-        link.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/><path d="M7 11l5 5 5-5"/><path d="M12 4v12"/></svg><span class="truncate font-medium">${filename}</span>`;
+          'flex w-full items-center gap-2.5 rounded-md px-2.5 py-2 text-xs text-white/60 transition-colors duration-150 hover:bg-white/[0.04] hover:text-white/85';
+        link.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 shrink-0 text-white/30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/><path d="M7 11l5 5 5-5"/><path d="M12 4v12"/></svg><span class="truncate font-medium">${filename}</span>`;
         linksContainer.appendChild(link);
 
         if (!didAutoDownload && index === 0) {

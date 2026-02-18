@@ -114,39 +114,9 @@ async function handleSkus(arch: Arch, sessionId: string): Promise<Response> {
   return proxyMsApi(url, pageUrl);
 }
 
-async function handleLinks(arch: Arch, skuId: string, sessionId: string): Promise<Response> {
-  if (!skuId) return errorResponse('Missing skuId parameter.');
-  const pageUrl = getDownloadPageUrl(arch);
-
-  const url = new URL(`${MS_CONNECTOR_BASE}/GetProductDownloadLinksBySku`);
-  url.searchParams.set('profile', MS_PROFILE_ID);
-  url.searchParams.set('ProductEditionId', 'undefined');
-  url.searchParams.set('SKU', skuId);
-  url.searchParams.set('friendlyFileName', 'undefined');
-  url.searchParams.set('Locale', 'en-US');
-  url.searchParams.set('sessionID', sessionId);
-
-  return proxyMsApi(url, pageUrl);
-}
-
 type BrowserLinkResult =
   | { ok: true; href: string; label: string }
   | { ok: false; error: string };
-
-type MsError = { Key?: string; Value?: string; Type?: number };
-type MsLinksResponse = {
-  ProductDownloadOptions?: Array<{ Uri: string; ProductDisplayName?: string; LocalizedLanguage?: string }>;
-  Errors?: MsError[];
-};
-
-function shouldFallbackToBrowser(data: MsLinksResponse): boolean {
-  const errors = data.Errors ?? [];
-  const keys = errors.map((e) => e?.Key).filter(Boolean) as string[];
-
-  // Only fall back for the "bot/WAF" style failures. For real validation errors,
-  // Browser Rendering usually won't help and just burns browser time.
-  return keys.includes('ErrorSettings.SentinelReject') || keys.includes('ErrorSettings.GenericError');
-}
 
 async function getIsoLinkViaBrowserOnce(env: Env, arch: string, skuId: string): Promise<BrowserLinkResult> {
   const safeArch = asArch(arch);
@@ -300,36 +270,23 @@ export default {
       const arch = archRaw ? asArch(archRaw) : 'x64';
       if (!arch) return errorResponse('Invalid architecture. Use x64 or arm64.');
       const skuId = url.searchParams.get('skuId') ?? '';
-      const sessionId = url.searchParams.get('sessionId') ?? crypto.randomUUID();
+      if (!skuId) return errorResponse('Missing skuId parameter.');
 
-      // First try the lightweight API proxy (fast). If Sentinel rejects it, fall back to Browser Rendering.
-      const proxied = await handleLinks(arch, skuId, sessionId);
-      try {
-        const cloned = proxied.clone();
-        const data = (await cloned.json()) as MsLinksResponse;
-        const shouldFallback = shouldFallbackToBrowser(data);
-
-        if (shouldFallback) {
-          const viaBrowser = await getIsoLinkViaBrowser(env, arch, skuId);
-          if (!viaBrowser.ok) {
-            // Use a non-Sentinel key so the frontend can surface a more specific message if desired.
-            return jsonResponse({ Errors: [{ Key: 'ErrorSettings.BrowserRenderingFailed', Value: viaBrowser.error, Type: 9 }] });
-          }
-          return jsonResponse({
-            ProductDownloadOptions: [
-              {
-                Uri: viaBrowser.href,
-                ProductDisplayName: 'Windows 11 ISO',
-                LocalizedLanguage: viaBrowser.label,
-              },
-            ],
-          });
-        }
-      } catch {
-        // If parsing fails, just return the proxied response.
+      const viaBrowser = await getIsoLinkViaBrowser(env, arch, skuId);
+      if (!viaBrowser.ok) {
+        return jsonResponse({
+          Errors: [{ Key: 'ErrorSettings.BrowserRenderingFailed', Value: viaBrowser.error, Type: 9 }],
+        });
       }
-
-      return proxied;
+      return jsonResponse({
+        ProductDownloadOptions: [
+          {
+            Uri: viaBrowser.href,
+            ProductDisplayName: 'Windows 11 ISO',
+            LocalizedLanguage: viaBrowser.label,
+          },
+        ],
+      });
     }
 
     return env.ASSETS.fetch(request);
