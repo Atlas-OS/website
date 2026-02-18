@@ -39,15 +39,10 @@ export default defineConfig({
 
   build: {
     format: 'directory',
-    assets: '_assets',
     inlineStylesheets: 'auto',
   },
 
   compressHTML: true,
-
-  security: {
-    checkOrigin: true,
-  },
 
   image: {
     service: {
@@ -84,13 +79,6 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
-    server: {
-      headers: {
-        'Content-Security-Policy':
-          "default-src * data: blob: 'unsafe-inline' 'unsafe-eval'; frame-ancestors 'none';",
-        'X-Frame-Options': 'DENY',
-      },
-    },
     resolve: {
       alias: {
         '@': path.resolve(path.dirname(fileURLToPath(import.meta.url)), './src'),
