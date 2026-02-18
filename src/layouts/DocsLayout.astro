@@ -1,4 +1,5 @@
 ---
+import { SITE_URL } from '@/constants';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Navbar from '@/components/layout/Navbar.astro';
 import Sidebar from '@/components/layout/Sidebar.astro';
@@ -50,7 +51,7 @@ const sectionLabel = getSectionLabelFromSlug(currentSlug);
       description={description}
       metaDescription={metaDescription}
       image={ogImage || image}
-      canonicalURL={new URL(currentSlug, Astro.site || 'https://atlasos.net').href}
+      canonicalURL={new URL(currentSlug, Astro.site || SITE_URL).href}
       type={type}
       currentSlug={currentSlug}
     />

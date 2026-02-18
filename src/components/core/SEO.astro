@@ -1,5 +1,5 @@
 ---
-import { DEFAULT_META_DESCRIPTION } from '@/constants';
+import { DEFAULT_META_DESCRIPTION, SITE_URL } from '@/constants';
 
 interface Props {
   title: string;
@@ -32,10 +32,11 @@ const {
   softwareApp = false,
 } = Astro.props;
 
-const site = Astro.site || 'https://atlasos.net';
+const site = Astro.site || SITE_URL;
+const siteBase = (typeof site === 'string' ? site : site.href).replace(/\/$/, '');
 const fullTitle = title.includes('|') ? title : `${title} | AtlasOS Documentation`;
 const pageURL = canonicalURL || new URL(Astro.url.pathname, site).href;
-const ogImage = image || `${site}/defaultimg.png`;
+const ogImage = image || `${siteBase}/defaultimg.png`;
 const finalMetaDescription = metaDescription || description || DEFAULT_META_DESCRIPTION;
 
 const organizationSchema = {
@@ -44,7 +45,7 @@ const organizationSchema = {
   url: site,
   logo: {
     '@type': 'ImageObject',
-    url: `${site}/favicon.svg`,
+    url: `${siteBase}/favicon.svg`,
   },
   sameAs: ['https://github.com/Atlas-OS/Atlas', 'https://discord.com/invite/atlasos', 'https://x.com/atlasos'],
 };
@@ -187,7 +188,7 @@ const structuredData = {
       '@type': 'SearchAction',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate: `${site}/api/search.json?q={search_term_string}`,
+        urlTemplate: `${siteBase}/api/search.json?q={search_term_string}`,
       },
       'query-input': 'required name=search_term_string',
     },

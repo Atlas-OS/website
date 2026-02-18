@@ -10,6 +10,8 @@ export const SECTION_PRIORITIES: Record<string, number> = {
 
 export const SITE_URL = 'https://atlasos.net' as const;
 
+export const DEFAULT_OG_IMAGE = `${SITE_URL}/defaultimg.png` as const;
+
 export const DEFAULT_META_DESCRIPTION =
   'AtlasOS Documentation - Your guide to optimizing Windows performance.' as const;
 

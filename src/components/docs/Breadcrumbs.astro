@@ -1,4 +1,5 @@
 ---
+import { SITE_URL } from '@/constants';
 import { getSlugFromEntry, normalizeSlug } from '@/utils/navigation';
 import { Icon } from 'astro-icon/components';
 import { getCollection } from 'astro:content';
@@ -67,7 +68,7 @@ const breadcrumbStructuredData = {
     '@type': 'ListItem',
     position: index + 1,
     name: crumb.title,
-    item: new URL(crumb.href, Astro.site || 'https://atlasos.net').href,
+    item: new URL(crumb.href, Astro.site || SITE_URL).href,
   })),
 };
 ---

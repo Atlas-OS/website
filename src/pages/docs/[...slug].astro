@@ -1,4 +1,5 @@
 ---
+import { SITE_URL } from '@/constants';
 import DocsLayout from '@/layouts/DocsLayout.astro';
 import { getSlugFromEntry } from '@/utils/navigation';
 import type { CollectionEntry } from 'astro:content';
@@ -39,7 +40,7 @@ const { Content, headings } = await render(entry);
 const slug = getSlugFromEntry(entry);
 
 // Calculate OG image URL - matches the og-image.png.ts endpoint path
-const site = Astro.site || 'https://atlasos.net';
+const site = Astro.site || SITE_URL;
 const slugWithSlash = slug.endsWith('/') ? slug : `${slug}/`;
 const ogImageUrl = new URL(`${slugWithSlash}og-image.png`, site).href;
 ---

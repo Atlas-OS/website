@@ -1,4 +1,5 @@
 ---
+import { DEFAULT_OG_IMAGE, SITE_URL } from '@/constants';
 import SEO from '@/components/core/SEO.astro';
 import Footer from '@/components/layout/Footer.astro';
 import Navbar from '@/components/layout/Navbar.astro';
@@ -8,7 +9,6 @@ const currentPath = Astro.url.pathname;
 const defaultTitle = 'AtlasOS | Optimized Windows for enthusiasts';
 const defaultDescription =
   'AtlasOS is an optimized Windows experience for enthusiasts and gamers, with stronger performance, better privacy, and cleaner defaults.';
-const defaultImage = 'https://atlasos.net/defaultimg.png';
 ---
 
 <BaseLayout currentPath={currentPath}>
@@ -16,8 +16,8 @@ const defaultImage = 'https://atlasos.net/defaultimg.png';
     <SEO
       title={defaultTitle}
       description={defaultDescription}
-      image={defaultImage}
-      canonicalURL={new URL(currentPath, Astro.site || 'https://atlasos.net').href}
+      image={DEFAULT_OG_IMAGE}
+      canonicalURL={new URL(currentPath, Astro.site || SITE_URL).href}
       type="website"
       currentSlug={currentPath}
     />
@@ -49,14 +49,14 @@ const defaultImage = 'https://atlasos.net/defaultimg.png';
         "@type": "WebSite",
         "name": "AtlasOS",
         "alternateName": "Atlas OS",
-        "url": "https://atlasos.net/",
+        "url": `${SITE_URL}/`,
         "description": "AtlasOS is an optimized version of Windows, designed for enthusiasts and gamers. Experience faster performance, better privacy, and enhanced gaming capabilities.",
-        "image": "https://atlasos.net/defaultimg.png",
+        "image": DEFAULT_OG_IMAGE,
         "sameAs": ["https://github.com/Atlas-OS/Atlas", "https://discord.com/invite/atlasos", "https://x.com/atlasos"],
         "publisher": {
           "@type": "Organization",
           "name": "AtlasOS Community",
-          "url": "https://atlasos.net/"
+          "url": `${SITE_URL}/`
         },
         "potentialAction": {
           "@type": "DownloadAction",
