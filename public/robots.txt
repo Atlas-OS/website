@@ -3,4 +3,4 @@ Allow: /
 Disallow: /cdn-cgi/
 
 # Sitemap
-Sitemap: /sitemap-index.xml
+Sitemap: https://atlasos.net/sitemap-index.xml

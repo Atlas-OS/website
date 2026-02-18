@@ -19,7 +19,7 @@ const { prev, next } = Astro.props;
 
 {
   (prev || next) && (
-    <nav class="page-nav not-prose astro-component mt-12 pt-8" style="border-top: 1px solid var(--docs-surface-border);" data-component="page-nav">
+    <nav class="page-nav not-prose astro-component mt-12 pt-8" style="border-top: 1px solid var(--docs-surface-border);" data-component="page-nav" data-pagefind-ignore>
       <div class={`grid gap-4 ${prev && next ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'}`}>
         {prev && (
           <a

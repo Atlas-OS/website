@@ -12,6 +12,7 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
   filteredHeadings.length > 0 && (
     <aside
       id="toc"
+      data-pagefind-ignore
       class="fixed right-0 z-20 hidden overflow-y-auto px-5 py-6 xl:block"
       style="top: var(--docs-header-height); width: var(--docs-toc-width); height: calc(100vh - var(--docs-header-height)); background-color: oklch(0.1 0.04 265); border-left: 1px solid var(--docs-surface-border);"
     >
@@ -99,7 +100,6 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
   }
 
   .toc-active {
-    @apply font-medium;
     color: var(--color-primary);
   }
 </style>
@@ -149,7 +149,7 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
         const activeLink = tocLinks.find((link) => link.getAttribute('href') === `#${activeHeadingId}`) as HTMLElement;
 
         if (activeLink) {
-          activeLink.classList.add('toc-active', 'text-white');
+          activeLink.classList.add('toc-active');
 
           const linkRect = activeLink.getBoundingClientRect();
           const containerRect = marker.parentElement?.getBoundingClientRect();
@@ -198,6 +198,4 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
     setupTableOfContents();
     setupCopyLink();
   });
-  setupTableOfContents();
-  setupCopyLink();
 </script>

@@ -33,12 +33,12 @@
     "search:index": "pagefind --site dist --output-subdir pagefind"
   },
   "dependencies": {
-    "@astrojs/mdx": "^5.0.0-beta.7",
+    "@astrojs/mdx": "^5.0.0-beta.8",
     "@astrojs/partytown": "^2.1.4",
     "@astrojs/sitemap": "^3.7.0",
     "@iconify-json/tabler": "^1.2.26",
     "@tailwindcss/vite": "^4.1.18",
-    "astro": "^6.0.0-beta.12",
+    "astro": "^6.0.0-beta.13",
     "astro-compressor": "^1.2.0",
     "astro-icon": "^1.1.5",
     "satori": "^0.19.2",

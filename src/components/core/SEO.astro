@@ -143,22 +143,10 @@ const articleSchema =
 
 const structuredData = {
   '@context': 'https://schema.org',
-  '@type': type === 'article' ? 'TechArticle' : 'WebSite',
+  '@type': 'WebSite',
   name: fullTitle,
   description: finalMetaDescription,
   url: pageURL,
-  ...(type === 'article' && {
-    headline: title,
-    datePublished: publishedTime,
-    dateModified: modifiedTime || publishedTime,
-    author: author
-      ? {
-          '@type': 'Organization',
-          name: author,
-        }
-      : undefined,
-    keywords: tags.join(', '),
-  }),
   publisher: organizationSchema,
 };
 ---

@@ -9,7 +9,6 @@ import SEO from '@/components/core/SEO.astro';
 import Spotlight from '@/components/ui/Spotlight.astro';
 import { getCollection } from 'astro:content';
 import { getPrevNextPages, getSectionLabelFromSlug } from '@/utils/navigation';
-import { getLangCode } from '@/utils/navigation';
 import { DEFAULT_LOCALE } from '@/constants';
 import '@/styles/prose.css';
 
@@ -40,10 +39,8 @@ const {
 } = Astro.props;
 
 const defaultLocale = DEFAULT_LOCALE;
-const langCode = getLangCode(locale);
 const hasTableOfContents = headings.length > 0;
 
-const showSidebar = true;
 const allDocs = await getCollection('docs');
 const { prev, next } = getPrevNextPages(allDocs, currentSlug, locale === defaultLocale ? null : locale, defaultLocale);
 const sectionLabel = getSectionLabelFromSlug(currentSlug, defaultLocale);
@@ -51,7 +48,6 @@ const sectionLabel = getSectionLabelFromSlug(currentSlug, defaultLocale);
 
 <BaseLayout locale={locale} currentPath={currentSlug}>
   <Fragment slot="head">
-    <meta property="xml:lang" content={langCode} />
     <meta name="apple-mobile-web-app-title" content="AtlasOS Docs" />
     <SEO
       title={title}
@@ -71,27 +67,23 @@ const sectionLabel = getSectionLabelFromSlug(currentSlug, defaultLocale);
         class="absolute h-full w-full bg-[linear-gradient(rgba(255,255,255,0.012)_1px,transparent_1px),linear-gradient(to_right,rgba(255,255,255,0.012)_1px,transparent_1px)] mask-[linear-gradient(to_bottom,rgba(0,0,0,0.6),transparent_70%)] bg-size-[24px_24px]"
       />
     </div>
-    <Navbar currentPath={currentSlug} locale={locale} isDocsPage={true} data-pagefind-ignore />
+    <Navbar currentPath={currentSlug} locale={locale} isDocsPage={true} />
     <div
       class="docs-shell relative z-10"
       style="--docs-header-height: 3.5rem; --docs-sidebar-width: 18rem; --docs-toc-width: 18rem;"
     >
-      {
-        showSidebar && (
-          <Sidebar currentSlug={currentSlug} locale={locale === defaultLocale ? null : locale} data-pagefind-ignore />
-        )
-      }
+      <Sidebar currentSlug={currentSlug} locale={locale === defaultLocale ? null : locale} />
       <main
-        class={`docs-main scroll-pt-24 ${showSidebar ? 'docs-main--with-sidebar' : ''} ${hasTableOfContents ? 'docs-main--with-toc' : ''}`}
+        class={`docs-main scroll-pt-24 docs-main--with-sidebar ${hasTableOfContents ? 'docs-main--with-toc' : ''}`}
         id="main-content"
         tabindex="-1"
         style="overflow-anchor: none; scroll-behavior: smooth;"
       >
         <div class="docs-main-inner">
           <article class="docs-article">
-            <Breadcrumbs currentSlug={currentSlug} data-pagefind-ignore />
+            <Breadcrumbs currentSlug={currentSlug} />
             <p
-              class="docs-section-label mb-2 text-xs font-medium tracking-wider uppercase"
+              class="docs-section-label mb-3 text-xs font-medium tracking-wider uppercase"
               style="color: var(--docs-text-muted);"
               data-pagefind-ignore
             >
@@ -100,15 +92,15 @@ const sectionLabel = getSectionLabelFromSlug(currentSlug, defaultLocale);
             <div class="prose md:prose-lg max-w-none" data-pagefind-body>
               <slot />
             </div>
-            {showPageNav && <PageNav prev={prev || undefined} next={next || undefined} data-pagefind-ignore />}
+            {showPageNav && <PageNav prev={prev || undefined} next={next || undefined} />}
           </article>
         </div>
       </main>
-      <TableOfContents headings={headings} data-pagefind-ignore />
+      <TableOfContents headings={headings} />
     </div>
     <script>
       import { initCopyCodeButtons } from '@/utils/copy-code';
-import { initScrollAnimations } from '@/utils/scroll-animations';
+      import { initScrollAnimations } from '@/utils/scroll-animations';
 
       function init() {
         initScrollAnimations();
