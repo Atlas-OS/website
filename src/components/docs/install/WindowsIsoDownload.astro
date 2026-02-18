@@ -4,6 +4,7 @@ import CodeInline from '@/components/docs/CodeInline.astro';
 import IconArrow from '@/components/ui/IconArrow.astro';
 import TabPanel from '@/components/ui/TabPanel.astro';
 import Tabs from '@/components/ui/Tabs.astro';
+import { Icon } from 'astro-icon/components';
 
 interface Props {
   /** Include AME Beta as a download option (for ISO injection guide) */
@@ -11,6 +12,15 @@ interface Props {
 }
 
 const { includeAmeBeta = false } = Astro.props;
+
+const msdlId = `msdl-${Math.random().toString(36).substring(2, 9)}`;
+
+const tabItems = [
+  { label: 'MSDL (Recommended)', value: 'msdl' },
+  { label: 'Microsoft website', value: 'microsoft-site' },
+  { label: 'Media Creation Tool', value: 'media-creation-tool' },
+  ...(includeAmeBeta ? [{ label: 'AME Beta', value: 'ame-beta' }] : []),
+];
 ---
 
 <Callout type="tip" title="Which version?">
@@ -24,18 +34,154 @@ const { includeAmeBeta = false } = Astro.props;
   )}
 </Callout>
 
-<Tabs items={includeAmeBeta
-  ? [
-      { label: 'Microsoft website', value: 'microsoft-site' },
-      { label: 'Media Creation Tool', value: 'media-creation-tool' },
-      { label: 'AME Beta', value: 'ame-beta' },
-    ]
-  : [
-      { label: 'Microsoft website', value: 'microsoft-site' },
-      { label: 'Media Creation Tool', value: 'media-creation-tool' },
-    ]
-} defaultTab="microsoft-site">
-  <TabPanel value="microsoft-site" default>
+<Tabs items={tabItems} defaultTab="msdl">
+  <TabPanel value="msdl" default>
+    <div class="msdl-widget not-prose" data-msdl-root={msdlId}>
+
+      <!-- Step: idle — architecture selection -->
+      <div data-msdl-step="idle">
+        <p class="mb-4 text-sm text-white/60">Select your CPU architecture</p>
+        <div class="flex gap-2">
+          <button
+            type="button"
+            data-msdl-arch-btn="x64"
+            class="flex-1 cursor-pointer rounded-md border border-white/[0.06] bg-white/[0.03] px-4 py-4 text-left transition-colors duration-150 hover:border-white/[0.12] hover:bg-white/[0.06] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+          >
+            <Icon name="tabler:cpu" class="mb-2.5 h-4 w-4 text-white/25" />
+            <p class="text-sm font-medium text-white/90">x64</p>
+            <p class="text-xs text-white/35">Intel &amp; AMD</p>
+          </button>
+          <button
+            type="button"
+            data-msdl-arch-btn="arm64"
+            class="flex-1 cursor-pointer rounded-md border border-white/[0.06] bg-white/[0.03] px-4 py-4 text-left transition-colors duration-150 hover:border-white/[0.12] hover:bg-white/[0.06] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+          >
+            <Icon name="tabler:device-mobile" class="mb-2.5 h-4 w-4 text-white/25" />
+            <p class="text-sm font-medium text-white/90">ARM64</p>
+            <p class="text-xs text-white/35">Qualcomm Snapdragon</p>
+          </button>
+        </div>
+      </div>
+
+      <!-- Step: loading-langs -->
+      <div data-msdl-step="loading-langs" class="hidden">
+        <div class="flex items-center gap-2.5 py-6 text-xs text-white/40">
+          <span class="loading-spinner h-3.5 w-3.5 shrink-0" aria-hidden="true"></span>
+          <span>Fetching languages&hellip;</span>
+        </div>
+      </div>
+
+      <!-- Step: select-lang -->
+      <div data-msdl-step="select-lang" class="hidden">
+        <div class="mb-4 flex items-center gap-2">
+          <button
+            type="button"
+            data-msdl-back
+            class="flex items-center gap-1 rounded text-xs text-white/40 transition-colors duration-150 hover:text-white/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+          >
+            <Icon name="tabler:arrow-left" class="h-3.5 w-3.5" />
+            Back
+          </button>
+          <span class="text-white/20">/</span>
+          <span class="text-xs text-white/50" data-msdl-arch-label></span>
+        </div>
+        <div class="space-y-3">
+
+          <div data-msdl-select-wrapper>
+            <button
+              type="button"
+              data-msdl-select-trigger
+              class="msdl-select-trigger flex w-full cursor-pointer items-center justify-between gap-2 rounded-md border border-white/[0.06] bg-white/[0.03] px-3 py-2 text-sm text-left transition-colors duration-150 hover:border-white/[0.10] hover:bg-white/[0.06] focus-visible:outline-none active:scale-[0.99]"
+              aria-haspopup="listbox"
+              aria-expanded="false"
+            >
+              <span data-msdl-select-value class="text-white/35">Choose a language&hellip;</span>
+              <svg
+                data-msdl-select-chevron
+                class="h-3.5 w-3.5 shrink-0 text-white/30 transition-transform duration-200"
+                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </button>
+            <!-- Panel injected by JS -->
+          </div>
+
+          <p class="text-xs text-white/35">
+            Choose the same language you use on Windows — check <strong class="font-medium text-white/50">Settings &rarr; Time &amp; language</strong>.
+          </p>
+          <button
+            type="button"
+            data-msdl-get-download
+            disabled
+            class="flex w-full items-center justify-center gap-2 rounded-md px-4 py-2.5 text-sm font-medium text-white transition-transform duration-100 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 disabled:cursor-not-allowed disabled:opacity-40"
+            style="background: linear-gradient(180deg, #2563eb 0%, #1e40af 100%);"
+          >
+            Get download link
+            <Icon name="tabler:arrow-right" class="h-4 w-4" />
+          </button>
+        </div>
+      </div>
+
+      <!-- Step: loading-download -->
+      <div data-msdl-step="loading-download" class="hidden">
+        <div class="flex items-center gap-2.5 py-6 text-xs text-white/40">
+          <span class="loading-spinner h-3.5 w-3.5 shrink-0" aria-hidden="true"></span>
+          <span>Generating link&hellip;</span>
+        </div>
+      </div>
+
+      <!-- Step: done -->
+      <div data-msdl-step="done" class="hidden">
+        <div class="mb-3 flex items-center gap-2">
+          <Icon name="tabler:circle-check-filled" class="h-4 w-4 shrink-0 text-green-400" />
+          <p class="text-sm font-medium text-white/80">Download started</p>
+        </div>
+        <div class="mb-1 rounded-md border border-white/[0.06] bg-white/[0.03] p-3">
+          <p class="mb-2 text-xs text-white/35">Didn&rsquo;t start automatically?</p>
+          <div data-msdl-download-links class="space-y-1.5"></div>
+        </div>
+        <button
+          type="button"
+          data-msdl-restart
+          class="mt-2 flex items-center gap-1 rounded text-xs text-white/35 transition-colors duration-150 hover:text-white/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+        >
+          <Icon name="tabler:arrow-left" class="h-3.5 w-3.5" />
+          Start over
+        </button>
+      </div>
+
+      <div data-msdl-step="error" class="hidden">
+        <div class="mb-3 flex items-start gap-2.5 rounded-md border border-red-500/[0.15] bg-red-500/[0.04] p-3">
+          <Icon name="tabler:alert-circle" class="mt-0.5 h-4 w-4 shrink-0 text-red-400/80" />
+          <p class="text-xs leading-relaxed text-white/55" data-msdl-error-msg></p>
+        </div>
+        <div class="flex gap-2">
+          <button
+            type="button"
+            data-msdl-retry
+            class="flex items-center gap-1.5 rounded text-xs text-white/40 transition-colors duration-150 hover:text-white/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+          >
+            <Icon name="tabler:refresh" class="h-3.5 w-3.5" />
+            Retry
+          </button>
+          <span class="text-white/20">·</span>
+          <button
+            type="button"
+            data-msdl-restart
+            class="flex items-center gap-1.5 rounded text-xs text-white/40 transition-colors duration-150 hover:text-white/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+          >
+            Start over
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </TabPanel>
+
+  <TabPanel value="microsoft-site">
     <ol>
       <li>Visit <a href="https://www.microsoft.com/en-us/software-download/windows11">Microsoft's Windows 11 download page</a></li>
       <li>Choose <strong>Download Windows 11 Disk Image (ISO) for x64 devices</strong> (or ARM64 for ARM systems)</li>
@@ -69,3 +215,382 @@ const { includeAmeBeta = false } = Astro.props;
     </TabPanel>
   )}
 </Tabs>
+
+<style>
+  /* Step transitions — Jakub recipe: opacity + translateY + blur */
+  .msdl-widget [data-msdl-step] {
+    animation: msdl-in 220ms cubic-bezier(0.33, 1, 0.68, 1) both;
+  }
+
+  .msdl-widget [data-msdl-step].hidden {
+    display: none;
+  }
+
+  @keyframes msdl-in {
+    from {
+      opacity: 0;
+      transform: translateY(5px);
+      filter: blur(3px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+  }
+
+  /* Custom dropdown panel — origin-aware enter from top */
+  .msdl-select-panel {
+    transform-origin: top center;
+    animation: msdl-dropdown-in 180ms cubic-bezier(0.33, 1, 0.68, 1) both;
+    will-change: transform, opacity, filter;
+  }
+
+  @keyframes msdl-dropdown-in {
+    from {
+      opacity: 0;
+      transform: translateY(-6px) scale(0.98);
+      filter: blur(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+  }
+
+  /* Thin scrollbar for option list */
+  .msdl-options-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.08) transparent;
+  }
+  .msdl-options-scroll::-webkit-scrollbar { width: 4px; }
+  .msdl-options-scroll::-webkit-scrollbar-track { background: transparent; }
+  .msdl-options-scroll::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 2px;
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .msdl-widget [data-msdl-step],
+    .msdl-select-panel {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  // AGPL-3.0-or-later https://spdx.org/licenses/AGPL-3.0-or-later.html
+  // Integrates with Gravesoft MSDL https://github.com/gravesoft/msdl
+
+  const API_URL = 'https://api.gravesoft.dev/msdl/';
+
+  // Product IDs sourced from https://github.com/gravesoft/msdl/blob/main/data/products.json
+  const PRODUCT_IDS: Record<string, number> = {
+    x64: 3113,    // Windows 11 24H2
+    arm64: 3131,  // Windows 11 24H2 ARM64
+  };
+
+  const ARCH_LABELS: Record<string, string> = {
+    x64: 'Windows 11 24H2 · x64',
+    arm64: 'Windows 11 24H2 · ARM64',
+  };
+
+  let panelIdCounter = 0;
+
+  function buildSelectPanel(
+    wrapper: HTMLElement,
+    skus: Array<{ Id: number; LocalizedLanguage: string }>,
+    onSelect: (id: number, label: string) => void,
+  ) {
+    const trigger = wrapper.querySelector<HTMLButtonElement>('[data-msdl-select-trigger]')!;
+    const chevron = wrapper.querySelector<SVGElement>('[data-msdl-select-chevron]')!;
+    const valueEl = wrapper.querySelector<HTMLElement>('[data-msdl-select-value]')!;
+    const panelId = `msdl-listbox-${++panelIdCounter}`;
+
+    trigger.setAttribute('aria-controls', panelId);
+
+    let panel: HTMLElement | null = null;
+    let scroll: HTMLElement | null = null;
+    let isOpen = false;
+
+    function getOptions() {
+      return Array.from(panel?.querySelectorAll<HTMLElement>('[role="option"]') ?? []);
+    }
+
+    function focusOption(el: HTMLElement) {
+      el.focus();
+      getOptions().forEach((o) => o.setAttribute('aria-selected', o === el ? 'true' : 'false'));
+    }
+
+    function positionPanel() {
+      if (!panel) return;
+      const rect = trigger.getBoundingClientRect();
+      panel.style.top = `${rect.bottom + 4}px`;
+      panel.style.left = `${rect.left}px`;
+      panel.style.width = `${rect.width}px`;
+    }
+
+    function openPanel() {
+      if (isOpen) return;
+      isOpen = true;
+      trigger.setAttribute('aria-expanded', 'true');
+      chevron.style.transform = 'rotate(180deg)';
+
+      panel = document.createElement('div');
+      panel.id = panelId;
+      panel.className = 'msdl-select-panel overflow-hidden rounded-md border border-white/[0.08]';
+      panel.style.cssText = 'position: fixed; z-index: 9999; background: oklch(0.14 0.038 264);';
+      panel.setAttribute('role', 'listbox');
+      panel.setAttribute('aria-label', 'Select language');
+
+      scroll = document.createElement('div');
+      scroll.className = 'msdl-options-scroll max-h-52 overflow-y-auto py-1';
+
+      skus.forEach((sku) => {
+        const opt = document.createElement('button');
+        opt.type = 'button';
+        opt.setAttribute('role', 'option');
+        opt.setAttribute('aria-selected', 'false');
+        opt.dataset.value = String(sku.Id);
+        opt.textContent = sku.LocalizedLanguage;
+        opt.className =
+          'w-full cursor-pointer px-3 py-2.5 text-left text-sm text-white/65 transition-colors duration-100 hover:bg-white/[0.06] hover:text-white/90 focus:outline-none focus:bg-white/[0.06] focus:text-white/90';
+
+        opt.addEventListener('click', () => selectOption(sku.Id, sku.LocalizedLanguage));
+
+        opt.addEventListener('keydown', (e) => {
+          const opts = getOptions();
+          const idx = opts.indexOf(opt);
+          if (e.key === 'ArrowDown') { e.preventDefault(); focusOption(opts[(idx + 1) % opts.length]!); }
+          else if (e.key === 'ArrowUp') { e.preventDefault(); focusOption(opts[(idx - 1 + opts.length) % opts.length]!); }
+          else if (e.key === 'Escape') { e.preventDefault(); closePanel(); trigger.focus(); }
+          else if (e.key === 'Tab') { closePanel(); }
+        });
+
+        scroll!.appendChild(opt);
+      });
+
+      panel.appendChild(scroll);
+      document.body.appendChild(panel);
+      positionPanel();
+
+      const firstOpt = getOptions()[0];
+      if (firstOpt) requestAnimationFrame(() => focusOption(firstOpt));
+
+      window.addEventListener('scroll', positionPanel, { passive: true });
+      window.addEventListener('resize', positionPanel, { passive: true });
+
+      setTimeout(() => {
+        document.addEventListener('click', outsideClickHandler, { once: true });
+      }, 0);
+    }
+
+    function selectOption(id: number, label: string) {
+      valueEl.textContent = label;
+      valueEl.classList.remove('text-white/35');
+      valueEl.classList.add('text-white/85');
+      onSelect(id, label);
+      closePanel();
+      trigger.focus();
+    }
+
+    function closePanel() {
+      if (!isOpen) return;
+      isOpen = false;
+      trigger.setAttribute('aria-expanded', 'false');
+      chevron.style.transform = '';
+      panel?.remove();
+      panel = null;
+      scroll = null;
+      window.removeEventListener('scroll', positionPanel);
+      window.removeEventListener('resize', positionPanel);
+    }
+
+    function outsideClickHandler(e: MouseEvent) {
+      if (!wrapper.contains(e.target as Node) && !panel?.contains(e.target as Node)) {
+        closePanel();
+      }
+    }
+
+    trigger.addEventListener('click', () => {
+      isOpen ? closePanel() : openPanel();
+    });
+
+    trigger.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (!isOpen) openPanel();
+      } else if (e.key === 'Escape' && isOpen) {
+        e.preventDefault();
+        closePanel();
+      }
+    });
+
+    return {
+      close: closePanel,
+      reset() {
+        closePanel();
+        valueEl.textContent = 'Choose a language\u2026';
+        valueEl.classList.remove('text-white/85');
+        valueEl.classList.add('text-white/35');
+      },
+    };
+  }
+
+  function initMsdlWidget(root: HTMLElement) {
+    let currentArch: string | null = null;
+    let currentSkuId: number | null = null;
+    let retryAction: (() => void) | null = null;
+    let selectControl: ReturnType<typeof buildSelectPanel> | null = null;
+
+    function showStep(step: string) {
+      root.querySelectorAll<HTMLElement>('[data-msdl-step]').forEach((el) => {
+        el.classList.toggle('hidden', el.getAttribute('data-msdl-step') !== step);
+      });
+    }
+
+    function showError(message: string, retry?: () => void) {
+      const errorMsg = root.querySelector<HTMLElement>('[data-msdl-error-msg]');
+      if (errorMsg) errorMsg.textContent = message;
+      retryAction = retry ?? null;
+      showStep('error');
+    }
+
+    async function fetchLanguages(arch: string) {
+      currentArch = arch;
+      currentSkuId = null;
+      showStep('loading-langs');
+
+      const productId = PRODUCT_IDS[arch];
+      try {
+        const res = await fetch(`${API_URL}skuinfo?product_id=${productId}`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        if (data.Errors?.length) throw new Error(data.Errors[0].Value ?? 'API error');
+        renderLanguageSelect(data, arch);
+      } catch {
+        showError(
+          'Could not fetch languages. The MSDL service may be temporarily unavailable — try another method below.',
+          () => fetchLanguages(arch),
+        );
+      }
+    }
+
+    function renderLanguageSelect(
+      data: { Skus?: Array<{ Id: number; LocalizedLanguage: string }> },
+      arch: string,
+    ) {
+      const archLabel = root.querySelector<HTMLElement>('[data-msdl-arch-label]');
+      const getDownloadBtn = root.querySelector<HTMLButtonElement>('[data-msdl-get-download]');
+      const wrapper = root.querySelector<HTMLElement>('[data-msdl-select-wrapper]');
+
+      if (!archLabel || !getDownloadBtn || !wrapper) return;
+
+      archLabel.textContent = ARCH_LABELS[arch] ?? arch;
+
+      const skus = data.Skus ?? [];
+
+      selectControl?.reset();
+
+      selectControl = buildSelectPanel(wrapper, skus, (id) => {
+        currentSkuId = id;
+        getDownloadBtn.disabled = false;
+      });
+
+      currentSkuId = null;
+      getDownloadBtn.disabled = true;
+      showStep('select-lang');
+    }
+
+    async function fetchDownload() {
+      if (!currentArch || currentSkuId === null) return;
+      showStep('loading-download');
+
+      const productId = PRODUCT_IDS[currentArch];
+      try {
+        const res = await fetch(`${API_URL}proxy?product_id=${productId}&sku_id=${currentSkuId}`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        renderDownloads(data);
+      } catch {
+        showError(
+          'Could not generate download links. Please retry or use the Microsoft website tab.',
+          fetchDownload,
+        );
+      }
+    }
+
+    interface DownloadOption {
+      Uri: string;
+      ProductDisplayName: string;
+      LocalizedLanguage: string;
+    }
+
+    function renderDownloads(data: { ProductDownloadOptions?: DownloadOption[] }) {
+      const linksContainer = root.querySelector<HTMLElement>('[data-msdl-download-links]');
+      if (!linksContainer) return;
+      linksContainer.innerHTML = '';
+
+      const options = data.ProductDownloadOptions;
+      if (!options || options.length === 0) {
+        showError('No download options were returned. Try a different language or use another method.');
+        return;
+      }
+
+      options.forEach((option) => {
+        const uriBase = option.Uri.split('?')[0] ?? option.Uri;
+        const parts = uriBase.split('/');
+        const filename = parts[parts.length - 1] ?? 'Windows.iso';
+
+        const link = document.createElement('a');
+        link.href = option.Uri;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.className =
+          'flex items-center gap-2 text-xs text-primary transition-opacity duration-150 hover:opacity-70';
+        link.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/><path d="M7 11l5 5 5-5"/><path d="M12 4v12"/></svg><span class="truncate font-medium">${filename}</span>`;
+        linksContainer.appendChild(link);
+
+        const autoLink = document.createElement('a');
+        autoLink.href = option.Uri;
+        autoLink.download = filename;
+        document.body.appendChild(autoLink);
+        autoLink.click();
+        document.body.removeChild(autoLink);
+      });
+
+      showStep('done');
+    }
+
+    function resetWidget() {
+      selectControl?.reset();
+      selectControl = null;
+      currentArch = null;
+      currentSkuId = null;
+      retryAction = null;
+      showStep('idle');
+    }
+
+    root.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      const archBtn = target.closest<HTMLElement>('[data-msdl-arch-btn]');
+      if (archBtn?.dataset.msdlArchBtn) { fetchLanguages(archBtn.dataset.msdlArchBtn); return; }
+      if (target.closest('[data-msdl-back]')) { resetWidget(); return; }
+      if (target.closest('[data-msdl-get-download]')) { fetchDownload(); return; }
+      if (target.closest('[data-msdl-restart]')) { resetWidget(); return; }
+      if (target.closest('[data-msdl-retry]')) { retryAction?.(); return; }
+    });
+  }
+
+  function initAllMsdlWidgets() {
+    document.querySelectorAll<HTMLElement>('[data-msdl-root]:not([data-msdl-initialized])').forEach((root) => {
+      root.setAttribute('data-msdl-initialized', 'true');
+      initMsdlWidget(root);
+    });
+  }
+
+  document.addEventListener('astro:page-load', initAllMsdlWidgets);
+  initAllMsdlWidgets();
+</script>
