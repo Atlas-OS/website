@@ -79,13 +79,6 @@ const sectionLabel = getSectionLabelFromSlug(currentSlug);
         <div class="docs-main-inner">
           <article class="docs-article">
             <Breadcrumbs currentSlug={currentSlug} />
-            <p
-              class="docs-section-label mb-3 text-xs font-medium tracking-wider uppercase"
-              style="color: var(--docs-text-muted);"
-              data-pagefind-ignore
-            >
-              {sectionLabel}
-            </p>
             <div class="prose md:prose-lg max-w-none" data-pagefind-body>
               <slot />
             </div>
@@ -97,7 +90,7 @@ const sectionLabel = getSectionLabelFromSlug(currentSlug);
     </div>
     <script>
       import { initCopyCodeButtons } from '@/utils/copy-code';
-      import { initScrollAnimations } from '@/utils/scroll-animations';
+import { initScrollAnimations } from '@/utils/scroll-animations';
 
       function init() {
         initScrollAnimations();
