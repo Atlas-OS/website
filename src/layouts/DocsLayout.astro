@@ -9,7 +9,7 @@ import PageNav from '@/components/docs/PageNav.astro';
 import SEO from '@/components/core/SEO.astro';
 import Spotlight from '@/components/ui/Spotlight.astro';
 import { getCollection } from 'astro:content';
-import { getPrevNextPages, getSectionLabelFromSlug } from '@/utils/navigation';
+import { getPrevNextPages } from '@/utils/navigation';
 import '@/styles/prose.css';
 
 interface Props {
@@ -40,7 +40,6 @@ const hasTableOfContents = headings.length > 0;
 
 const allDocs = await getCollection('docs');
 const { prev, next } = getPrevNextPages(allDocs, currentSlug);
-const sectionLabel = getSectionLabelFromSlug(currentSlug);
 ---
 
 <BaseLayout currentPath={currentSlug}>
