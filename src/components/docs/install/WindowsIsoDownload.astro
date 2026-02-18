@@ -434,7 +434,6 @@ const tabItems = [
   function initMsdlWidget(root: HTMLElement) {
     let currentArch: string | null = null;
     let currentSkuId: string | number | null = null;
-    let currentLanguage: string | null = null;
     let currentFriendlyFileNames: string[] | null = null;
     let currentSessionId: string | null = null;
     let retryAction: (() => void) | null = null;
@@ -456,7 +455,6 @@ const tabItems = [
     async function fetchLanguages(arch: string) {
       currentArch = arch;
       currentSkuId = null;
-      currentLanguage = null;
       currentSessionId = crypto.randomUUID();
       showStep('loading-langs');
 
@@ -494,15 +492,13 @@ const tabItems = [
 
       selectControl?.reset();
 
-      selectControl = buildSelectPanel(wrapper, skus, (id, _label, language, friendlyFileNames) => {
+      selectControl = buildSelectPanel(wrapper, skus, (id, _label, _language, friendlyFileNames) => {
         currentSkuId = id;
-        currentLanguage = language;
         currentFriendlyFileNames = friendlyFileNames ?? null;
         getDownloadBtn.disabled = false;
       });
 
       currentSkuId = null;
-      currentLanguage = null;
       currentFriendlyFileNames = null;
       getDownloadBtn.disabled = true;
       showStep('select-lang');
@@ -513,6 +509,7 @@ const tabItems = [
       showStep('loading-download');
 
       const params = new URLSearchParams({
+        arch: currentArch,
         skuId: String(currentSkuId),
         ...(currentSessionId ? { sessionId: currentSessionId } : {}),
       });
@@ -545,6 +542,9 @@ const tabItems = [
       const first = errors[0];
       if (!first?.Value) return 'The download service is temporarily unavailable. Please try again in a moment or use the Microsoft website tab.';
       if (first.Key === 'ErrorSettings.SentinelReject') {
+        return 'The download service is temporarily unavailable. Please try again in a moment or use the Microsoft website tab.';
+      }
+      if (first.Key === 'ErrorSettings.BrowserRenderingFailed') {
         return 'The download service is temporarily unavailable. Please try again in a moment or use the Microsoft website tab.';
       }
       if (first.Key === 'ErrorSettings.ProductKeyValidationError') {
@@ -604,7 +604,6 @@ const tabItems = [
       selectControl = null;
       currentArch = null;
       currentSkuId = null;
-      currentLanguage = null;
       currentFriendlyFileNames = null;
       currentSessionId = null;
       retryAction = null;

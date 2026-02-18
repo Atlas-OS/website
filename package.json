@@ -5,7 +5,9 @@
   "type": "module",
   "author": "AtlasOS",
   "license": "MIT",
-  "contributors": ["AtlasOS Community <contact@atlasos.net>"],
+  "contributors": [
+    "AtlasOS Community <contact@atlasos.net>"
+  ],
   "engines": {
     "bun": ">=1.3.0",
     "node": ">=22.12.0"
@@ -18,8 +20,19 @@
   "bugs": {
     "url": "https://github.com/atlas-os/website/issues"
   },
-  "keywords": ["astro", "atlasos", "gaming", "optimized", "performance", "windows"],
-  "browserslist": ["defaults", "not IE 11", "not dead"],
+  "keywords": [
+    "astro",
+    "atlasos",
+    "gaming",
+    "optimized",
+    "performance",
+    "windows"
+  ],
+  "browserslist": [
+    "defaults",
+    "not IE 11",
+    "not dead"
+  ],
   "scripts": {
     "astro": "astro",
     "build": "astro build && jampack ./dist && node ./scripts/postbuild-compress.mjs",
@@ -38,6 +51,7 @@
     "@astrojs/mdx": "^5.0.0-beta.8",
     "@astrojs/partytown": "^2.1.4",
     "@astrojs/sitemap": "^3.7.0",
+    "@cloudflare/puppeteer": "^1.0.6",
     "@iconify-json/tabler": "^1.2.26",
     "@tailwindcss/vite": "^4.1.18",
     "astro": "^6.0.0-beta.13",
@@ -62,6 +76,7 @@
     "eslint": "^10.0.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-astro": "^1.6.0",
+    "lightningcss": "^1.31.1",
     "pagefind": "^1.4.0",
     "prettier": "^3.8.1",
     "prettier-plugin-astro": "^0.14.1",
