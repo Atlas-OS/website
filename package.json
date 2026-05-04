@@ -26,7 +26,7 @@
   ],
   "scripts": {
     "astro": "astro",
-    "build": "astro build && jampack ./dist",
+    "build": "astro build && jampack ./dist && node scripts/add-crossorigin.mjs",
     "check": "astro check",
     "dev": "astro dev",
     "format": "prettier --write .",

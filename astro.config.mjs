@@ -2,7 +2,6 @@ import { defineConfig } from 'astro/config';
 import partytown from '@astrojs/partytown';
 import tailwindcss from '@tailwindcss/vite';
 import icon from 'astro-icon';
-import { readdir, readFile, writeFile } from 'fs/promises';
 import { fileURLToPath } from 'url';
 import path from 'path';
 
@@ -14,20 +13,6 @@ function addCrossoriginToJsPreloads(html) {
     const insertAt = tag.endsWith('/>') ? tag.length - 2 : tag.length - 1;
     return `${tag.slice(0, insertAt)} crossorigin="anonymous"${tag.slice(insertAt)}`;
   });
-}
-
-async function* walkFiles(directory) {
-  const entries = await readdir(directory, { withFileTypes: true });
-
-  for (const entry of entries) {
-    const fullPath = path.join(directory, entry.name);
-
-    if (entry.isDirectory()) {
-      yield* walkFiles(fullPath);
-    } else {
-      yield fullPath;
-    }
-  }
 }
 
 function jsPreloadCrossorigin() {
@@ -46,20 +31,6 @@ function jsPreloadCrossorigin() {
             ],
           },
         });
-      },
-      'astro:build:done': async ({ dir }) => {
-        const outputDirectory = fileURLToPath(dir);
-
-        for await (const filePath of walkFiles(outputDirectory)) {
-          if (!filePath.endsWith('.html')) continue;
-
-          const html = await readFile(filePath, 'utf8');
-          const updatedHtml = addCrossoriginToJsPreloads(html);
-
-          if (updatedHtml !== html) {
-            await writeFile(filePath, updatedHtml);
-          }
-        }
       },
     },
   };
