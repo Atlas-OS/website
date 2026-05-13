@@ -26,5 +26,6 @@ nul
 # jetbrains setting folder
 .idea/
 
-# jampack cache
+# legacy jampack cache
 .jampack/
+.wrangler-dry-run/

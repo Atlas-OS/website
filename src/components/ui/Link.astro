@@ -10,10 +10,12 @@ interface Props {
 }
 
 const { href, icon, iconPosition = 'left', external = false, class: className = '' } = Astro.props;
+const prefetchStrategy = !external && href.startsWith('/') ? 'hover' : undefined;
 ---
 
 <a
   href={href}
+  data-astro-prefetch={prefetchStrategy}
   target={external ? '_blank' : undefined}
   rel={external ? 'noopener noreferrer' : undefined}
   class={`text-primary inline-flex items-center gap-2 transition-opacity duration-200 hover:opacity-80 outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black ${className}`}

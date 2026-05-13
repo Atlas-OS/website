@@ -33,7 +33,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6.2.0
         with:
-          node-version: "22"
+          node-version: '22'
 
       - name: Cache dependencies
         uses: actions/cache@v5.0.3
@@ -45,8 +45,17 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
+      - name: Lint
+        run: bun run lint
+
+      - name: Type check
+        run: bun run check
+
       - name: Build
         run: bun run build
+
+      - name: Validate Cloudflare Worker bundle
+        run: bunx wrangler deploy --dry-run --outdir .wrangler-dry-run
 
       - name: Deploy to Cloudflare Workers
         id: deploy

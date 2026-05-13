@@ -23,6 +23,24 @@
   --motion-duration-slow: 400ms;
   --motion-ease-out: cubic-bezier(0.33, 1, 0.68, 1);
   --motion-ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
+  --motion-ease-precise: cubic-bezier(0.2, 0, 0, 1);
+  --nav-bg-translucent: oklch(0.12 0.0421 264.82 / 0.6);
+  --nav-menu-bg: oklch(0.12 0.0421 264.82 / 0.9);
+  --docs-panel-bg: oklch(0.1 0.04 265);
+  --code-block-bg: oklch(0.11 0.04 265);
+  --shadow-surface:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 10px 30px rgba(0, 0, 0, 0.14);
+  --shadow-surface-hover:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 0 0 1px rgba(255, 255, 255, 0.13),
+    0 16px 42px rgba(0, 0, 0, 0.2);
+  --shadow-surface-active:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 0 0 1px rgba(255, 255, 255, 0.16),
+    0 6px 20px rgba(0, 0, 0, 0.18);
+  --image-outline: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* Prose spacing scale */
@@ -53,6 +71,12 @@ body {
   min-height: 100vh;
 }
 
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
 h1,
 h2,
 h3,
@@ -60,11 +84,21 @@ h4,
 h5,
 h6 {
   @apply font-display;
+  text-wrap: balance;
+}
+
+p,
+li,
+figcaption,
+blockquote {
+  text-wrap: pretty;
 }
 
 a,
 button {
-  transition: opacity var(--motion-duration-fast) var(--motion-ease-out);
+  transition-property: opacity;
+  transition-duration: var(--motion-duration-fast);
+  transition-timing-function: var(--motion-ease-out);
 
   &:hover {
     @apply opacity-80;
@@ -74,13 +108,29 @@ button {
     @apply opacity-70;
   }
 }
+
+.media-outline,
+.prose img:not(.not-prose *),
+.prose video:not(.not-prose *) {
+  outline: var(--image-outline);
+  outline-offset: -1px;
+}
+
+.media-outline {
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.22);
+}
+
+.tabular-nums,
+[data-tabular-nums] {
+  font-variant-numeric: tabular-nums;
+}
 .not-prose {
-  contain: layout style paint;
+  contain: layout style;
   isolation: isolate;
 }
 
 .prose > .not-prose {
-  contain: layout style paint;
+  contain: layout style;
   isolation: isolate;
 }
 
@@ -152,10 +202,6 @@ button {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
   border-radius: 4px;
-}
-
-html {
-  scroll-behavior: smooth;
 }
 
 main,

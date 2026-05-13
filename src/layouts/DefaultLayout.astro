@@ -4,22 +4,29 @@ import SEO from '@/components/core/SEO.astro';
 import Footer from '@/components/layout/Footer.astro';
 import Navbar from '@/components/layout/Navbar.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
 const currentPath = Astro.url.pathname;
 
-const defaultTitle = 'AtlasOS | Optimized Windows for enthusiasts';
-const defaultDescription =
+const pageTitle = title || 'AtlasOS | Optimized Windows for enthusiasts';
+const pageDescription =
+  description ||
   'AtlasOS is an optimized Windows experience for enthusiasts and gamers, with stronger performance, better privacy, and cleaner defaults.';
 ---
 
 <BaseLayout currentPath={currentPath}>
   <Fragment slot="head">
     <SEO
-      title={defaultTitle}
-      description={defaultDescription}
+      title={pageTitle}
+      description={pageDescription}
       image={DEFAULT_OG_IMAGE}
       canonicalURL={new URL(currentPath, Astro.site || SITE_URL).href}
       type="website"
-      currentSlug={currentPath}
     />
 
     <meta
@@ -29,56 +36,8 @@ const defaultDescription =
     <meta name="author" content="AtlasOS Community" />
     <meta name="robots" content="index, follow" />
     <meta name="language" content="English" />
-    <meta name="theme-color" content="#1990fe" />
     <meta name="color-scheme" content="dark" />
     <meta name="format-detection" content="telephone=no" />
-
-    <meta property="og:type" content="website" />
-    <meta property="og:image:alt" content="AtlasOS - Optimized Windows for Gaming and Performance" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:site_name" content="AtlasOS" />
-
-    <meta property="twitter:image:alt" content="AtlasOS - Optimized Windows for Gaming and Performance" />
-    <meta property="twitter:site" content="@atlasos" />
-    <meta property="twitter:creator" content="@atlasos" />
-
-    <script type="application/ld+json" is:inline>
-      {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "AtlasOS",
-        "alternateName": "Atlas OS",
-        "url": `${SITE_URL}/`,
-        "description": "AtlasOS is an optimized version of Windows, designed for enthusiasts and gamers. Experience faster performance, better privacy, and enhanced gaming capabilities.",
-        "image": DEFAULT_OG_IMAGE,
-        "sameAs": ["https://github.com/Atlas-OS/Atlas", "https://discord.com/invite/atlasos", "https://x.com/atlasos"],
-        "publisher": {
-          "@type": "Organization",
-          "name": "AtlasOS Community",
-          "url": `${SITE_URL}/`
-        },
-        "potentialAction": {
-          "@type": "DownloadAction",
-          "target": "/docs/install/",
-          "description": "Download and install AtlasOS for optimized Windows performance"
-        },
-        "applicationCategory": "UtilitiesApplication",
-        "operatingSystem": "Windows",
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "USD"
-        },
-        "featureList": [
-          "Performance optimization",
-          "Privacy enhancement",
-          "Gaming improvements",
-          "Reduced bloatware",
-          "Better usability"
-        ]
-      }
-    </script>
   </Fragment>
 
   <Fragment slot="body">
@@ -86,7 +45,7 @@ const defaultDescription =
       <a href="#main-content" class="sr-only focus:not-sr-only">Skip to main content</a>
       <Navbar currentPath={currentPath} isDocsPage={false} />
     </header>
-    <main id="main-content" role="main">
+    <main id="main-content">
       <slot />
     </main>
     <Footer />

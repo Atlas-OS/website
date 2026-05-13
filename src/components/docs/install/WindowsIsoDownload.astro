@@ -25,30 +25,41 @@ const tabItems = [
 ---
 
 <Callout type="tip" title="Which version?">
-  {includeAmeBeta ? (
-    <>For AMD and Intel CPUs, download the x86_64 (x64) version. For Qualcomm Snapdragon or other
-    supported ARM SoCs, download the ARM64 version.{' '}
-    <a href="https://www.tenforums.com/tutorials/132836-check-what-processor-cpu-windows-pc.html#option1">Check your CPU architecture</a>.</>
-  ) : (
-    <>Intel/AMD CPUs use x64. ARM (Snapdragon) systems use ARM64. Make sure you
-    download the correct ISO for your CPU architecture.</>
-  )}
+  {
+    includeAmeBeta ? (
+      <>
+        For AMD and Intel CPUs, download the x86_64 (x64) version. For Qualcomm Snapdragon or other supported ARM SoCs,
+        download the ARM64 version.{' '}
+        <a href="https://www.tenforums.com/tutorials/132836-check-what-processor-cpu-windows-pc.html#option1" target="_blank" rel="noopener noreferrer">
+          Check your CPU architecture
+        </a>
+        .
+      </>
+    ) : (
+      <>
+        Intel/AMD CPUs use x64. ARM (Snapdragon) systems use ARM64. Make sure you download the correct ISO for your CPU
+        architecture.
+      </>
+    )
+  }
 </Callout>
 
 <Tabs items={tabItems} defaultTab="iso-downloader">
   <TabPanel value="iso-downloader" default>
     <div class="msdl-widget not-prose" data-msdl-root={msdlId}>
-
       <!-- Step: idle — architecture selection -->
       <div data-msdl-step="idle">
-        <p class="mb-3 text-[11px] font-medium uppercase tracking-widest text-white/25">Architecture</p>
+        <p class="mb-3 text-[11px] font-medium tracking-widest text-white/25 uppercase">Architecture</p>
         <div class="grid grid-cols-2 gap-2">
           <button
             type="button"
             data-msdl-arch-btn="x64"
-            class="iso-arch-btn group relative flex cursor-pointer flex-col gap-3 rounded-lg border border-white/[0.06] bg-white/[0.02] px-4 py-4 text-left focus-visible:outline-none active:scale-[0.98]"
+            class="iso-arch-btn group relative flex cursor-pointer flex-col gap-3 rounded-lg bg-white/[0.02] px-4 py-4 text-left shadow-[var(--shadow-surface)] transition-[background-color,box-shadow,scale] duration-200 focus-visible:outline-none active:scale-[0.96]"
           >
-            <Icon name="tabler:device-desktop" class="h-5 w-5 text-white/30 transition-colors duration-200 group-hover:text-primary/70" />
+            <Icon
+              name="tabler:device-desktop"
+              class="group-hover:text-primary/70 h-5 w-5 text-white/30 transition-colors duration-200"
+            />
             <div>
               <p class="text-sm font-semibold text-white/85">x64</p>
               <p class="text-xs text-white/35">Intel &amp; AMD</p>
@@ -57,9 +68,12 @@ const tabItems = [
           <button
             type="button"
             data-msdl-arch-btn="arm64"
-            class="iso-arch-btn group relative flex cursor-pointer flex-col gap-3 rounded-lg border border-white/[0.06] bg-white/[0.02] px-4 py-4 text-left focus-visible:outline-none active:scale-[0.98]"
+            class="iso-arch-btn group relative flex cursor-pointer flex-col gap-3 rounded-lg bg-white/[0.02] px-4 py-4 text-left shadow-[var(--shadow-surface)] transition-[background-color,box-shadow,scale] duration-200 focus-visible:outline-none active:scale-[0.96]"
           >
-            <Icon name="tabler:device-laptop" class="h-5 w-5 text-white/30 transition-colors duration-200 group-hover:text-primary/70" />
+            <Icon
+              name="tabler:device-laptop"
+              class="group-hover:text-primary/70 h-5 w-5 text-white/30 transition-colors duration-200"
+            />
             <div>
               <p class="text-sm font-semibold text-white/85">ARM64</p>
               <p class="text-xs text-white/35">Qualcomm Snapdragon</p>
@@ -67,11 +81,13 @@ const tabItems = [
           </button>
         </div>
         <Details summary="Which should I download?">
-          <p>
-            Intel/AMD CPUs use x64. ARM (Snapdragon) systems use ARM64.
-          </p>
+          <p>Intel/AMD CPUs use x64. ARM (Snapdragon) systems use ARM64.</p>
           <p class="mb-0">
-            To check your system: open <strong>Settings → System → About</strong> and look at <strong>System type</strong>. See <a href="https://www.tenforums.com/tutorials/132836-check-what-processor-cpu-windows-pc.html#option1">how to check your CPU architecture</a> for more detail.
+            To check your system: open <strong>Settings → System → About</strong> and look at <strong
+              >System type</strong
+            >. See <a href="https://www.tenforums.com/tutorials/132836-check-what-processor-cpu-windows-pc.html#option1" target="_blank" rel="noopener noreferrer"
+              >how to check your CPU architecture</a
+            > for more detail.
           </p>
         </Details>
       </div>
@@ -105,7 +121,7 @@ const tabItems = [
             <button
               type="button"
               data-msdl-select-trigger
-              class="msdl-select-trigger flex w-full cursor-pointer items-center justify-between gap-2 rounded-lg border border-white/[0.07] bg-white/[0.03] px-3 py-2.5 text-sm text-left transition-colors duration-150 hover:border-white/[0.12] hover:bg-white/[0.05] focus-visible:outline-none active:scale-[0.99]"
+              class="msdl-select-trigger flex min-h-10 w-full cursor-pointer items-center justify-between gap-2 rounded-lg bg-white/[0.03] px-3 py-2.5 text-left text-sm shadow-[var(--shadow-surface)] transition-[background-color,box-shadow,scale] duration-150 hover:bg-white/[0.05] hover:shadow-[var(--shadow-surface-hover)] focus-visible:outline-none active:scale-[0.96]"
               aria-haspopup="listbox"
               aria-expanded="false"
             >
@@ -113,24 +129,31 @@ const tabItems = [
               <svg
                 data-msdl-select-chevron
                 class="h-3.5 w-3.5 shrink-0 text-white/25 transition-transform duration-200"
-                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
                 aria-hidden="true"
               >
-                <path d="M6 9l6 6 6-6"/>
+                <path d="M6 9l6 6 6-6"></path>
               </svg>
             </button>
             <!-- Panel injected by JS -->
           </div>
 
           <p class="text-xs text-white/30">
-            Match your Windows display language — check <strong class="font-medium text-white/45">Settings &rarr; Time &amp; language</strong>.
+            Match your Windows display language — check <strong class="font-medium text-white/45"
+              >Settings &rarr; Time &amp; language</strong
+            >.
           </p>
           <button
             type="button"
             data-msdl-get-download
             disabled
-            class="iso-get-download-btn flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-white transition-all duration-150 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-35"
+            class="iso-get-download-btn flex min-h-10 w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-white transition-[background-color,box-shadow,color,opacity,scale] duration-150 focus-visible:outline-none active:scale-[0.96] disabled:cursor-not-allowed disabled:opacity-35"
           >
             Get download link
             <Icon name="tabler:arrow-right" class="h-4 w-4 transition-transform duration-150" />
@@ -153,7 +176,10 @@ const tabItems = [
         <div class="flex flex-col items-center py-6 text-center">
           <div class="iso-success-rings relative mb-4 flex h-14 w-14 items-center justify-center">
             <div class="iso-success-ring-outer absolute inset-0 rounded-full border border-green-500/[0.12]"></div>
-            <div class="iso-success-ring-inner absolute inset-2 rounded-full border border-green-500/20 bg-green-500/[0.04]"></div>
+            <div
+              class="iso-success-ring-inner absolute inset-2 rounded-full border border-green-500/20 bg-green-500/[0.04]"
+            >
+            </div>
             <Icon name="tabler:check" class="relative z-10 h-5 w-5 text-green-400" />
           </div>
           <p class="mb-1 text-sm font-semibold text-white/90">Download started</p>
@@ -162,7 +188,9 @@ const tabItems = [
 
         <div class="rounded-lg border border-white/[0.05] bg-white/[0.02]">
           <div class="border-b border-white/[0.04] px-3 py-2">
-            <p class="text-[10px] font-semibold uppercase tracking-widest text-white/20">Didn&rsquo;t start? Download manually</p>
+            <p class="text-[10px] font-semibold tracking-widest text-white/20 uppercase">
+              Didn&rsquo;t start? Download manually
+            </p>
           </div>
           <div data-msdl-download-links class="space-y-px p-2"></div>
         </div>
@@ -201,13 +229,14 @@ const tabItems = [
           </button>
         </div>
       </div>
-
     </div>
   </TabPanel>
 
   <TabPanel value="microsoft-site">
     <ol>
-      <li>Visit <a href="https://www.microsoft.com/software-download/windows11">Microsoft's Windows 11 download page</a></li>
+      <li>
+        Visit <a href="https://www.microsoft.com/software-download/windows11" target="_blank" rel="noopener noreferrer">Microsoft's Windows 11 download page</a>
+      </li>
       <li>Choose <strong>Download Windows 11 Disk Image (ISO) for x64 devices</strong> (or ARM64 for ARM systems)</li>
       <li>Select <strong>Windows 11 (multi-edition ISO)</strong><IconArrow /><strong>Confirm</strong></li>
       <li>Choose your language<IconArrow /><strong>Confirm</strong></li>
@@ -217,27 +246,62 @@ const tabItems = [
 
   <TabPanel value="media-creation-tool">
     <ol>
-      <li>Download the <a href="https://go.microsoft.com/fwlink/?linkid=2156295">Windows 11 Media Creation Tool</a>, then open it</li>
+      <li>
+        Download the <a href="https://go.microsoft.com/fwlink/?linkid=2156295" target="_blank" rel="noopener noreferrer">Windows 11 Media Creation Tool</a>, then
+        open it
+      </li>
       <li>Click <strong>Accept</strong> to agree to the license terms</li>
-      <li>Select <strong>Create installation media (USB flash drive, DVD, or ISO file) for another PC</strong>, click <strong>Next</strong>, and choose your language and <strong>Windows 11</strong></li>
+      <li>
+        Select <strong>Create installation media (USB flash drive, DVD, or ISO file) for another PC</strong>, click <strong
+          >Next</strong
+        >, and choose your language and <strong>Windows 11</strong>
+      </li>
       <li>Choose the <strong>ISO file</strong> option, then choose the download location</li>
       <li>After the download completes, click <strong>Finish</strong></li>
     </ol>
   </TabPanel>
 
-  {includeAmeBeta && (
-    <TabPanel value="ame-beta">
-      <ol>
-        <li>Go to <a href="https://atlasos.net">atlasos.net</a>, click <strong>Get started</strong>, then <strong>Already following the guide?</strong></li>
-        <li>Download <strong>Atlas Playbook</strong> and <strong>AME Beta</strong>, then extract both to your desktop</li>
-        <li>Open <CodeInline text="AME Beta.exe" /> from the AME Beta folder</li>
-        <li>If SmartScreen warns, see <a href="/docs/faq/ame/#ame-beta-deleted-or-closed-suddenly">AME Beta deleted</a>. Click <strong>More info</strong> and <strong>Run anyway</strong></li>
-        <li>Click <strong>Updates</strong> at the top and ensure AME Beta is up to date</li>
-        <li>Click <strong>More Options</strong><IconArrow /><strong>Download ISO</strong><IconArrow />Select <strong>Windows 11</strong><IconArrow /><strong>OK</strong></li>
-      </ol>
-      <p class="mt-4">This downloads the latest Windows 11 ISO.</p>
-    </TabPanel>
-  )}
+  {
+    includeAmeBeta && (
+      <TabPanel value="ame-beta">
+        <ol>
+          <li>
+            Go to <a href="https://atlasos.net" target="_blank" rel="noopener noreferrer">atlasos.net</a>, click <strong>Get started</strong>, then{' '}
+            <strong>Already following the guide?</strong>
+          </li>
+          <li>
+            Download <strong>Atlas Playbook</strong> and <strong>AME Beta</strong>, then extract both to your desktop
+          </li>
+          <li>
+            Open <CodeInline text="AME Beta.exe" /> from the AME Beta folder
+          </li>
+          <li>
+            If SmartScreen warns, see <a href="/docs/faq/ame/#ame-beta-deleted-or-closed-suddenly">AME Beta deleted</a>.
+            Click <strong>More info</strong> and <strong>Run anyway</strong>
+          </li>
+          <li>
+            Click <strong>Updates</strong> at the top and ensure AME Beta is up to date
+          </li>
+          <li>
+            Click{' '}
+            <>
+              <strong>More Options</strong>
+              <IconArrow />
+              <strong>Download ISO</strong>
+              <IconArrow />
+            </>
+            Select{' '}
+            <>
+              <strong>Windows 11</strong>
+              <IconArrow />
+              <strong>OK</strong>
+            </>
+          </li>
+        </ol>
+        <p class="mt-4">This downloads the latest Windows 11 ISO.</p>
+      </TabPanel>
+    )
+  }
 </Tabs>
 
 <style>
@@ -265,12 +329,19 @@ const tabItems = [
   }
 
   @keyframes iso-spin {
-    to { transform: rotate(360deg); }
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   @keyframes iso-ellipsis-pulse {
-    0%, 100% { opacity: 0.35; }
-    50% { opacity: 1; }
+    0%,
+    100% {
+      opacity: 0.35;
+    }
+    50% {
+      opacity: 1;
+    }
   }
 
   @keyframes msdl-in {
@@ -310,11 +381,15 @@ const tabItems = [
       color-mix(in oklch, var(--color-primary) 90%, white 10%) 0%,
       color-mix(in oklch, var(--color-primary) 70%, black 30%) 100%
     );
-    box-shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 0 0 1px color-mix(in oklch, var(--color-primary) 40%, transparent);
+    box-shadow:
+      0 1px 2px rgb(0 0 0 / 0.3),
+      0 0 0 1px color-mix(in oklch, var(--color-primary) 40%, transparent);
   }
 
   .iso-get-download-btn:not(:disabled):hover {
-    box-shadow: 0 2px 8px color-mix(in oklch, var(--color-primary) 25%, transparent), 0 0 0 1px color-mix(in oklch, var(--color-primary) 50%, transparent);
+    box-shadow:
+      0 2px 8px color-mix(in oklch, var(--color-primary) 25%, transparent),
+      0 0 0 1px color-mix(in oklch, var(--color-primary) 50%, transparent);
     transform: translateY(-1px);
   }
 
@@ -347,8 +422,15 @@ const tabItems = [
   }
 
   @keyframes iso-ring-pulse {
-    0%, 100% { opacity: 0.5; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.08); }
+    0%,
+    100% {
+      opacity: 0.5;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.08);
+    }
   }
 
   /* Dropdown panel */
@@ -375,8 +457,12 @@ const tabItems = [
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.06) transparent;
   }
-  .msdl-options-scroll::-webkit-scrollbar { width: 3px; }
-  .msdl-options-scroll::-webkit-scrollbar-track { background: transparent; }
+  .msdl-options-scroll::-webkit-scrollbar {
+    width: 3px;
+  }
+  .msdl-options-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
   .msdl-options-scroll::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.07);
     border-radius: 2px;
@@ -414,7 +500,7 @@ const tabItems = [
   function buildSelectPanel(
     wrapper: HTMLElement,
     skus: SkuInfo[],
-    onSelect: (id: string | number, label: string, language: string, friendlyFileNames?: string[]) => void,
+    onSelect: (id: string | number, label: string, language: string, friendlyFileNames?: string[]) => void
   ) {
     const trigger = wrapper.querySelector<HTMLButtonElement>('[data-msdl-select-trigger]')!;
     const chevron = wrapper.querySelector<SVGElement>('[data-msdl-select-chevron]')!;
@@ -429,7 +515,9 @@ const tabItems = [
 
     function getOptions() {
       if (!panel) return [];
-      return Array.from(panel.querySelectorAll('[role="option"]')).filter((el): el is HTMLElement => el instanceof HTMLElement);
+      return Array.from(panel.querySelectorAll('[role="option"]')).filter(
+        (el): el is HTMLElement => el instanceof HTMLElement
+      );
     }
 
     function focusOption(el: HTMLElement) {
@@ -471,15 +559,26 @@ const tabItems = [
         opt.className =
           'w-full cursor-pointer px-3 py-2.5 text-left text-sm text-white/65 transition-colors duration-100 hover:bg-white/[0.06] hover:text-white/90 focus:outline-none focus:bg-white/[0.06] focus:text-white/90';
 
-        opt.addEventListener('click', () => selectOption(sku.Id, sku.LocalizedLanguage, sku.Language, sku.FriendlyFileNames));
+        opt.addEventListener('click', () =>
+          selectOption(sku.Id, sku.LocalizedLanguage, sku.Language, sku.FriendlyFileNames)
+        );
 
         opt.addEventListener('keydown', (e) => {
           const opts = getOptions();
           const idx = opts.indexOf(opt);
-          if (e.key === 'ArrowDown') { e.preventDefault(); focusOption(opts[(idx + 1) % opts.length]!); }
-          else if (e.key === 'ArrowUp') { e.preventDefault(); focusOption(opts[(idx - 1 + opts.length) % opts.length]!); }
-          else if (e.key === 'Escape') { e.preventDefault(); closePanel(); trigger.focus(); }
-          else if (e.key === 'Tab') { closePanel(); }
+          if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            focusOption(opts[(idx + 1) % opts.length]!);
+          } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            focusOption(opts[(idx - 1 + opts.length) % opts.length]!);
+          } else if (e.key === 'Escape') {
+            e.preventDefault();
+            closePanel();
+            trigger.focus();
+          } else if (e.key === 'Tab') {
+            closePanel();
+          }
         });
 
         scroll!.appendChild(opt);
@@ -596,15 +695,12 @@ const tabItems = [
       } catch {
         showError(
           'Could not fetch languages. The download service may be temporarily unavailable — try another method below.',
-          () => fetchLanguages(arch),
+          () => fetchLanguages(arch)
         );
       }
     }
 
-    function renderLanguageSelect(
-      data: { Skus?: SkuInfo[] },
-      arch: string,
-    ) {
+    function renderLanguageSelect(data: { Skus?: SkuInfo[] }, arch: string) {
       const archLabel = root.querySelector<HTMLElement>('[data-msdl-arch-label]');
       const getDownloadBtn = root.querySelector<HTMLButtonElement>('[data-msdl-get-download]');
       const wrapper = root.querySelector<HTMLElement>('[data-msdl-select-wrapper]');
@@ -644,10 +740,7 @@ const tabItems = [
         const data = await res.json();
         renderDownloads(data);
       } catch {
-        showError(
-          'Could not generate download links. Please retry or use the Microsoft website tab.',
-          fetchDownload,
-        );
+        showError('Could not generate download links. Please retry or use the Microsoft website tab.', fetchDownload);
       }
     }
 
@@ -665,7 +758,8 @@ const tabItems = [
 
     function getProxyErrorMessage(errors: ProxyError[]): string {
       const first = errors[0];
-      if (!first?.Value) return 'The download service is temporarily unavailable. Please try again in a moment or use the Microsoft website tab.';
+      if (!first?.Value)
+        return 'The download service is temporarily unavailable. Please try again in a moment or use the Microsoft website tab.';
       if (first.Key === 'ErrorSettings.SentinelReject') {
         return 'The download service is temporarily unavailable. Please try again in a moment or use the Microsoft website tab.';
       }
@@ -681,7 +775,7 @@ const tabItems = [
     function renderDownloads(data: { ProductDownloadOptions?: DownloadOption[]; Errors?: ProxyError[] }) {
       const linksContainer = root.querySelector<HTMLElement>('[data-msdl-download-links]');
       if (!linksContainer) return;
-      linksContainer.innerHTML = '';
+      linksContainer.replaceChildren();
 
       if (data.Errors?.length) {
         showError(getProxyErrorMessage(data.Errors), fetchDownload);
@@ -699,7 +793,7 @@ const tabItems = [
       options.forEach((option, index) => {
         const uriBase = option.Uri.split('?')[0] ?? option.Uri;
         const parts = uriBase.split('/');
-        const filename = preferredFilename ?? (parts[parts.length - 1] ?? 'Windows.iso');
+        const filename = preferredFilename ?? parts[parts.length - 1] ?? 'Windows.iso';
 
         const link = document.createElement('a');
         link.href = option.Uri;
@@ -707,7 +801,32 @@ const tabItems = [
         link.rel = 'noopener noreferrer';
         link.className =
           'flex w-full items-center gap-2.5 rounded-md px-2.5 py-2 text-xs text-white/60 transition-colors duration-150 hover:bg-white/[0.04] hover:text-white/85';
-        link.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 shrink-0 text-white/30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/><path d="M7 11l5 5 5-5"/><path d="M12 4v12"/></svg><span class="truncate font-medium">${filename}</span>`;
+
+        const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        icon.setAttribute('class', 'h-3.5 w-3.5 shrink-0 text-white/30');
+        icon.setAttribute('viewBox', '0 0 24 24');
+        icon.setAttribute('fill', 'none');
+        icon.setAttribute('stroke', 'currentColor');
+        icon.setAttribute('stroke-width', '2');
+        icon.setAttribute('stroke-linecap', 'round');
+        icon.setAttribute('stroke-linejoin', 'round');
+        icon.setAttribute('aria-hidden', 'true');
+
+        ['M0 0h24v24H0z', 'M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2', 'M7 11l5 5 5-5', 'M12 4v12'].forEach(
+          (pathData, pathIndex) => {
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', pathData);
+            if (pathIndex === 0) path.setAttribute('stroke', 'none');
+            if (pathIndex === 0) path.setAttribute('fill', 'none');
+            icon.appendChild(path);
+          }
+        );
+
+        const label = document.createElement('span');
+        label.className = 'truncate font-medium';
+        label.textContent = filename;
+
+        link.replaceChildren(icon, label);
         linksContainer.appendChild(link);
 
         if (!didAutoDownload && index === 0) {
@@ -738,11 +857,26 @@ const tabItems = [
     root.addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
       const archBtn = target.closest<HTMLElement>('[data-msdl-arch-btn]');
-      if (archBtn?.dataset.msdlArchBtn) { fetchLanguages(archBtn.dataset.msdlArchBtn); return; }
-      if (target.closest('[data-msdl-back]')) { resetWidget(); return; }
-      if (target.closest('[data-msdl-get-download]')) { fetchDownload(); return; }
-      if (target.closest('[data-msdl-restart]')) { resetWidget(); return; }
-      if (target.closest('[data-msdl-retry]')) { retryAction?.(); return; }
+      if (archBtn?.dataset.msdlArchBtn) {
+        fetchLanguages(archBtn.dataset.msdlArchBtn);
+        return;
+      }
+      if (target.closest('[data-msdl-back]')) {
+        resetWidget();
+        return;
+      }
+      if (target.closest('[data-msdl-get-download]')) {
+        fetchDownload();
+        return;
+      }
+      if (target.closest('[data-msdl-restart]')) {
+        resetWidget();
+        return;
+      }
+      if (target.closest('[data-msdl-retry]')) {
+        retryAction?.();
+        return;
+      }
     });
   }
 

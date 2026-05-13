@@ -1,13 +1,24 @@
 /* Reusable docs surface - cards, panels, details */
 .docs-surface {
   background: var(--docs-surface-bg);
-  border: 1px solid var(--docs-surface-border);
   border-radius: var(--docs-radius-md);
+  box-shadow: var(--shadow-surface);
+  transition:
+    background-color var(--motion-duration-fast) var(--motion-ease-out),
+    box-shadow var(--motion-duration-fast) var(--motion-ease-out),
+    opacity var(--motion-duration-fast) var(--motion-ease-out),
+    transform var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+a.docs-surface:hover,
+button.docs-surface:hover,
+.docs-surface:is(.group):hover {
+  box-shadow: var(--shadow-surface-hover);
 }
 
 /* Inline code/chips */
 .docs-inline {
   background: var(--docs-surface-bg);
-  border: 1px solid var(--docs-surface-border);
   border-radius: var(--docs-radius-sm);
+  box-shadow: var(--shadow-surface);
 }

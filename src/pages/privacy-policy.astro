@@ -1,21 +1,114 @@
 ---
+import { CONTACT_EMAIL } from '@/constants';
 import DefaultLayout from '@/layouts/DefaultLayout.astro';
+
+const lastUpdated = 'February 25, 2026';
 ---
 
-<DefaultLayout>
-  <section class="mx-auto mt-16 max-w-4xl px-4">
-    <h1 class="mb-6 text-4xl font-semibold tracking-tight text-white md:text-5xl">Privacy Policy</h1>
-    <p class="mb-4 leading-relaxed text-white/75">
-      AtlasOS values user privacy. We keep data collection minimal and prioritize transparent, community-reviewable
-      tooling.
-    </p>
-    <p class="mb-4 leading-relaxed text-white/75">
-      This website may process limited operational data for analytics and service reliability. We do not sell personal
-      data.
-    </p>
-    <p class="leading-relaxed text-white/75">
-      For privacy questions, contact
-      <a class="text-primary hover:underline" href="mailto:contact@atlasos.net">contact@atlasos.net</a>.
-    </p>
+<DefaultLayout title="Privacy Policy | AtlasOS" description="AtlasOS privacy policy covering data collection, analytics, third-party services, and your rights.">
+  <section class="mx-auto mt-16 max-w-4xl px-4 pb-16">
+    <h1 class="mb-2 text-4xl font-semibold tracking-tight text-white md:text-5xl">Privacy Policy</h1>
+    <p class="mb-8 text-sm text-white/50">Last updated: {lastUpdated}</p>
+
+    <div class="space-y-8 text-white/75 leading-relaxed">
+      <div>
+        <h2 class="mb-3 text-xl font-semibold text-white">Overview</h2>
+        <p>
+          AtlasOS is an open-source project that modifies Windows to improve performance, privacy, and usability.
+          We are committed to minimizing data collection and being transparent about any data we do process.
+          This policy covers the AtlasOS website (<strong class="text-white/90">atlasos.net</strong>) and its associated services.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="mb-3 text-xl font-semibold text-white">Website Analytics</h2>
+        <p>
+          We use <a class="text-primary hover:underline" href="https://plausible.io" target="_blank" rel="noopener noreferrer">Plausible Analytics</a>,
+          a privacy-focused analytics service that does not use cookies, does not collect personal data, and does not track users across websites.
+          Plausible collects only aggregate, anonymized usage data such as page views, referral sources, browser type, and country-level location.
+          No individual visitor can be identified. Our analytics data is publicly accessible and fully transparent.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="mb-3 text-xl font-semibold text-white">AI Documentation Assistant</h2>
+        <p>
+          Our documentation pages include an AI-powered assistant provided by <a class="text-primary hover:underline" href="https://kapa.ai" target="_blank" rel="noopener noreferrer">Kapa.ai</a>.
+          If you choose to interact with this widget, your queries are sent to Kapa.ai for processing.
+          Please refer to <a class="text-primary hover:underline" href="https://www.kapa.ai/privacy-policy" target="_blank" rel="noopener noreferrer">Kapa.ai's privacy policy</a> for details on how they handle this data.
+          Use of the assistant is entirely optional.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="mb-3 text-xl font-semibold text-white">Microsoft ISO Downloads</h2>
+        <p>
+          Our documentation includes a tool that helps users download official Windows ISO files directly from Microsoft.
+          When you use this tool, requests are proxied through our servers to Microsoft's download infrastructure.
+          We do not log, store, or inspect any personally identifiable information from these requests.
+          Download links are cached temporarily (up to 24 hours) to improve performance, but no user data is included in the cache.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="mb-3 text-xl font-semibold text-white">Cookies</h2>
+        <p>
+          This website does not set any first-party cookies. Third-party services loaded on the site (Plausible Analytics and Kapa.ai)
+          are selected specifically because they do not rely on cookies for tracking. No advertising or marketing cookies are used.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="mb-3 text-xl font-semibold text-white">Data We Do Not Collect</h2>
+        <ul class="list-disc pl-6 space-y-1">
+          <li>We do not collect personal information such as names, email addresses, or IP addresses through the website.</li>
+          <li>We do not use cookies or local storage for tracking purposes.</li>
+          <li>We do not sell, rent, or share any data with third parties for advertising or marketing.</li>
+          <li>We do not fingerprint browsers or devices.</li>
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="mb-3 text-xl font-semibold text-white">AtlasOS Software</h2>
+        <p>
+          AtlasOS itself is an open-source modification applied to your local Windows installation. It runs entirely on your machine.
+          The AtlasOS playbook and configuration tools do not phone home, collect telemetry, or transmit any data to our servers.
+          All source code is publicly available for review on <a class="text-primary hover:underline" href="https://github.com/Atlas-OS/Atlas" target="_blank" rel="noopener noreferrer">GitHub</a>.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="mb-3 text-xl font-semibold text-white">Hosting &amp; Security</h2>
+        <p>
+          This website is hosted on <a class="text-primary hover:underline" href="https://www.cloudflare.com" target="_blank" rel="noopener noreferrer">Cloudflare</a>.
+          Cloudflare may process limited technical data (such as IP addresses) as part of delivering the website and providing DDoS protection.
+          Please refer to <a class="text-primary hover:underline" href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer">Cloudflare's privacy policy</a> for details.
+          We enforce HTTPS, strict content security policies, and other security headers to protect your browsing experience.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="mb-3 text-xl font-semibold text-white">Children's Privacy</h2>
+        <p>
+          This website is not directed at children under the age of 13. We do not knowingly collect any personal information from children.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="mb-3 text-xl font-semibold text-white">Changes to This Policy</h2>
+        <p>
+          We may update this privacy policy from time to time. Changes will be reflected on this page with an updated date.
+          Since we collect virtually no personal data, changes are expected to be infrequent and minor.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="mb-3 text-xl font-semibold text-white">Contact</h2>
+        <p>
+          If you have questions about this privacy policy, contact us at
+          <a class="text-primary hover:underline" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+        </p>
+      </div>
+    </div>
   </section>
 </DefaultLayout>

@@ -24,7 +24,8 @@ const { prev, next } = Astro.props;
         {prev && (
           <a
             href={prev.href}
-            class="page-nav-card docs-surface group hover:border-primary/50 focus-visible:ring-primary/50 relative order-2 flex items-center gap-4 overflow-hidden p-6 transition-all duration-300 hover:bg-white/[0.06] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black md:order-1"
+            data-astro-prefetch="hover"
+            class="page-nav-card docs-surface group focus-visible:ring-primary/50 relative order-2 flex items-center gap-4 overflow-hidden p-6 transition-[background-color,box-shadow,opacity,scale,transform] duration-300 hover:bg-white/[0.06] hover:shadow-[0_0_0_1px_rgba(40,148,243,0.5)] active:scale-[0.96] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black md:order-1"
           >
             <div class="relative z-10 flex-shrink-0">
               <div class="group-hover:border-primary/50 group-hover:bg-primary/10 docs-surface flex h-12 w-12 items-center justify-center transition-colors duration-300">
@@ -53,7 +54,8 @@ const { prev, next } = Astro.props;
         {next && (
           <a
             href={next.href}
-            class="page-nav-card docs-surface group hover:border-primary/50 focus-visible:ring-primary/50 relative order-1 flex items-center gap-4 overflow-hidden p-6 transition-all duration-300 hover:bg-white/[0.06] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black md:order-2"
+            data-astro-prefetch="hover"
+            class="page-nav-card docs-surface group focus-visible:ring-primary/50 relative order-1 flex items-center gap-4 overflow-hidden p-6 transition-[background-color,box-shadow,opacity,scale,transform] duration-300 hover:bg-white/[0.06] hover:shadow-[0_0_0_1px_rgba(40,148,243,0.5)] active:scale-[0.96] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black md:order-2"
           >
             <div class="relative z-10 min-w-0 flex-1 text-right">
               <div class="group-hover:text-primary/80 mb-1.5 text-xs font-medium tracking-wider text-white/50 transition-colors duration-300">

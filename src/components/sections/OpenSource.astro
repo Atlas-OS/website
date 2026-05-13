@@ -25,13 +25,13 @@ const links = {
       widths={[587, 1174]}
       sizes="587px"
       quality={72}
-      class="h-auto w-full rounded-md select-none"
+      class="media-outline h-auto w-full rounded-md select-none shadow-[0_24px_70px_rgba(0,0,0,0.3)]"
       loading="lazy"
       draggable={false}
     />
     <div
       id="gh-stars-wrap"
-      class="bg-secondary/80 absolute right-[-60px] bottom-[-7px] w-[300px] cursor-pointer rounded-md border border-white/[0.06] text-gray-400 backdrop-blur-md transition-[border-radius] duration-200"
+      class="bg-secondary/80 absolute right-[-60px] bottom-[-7px] w-[300px] cursor-pointer rounded-md text-gray-400 shadow-[var(--shadow-surface)] backdrop-blur-md transition-[border-radius,box-shadow] duration-200"
     >
       <button
         id="toggle-star-list-btn"
@@ -54,7 +54,7 @@ const links = {
             <p class="text-white">Starred</p>
             <span
               id="star-amount-badge"
-              class="bg-secondary/80 ml-8 min-w-[50px] rounded-full px-3 py-2 text-center text-sm">--</span
+              class="bg-secondary/80 ml-8 min-w-[50px] rounded-full px-3 py-2 text-center text-sm tabular-nums">--</span
             >
           </div>
           <div class="flex items-center">
@@ -96,7 +96,7 @@ const links = {
           />
         </div>
         <p class="text-white">
-          <span id="star-amount-tag" class="mr-1 font-semibold text-yellow-400">--</span><span class="text-white/70">
+          <span id="star-amount-tag" class="mr-1 font-semibold text-yellow-400 tabular-nums">--</span><span class="text-white/70">
             stargazers on
             <a
               href={links.github}
@@ -174,7 +174,7 @@ const links = {
       img.src = star.avatar;
       img.alt = `${star.username} avatar`;
       img.loading = 'lazy';
-      img.className = 'w-10 h-10 rounded-full object-cover';
+      img.className = 'media-outline w-10 h-10 rounded-full object-cover';
       const p = document.createElement('p');
       p.textContent = star.username;
       p.className = 'text-white';
@@ -197,9 +197,7 @@ const links = {
           this.starBadgeEl.textContent = `${(count / 1000).toFixed(1)}k`;
         }
 
-        const recentStars = (await this.fetchData(
-          `${ATLAS_API_URL}recent-stars`,
-        )) as RecentStar[];
+        const recentStars = (await this.fetchData(`${ATLAS_API_URL}recent-stars`)) as RecentStar[];
         if (!Array.isArray(recentStars)) {
           throw new Error('Invalid recent stars data received');
         }
@@ -212,8 +210,12 @@ const links = {
       } catch {
         if (this.starCountEl) this.starCountEl.textContent = '--';
         if (this.starBadgeEl) this.starBadgeEl.textContent = '--';
-        if (this.starListItems)
-          this.starListItems.innerHTML = '<p class="text-white/70 text-center">Could not load stargazers.</p>';
+        if (this.starListItems) {
+          const message = document.createElement('p');
+          message.className = 'text-center text-white/70';
+          message.textContent = 'Could not load stargazers.';
+          this.starListItems.replaceChildren(message);
+        }
       }
     }
   }
@@ -236,8 +238,8 @@ const links = {
     display: grid;
     grid-template-rows: 0fr;
     transform-origin: top center;
-    transition:
-      grid-template-rows var(--motion-duration-normal, 250ms) var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1));
+    transition: grid-template-rows var(--motion-duration-normal, 250ms)
+      var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1));
   }
 
   .gh-star-dropdown-inner {
@@ -263,7 +265,8 @@ const links = {
   #gh-stars-wrap.toggled {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-    transition: border-radius var(--motion-duration-normal, 250ms) var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1));
+    box-shadow: var(--shadow-surface-hover);
+    transition: border-radius var(--motion-duration-normal, 250ms)
+      var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1));
   }
-
 </style>

@@ -1,11 +1,10 @@
 ---
-import { SITE_URL } from '@/constants';
-import { getCollection, render } from 'astro:content';
+import { DEFAULT_OG_IMAGE } from '@/constants';
+import { getPublishedDocsBySlug } from '@/utils/docs-content';
+import { render } from 'astro:content';
 import DocsLayout from '@/layouts/DocsLayout.astro';
-import { getSlugFromEntry } from '@/utils/navigation';
 
-const allDocs = await getCollection('docs', doc => !doc.data.draft);
-const entry = allDocs.find(doc => getSlugFromEntry(doc) === '/docs/');
+const entry = (await getPublishedDocsBySlug()).get('/docs/');
 
 if (!entry) {
   throw new Error('Home page not found. Expected a docs entry that resolves to /docs/.');
@@ -13,8 +12,7 @@ if (!entry) {
 
 const { Content, headings } = await render(entry);
 
-const site = Astro.site || SITE_URL;
-const ogImageUrl = new URL('/docs/og-image.png', site).href;
+const ogImageUrl = DEFAULT_OG_IMAGE;
 ---
 
 <DocsLayout

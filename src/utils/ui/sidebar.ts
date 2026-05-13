@@ -1,8 +1,7 @@
 const DESKTOP_BREAKPOINT = 1024;
-const SCROLL_STORAGE_KEY = 'sidebar-scroll-position';
-const EXPANDED_STORAGE_KEY = 'sidebar-expanded-items';
 
 let teardown: (() => void) | null = null;
+let pendingSidebarScrollTop: number | null = null;
 
 type SidebarElements = {
   sidebar: HTMLElement | null;
@@ -43,26 +42,7 @@ function setSidebarOpen(isOpen: boolean, elements: SidebarElements): void {
   }
 }
 
-function readStoredExpandedItems(): Set<string> {
-  try {
-    const raw = sessionStorage.getItem(EXPANDED_STORAGE_KEY);
-    if (!raw) {
-      return new Set<string>();
-    }
-
-    const parsed = JSON.parse(raw) as string[];
-    return new Set(parsed);
-  } catch {
-    return new Set<string>();
-  }
-}
-
-function storeExpandedItems(items: Set<string>): void {
-  sessionStorage.setItem(EXPANDED_STORAGE_KEY, JSON.stringify([...items]));
-}
-
 function setupGroups(sidebar: HTMLElement, signal: AbortSignal): void {
-  const expandedItems = readStoredExpandedItems();
   const groups = sidebar.querySelectorAll<HTMLElement>('[data-sidebar-group]');
 
   for (const group of groups) {
@@ -77,7 +57,7 @@ function setupGroups(sidebar: HTMLElement, signal: AbortSignal): void {
     }
 
     const hasActiveChild = group.dataset.sidebarActive === 'true';
-    const isOpen = hasActiveChild || expandedItems.has(key);
+    const isOpen = hasActiveChild;
 
     group.classList.toggle('is-collapsed', !isOpen);
     toggleButton.setAttribute('aria-expanded', String(isOpen));
@@ -91,46 +71,67 @@ function setupGroups(sidebar: HTMLElement, signal: AbortSignal): void {
         const nextIsOpen = group.classList.contains('is-collapsed');
         group.classList.toggle('is-collapsed', !nextIsOpen);
         toggleButton.setAttribute('aria-expanded', String(nextIsOpen));
-
-        if (nextIsOpen) {
-          expandedItems.add(key);
-        } else {
-          expandedItems.delete(key);
-        }
-
-        storeExpandedItems(expandedItems);
       },
       { signal },
     );
   }
 }
 
-function setupScrollPersistence(scrollContainer: HTMLElement, signal: AbortSignal): void {
-  const savedScroll = sessionStorage.getItem(SCROLL_STORAGE_KEY);
-  if (savedScroll) {
-    requestAnimationFrame(() => {
-      scrollContainer.scrollTop = Number.parseInt(savedScroll, 10) || 0;
-    });
+function saveSidebarScrollPosition(): void {
+  pendingSidebarScrollTop = document.getElementById('sidebar-scroll')?.scrollTop ?? null;
+}
+
+function restoreSidebarScrollPosition(): void {
+  if (pendingSidebarScrollTop === null) return;
+
+  const scrollContainer = document.getElementById('sidebar-scroll');
+  if (scrollContainer) {
+    scrollContainer.scrollTop = pendingSidebarScrollTop;
   }
 
-  let timeoutId: ReturnType<typeof setTimeout> | null = null;
-  const saveScroll = () => {
-    sessionStorage.setItem(SCROLL_STORAGE_KEY, String(scrollContainer.scrollTop));
-  };
+  pendingSidebarScrollTop = null;
+}
 
-  scrollContainer.addEventListener(
-    'scroll',
-    () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-      timeoutId = setTimeout(saveScroll, 120);
-    },
-    { signal },
-  );
+function normalizePath(path: string): string {
+  const withoutOrigin = path.startsWith('http') ? new URL(path).pathname : path;
+  return withoutOrigin.replace(/\/+$/, '') || '/';
+}
 
-  document.addEventListener('astro:before-swap', saveScroll, { signal });
-  window.addEventListener('pagehide', saveScroll, { signal });
+function syncActiveLink(sidebar: HTMLElement, activePath = window.location.pathname): void {
+  const currentPath = normalizePath(activePath);
+  const links = sidebar.querySelectorAll<HTMLAnchorElement>('a[href]');
+
+  for (const link of links) {
+    const href = link.getAttribute('href');
+    if (!href?.startsWith('/')) continue;
+
+    const linkPath = normalizePath(href);
+    const isSectionLink = link.classList.contains('sidebar-section-link');
+    const isHomeLink = link.classList.contains('sidebar-home-link');
+    const isActive = linkPath === currentPath;
+
+    link.classList.toggle('sidebar-active-link', isActive);
+    link.classList.toggle('font-medium', isActive && link.classList.contains('sidebar-link'));
+    link.classList.toggle('text-white/70', !isActive && link.classList.contains('sidebar-link'));
+    link.classList.toggle('text-white/85', !isActive && (isSectionLink || isHomeLink));
+    link.classList.toggle('hover:bg-white/5', !isActive);
+    link.classList.toggle('hover:text-white', !isActive);
+    if (isActive) {
+      link.setAttribute('aria-current', 'page');
+    } else {
+      link.removeAttribute('aria-current');
+    }
+  }
+
+  for (const group of sidebar.querySelectorAll<HTMLElement>('[data-sidebar-group]')) {
+    const groupIsActive = Array.from(group.querySelectorAll<HTMLAnchorElement>('a[href]')).some(
+      link => normalizePath(link.getAttribute('href') || '') === currentPath,
+    );
+    const toggleButton = group.querySelector<HTMLButtonElement>('.sidebar-toggle');
+    group.dataset.sidebarActive = String(groupIsActive);
+    group.classList.toggle('is-collapsed', !groupIsActive);
+    toggleButton?.setAttribute('aria-expanded', String(groupIsActive));
+  }
 }
 
 export function closeSidebar(): void {
@@ -151,6 +152,7 @@ export function initSidebar(): void {
   teardown = () => controller.abort();
 
   setSidebarOpen(false, elements);
+  syncActiveLink(elements.sidebar);
 
   elements.toggleButton.addEventListener(
     'click',
@@ -176,6 +178,9 @@ export function initSidebar(): void {
     { signal },
   );
 
+  document.addEventListener('astro:before-swap', saveSidebarScrollPosition, { signal });
+  document.addEventListener('astro:after-swap', restoreSidebarScrollPosition, { signal });
+
   window.addEventListener(
     'resize',
     () => {
@@ -191,6 +196,10 @@ export function initSidebar(): void {
     link.addEventListener(
       'click',
       () => {
+        if (link.origin === window.location.origin && elements.sidebar) {
+          syncActiveLink(elements.sidebar, link.pathname);
+        }
+
         if (window.innerWidth < DESKTOP_BREAKPOINT) {
           setSidebarOpen(false, elements);
         }
@@ -200,10 +209,6 @@ export function initSidebar(): void {
   }
 
   setupGroups(elements.sidebar, signal);
-
-  if (elements.scrollContainer) {
-    setupScrollPersistence(elements.scrollContainer, signal);
-  }
 
   requestAnimationFrame(() => {
     elements.sidebar?.classList.add('initialized');

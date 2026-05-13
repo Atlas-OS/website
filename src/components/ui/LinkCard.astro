@@ -18,18 +18,18 @@ const externalAttrs = external ? { target: '_blank', rel: 'noopener noreferrer' 
 <a
   href={href}
   {...externalAttrs}
-  class={`link-card link-card-animated not-prose group block rounded-lg border border-white/[0.06] bg-white/5 p-5 transition-opacity duration-200 hover:opacity-80 relative overflow-hidden focus:outline-none ${className}`}
+  class={`link-card link-card-animated not-prose group relative block overflow-hidden rounded-lg bg-white/5 p-5 shadow-[var(--shadow-surface)] transition-[background-color,box-shadow,scale] duration-200 hover:bg-white/[0.07] hover:shadow-[var(--shadow-surface-hover)] active:scale-[0.96] focus:outline-none ${className}`}
 >
   <div class="relative z-10">
     <div class="mb-2 flex items-start justify-between gap-3">
-      <h3 class="text-lg font-semibold text-white transition-opacity duration-200 group-hover:opacity-80">
+      <h3 class="text-lg font-semibold text-white transition-colors duration-200 group-hover:text-white">
         {title}
       </h3>
       <div
-        class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md border border-white/[0.06] bg-white/5 transition-opacity duration-200 group-hover:opacity-80"
+        class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md bg-white/5 shadow-[var(--shadow-surface)] transition-[background-color,box-shadow] duration-200 group-hover:bg-white/[0.08] group-hover:shadow-[var(--shadow-surface-hover)]"
       >
         <div class="link-card-icon-wrapper">
-          <Icon name={icon} class="h-4 w-4 text-white/60 transition-opacity duration-200 group-hover:opacity-80" />
+          <Icon name={icon} class="h-4 w-4 text-white/60 transition-colors duration-200 group-hover:text-white/80" />
         </div>
       </div>
     </div>

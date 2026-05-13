@@ -20,10 +20,7 @@ import { Icon } from 'astro-icon/components';
 >
   <h2 id="spotlight-title" class="sr-only">Search documentation</h2>
 
-  <div
-    id="spotlight-input-container"
-    class="flex flex-shrink-0 cursor-text items-center gap-3 px-5 py-4"
-  >
+  <div id="spotlight-input-container" class="flex flex-shrink-0 cursor-text items-center gap-3 px-5 py-4">
     <Icon name="tabler:search" class="h-[18px] w-[18px] flex-shrink-0 text-white/35" aria-hidden="true" />
     <input
       type="text"
@@ -46,9 +43,10 @@ import { Icon } from 'astro-icon/components';
   <div class="h-px w-full flex-shrink-0 bg-white/[0.06]"></div>
 
   <div id="spotlight-results" class="min-h-0 flex-1 overflow-y-auto">
-
     <div id="spotlight-idle" class="flex flex-col items-center justify-center px-6 py-10 text-center">
-      <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.06] bg-white/[0.03]">
+      <div
+        class="mb-3 flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.06] bg-white/[0.03]"
+      >
         <Icon name="tabler:book" class="h-5 w-5 text-white/25" aria-hidden="true" />
       </div>
       <p class="text-sm font-medium text-white/40">Search the docs</p>
@@ -60,12 +58,20 @@ import { Icon } from 'astro-icon/components';
       <p class="mt-1 text-xs text-white/20">Try a different search term</p>
     </div>
 
-    <div id="spotlight-loading" class="hidden flex items-center justify-center gap-2.5 px-6 py-10 text-sm text-white/35">
+    <div
+      id="spotlight-loading"
+      class="flex hidden items-center justify-center gap-2.5 px-6 py-10 text-sm text-white/35"
+    >
       <span class="loading-spinner h-4 w-4 flex-shrink-0" aria-hidden="true"></span>
       <span>Searching&hellip;</span>
     </div>
 
-    <ul id="spotlight-list" class="py-2" style="list-style: none; padding-top: 0.5rem; padding-bottom: 0.5rem; margin: 0;"></ul>
+    <ul
+      id="spotlight-list"
+      class="py-2"
+      style="list-style: none; padding-top: 0.5rem; padding-bottom: 0.5rem; margin: 0;"
+    >
+    </ul>
   </div>
 
   <div id="spotlight-footer" class="hidden flex-shrink-0 border-t border-white/[0.06] px-5 py-2.5">
@@ -123,8 +129,12 @@ import { Icon } from 'astro-icon/components';
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.07) transparent;
   }
-  #spotlight-results::-webkit-scrollbar { width: 4px; }
-  #spotlight-results::-webkit-scrollbar-track { background: transparent; }
+  #spotlight-results::-webkit-scrollbar {
+    width: 4px;
+  }
+  #spotlight-results::-webkit-scrollbar-track {
+    background: transparent;
+  }
   #spotlight-results::-webkit-scrollbar-thumb {
     background-color: rgba(255, 255, 255, 0.07);
     border-radius: 2px;
@@ -143,7 +153,9 @@ import { Icon } from 'astro-icon/components';
     box-sizing: border-box !important;
     background-color: transparent !important;
     border: 1px solid transparent !important;
-    transition: background-color 120ms ease, border-color 120ms ease !important;
+    transition:
+      background-color 120ms ease,
+      border-color 120ms ease !important;
   }
 
   .spotlight-item:hover {
@@ -293,8 +305,7 @@ import { Icon } from 'astro-icon/components';
 
     try {
       const pagefindPath = '/pagefind/pagefind.js';
-      const importPagefind = (modulePath: string): Promise<unknown> =>
-        import(/* @vite-ignore */ modulePath);
+      const importPagefind = (modulePath: string): Promise<unknown> => import(/* @vite-ignore */ modulePath);
 
       const pf = (await importPagefind(pagefindPath)) as Pagefind;
       await pf.init();
@@ -353,7 +364,7 @@ import { Icon } from 'astro-icon/components';
     const empty = document.getElementById('spotlight-empty');
     const loading = document.getElementById('spotlight-loading');
 
-    if (list) list.innerHTML = '';
+    if (list) list.replaceChildren();
     if (empty) empty.classList.add('hidden');
     if (loading) loading.classList.remove('hidden');
     setIdleVisible(false);
@@ -429,9 +440,29 @@ import { Icon } from 'astro-icon/components';
     searchDebounceTimer = setTimeout(() => search(query), 150);
   }
 
-  const PAGE_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"/></svg>`;
+  function createSvgIcon(paths: string[], className?: string, strokeWidth = '2') {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 24 24');
+    svg.setAttribute('fill', 'none');
+    svg.setAttribute('stroke', 'currentColor');
+    svg.setAttribute('stroke-width', strokeWidth);
+    svg.setAttribute('stroke-linecap', 'round');
+    svg.setAttribute('stroke-linejoin', 'round');
+    svg.setAttribute('aria-hidden', 'true');
+    if (className) svg.setAttribute('class', className);
 
-  const ARROW_ICON_SVG = `<svg class="spotlight-item-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 6l6 6l-6 6"/></svg>`;
+    paths.forEach((pathData, index) => {
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', pathData);
+      if (index === 0) {
+        path.setAttribute('stroke', 'none');
+        path.setAttribute('fill', 'none');
+      }
+      svg.appendChild(path);
+    });
+
+    return svg;
+  }
 
   function renderResults(results: SearchResult[], hasQuery: boolean) {
     const list = document.getElementById('spotlight-list');
@@ -442,7 +473,7 @@ import { Icon } from 'astro-icon/components';
     hideLoading();
 
     if (results.length === 0) {
-      list.innerHTML = '';
+      list.replaceChildren();
       selectedIndex = -1;
       setIdleVisible(!hasQuery);
       setFooterVisible(false);
@@ -458,21 +489,50 @@ import { Icon } from 'astro-icon/components';
     setIdleVisible(false);
     setFooterVisible(true);
 
-    list.innerHTML = results
-      .map((result, index) => {
-        const path = '/' + (result.url.replace(/^\//, '').replace(/\/$/, '') || '');
-        return `
-          <li class="spotlight-item ${index === selectedIndex ? 'selected' : ''}" data-index="${index}" data-url="${result.url}">
-            <div class="spotlight-item-icon">${PAGE_ICON_SVG}</div>
-            <div class="spotlight-item-body">
-              <p class="spotlight-item-title">${escapeHtml(result.title)}</p>
-              <p class="spotlight-item-path">${escapeHtml(path)}</p>
-            </div>
-            ${ARROW_ICON_SVG}
-          </li>
-        `;
-      })
-      .join('');
+    const fragment = document.createDocumentFragment();
+
+    results.forEach((result, index) => {
+      const path = '/' + (result.url.replace(/^\//, '').replace(/\/$/, '') || '');
+      const item = document.createElement('li');
+      item.className = `spotlight-item ${index === selectedIndex ? 'selected' : ''}`.trim();
+      item.dataset.index = String(index);
+      item.dataset.url = result.url;
+
+      const iconWrapper = document.createElement('div');
+      iconWrapper.className = 'spotlight-item-icon';
+      iconWrapper.appendChild(
+        createSvgIcon(
+          [
+            'M0 0h24v24H0z',
+            'M14 3v4a1 1 0 0 0 1 1h4',
+            'M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z',
+          ],
+          undefined,
+          '1.75'
+        )
+      );
+
+      const body = document.createElement('div');
+      body.className = 'spotlight-item-body';
+
+      const title = document.createElement('p');
+      title.className = 'spotlight-item-title';
+      title.textContent = result.title;
+
+      const pathElement = document.createElement('p');
+      pathElement.className = 'spotlight-item-path';
+      pathElement.textContent = path;
+
+      body.replaceChildren(title, pathElement);
+      item.replaceChildren(
+        iconWrapper,
+        body,
+        createSvgIcon(['M0 0h24v24H0z', 'M9 6l6 6l-6 6'], 'spotlight-item-arrow')
+      );
+      fragment.appendChild(item);
+    });
+
+    list.replaceChildren(fragment);
 
     list.querySelectorAll('.spotlight-item').forEach((item) => {
       const el = item as HTMLElement;
@@ -491,13 +551,6 @@ import { Icon } from 'astro-icon/components';
       });
       el.addEventListener('mousedown', (e) => e.preventDefault());
     });
-  }
-
-  function escapeHtml(text: string): string {
-    const map: Record<string, string> = {
-      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;',
-    };
-    return text.replace(/[&<>"']/g, (m) => map[m] ?? m);
   }
 
   function navigateResults(direction: 'up' | 'down') {
@@ -556,9 +609,16 @@ import { Icon } from 'astro-icon/components';
       });
 
       input.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowDown') { e.preventDefault(); navigateResults('down'); }
-        else if (e.key === 'ArrowUp') { e.preventDefault(); navigateResults('up'); }
-        else if (e.key === 'Enter') { e.preventDefault(); selectCurrentResult(); }
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          navigateResults('down');
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          navigateResults('up');
+        } else if (e.key === 'Enter') {
+          e.preventDefault();
+          selectCurrentResult();
+        }
       });
     }
 

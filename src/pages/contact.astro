@@ -1,8 +1,9 @@
 ---
+import { CONTACT_EMAIL } from '@/constants';
 import DefaultLayout from '@/layouts/DefaultLayout.astro';
 ---
 
-<DefaultLayout>
+<DefaultLayout title="Contact | AtlasOS" description="Get in touch with the AtlasOS team via email, Discord, or GitHub Discussions.">
   <section class="mx-auto mt-16 max-w-4xl px-4">
     <h1 class="mb-6 text-4xl font-semibold tracking-tight text-white md:text-5xl">Contact AtlasOS</h1>
     <p class="mb-4 leading-relaxed text-white/75">
@@ -10,7 +11,7 @@ import DefaultLayout from '@/layouts/DefaultLayout.astro';
     </p>
     <ul class="space-y-3 text-white/80">
       <li>
-        Email: <a class="text-primary hover:underline" href="mailto:contact@atlasos.net">contact@atlasos.net</a>
+        Email: <a class="text-primary hover:underline" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
       </li>
       <li>
         Discord: <a class="text-primary hover:underline" href="https://discord.com/invite/atlasos" target="_blank" rel="noopener noreferrer">Join the AtlasOS server</a>

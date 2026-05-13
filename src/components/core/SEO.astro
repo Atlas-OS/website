@@ -12,7 +12,6 @@ interface Props {
   modifiedTime?: string;
   author?: string;
   tags?: string[];
-  currentSlug?: string;
   faqItems?: Array<{ question: string; answer: string }>;
   softwareApp?: boolean;
 }
@@ -34,7 +33,7 @@ const {
 
 const site = Astro.site || SITE_URL;
 const siteBase = (typeof site === 'string' ? site : site.href).replace(/\/$/, '');
-const fullTitle = title.includes('|') ? title : `${title} | AtlasOS Documentation`;
+const fullTitle = title.includes('|') ? title : `${title} | AtlasOS`;
 const pageURL = canonicalURL || new URL(Astro.url.pathname, site).href;
 const ogImage = image || `${siteBase}/defaultimg.png`;
 const finalMetaDescription = metaDescription || description || DEFAULT_META_DESCRIPTION;
@@ -109,9 +108,9 @@ const articleSchema =
 const structuredData = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  name: fullTitle,
+  name: 'AtlasOS',
   description: finalMetaDescription,
-  url: pageURL,
+  url: siteBase,
   publisher: organizationSchema,
 };
 ---
@@ -129,7 +128,7 @@ const structuredData = {
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="og:image:alt" content={finalMetaDescription} />
-<meta property="og:site_name" content="AtlasOS Documentation" />
+<meta property="og:site_name" content="AtlasOS" />
 <meta property="og:locale" content="en-US" />
 
 {
@@ -175,25 +174,4 @@ const structuredData = {
     publisher: organizationSchema,
   })}
 />
-
-<script
-  type="application/ld+json"
-  is:inline
-  set:html={JSON.stringify({
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: 'AtlasOS Documentation',
-    url: site,
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: {
-        '@type': 'EntryPoint',
-        urlTemplate: `${siteBase}/api/search.json?q={search_term_string}`,
-      },
-      'query-input': 'required name=search_term_string',
-    },
-    publisher: organizationSchema,
-  })}
-/>
-
-<meta name="theme-color" content="#4a86e8" />
+<meta name="theme-color" content="#1990fe" />

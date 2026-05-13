@@ -13,8 +13,8 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
     <aside
       id="toc"
       data-pagefind-ignore
-      class="fixed right-0 z-20 hidden overflow-y-auto px-5 py-6 xl:block"
-      style="top: var(--docs-header-height); width: var(--docs-toc-width); height: calc(100vh - var(--docs-header-height)); background-color: oklch(0.1 0.04 265); border-left: 1px solid var(--docs-surface-border);"
+      class="fixed z-20 hidden overflow-y-auto px-6 py-6 xl:block"
+      style="top: var(--docs-header-height); right: var(--docs-toc-inset); width: var(--docs-toc-width); height: calc(100vh - var(--docs-header-height));"
     >
       <nav class="sticky top-6 z-10 -mr-2 max-h-[calc(100vh-4rem)] overflow-y-auto px-2" aria-label="On this page">
         <div class="space-y-4">
@@ -22,7 +22,7 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
           <div class="relative">
             <div
               id="toc-marker"
-              class="bg-primary absolute left-0 w-[2px] rounded-full opacity-0 transition-all duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1.0)]"
+              class="bg-primary absolute left-0 w-[2px] rounded-full opacity-0 transition-[height,opacity,top] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1.0)]"
               style="top: 0; height: 0;"
             >
               <div class="bg-primary/50 absolute inset-0 blur-[2px]" />
@@ -74,6 +74,7 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
   @reference "tailwindcss";
 
   #toc {
+    background-color: transparent;
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
   }
@@ -108,6 +109,10 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
   function setupTableOfContents() {
     const toc = document.querySelector('#toc');
     if (!toc) return;
+    if (toc instanceof HTMLElement && toc.dataset.tocInitialized === 'true') return;
+    if (toc instanceof HTMLElement) {
+      toc.dataset.tocInitialized = 'true';
+    }
 
     const tocLinks = Array.from(toc.querySelectorAll('a.toc-link'));
     const marker = toc.querySelector('#toc-marker') as HTMLElement;
@@ -176,6 +181,8 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
   function setupCopyLink() {
     const btn = document.getElementById('toc-copy-link');
     if (!btn) return;
+    if (btn.dataset.copyBound === 'true') return;
+    btn.dataset.copyBound = 'true';
 
     btn.addEventListener('click', async () => {
       try {
@@ -194,8 +201,16 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
     });
   }
 
-  document.addEventListener('astro:page-load', () => {
+  function initTableOfContents() {
     setupTableOfContents();
     setupCopyLink();
-  });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTableOfContents);
+  } else {
+    initTableOfContents();
+  }
+
+  document.addEventListener('astro:page-load', initTableOfContents);
 </script>

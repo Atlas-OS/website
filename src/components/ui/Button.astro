@@ -38,14 +38,14 @@ const externalAttrs = external ? { target: '_blank', rel: 'noopener noreferrer' 
 const baseClasses = [
   'inline-flex items-center justify-center font-medium whitespace-nowrap relative box-border',
   'focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black',
-  'transition-colors duration-200 transition-transform duration-100 ease-out',
+  'transition-[background-color,box-shadow,color,opacity,scale,transform] duration-200 ease-out',
   'cursor-pointer',
 ];
 
 const sizeClasses = {
-  sm: 'text-xs px-3 py-1 gap-1.5 rounded-md',
-  md: 'text-sm px-4 py-1.5 gap-2 md:text-xs md:px-4 md:py-1.5 rounded-md',
-  lg: 'text-sm px-5 py-2 gap-2 md:py-2 rounded-lg',
+  sm: 'min-h-10 text-xs px-3 py-1 gap-1.5 rounded-md',
+  md: 'min-h-10 text-sm px-4 py-1.5 gap-2 md:text-xs md:px-4 md:py-1.5 rounded-md',
+  lg: 'min-h-10 text-sm px-5 py-2 gap-2 md:py-2 rounded-lg',
 };
 
 const variantClasses = {
@@ -55,7 +55,7 @@ const variantClasses = {
     'backdrop-blur-sm',
     '!disabled:hover:bg-primary/80',
     'shadow-sm shadow-primary/10',
-    'active:scale-[0.98]',
+    'active:scale-[0.96]',
   ],
   secondary: [
     'relative isolate',
@@ -63,10 +63,10 @@ const variantClasses = {
     'backdrop-blur-sm',
     '!disabled:hover:bg-white/10',
     'shadow-sm shadow-black/5',
-    'active:scale-[0.98]',
+    'active:scale-[0.96]',
   ],
   tertiary: [
-    'py-0.5 px-0',
+    'py-0.5 px-0 min-h-10',
     'relative',
     'text-sm text-primary hover:text-primary focus-visible:text-primary',
     'tertiary-link',
@@ -148,7 +148,7 @@ const inlineStyle = variantStyles[variant];
     height: 1px;
     transform: scaleX(0);
     transform-origin: left;
-    transition: transform 0.2s ease-out;
+    transition: transform var(--motion-duration-fast) var(--motion-ease-out);
     background: currentColor;
   }
 

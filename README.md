@@ -27,28 +27,42 @@ bun install
 
 ## Available Scripts
 
-| Command                      | Description                                      |
-| ---------------------------- | ------------------------------------------------ |
-| `bun dev`                    | Start the development server                     |
-| `bun run build`              | Build for production with optimization           |
-| `bun run build:raw`          | Build for production without optimization        |
-| `bun run compress:postbuild` | Compress assets in `dist` (`.gz`, `.br`, `.zst`) |
-| `bun preview`                | Preview the production build locally             |
-| `bun format`                 | Format code with Prettier                        |
-| `bun run lint`               | Lint code with ESLint                            |
-| `bun run check`              | Run Astro type checking                          |
-| `bun run search:index`       | Build the Pagefind search index                  |
+| Command                                                     | Description                                             |
+| ----------------------------------------------------------- | ------------------------------------------------------- |
+| `bun dev`                                                   | Start the development server                            |
+| `bun run build`                                             | Build for production with Astro + Jampack               |
+| `bun run build:raw`                                         | Build for production without Jampack optimization       |
+| `bun run preview`                                           | Preview the production build locally                    |
+| `bun format`                                                | Format code with Prettier                               |
+| `bun run lint`                                              | Lint code with ESLint                                   |
+| `bun run check`                                             | Run Astro type checking                                 |
+| `bun run search:index`                                      | Build the Pagefind search index                         |
+| `bunx wrangler deploy --dry-run --outdir .wrangler-dry-run` | Validate the Cloudflare Worker bundle without deploying |
+
+## Deployment
+
+The site deploys as a static Astro build served by Cloudflare Workers static assets. The Worker only runs for `/api/*` routes, including the Microsoft ISO helper.
+
+Required Cloudflare setup:
+
+- `CLOUDFLARE_API_TOKEN` GitHub secret with Workers deploy access
+- `CLOUDFLARE_ACCOUNT_ID` GitHub secret
+- `BROWSER` Browser Rendering binding in `wrangler.jsonc`
+- `MS_ISO_LINKS` KV namespace binding in `wrangler.jsonc`
+
+The deploy workflow runs install, lint, Astro check, production build, Wrangler dry-run validation, then `wrangler deploy`.
 
 ## Configuration
 
-| File               | Purpose                                           |
-| ------------------ | ------------------------------------------------- |
-| `astro.config.mjs` | Astro settings, site URL, and Pagefind indexing   |
-| `wrangler.jsonc`   | Cloudflare Workers deployment config             |
-| `globals.css`      | Tailwind theme and global styles                  |
-| `eslint.config.js` | ESLint rules for Astro and TypeScript             |
-| `.editorconfig`    | Editor settings for consistent formatting         |
-| `.gitignore`       | Excludes `.jampack/`, build output, and lockfiles |
+| File                    | Purpose                                               |
+| ----------------------- | ----------------------------------------------------- |
+| `astro.config.mjs`      | Astro settings, site URL, and Pagefind indexing       |
+| `jampack.config.js`     | Jampack post-build optimization settings              |
+| `wrangler.jsonc`        | Cloudflare Workers deployment config                  |
+| `src/styles/global.css` | Tailwind theme and global styles                      |
+| `eslint.config.js`      | ESLint rules for Astro and TypeScript                 |
+| `.editorconfig`         | Editor settings for consistent formatting             |
+| `.gitignore`            | Excludes build output and local development artifacts |
 
 ## Project Structure
 
@@ -66,15 +80,7 @@ Components live in `src/components/` and follow a purpose-based organization:
 
 ### Utilities
 
-Utilities in `src/utils/`:
-
-- `navigation.ts` — Routing and navigation
-- `locale.ts` — Internationalization
-- `navbar.ts` — Navbar interactions
-- `sidebar.ts` — Sidebar state
-- `scroll-animations.ts` — Animation utilities
-
-Import utilities through `src/utils/index.ts`.
+Utilities in `src/utils/` include docs content helpers, navigation helpers, UI initializers, and browser interaction scripts.
 
 ### Constants
 

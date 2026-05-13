@@ -12,6 +12,7 @@ interface Props {
   loading?: 'lazy' | 'eager';
   layout?: 'full-width' | 'constrained' | 'fixed';
   sizes?: string;
+  outlined?: boolean;
   class?: string;
   draggable?: boolean;
 }
@@ -26,11 +27,13 @@ const {
   loading = 'lazy',
   layout = 'constrained',
   sizes,
+  outlined = false,
   class: className = '',
   draggable = true,
 } = Astro.props;
 
 const hasDimensions = width && height;
+const classes = [outlined && 'media-outline', className].filter(Boolean).join(' ');
 ---
 
 <AstroPicture
@@ -43,7 +46,7 @@ const hasDimensions = width && height;
   loading={loading}
   layout={layout}
   sizes={sizes}
-  class={className}
+  class={classes}
   draggable={draggable}
   {...hasDimensions && { style: `aspect-ratio: ${width} / ${height}` }}
 />

@@ -9,18 +9,25 @@ const tabsId = `tabs-${Math.random().toString(36).substring(2, 11)}`;
 ---
 
 <div class="tabs-container" data-tabs-id={tabsId}>
-  <div class="tabs-list mb-4 flex flex-nowrap gap-2 overflow-x-auto" style="border-bottom: 1px solid var(--docs-surface-border);" role="tablist">
+  <div
+    class="tabs-list mb-4 flex flex-nowrap gap-2 overflow-x-auto"
+    style="border-bottom: 1px solid var(--docs-surface-border);"
+    role="tablist"
+  >
     {
       items.map((item) => (
         <button
           type="button"
           role="tab"
+          id={`${tabsId}-tab-${item.value}`}
           data-tab={item.value}
+          aria-controls={`${tabsId}-panel-${item.value}`}
           aria-selected={item.value === defaultTab ? 'true' : 'false'}
-          class={`tab-button shrink-0 border-b-2 px-4 py-2 text-sm font-medium transition-opacity duration-200 cursor-pointer outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black ${
+          tabindex={item.value === defaultTab ? '0' : '-1'}
+          class={`tab-button focus-visible:ring-primary/50 min-h-10 shrink-0 cursor-pointer border-b-2 px-4 py-2 text-sm font-medium transition-[border-color,color] duration-200 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none ${
             item.value === defaultTab
               ? 'border-primary text-primary'
-              : 'border-transparent text-white/60 hover:opacity-80'
+              : 'border-transparent text-white/60 hover:text-white/85'
           }`}
         >
           {item.label}
@@ -36,37 +43,66 @@ const tabsId = `tabs-${Math.random().toString(36).substring(2, 11)}`;
 
 <script>
   function initTabs(container: HTMLElement) {
+    if (container.dataset.tabsInitialized === 'true') return;
+    container.dataset.tabsInitialized = 'true';
+
     const tabsId = container.dataset.tabsId;
     if (!tabsId) return;
 
     const buttons = container.querySelectorAll<HTMLButtonElement>('[role="tab"]');
-    const panels = container.querySelectorAll('[data-tab-panel]');
+    const panels = container.querySelectorAll<HTMLElement>('[data-tab-panel]');
 
-    function switchTab(tabValue: string) {
+    panels.forEach((panel) => {
+      const tabValue = panel.dataset.tabPanel;
+      if (!tabValue) return;
+      panel.id = `${tabsId}-panel-${tabValue}`;
+      panel.setAttribute('aria-labelledby', `${tabsId}-tab-${tabValue}`);
+      panel.setAttribute('tabindex', '0');
+    });
+
+    function switchTab(tabValue: string, shouldFocus = false) {
       buttons.forEach((btn) => {
         const isSelected = btn.dataset.tab === tabValue;
         btn.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+        btn.setAttribute('tabindex', isSelected ? '0' : '-1');
         if (isSelected) {
-          btn.classList.remove('border-transparent', 'text-white/60');
+          btn.classList.remove('border-transparent', 'text-white/60', 'hover:text-white/85');
           btn.classList.add('border-primary', 'text-primary');
+          if (shouldFocus) btn.focus();
         } else {
           btn.classList.remove('border-primary', 'text-primary');
-          btn.classList.add('border-transparent', 'text-white/60');
+          btn.classList.add('border-transparent', 'text-white/60', 'hover:text-white/85');
         }
       });
 
       panels.forEach((panel) => {
         const isVisible = panel.getAttribute('data-tab-panel') === tabValue;
         panel.classList.toggle('hidden', !isVisible);
+        panel.toggleAttribute('hidden', !isVisible);
       });
     }
 
-    buttons.forEach((button) => {
+    buttons.forEach((button, index) => {
       button.addEventListener('click', () => {
         const tabValue = button.dataset.tab;
         if (tabValue) {
           switchTab(tabValue);
         }
+      });
+
+      button.addEventListener('keydown', (event) => {
+        const lastIndex = buttons.length - 1;
+        let nextIndex: number | null = null;
+
+        if (event.key === 'ArrowRight') nextIndex = index === lastIndex ? 0 : index + 1;
+        if (event.key === 'ArrowLeft') nextIndex = index === 0 ? lastIndex : index - 1;
+        if (event.key === 'Home') nextIndex = 0;
+        if (event.key === 'End') nextIndex = lastIndex;
+        if (nextIndex === null) return;
+
+        event.preventDefault();
+        const nextTab = buttons[nextIndex]?.dataset.tab;
+        if (nextTab) switchTab(nextTab, true);
       });
     });
   }

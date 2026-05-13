@@ -44,13 +44,14 @@ const isDocumentationActive = isOnDocsPage && !hasActiveDocsSubItem;
 <header
   id="main-header"
   data-pagefind-ignore
-  class={`bg-background sticky top-0 z-50 w-full border-b border-white/[0.06] transition-all duration-300 ${isOnDocsPage ? '' : 'backdrop-blur-md'}`}
-  style={isOnDocsPage ? 'background-color: oklch(0.12 0.0421 264.82);' : 'background-color: oklch(0.12 0.0421 264.82 / 0.6);'}
+  data-docs-page={String(isOnDocsPage)}
+  class={`site-header bg-background sticky top-0 z-50 w-full border-b border-white/[0.06] transition-[background-color,box-shadow,backdrop-filter] duration-300 ${isOnDocsPage ? '' : 'backdrop-blur-md'}`}
 >
   <div class="mx-auto flex h-14 items-center justify-between px-4 sm:px-6">
     <div class="flex min-w-0 flex-1 items-center gap-6">
       <a
         href="/"
+        data-astro-prefetch="hover"
         aria-label="AtlasOS Home"
         class="group flex shrink-0 items-center transition-opacity hover:opacity-80"
       >
@@ -66,7 +67,7 @@ const isDocumentationActive = isOnDocsPage && !hasActiveDocsSubItem;
             fetchpriority="high"
           />
           <div
-            class="bg-primary/10 group-hover:bg-primary/20 absolute -inset-2 -z-10 rounded-full opacity-70 blur-lg transition-all duration-300"
+            class="bg-primary/10 group-hover:bg-primary/20 absolute -inset-2 -z-10 rounded-full opacity-70 blur-lg transition-[background-color,opacity] duration-300"
           >
           </div>
         </div>
@@ -130,8 +131,7 @@ const isDocumentationActive = isOnDocsPage && !hasActiveDocsSubItem;
       <div id="mobile-menu" class="mobile-menu md:hidden" hidden inert>
         <div
           id="mobile-menu-content"
-          class="space-y-1 px-4 py-3 backdrop-blur-xl"
-          style="background-color: oklch(0.12 0.0421 264.82 / 0.9);"
+          class="mobile-menu-content space-y-1 px-4 py-3 backdrop-blur-xl"
         >
           {mainNavItems.map((item) => {
             const itemIsActive =
@@ -140,6 +140,7 @@ const isDocumentationActive = isOnDocsPage && !hasActiveDocsSubItem;
             return (
               <a
                 href={item.href}
+                data-astro-prefetch={!item.isExternal && item.href.startsWith('/') ? 'hover' : undefined}
                 target={item.isExternal ? '_blank' : undefined}
                 rel={item.isExternal ? 'noopener noreferrer' : undefined}
                 class={`block rounded-md px-4 py-2.5 text-sm font-medium text-white transition-colors duration-200 ${

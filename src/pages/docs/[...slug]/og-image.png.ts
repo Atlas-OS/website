@@ -1,6 +1,7 @@
+import { getDocsRouteParam, getPublishedDocs, type DocsEntry } from '@/utils/docs-content';
 import { getSectionFromSlug, getSlugFromEntry } from '@/utils/navigation';
 import type { APIRoute } from 'astro';
-import { getCollection } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
 import { readFile } from 'fs/promises';
 import { resolve } from 'path';
 import satori from 'satori';
@@ -13,49 +14,47 @@ async function loadInterFont(): Promise<ArrayBuffer> {
   if (interFontData) return interFontData;
 
   const fontPath = resolve(process.cwd(), 'public/fonts/inter-latin-500-normal.ttf');
-  const fontBuffer = await readFile(fontPath);
-  interFontData = fontBuffer.buffer;
-  return interFontData;
+  try {
+    const fontBuffer = await readFile(fontPath);
+    interFontData = fontBuffer.buffer;
+    return interFontData;
+  } catch (error) {
+    throw new Error(
+      `Failed to load Inter font at ${fontPath}. Ensure the font file exists in public/fonts/. Original error: ${error instanceof Error ? error.message : error}`,
+      { cause: error },
+    );
+  }
 }
 
 async function loadInterBoldFont(): Promise<ArrayBuffer> {
   if (interBoldFontData) return interBoldFontData;
 
   const fontPath = resolve(process.cwd(), 'public/fonts/inter-latin-700-normal.woff');
-  const fontBuffer = await readFile(fontPath);
-  interBoldFontData = fontBuffer.buffer;
-  return interBoldFontData;
+  try {
+    const fontBuffer = await readFile(fontPath);
+    interBoldFontData = fontBuffer.buffer;
+    return interBoldFontData;
+  } catch (error) {
+    throw new Error(
+      `Failed to load Inter Bold font at ${fontPath}. Ensure the font file exists in public/fonts/. Original error: ${error instanceof Error ? error.message : error}`,
+      { cause: error },
+    );
+  }
 }
 
-export async function getStaticPaths() {
-  const docs = await getCollection('docs', entry => !entry.data.draft);
+export const getStaticPaths = (async () => {
+  const docs = await getPublishedDocs();
 
-  const paths = docs
-    .map(entry => {
-      const slug = getSlugFromEntry(entry);
+  return docs.flatMap(entry => {
+    const slugString = getDocsRouteParam(entry);
+    if (!slugString) return [];
 
-      if (slug === '/docs/' || slug === '/docs') {
-        return null;
-      }
-
-      const slugString = slug
-        .replace(/^\/docs\/?/, '')
-        .replace(/^\/+/, '')
-        .replace(/\/+$/, '');
-
-      if (!slugString) {
-        return null;
-      }
-
-      return {
-        params: { slug: slugString },
-        props: { entry },
-      };
-    })
-    .filter((path): path is NonNullable<typeof path> => path !== null);
-
-  return paths;
-}
+    return {
+      params: { slug: slugString },
+      props: { entry },
+    };
+  });
+}) satisfies GetStaticPaths;
 
 async function loadAtlasLogo(): Promise<string> {
   try {
@@ -111,7 +110,7 @@ function getSectionIconPaths(section: string | null): string[] {
 
 export const GET: APIRoute = async function get({ props }) {
   const { entry } = props as {
-    entry: { data: { title: string; description?: string }; id: string };
+    entry: DocsEntry;
   };
   const title = entry.data.title || 'AtlasOS Documentation';
   const description = entry.data.description || '';

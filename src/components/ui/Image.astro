@@ -10,6 +10,7 @@ interface Props {
   loading?: 'lazy' | 'eager';
   fetchpriority?: 'high' | 'low' | 'auto';
   decoding?: 'sync' | 'async' | 'auto';
+  outlined?: boolean;
   class?: string;
 }
 
@@ -21,11 +22,13 @@ const {
   loading = 'lazy',
   fetchpriority = loading === 'eager' ? 'high' : 'auto',
   decoding = 'async',
+  outlined = false,
   class: className = '',
 } = Astro.props;
 
 const isStringSrc = typeof src === 'string';
 const hasDimensions = width && height;
+const classes = [outlined && 'media-outline', className].filter(Boolean).join(' ');
 ---
 
 {
@@ -38,7 +41,7 @@ const hasDimensions = width && height;
       loading={loading}
       fetchpriority={fetchpriority}
       decoding={decoding}
-      class={className}
+      class={classes}
       {...(hasDimensions && { style: `aspect-ratio: ${width} / ${height}` })}
     />
   ) : (
@@ -48,7 +51,7 @@ const hasDimensions = width && height;
       width={width}
       height={height}
       loading={loading}
-      class={className}
+      class={classes}
       {...(hasDimensions && { style: `aspect-ratio: ${width} / ${height}` })}
     />
   )

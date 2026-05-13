@@ -7,11 +7,16 @@ import { defineConfig, fontProviders } from 'astro/config';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import pagefindIntegration from './src/integrations/pagefind';
+import rehypeExternalLinks from './src/utils/rehype-external-links.mjs';
 
 export default defineConfig({
   site: 'https://atlasos.net',
   output: 'static',
   trailingSlash: 'always',
+
+  // Add redirects here when docs pages are moved or renamed to avoid broken links.
+  // Example: '/old-path/': '/new-path/'
+  redirects: {},
 
   fonts: [
     {
@@ -64,6 +69,7 @@ export default defineConfig({
     icon(),
     mdx({
       optimize: true,
+      rehypePlugins: [rehypeExternalLinks],
     }),
     sitemap({
       changefreq: 'weekly',

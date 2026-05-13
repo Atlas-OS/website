@@ -1,8 +1,8 @@
 ---
 import { SITE_URL } from '@/constants';
-import { getSlugFromEntry, normalizeSlug } from '@/utils/navigation';
+import { getDocsTitleBySlug } from '@/utils/docs-content';
+import { normalizeSlug } from '@/utils/navigation';
 import { Icon } from 'astro-icon/components';
-import { getCollection } from 'astro:content';
 
 interface Props {
   currentSlug: string;
@@ -10,19 +10,13 @@ interface Props {
 
 const { currentSlug } = Astro.props;
 
-const docs = await getCollection('docs', entry => !entry.data.draft);
-const titleBySlug = new Map<string, string>();
-
-for (const entry of docs) {
-  const slug = normalizeSlug(getSlugFromEntry(entry));
-  titleBySlug.set(slug, entry.data.sidebar?.label || entry.data.title);
-}
+const titleBySlug = await getDocsTitleBySlug();
 
 function toTitleFromSegment(segment: string): string {
   return segment
     .split('-')
     .filter(Boolean)
-    .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(' ');
 }
 
@@ -88,7 +82,9 @@ const breadcrumbStructuredData = {
               />
             )}
             {index === breadcrumbs.length - 1 ? (
-              <span class="font-medium" style="color: var(--docs-text-secondary);">{crumb.title}</span>
+              <span class="font-medium" style="color: var(--docs-text-secondary);">
+                {crumb.title}
+              </span>
             ) : (
               <a
                 href={crumb.href}
@@ -108,7 +104,8 @@ const breadcrumbStructuredData = {
 
 <style>
   .breadcrumbs-animated {
-    animation: breadcrumbs-fade-in var(--motion-duration-normal, 250ms) var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1)) backwards;
+    animation: breadcrumbs-fade-in var(--motion-duration-normal, 250ms)
+      var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1)) backwards;
   }
 
   @keyframes breadcrumbs-fade-in {
@@ -124,7 +121,8 @@ const breadcrumbStructuredData = {
   }
 
   .breadcrumb-item {
-    animation: breadcrumb-item-fade-in var(--motion-duration-fast, 180ms) var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1)) backwards;
+    animation: breadcrumb-item-fade-in var(--motion-duration-fast, 180ms)
+      var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1)) backwards;
   }
 
   @keyframes breadcrumb-item-fade-in {

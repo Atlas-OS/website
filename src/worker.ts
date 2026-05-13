@@ -26,16 +26,17 @@ const BROWSER_LAUNCH_TIMEOUT_MS = 60_000;
 const BROWSER_STEP_TIMEOUT_MS = 30_000;
 const BROWSER_LINK_TIMEOUT_MS = 45_000;
 
-const PRODUCT_IDS: Record<string, number> = {
+const MS_DOWNLOAD_PAGES = {
+  x64: 'https://www.microsoft.com/en-us/software-download/windows11',
+  arm64: 'https://www.microsoft.com/en-us/software-download/windows11arm64',
+} as const;
+
+type Arch = keyof typeof MS_DOWNLOAD_PAGES;
+
+const PRODUCT_IDS: Record<Arch, number> = {
   x64: 3262, // Windows 11 25H2
   arm64: 3265, // Windows 11 25H2 ARM64
 };
-
-const MS_DOWNLOAD_PAGES: Record<string, string> = {
-  x64: 'https://www.microsoft.com/en-us/software-download/windows11',
-  arm64: 'https://www.microsoft.com/en-us/software-download/windows11arm64',
-};
-type Arch = keyof typeof MS_DOWNLOAD_PAGES;
 
 // Mimic a real browser request so Microsoft's API doesn't block us
 const MS_FETCH_HEADERS_BASE: Record<string, string> = {
@@ -48,29 +49,40 @@ const MS_FETCH_HEADERS_BASE: Record<string, string> = {
   'Sec-Fetch-Site': 'same-origin',
 };
 
-const CORS_HEADERS: Record<string, string> = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, OPTIONS',
-  'Access-Control-Max-Age': '86400',
-};
+const ALLOWED_ORIGINS = new Set(['https://atlasos.net', 'https://www.atlasos.net']);
+
+function getCorsHeaders(request: Request): Record<string, string> {
+  const origin = request.headers.get('Origin') ?? '';
+  const allowedOrigin = ALLOWED_ORIGINS.has(origin) ? origin : '';
+  return {
+    'Access-Control-Allow-Methods': 'GET, OPTIONS',
+    'Access-Control-Max-Age': '86400',
+    Vary: 'Origin',
+    ...(allowedOrigin ? { 'Access-Control-Allow-Origin': allowedOrigin } : {}),
+  };
+}
 
 /** Reuse the same download link until near expiry. Microsoft ISO links expire 1 day after creation. */
 const LINK_CACHE_MAX_AGE_SEC = 86_400; // 24 hours
 
-function jsonResponse(data: unknown, status = 200): Response {
+function jsonResponse(data: unknown, corsHeaders: Record<string, string>, status = 200): Response {
   return new Response(JSON.stringify(data), {
     status,
     headers: {
       'Content-Type': 'application/json',
       // These URLs are short-lived and should never be cached.
       'Cache-Control': 'no-store',
-      ...CORS_HEADERS,
+      ...corsHeaders,
     },
   });
 }
 
-function errorResponse(message: string, status = 400): Response {
-  return jsonResponse({ error: message }, status);
+function errorResponse(
+  message: string,
+  corsHeaders: Record<string, string>,
+  status = 400,
+): Response {
+  return jsonResponse({ error: message }, corsHeaders, status);
 }
 
 function asArch(value: string | null): Arch | null {
@@ -89,29 +101,37 @@ function getMsFetchHeaders(referer: string): Record<string, string> {
   };
 }
 
-async function proxyMsApi(url: URL, referer: string): Promise<Response> {
+async function proxyMsApi(
+  url: URL,
+  referer: string,
+  corsHeaders: Record<string, string>,
+): Promise<Response> {
   let resp: Response;
   try {
     resp = await fetch(url.toString(), { headers: getMsFetchHeaders(referer) });
   } catch {
-    return errorResponse('Failed to reach Microsoft download API.', 502);
+    return errorResponse('Failed to reach Microsoft download API.', corsHeaders, 502);
   }
 
   if (!resp.ok) {
-    return errorResponse(`Microsoft API returned HTTP ${resp.status}.`, 502);
+    return errorResponse(`Microsoft API returned HTTP ${resp.status}.`, corsHeaders, 502);
   }
 
   let data: unknown;
   try {
     data = await resp.json();
   } catch {
-    return errorResponse('Microsoft API returned an unexpected response.', 502);
+    return errorResponse('Microsoft API returned an unexpected response.', corsHeaders, 502);
   }
 
-  return jsonResponse(data);
+  return jsonResponse(data, corsHeaders);
 }
 
-async function handleSkus(arch: Arch, sessionId: string): Promise<Response> {
+async function handleSkus(
+  arch: Arch,
+  sessionId: string,
+  corsHeaders: Record<string, string>,
+): Promise<Response> {
   const productId = PRODUCT_IDS[arch];
   const pageUrl = getDownloadPageUrl(arch);
 
@@ -123,7 +143,7 @@ async function handleSkus(arch: Arch, sessionId: string): Promise<Response> {
   url.searchParams.set('Locale', 'en-US');
   url.searchParams.set('sessionID', sessionId);
 
-  return proxyMsApi(url, pageUrl);
+  return proxyMsApi(url, pageUrl, corsHeaders);
 }
 
 type BrowserLinkResult = { ok: true; href: string; label: string } | { ok: false; error: string };
@@ -284,28 +304,29 @@ async function getIsoLinkViaBrowser(
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
+    const corsHeaders = getCorsHeaders(request);
 
     if (request.method === 'OPTIONS') {
-      return new Response(null, { headers: CORS_HEADERS });
+      return new Response(null, { headers: corsHeaders });
     }
 
     if (request.method !== 'GET') {
-      return new Response('Method Not Allowed', { status: 405 });
+      return new Response('Method Not Allowed', { status: 405, headers: corsHeaders });
     }
 
     if (url.pathname === '/api/ms-iso/skus') {
       const arch = asArch(url.searchParams.get('arch'));
-      if (!arch) return errorResponse('Invalid architecture. Use x64 or arm64.');
+      if (!arch) return errorResponse('Invalid architecture. Use x64 or arm64.', corsHeaders);
       const sessionId = url.searchParams.get('sessionId') ?? crypto.randomUUID();
-      return handleSkus(arch, sessionId);
+      return handleSkus(arch, sessionId, corsHeaders);
     }
 
     if (url.pathname === '/api/ms-iso/links') {
       const archRaw = url.searchParams.get('arch');
       const arch = archRaw ? asArch(archRaw) : 'x64';
-      if (!arch) return errorResponse('Invalid architecture. Use x64 or arm64.');
+      if (!arch) return errorResponse('Invalid architecture. Use x64 or arm64.', corsHeaders);
       const skuId = url.searchParams.get('skuId') ?? '';
-      if (!skuId) return errorResponse('Missing skuId parameter.');
+      if (!skuId) return errorResponse('Missing skuId parameter.', corsHeaders);
 
       // KV is globally replicated; Cache API is per–data center, so same locale in another region would spawn a new browser.
       const kv = env.MS_ISO_LINKS;
@@ -318,7 +339,7 @@ export default {
             headers: {
               'Content-Type': 'application/json',
               'Cache-Control': 'no-store',
-              ...CORS_HEADERS,
+              ...corsHeaders,
             },
           });
         }
@@ -326,11 +347,14 @@ export default {
 
       const viaBrowser = await getIsoLinkViaBrowser(env, arch, skuId);
       if (!viaBrowser.ok) {
-        return jsonResponse({
-          Errors: [
-            { Key: 'ErrorSettings.BrowserRenderingFailed', Value: viaBrowser.error, Type: 9 },
-          ],
-        });
+        return jsonResponse(
+          {
+            Errors: [
+              { Key: 'ErrorSettings.BrowserRenderingFailed', Value: viaBrowser.error, Type: 9 },
+            ],
+          },
+          corsHeaders,
+        );
       }
 
       const payload = {
@@ -352,7 +376,7 @@ export default {
         headers: {
           'Content-Type': 'application/json',
           'Cache-Control': 'no-store',
-          ...CORS_HEADERS,
+          ...corsHeaders,
         },
       });
     }

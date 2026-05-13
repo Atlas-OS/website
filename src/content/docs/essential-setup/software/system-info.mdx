@@ -6,6 +6,7 @@ order: 7
 ---
 
 import Callout from '@/components/docs/Callout.astro';
+import CodeBlock from '@/components/docs/CodeBlock.astro';
 
 # System Information
 
@@ -24,9 +25,10 @@ Task Manager is pre-installed in Windows. It monitors system performance, CPU us
 
 HWiNFO provides in-depth analysis of your system: temperature, CPU usage, RAM usage, and more. A lightweight, customizable alternative to Task Manager.
 
-```
-winget install -e --id REALiX.HWiNFO
-```
+<CodeBlock
+  title="Install with winget:"
+  code="winget install -e --id REALiX.HWiNFO"
+/>
 
 [Download HWiNFO](https://www.hwinfo.com/)
 
@@ -34,9 +36,10 @@ winget install -e --id REALiX.HWiNFO
 
 CPU-Z shows CPU sensors, usage, and other details. Useful for debugging CPU issues.
 
-```
-winget install -e --id CPUID.CPU-Z
-```
+<CodeBlock
+  title="Install with winget:"
+  code="winget install -e --id CPUID.CPU-Z"
+/>
 
 [Download CPU-Z](https://www.cpuid.com/softwares/cpu-z.html)
 
@@ -44,9 +47,10 @@ winget install -e --id CPUID.CPU-Z
 
 GPU-Z shows GPU sensors, usage, and other details. Useful for debugging GPU issues.
 
-```
-winget install -e --id TechPowerUp.GPU-Z
-```
+<CodeBlock
+  title="Install with winget:"
+  code="winget install -e --id TechPowerUp.GPU-Z"
+/>
 
 [Download GPU-Z](https://www.techpowerup.com/gpuz/)
 
@@ -54,9 +58,10 @@ winget install -e --id TechPowerUp.GPU-Z
 
 MSI Afterburner is for overclocking but also displays GPU stats while gaming: FPS, CPU%, GPU%, RAM. For info only (no overclocking), HWiNFO or GPU-Z may be better.
 
-```
-winget install -e --id Guru3D.Afterburner
-```
+<CodeBlock
+  title="Install with winget:"
+  code="winget install -e --id Guru3D.Afterburner"
+/>
 
 [Download MSI Afterburner](https://www.msi.com/Landing/afterburner)
 

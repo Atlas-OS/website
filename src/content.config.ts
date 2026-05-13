@@ -60,6 +60,7 @@ export const collections = {
     loader: glob({
       pattern: '**/*.{md,mdx}',
       base: './src/content/docs',
+      retainBody: false,
     }),
     schema: docsSchema,
   }),

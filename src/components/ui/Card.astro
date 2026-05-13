@@ -8,7 +8,10 @@ interface Props {
 
 const { class: className = '', hover = false, clickable = false, padding = 'md' } = Astro.props;
 
-const baseClasses = ['rounded-lg border border-white/[0.06] bg-white/5', 'transition-opacity duration-200'];
+const baseClasses = [
+  'rounded-lg bg-white/5 shadow-[var(--shadow-surface)]',
+  'transition-[box-shadow,opacity,scale] duration-200',
+];
 
 const paddingClasses = {
   none: '',
@@ -17,9 +20,9 @@ const paddingClasses = {
   lg: 'p-6',
 };
 
-const hoverClasses = hover || clickable ? ['hover:opacity-80'] : [];
+const hoverClasses = hover || clickable ? ['hover:opacity-80 hover:shadow-[var(--shadow-surface-hover)]'] : [];
 
-const clickableClasses = clickable ? ['cursor-pointer'] : [];
+const clickableClasses = clickable ? ['cursor-pointer active:scale-[0.96]'] : [];
 
 const classes = [...baseClasses, paddingClasses[padding], ...hoverClasses, ...clickableClasses, className].join(' ');
 ---
@@ -29,30 +32,3 @@ const classes = [...baseClasses, paddingClasses[padding], ...hoverClasses, ...cl
   <slot />
   <slot name="footer" />
 </div>
-
-<style>
-  .card-gradient-hover {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .card-gradient-hover::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(135deg, transparent 0%, var(--color-primary) 50%, transparent 100%);
-    -webkit-mask:
-      linear-gradient(#fff 0 0) content-box,
-      linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  .card-gradient-hover:hover::before {
-    opacity: 0.5;
-  }
-</style>

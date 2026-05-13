@@ -32,7 +32,7 @@ const iconSize = isDetailed ? 'h-8 w-8' : isCompact ? 'h-6 w-6' : 'h-6 w-6';
 ---
 
 <div
-  class={`not-prose software-card software-card-animated border border-white/[0.06] rounded-lg ${padding} bg-white/5 my-6 ${className}`}
+  class={`not-prose software-card software-card-animated my-6 rounded-lg bg-white/5 ${padding} shadow-[var(--shadow-surface)] ${className}`}
 >
   <div class={`flex items-start gap-3 ${isDetailed ? 'mb-4' : 'mb-3'}`}>
     {icon && <Icon name={icon} class={`${iconSize} text-primary ${isCompact ? 'mt-0.5' : ''} flex-shrink-0`} />}

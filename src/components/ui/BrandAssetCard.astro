@@ -27,7 +27,7 @@ const { image, title, buttons = [], singleButton, class: className = '' } = Astr
 ---
 
 <div
-  class={`not-prose flex flex-col items-center text-center space-y-4 p-6 bg-white/5 rounded-lg border border-white/[0.06] transition-opacity duration-200 ${className}`}
+  class={`not-prose flex flex-col items-center space-y-4 rounded-lg bg-white/5 p-6 text-center shadow-[var(--shadow-surface)] transition-[box-shadow,opacity] duration-200 ${className}`}
 >
   <Image src={image.src} alt={image.alt} class={image.class || 'w-32 h-32'} loading="lazy" />
   <div class="w-full">

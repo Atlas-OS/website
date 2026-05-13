@@ -1,10 +1,18 @@
 ---
 interface Props {
   src: string;
+  tracks?: Array<{
+    src: string;
+    kind?: 'subtitles' | 'captions' | 'descriptions' | 'chapters' | 'metadata';
+    srclang?: string;
+    label?: string;
+    default?: boolean;
+  }>;
   controls?: boolean;
   muted?: boolean;
   autoplay?: boolean;
   loop?: boolean;
+  preload?: 'none' | 'metadata' | 'auto';
   spacing?: boolean;
   rounded?: boolean;
   class?: string;
@@ -12,24 +20,30 @@ interface Props {
 
 const {
   src,
+  tracks = [],
   controls = true,
   muted = false,
   autoplay = false,
   loop = false,
+  preload = 'metadata',
   spacing = false,
   rounded = false,
   class: className = '',
 } = Astro.props;
 
-const classes = [spacing && 'my-6', rounded && 'rounded-lg', className].filter(Boolean).join(' ');
+const classes = [spacing && 'my-6', rounded && 'rounded-lg', 'media-outline', className].filter(Boolean).join(' ');
 ---
 
-<video
-  src={src}
-  controls={controls}
-  muted={muted}
-  autoplay={autoplay}
-  loop={loop}
-  class={classes}
-  data-jampack-skip
-  preload="auto"></video>
+<video src={src} controls={controls} muted={muted} autoplay={autoplay} loop={loop} class={classes} preload={preload}>
+  {
+    tracks.map((track) => (
+      <track
+        src={track.src}
+        kind={track.kind || 'captions'}
+        srclang={track.srclang}
+        label={track.label}
+        default={track.default}
+      />
+    ))
+  }
+</video>

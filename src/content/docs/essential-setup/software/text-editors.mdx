@@ -6,6 +6,7 @@ order: 5
 ---
 
 import Callout from '@/components/docs/Callout.astro';
+import CodeBlock from '@/components/docs/CodeBlock.astro';
 
 # Text Editors and IDEs
 
@@ -22,9 +23,10 @@ Windows has Notepad installed by default. If you want something more advanced, c
 
 Notepad++ is more advanced than Notepad. It supports syntax highlighting, code editing, and is highly customizable.
 
-```
-winget install -e --id Notepad++.Notepad++
-```
+<CodeBlock
+  title="Install with winget:"
+  code="winget install -e --id Notepad++.Notepad++"
+/>
 
 [Download Notepad++](https://notepad-plus-plus.org/)
 
@@ -32,9 +34,10 @@ winget install -e --id Notepad++.Notepad++
 
 Visual Studio Code (VS Code) is a feature-rich editor at IDE level. It supports plugins and many programming languages.
 
-```
-winget install -e --id Microsoft.VisualStudioCode
-```
+<CodeBlock
+  title="Install with winget:"
+  code="winget install -e --id Microsoft.VisualStudioCode"
+/>
 
 [Download Visual Studio Code](https://code.visualstudio.com/) (Microsoft Store also available)
 
@@ -42,17 +45,19 @@ winget install -e --id Microsoft.VisualStudioCode
 
 VSCodium is an open-source version of VS Code without Microsoft branding and telemetry.
 
-```
-winget install -e --id VSCodium.VSCodium
-```
+<CodeBlock
+  title="Install with winget:"
+  code="winget install -e --id VSCodium.VSCodium"
+/>
 
 ## Kate
 
 Kate is a KDE multi-document editor with code folding, syntax highlighting, dynamic word wrap, embedded console, and plugins.
 
-```
-winget install -e --id KDE.Kate
-```
+<CodeBlock
+  title="Install with winget:"
+  code="winget install -e --id KDE.Kate"
+/>
 
 [Download Kate](https://apps.microsoft.com/store/detail/9nwmw7bb59hw) (Microsoft Store)
 

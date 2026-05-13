@@ -6,6 +6,7 @@ order: 4
 ---
 
 import Callout from '@/components/docs/Callout.astro';
+import CodeBlock from '@/components/docs/CodeBlock.astro';
 import CodeInline from '@/components/docs/CodeInline.astro';
 
 # Media Playback
@@ -14,9 +15,10 @@ import CodeInline from '@/components/docs/CodeInline.astro';
 
 VLC is a simple, well-known media player. It includes the codecs you need for playback.
 
-```
-winget install -e --id VideoLAN.VLC
-```
+<CodeBlock
+  title="Install with winget:"
+  code="winget install -e --id VideoLAN.VLC"
+/>
 
 [Download VLC Media Player](https://www.videolan.org/vlc/) (Microsoft Store also available)
 
@@ -30,9 +32,10 @@ mpv is a minimal player that supports almost all codecs. Advanced features: scri
 
 mpv.net is a fork of mpv with a more user-friendly graphical interface.
 
-```
-winget install -e --id mpv.net
-```
+<CodeBlock
+  title="Install with winget:"
+  code="winget install -e --id mpv.net"
+/>
 
 ## Windows Media Player
 
@@ -43,9 +46,10 @@ Microsoft has updated Windows Media Player with a modern interface. It is availa
   install the HEVC codec from the Microsoft Store for some video files.
 </Callout>
 
-```
-winget install -e --id 9WZDNCRFJ3PT
-```
+<CodeBlock
+  title="Install with winget:"
+  code="winget install -e --id 9WZDNCRFJ3PT"
+/>
 
 [Download HEVC Codec](https://apps.microsoft.com/store/detail/9NMZLZ57R3T7) (Microsoft Store)
 
@@ -53,9 +57,10 @@ winget install -e --id 9WZDNCRFJ3PT
 
 foobar2000 plays local and online music. It handles multi-track audio and is user-friendly.
 
-```
-winget install -e --id PeterPawlowski.foobar2000
-```
+<CodeBlock
+  title="Install with winget:"
+  code="winget install -e --id PeterPawlowski.foobar2000"
+/>
 
 [Download foobar2000](https://www.foobar2000.org/)
 
@@ -63,9 +68,10 @@ winget install -e --id PeterPawlowski.foobar2000
 
 MusicBee is a lightweight alternative to foobar2000 with a more modern feel.
 
-```
-winget install -e --id MusicBee.MusicBee
-```
+<CodeBlock
+  title="Install with winget:"
+  code="winget install -e --id MusicBee.MusicBee"
+/>
 
 [Download MusicBee](https://www.getmusicbee.com/)
 

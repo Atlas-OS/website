@@ -14,4 +14,4 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://widget.kapa.ai https://pla.atlasos.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https://api.atlasos.net https://pla.atlasos.net https://cdn.jsdelivr.net https://download.ameliorated.io https:; font-src 'self' data:; frame-src 'none'; object-src 'none'; base-uri 'self'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://widget.kapa.ai https://pla.atlasos.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https://api.atlasos.net https://pla.atlasos.net https://cdn.jsdelivr.net https://download.ameliorated.io https://www.microsoft.com https://widget.kapa.ai https://*.kapa.ai; font-src 'self' data:; worker-src 'self' blob:; frame-src 'none'; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'

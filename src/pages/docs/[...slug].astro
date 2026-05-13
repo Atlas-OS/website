@@ -1,38 +1,27 @@
 ---
 import { SITE_URL } from '@/constants';
 import DocsLayout from '@/layouts/DocsLayout.astro';
+import { getDocsRouteParam, getPublishedDocs, type DocsEntry } from '@/utils/docs-content';
 import { getSlugFromEntry } from '@/utils/navigation';
-import type { CollectionEntry } from 'astro:content';
-import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import { render } from 'astro:content';
 
-export async function getStaticPaths() {
-  const docs = await getCollection('docs', entry => !entry.data.draft);
+export const getStaticPaths = (async () => {
+  const docs = await getPublishedDocs();
 
-  const paths = docs
-    .map(entry => {
-      const slug = getSlugFromEntry(entry);
+  return docs.flatMap((entry) => {
+    const paramsSlug = getDocsRouteParam(entry);
+    if (!paramsSlug) return [];
 
-      if (slug === '/docs/' || slug === '/docs') {
-        return null;
-      }
-
-      const paramsSlug = slug
-        .replace(/^\/docs\/?/, '')
-        .replace(/^\/+/, '')
-        .replace(/\/+$/, '');
-
-      return {
-        params: { slug: paramsSlug },
-        props: { entry },
-      };
-    })
-    .filter((path): path is NonNullable<typeof path> => path !== null);
-
-  return paths;
-}
+    return {
+      params: { slug: paramsSlug },
+      props: { entry },
+    };
+  });
+}) satisfies GetStaticPaths;
 
 interface Props {
-  entry: CollectionEntry<'docs'>;
+  entry: DocsEntry;
 }
 
 const { entry } = Astro.props;

@@ -16,7 +16,7 @@ const { href, icon, label, class: className = '' } = Astro.props;
   target="_blank"
   rel="noopener noreferrer"
   aria-label={label}
-  class={`inline-flex size-9 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-md border border-white/[0.06] text-sm font-medium whitespace-nowrap text-white transition-opacity duration-200 outline-none hover:opacity-80 ${className}`}
+  class={`inline-flex size-10 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap text-white shadow-[var(--shadow-surface)] transition-[background-color,box-shadow,opacity,scale] duration-200 outline-none hover:bg-white/[0.04] hover:opacity-80 hover:shadow-[var(--shadow-surface-hover)] active:scale-[0.96] ${className}`}
   style="background-color: var(--bg-primary);"
 >
   <Icon name={icon} class="h-5 w-5" aria-hidden="true" />

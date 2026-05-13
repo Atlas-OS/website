@@ -19,7 +19,7 @@ const { image, downloadButton, class: className = '' } = Astro.props;
 ---
 
 <div class={`not-prose my-6 ${className}`}>
-  <Image src={image.src} alt={image.alt} class="w-full rounded-lg" loading="lazy" />
+  <Image src={image.src} alt={image.alt} class="w-full rounded-lg" loading="lazy" outlined />
   <div class="mt-4 flex justify-center">
     <Button href={downloadButton.href} external={downloadButton.external} variant="secondary" size="md">
       {downloadButton.label}

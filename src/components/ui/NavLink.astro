@@ -7,14 +7,16 @@ interface Props {
 }
 
 const { href, isActive = false, external = false, class: className = '' } = Astro.props;
+const prefetchStrategy = !external && href.startsWith('/') ? 'hover' : undefined;
 ---
 
 <a
   href={href}
+  data-astro-prefetch={prefetchStrategy}
   target={external ? '_blank' : undefined}
   rel={external ? 'noopener noreferrer' : undefined}
-  class={`nav-link relative whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium transition-opacity duration-200 ease-in-out outline-none shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black ${
-    isActive ? 'text-primary' : 'text-white/60 hover:opacity-80'
+  class={`nav-link relative inline-flex min-h-10 shrink-0 items-center whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium transition-colors duration-200 ease-out outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black ${
+    isActive ? 'text-primary' : 'text-white/60 hover:text-white/85'
   } ${className}`}
 >
   <slot />

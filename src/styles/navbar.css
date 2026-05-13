@@ -1,3 +1,15 @@
+.site-header {
+  background-color: var(--nav-bg-translucent);
+}
+
+.site-header[data-docs-page='true'] {
+  background-color: var(--bg-primary);
+}
+
+.mobile-menu-content {
+  background-color: var(--nav-menu-bg);
+}
+
 .header-scrolled {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);

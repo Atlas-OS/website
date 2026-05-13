@@ -5,9 +5,7 @@
   "type": "module",
   "author": "AtlasOS",
   "license": "MIT",
-  "contributors": [
-    "AtlasOS Community <contact@atlasos.net>"
-  ],
+  "contributors": ["AtlasOS Community <contact@atlasos.net>"],
   "engines": {
     "bun": ">=1.3.0",
     "node": ">=22.12.0"
@@ -20,25 +18,13 @@
   "bugs": {
     "url": "https://github.com/atlas-os/website/issues"
   },
-  "keywords": [
-    "astro",
-    "atlasos",
-    "gaming",
-    "optimized",
-    "performance",
-    "windows"
-  ],
-  "browserslist": [
-    "defaults",
-    "not IE 11",
-    "not dead"
-  ],
+  "keywords": ["astro", "atlasos", "gaming", "optimized", "performance", "windows"],
+  "browserslist": ["defaults", "not IE 11", "not dead"],
   "scripts": {
     "astro": "astro",
-    "build": "astro build && jampack ./dist && node ./scripts/postbuild-compress.mjs",
+    "build": "astro build && jampack ./dist --sequential_compress",
     "build:raw": "astro build",
     "check": "astro check",
-    "compress:postbuild": "node ./scripts/postbuild-compress.mjs",
     "deploy": "bun run build && wrangler deploy",
     "deploy:ci": "wrangler deploy",
     "dev": "astro dev",
@@ -48,41 +34,39 @@
     "search:index": "pagefind --site dist --output-subdir pagefind"
   },
   "dependencies": {
-    "@astrojs/mdx": "^5.0.0-beta.8",
-    "@astrojs/partytown": "^2.1.4",
-    "@astrojs/sitemap": "^3.7.0",
-    "@cloudflare/puppeteer": "^1.0.6",
-    "@iconify-json/tabler": "^1.2.26",
-    "@tailwindcss/vite": "^4.1.18",
-    "astro": "^6.0.0-beta.13",
-    "astro-compressor": "^1.2.0",
+    "@astrojs/mdx": "^5.0.4",
+    "@astrojs/partytown": "^2.1.7",
+    "@astrojs/sitemap": "^3.7.2",
+    "@cloudflare/puppeteer": "^1.1.0",
+    "@iconify-json/tabler": "^1.2.35",
+    "@tailwindcss/vite": "^4.3.0",
+    "astro": "^6.3.1",
     "astro-icon": "^1.1.5",
-    "satori": "^0.19.2",
+    "satori": "^0.26.0",
     "sharp": "^0.34.5",
-    "tailwindcss": "^4.1.18",
-    "typescript": "^5.9.3",
-    "zod": "^4.3.6"
+    "tailwindcss": "^4.3.0"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.7-beta.1",
-    "@divriots/jampack": "0.34.0",
+    "@astrojs/check": "^0.9.9",
+    "@divriots/jampack": "0.34.1",
     "@eslint/js": "^10.0.1",
     "@tailwindcss/typography": "^0.5.19",
-    "@types/bun": "^1.3.9",
-    "@types/node": "^25.2.3",
-    "@typescript-eslint/eslint-plugin": "^8.56.0",
-    "@typescript-eslint/parser": "^8.56.0",
-    "astro-eslint-parser": "^1.3.0",
-    "eslint": "^10.0.0",
+    "@types/bun": "^1.3.14",
+    "@types/node": "^25.7.0",
+    "@typescript-eslint/eslint-plugin": "^8.59.3",
+    "@typescript-eslint/parser": "^8.59.3",
+    "astro-eslint-parser": "^1.4.0",
+    "eslint": "^10.3.0",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-astro": "^1.6.0",
-    "lightningcss": "^1.31.1",
-    "pagefind": "^1.4.0",
-    "prettier": "^3.8.1",
+    "eslint-plugin-astro": "^1.7.0",
+    "lightningcss": "^1.32.0",
+    "pagefind": "^1.5.2",
+    "prettier": "^3.8.3",
     "prettier-plugin-astro": "^0.14.1",
-    "prettier-plugin-astro-organize-imports": "^0.4.11",
-    "prettier-plugin-tailwindcss": "^0.7.2",
-    "typescript-eslint": "^8.56.0",
-    "wrangler": "^4.66.0"
+    "prettier-plugin-astro-organize-imports": "^0.4.12",
+    "prettier-plugin-tailwindcss": "^0.8.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.59.3",
+    "wrangler": "^4.90.1"
   }
 }

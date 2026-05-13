@@ -20,18 +20,39 @@ const gapClasses = {
   8: 'gap-8',
 };
 
-const gridColMap: Record<number, string> = {
-  1: 'grid-cols-1',
-  2: 'grid-cols-2',
-  3: 'grid-cols-3',
-  4: 'grid-cols-4',
+const smColMap: Record<number, string> = {
+  1: 'sm:grid-cols-1',
+  2: 'sm:grid-cols-2',
+  3: 'sm:grid-cols-3',
+  4: 'sm:grid-cols-4',
+};
+
+const mdColMap: Record<number, string> = {
+  1: 'md:grid-cols-1',
+  2: 'md:grid-cols-2',
+  3: 'md:grid-cols-3',
+  4: 'md:grid-cols-4',
+};
+
+const lgColMap: Record<number, string> = {
+  1: 'lg:grid-cols-1',
+  2: 'lg:grid-cols-2',
+  3: 'lg:grid-cols-3',
+  4: 'lg:grid-cols-4',
+};
+
+const xlColMap: Record<number, string> = {
+  1: 'xl:grid-cols-1',
+  2: 'xl:grid-cols-2',
+  3: 'xl:grid-cols-3',
+  4: 'xl:grid-cols-4',
 };
 
 const gridCols = [
-  columns.sm && `sm:${gridColMap[columns.sm]}`,
-  columns.md && `md:${gridColMap[columns.md]}`,
-  columns.lg && `lg:${gridColMap[columns.lg]}`,
-  columns.xl && `xl:${gridColMap[columns.xl]}`,
+  columns.sm && smColMap[columns.sm],
+  columns.md && mdColMap[columns.md],
+  columns.lg && lgColMap[columns.lg],
+  columns.xl && xlColMap[columns.xl],
 ]
   .filter(Boolean)
   .join(' ');

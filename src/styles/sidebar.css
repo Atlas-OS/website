@@ -1,5 +1,10 @@
 #sidebar {
   transform-origin: left center;
+  background-color: var(--docs-panel-bg);
+}
+
+#sidebar nav {
+  padding-bottom: 1rem;
 }
 
 #sidebar-scroll {
@@ -25,8 +30,54 @@
   background-color: rgba(255, 255, 255, 0.28);
 }
 
-.sidebar-link:hover {
-  transform: translateX(2px);
+.sidebar-section {
+  position: relative;
+}
+
+.sidebar-section + .sidebar-section {
+  padding-top: 0.25rem;
+}
+
+.sidebar-section-link,
+.sidebar-home-link {
+  letter-spacing: 0;
+  transition-property: background-color, box-shadow, color;
+}
+
+.sidebar-section-link,
+.sidebar-home-link,
+.sidebar-section-link:not([aria-current='page']),
+.sidebar-home-link:not([aria-current='page']),
+.sidebar-section-link.sidebar-active-link,
+.sidebar-home-link.sidebar-active-link,
+.sidebar-section-link:not([aria-current='page']):hover,
+.sidebar-home-link:not([aria-current='page']):hover,
+.sidebar-section-link.sidebar-active-link:hover,
+.sidebar-home-link.sidebar-active-link:hover {
+  background: transparent;
+  box-shadow: none;
+}
+
+.sidebar-active-link {
+  background: rgba(255, 255, 255, 0.045);
+  color: rgba(255, 255, 255, 0.86);
+  box-shadow: none;
+  transition-property: background-color, box-shadow, color;
+  transition-duration: 0ms;
+}
+
+.sidebar-active-link:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.92);
+  box-shadow: none;
+}
+
+.sidebar-toggle {
+  opacity: 0.72;
+}
+
+.sidebar-item-with-children:not(.is-collapsed) > .group .sidebar-toggle {
+  opacity: 1;
 }
 
 .sidebar-children {

@@ -15,8 +15,7 @@ const sizeClasses = {
   md: 'h-5 w-5',
 };
 
-const colorClass = color ? `text-${color}` : '';
-const classes = `inline ${sizeClasses[size]} mx-1 ${colorClass} ${className}`.trim();
+const classes = `inline ${sizeClasses[size]} mx-1 ${className}`.trim();
 ---
 
-<Icon name={name} class={classes} />
+<Icon name={name} class={classes} style={color ? `color: ${color}` : undefined} aria-hidden="true" />
