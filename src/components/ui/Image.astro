@@ -10,6 +10,7 @@ interface Props {
   loading?: 'lazy' | 'eager';
   fetchpriority?: 'high' | 'low' | 'auto';
   decoding?: 'sync' | 'async' | 'auto';
+  priority?: boolean;
   outlined?: boolean;
   class?: string;
 }
@@ -19,9 +20,10 @@ const {
   alt,
   width,
   height,
-  loading = 'lazy',
-  fetchpriority = loading === 'eager' ? 'high' : 'auto',
-  decoding = 'async',
+  loading: providedLoading,
+  priority = false,
+  fetchpriority: providedFetchpriority,
+  decoding: providedDecoding,
   outlined = false,
   class: className = '',
 } = Astro.props;
@@ -29,6 +31,14 @@ const {
 const isStringSrc = typeof src === 'string';
 const hasDimensions = width && height;
 const classes = [outlined && 'media-outline', className].filter(Boolean).join(' ');
+
+const rawLoading = providedLoading ?? (priority ? 'eager' : 'lazy');
+const rawDecoding = providedDecoding ?? (priority ? 'sync' : 'async');
+const rawFetchpriority = providedFetchpriority ?? (priority || rawLoading === 'eager' ? 'high' : undefined);
+const optimizedLoading = priority ? providedLoading : (providedLoading ?? 'lazy');
+const optimizedDecoding = priority ? providedDecoding : (providedDecoding ?? 'async');
+const optimizedFetchpriority =
+  providedFetchpriority ?? (!priority && optimizedLoading === 'eager' ? 'high' : undefined);
 ---
 
 {
@@ -38,10 +48,10 @@ const classes = [outlined && 'media-outline', className].filter(Boolean).join(' 
       alt={alt}
       width={width}
       height={height}
-      loading={loading}
-      fetchpriority={fetchpriority}
-      decoding={decoding}
+      loading={rawLoading}
+      decoding={rawDecoding}
       class={classes}
+      {...(rawFetchpriority && { fetchpriority: rawFetchpriority })}
       {...(hasDimensions && { style: `aspect-ratio: ${width} / ${height}` })}
     />
   ) : (
@@ -50,8 +60,11 @@ const classes = [outlined && 'media-outline', className].filter(Boolean).join(' 
       alt={alt}
       width={width}
       height={height}
-      loading={loading}
+      loading={optimizedLoading}
+      priority={priority}
+      decoding={optimizedDecoding}
       class={classes}
+      {...(optimizedFetchpriority && { fetchpriority: optimizedFetchpriority })}
       {...(hasDimensions && { style: `aspect-ratio: ${width} / ${height}` })}
     />
   )

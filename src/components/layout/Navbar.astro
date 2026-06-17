@@ -62,9 +62,7 @@ const isDocumentationActive = isOnDocsPage && !hasActiveDocsSubItem;
             width={100}
             height={32}
             class="relative z-10 block h-6 w-auto"
-            loading="eager"
-            decoding="async"
-            fetchpriority="high"
+            priority
           />
           <div
             class="bg-primary/10 group-hover:bg-primary/20 absolute -inset-2 -z-10 rounded-full opacity-70 blur-lg transition-[background-color,opacity] duration-300"

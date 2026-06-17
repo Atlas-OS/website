@@ -3,7 +3,7 @@
   "name": "atlasos-website",
   "main": "src/worker.ts",
   "compatibility_date": "2026-02-18",
-  "compatibility_flags": ["nodejs_compat_v2"],
+  "compatibility_flags": ["nodejs_compat"],
   "browser": { "binding": "BROWSER" },
   "assets": {
     "directory": "./dist",

@@ -1,4 +1,5 @@
 import mdx from '@astrojs/mdx';
+import { unified } from '@astrojs/markdown-remark';
 import partytown from '@astrojs/partytown';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
@@ -49,6 +50,12 @@ export default defineConfig({
 
   compressHTML: true,
 
+  markdown: {
+    processor: unified({
+      rehypePlugins: [rehypeExternalLinks],
+    }),
+  },
+
   image: {
     service: {
       entrypoint: 'astro/assets/services/sharp',
@@ -69,7 +76,6 @@ export default defineConfig({
     icon(),
     mdx({
       optimize: true,
-      rehypePlugins: [rehypeExternalLinks],
     }),
     sitemap({
       changefreq: 'weekly',

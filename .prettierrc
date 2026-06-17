@@ -15,6 +15,7 @@
   "arrowParens": "always",
   "endOfLine": "lf",
   "tailwindFunctions": ["tw"],
+  "tailwindStylesheet": "./src/styles/global.css",
   "overrides": [
     {
       "files": ["*.{js,jsx,ts,tsx}"],

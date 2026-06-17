@@ -105,7 +105,7 @@
 }
 
 :where(.prose) ul:not(.not-prose):not(.not-prose *) li::before {
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
   top: 0.65em;

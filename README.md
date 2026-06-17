@@ -36,7 +36,7 @@ bun install
 | `bun format`                                                | Format code with Prettier                               |
 | `bun run lint`                                              | Lint code with ESLint                                   |
 | `bun run check`                                             | Run Astro type checking                                 |
-| `bun run search:index`                                      | Build the Pagefind search index                         |
+| `bun run search:index`                                      | Build the site and Pagefind search index                |
 | `bunx wrangler deploy --dry-run --outdir .wrangler-dry-run` | Validate the Cloudflare Worker bundle without deploying |
 
 ## Deployment

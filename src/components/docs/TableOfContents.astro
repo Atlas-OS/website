@@ -18,14 +18,16 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
     >
       <nav class="sticky top-6 z-10 -mr-2 max-h-[calc(100vh-4rem)] overflow-y-auto px-2" aria-label="On this page">
         <div class="space-y-4">
-          <h2 class="mb-4 text-xs font-semibold tracking-wider uppercase" style="color: var(--docs-text-muted);">On this page</h2>
+          <h2 class="mb-4 text-xs font-semibold tracking-wider uppercase" style="color: var(--docs-text-muted);">
+            On this page
+          </h2>
           <div class="relative">
             <div
               id="toc-marker"
-              class="bg-primary absolute left-0 w-[2px] rounded-full opacity-0 transition-[height,opacity,top] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1.0)]"
+              class="absolute left-0 w-[2px] rounded-full bg-primary opacity-0 transition-[height,opacity,top] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1.0)]"
               style="top: 0; height: 0;"
             >
-              <div class="bg-primary/50 absolute inset-0 blur-[2px]" />
+              <div class="absolute inset-0 bg-primary/50 blur-[2px]" />
             </div>
 
             <ul class="space-y-2">
@@ -71,8 +73,6 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 }
 
 <style>
-  @reference "tailwindcss";
-
   #toc {
     background-color: transparent;
     scrollbar-width: thin;

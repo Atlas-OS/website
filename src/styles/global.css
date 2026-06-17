@@ -4,12 +4,35 @@
 @plugin '@tailwindcss/typography';
 
 @theme {
-  --font-sans: var(--font-sans-source, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-    'Segoe UI Symbol', 'Noto Color Emoji');
-  --font-display: var(--font-display-source, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-    'Segoe UI Symbol', 'Noto Color Emoji');
-  --font-mono: var(--font-mono-source, ui-monospace, monospace, 'Apple Color Emoji', 'Segoe UI Emoji',
-    'Segoe UI Symbol', 'Noto Color Emoji');
+  --font-sans: var(
+    --font-sans-source,
+    ui-sans-serif,
+    system-ui,
+    sans-serif,
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+    'Segoe UI Symbol',
+    'Noto Color Emoji'
+  );
+  --font-display: var(
+    --font-display-source,
+    ui-sans-serif,
+    system-ui,
+    sans-serif,
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+    'Segoe UI Symbol',
+    'Noto Color Emoji'
+  );
+  --font-mono: var(
+    --font-mono-source,
+    ui-monospace,
+    monospace,
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+    'Segoe UI Symbol',
+    'Noto Color Emoji'
+  );
   --color-primary: oklch(0.65 0.1907 252.91);
   --bg-primary: oklch(0.12 0.0421 264.82);
   --bg-secondary: oklch(0.1 0.045 270);
@@ -29,25 +52,22 @@
   --docs-panel-bg: oklch(0.1 0.04 265);
   --code-block-bg: oklch(0.11 0.04 265);
   --shadow-surface:
-    inset 0 1px 0 rgba(255, 255, 255, 0.04),
-    0 0 0 1px rgba(255, 255, 255, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 0 0 1px rgba(255, 255, 255, 0.08),
     0 10px 30px rgba(0, 0, 0, 0.14);
   --shadow-surface-hover:
-    inset 0 1px 0 rgba(255, 255, 255, 0.06),
-    0 0 0 1px rgba(255, 255, 255, 0.13),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 0 0 1px rgba(255, 255, 255, 0.13),
     0 16px 42px rgba(0, 0, 0, 0.2);
   --shadow-surface-active:
-    inset 0 1px 0 rgba(255, 255, 255, 0.05),
-    0 0 0 1px rgba(255, 255, 255, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 0 0 1px rgba(255, 255, 255, 0.16),
     0 6px 20px rgba(0, 0, 0, 0.18);
   --image-outline: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* Prose spacing scale */
 :root {
-  --prose-tight: 0.25rem;   /* 4px - within lists */
-  --prose-normal: 0.5rem;   /* 8px - list items */
-  --prose-relaxed: 1rem;    /* 16px - between blocks */
+  --prose-tight: 0.25rem; /* 4px - within lists */
+  --prose-normal: 0.5rem; /* 8px - list items */
+  --prose-relaxed: 1rem; /* 16px - between blocks */
   --prose-section: 1.75rem; /* 28px - section breaks */
 }
 
@@ -55,9 +75,9 @@
 :root {
   --docs-surface-bg: rgb(255 255 255 / 0.04);
   --docs-surface-border: rgb(255 255 255 / 0.06);
-  --docs-radius-sm: 0.375rem;   /* 6px - inline elements */
-  --docs-radius-md: 0.5rem;     /* 8px - cards, panels */
-  --docs-radius-lg: 0.625rem;   /* 10px - callouts, large blocks */
+  --docs-radius-sm: 0.375rem; /* 6px - inline elements */
+  --docs-radius-md: 0.5rem; /* 8px - cards, panels */
+  --docs-radius-lg: 0.625rem; /* 10px - callouts, large blocks */
   --docs-text-muted: rgb(255 255 255 / 0.55);
   --docs-text-secondary: rgb(255 255 255 / 0.75);
   --docs-text-primary: rgb(255 255 255 / 0.92);
