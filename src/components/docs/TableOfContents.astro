@@ -1,4 +1,6 @@
 ---
+import { Icon } from 'astro-icon/components';
+
 interface Props {
   headings?: Array<{ depth: number; slug: string; text: string }>;
 }
@@ -18,7 +20,7 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
     >
       <nav class="sticky top-6 z-10 -mr-2 max-h-[calc(100vh-4rem)] overflow-y-auto px-2" aria-label="On this page">
         <div class="space-y-4">
-          <h2 class="mb-4 text-xs font-semibold tracking-wider uppercase" style="color: var(--docs-text-muted);">
+          <h2 class="mb-4 text-sm font-semibold" style="color: var(--docs-text-muted);">
             On this page
           </h2>
           <div class="relative">
@@ -51,19 +53,21 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
             <button
               type="button"
               id="toc-copy-link"
-              class="toc-utility-link text-left text-sm transition-colors duration-200 hover:text-[var(--docs-text-primary)]"
+              class="toc-utility-link inline-flex items-center gap-2 text-left text-sm transition-colors duration-200 hover:text-[var(--docs-text-primary)]"
               style="color: var(--docs-text-muted);"
             >
-              Copy link
+              <Icon name="tabler:copy" class="h-4 w-4 shrink-0" aria-hidden="true" />
+              <span data-copy-link-label>Copy link</span>
             </button>
             <a
               href="https://github.com/Atlas-OS/website/issues"
               target="_blank"
               rel="noopener noreferrer"
-              class="toc-utility-link text-sm transition-colors duration-200 hover:text-[var(--docs-text-primary)]"
+              class="toc-utility-link inline-flex items-center gap-2 text-sm transition-colors duration-200 hover:text-[var(--docs-text-primary)]"
               style="color: var(--docs-text-muted);"
             >
-              Share feedback
+              <Icon name="tabler:message-report" class="h-4 w-4 shrink-0" aria-hidden="true" />
+              <span>Share feedback</span>
             </a>
           </div>
         </div>
@@ -185,17 +189,26 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
     btn.dataset.copyBound = 'true';
 
     btn.addEventListener('click', async () => {
+      const label = btn.querySelector<HTMLElement>('[data-copy-link-label]');
+      const originalText = label?.textContent || 'Copy link';
+      const setLabel = (text: string) => {
+        if (label) {
+          label.textContent = text;
+        } else {
+          btn.textContent = text;
+        }
+      };
+
       try {
         await navigator.clipboard.writeText(window.location.href);
-        const originalText = btn.textContent;
-        btn.textContent = 'Copied!';
+        setLabel('Copied!');
         setTimeout(() => {
-          btn.textContent = originalText;
+          setLabel(originalText);
         }, 2000);
       } catch {
-        btn.textContent = 'Copy failed';
+        setLabel('Copy failed');
         setTimeout(() => {
-          btn.textContent = 'Copy link';
+          setLabel('Copy link');
         }, 2000);
       }
     });

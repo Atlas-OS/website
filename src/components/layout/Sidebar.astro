@@ -24,8 +24,24 @@ const sectionNavItems = prepareSidebarNavigation(buildNavigationTree(allDocs, { 
 const homeSection = sectionNavItems.find((section) => normalizeSlug(section.sectionSlug) === '/docs/');
 const regularSections = sectionNavItems.filter((section) => normalizeSlug(section.sectionSlug) !== '/docs/');
 
+const sectionIconBySlug: Record<string, string> = {
+  '/docs/': 'tabler:home',
+  '/docs/install/': 'tabler:rocket',
+  '/docs/upgrade/': 'tabler:arrow-up',
+  '/docs/essential-setup/': 'tabler:cpu',
+  '/docs/atlas-configuration/': 'tabler:settings',
+  '/docs/faq/': 'tabler:help-circle',
+  '/docs/contributing/': 'tabler:code',
+  '/docs/toolbox/': 'tabler:tools',
+  '/docs/branding/': 'tabler:palette',
+};
+
 function getLinkStateClasses(isActive: boolean, inactiveClasses: string): string {
   return isActive ? 'sidebar-active-link' : inactiveClasses;
+}
+
+function getSectionIcon(slug: string): string {
+  return sectionIconBySlug[normalizeSlug(slug)] ?? 'tabler:file-text';
 }
 
 function hasActiveDescendant(item: NavItem): boolean {
@@ -49,7 +65,7 @@ function hasActiveDescendant(item: NavItem): boolean {
       <aside
         id="sidebar"
         data-pagefind-ignore
-        class="fixed left-0 z-40 border-r border-white/[0.06] transition-transform duration-[250ms] lg:translate-x-0"
+        class="fixed left-0 z-40 transition-transform duration-[250ms] lg:translate-x-0"
         style="top: var(--docs-header-height); width: min(var(--docs-sidebar-width), 86vw); height: calc(100vh - var(--docs-header-height));"
         transition:persist="docs-sidebar"
       >
@@ -76,10 +92,17 @@ function hasActiveDescendant(item: NavItem): boolean {
                   aria-current={isActivePage(currentSlug, homeSection.sectionSlug) ? 'page' : undefined}
                   class={`sidebar-home-link flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-sm font-semibold transition-colors duration-200 outline-none ${getLinkStateClasses(
                     isActivePage(currentSlug, homeSection.sectionSlug),
-                    'text-white/85 hover:bg-white/5 hover:text-white',
+                    'text-white/85 hover:bg-white/5 hover:text-white'
                   )}`}
                 >
-                  <span class="truncate">{homeSection.sectionTitle}</span>
+                  <span class="flex min-w-0 items-center gap-2">
+                    <Icon
+                      name={getSectionIcon(homeSection.sectionSlug)}
+                      class="sidebar-primary-icon h-4 w-4 shrink-0"
+                      aria-hidden="true"
+                    />
+                    <span class="truncate">{homeSection.sectionTitle}</span>
+                  </span>
                   {homeSection.badge && (
                     <span class="shrink-0 rounded-md border border-white/[0.08] px-1.5 py-0.5 text-[10px] font-medium tracking-wide text-white/60">
                       {homeSection.badge}
@@ -99,10 +122,17 @@ function hasActiveDescendant(item: NavItem): boolean {
                       aria-current={sectionIsActive ? 'page' : undefined}
                       class={`sidebar-section-link flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-sm font-semibold transition-colors duration-200 ${getLinkStateClasses(
                         sectionIsActive,
-                        'text-white/85 hover:bg-white/5 hover:text-white',
+                        'text-white/85 hover:bg-white/5 hover:text-white'
                       )}`}
                     >
-                      <span class="truncate">{section.sectionTitle}</span>
+                      <span class="flex min-w-0 items-center gap-2">
+                        <Icon
+                          name={getSectionIcon(section.sectionSlug)}
+                          class="sidebar-primary-icon h-4 w-4 shrink-0"
+                          aria-hidden="true"
+                        />
+                        <span class="truncate">{section.sectionTitle}</span>
+                      </span>
                       {section.badge && (
                         <span class="shrink-0 rounded-md border border-white/[0.08] px-1.5 py-0.5 text-[10px] font-medium tracking-wide text-white/60">
                           {section.badge}
@@ -111,7 +141,7 @@ function hasActiveDescendant(item: NavItem): boolean {
                     </a>
 
                     {section.items.length > 0 && (
-                      <ul class="space-y-0.5 border-l border-white/[0.06] pl-2">
+                      <ul class="space-y-0.5 pl-2">
                         {section.items.map((item) => {
                           if (shouldSkipItem(item, section.sectionSlug)) {
                             return null;
@@ -143,7 +173,7 @@ function hasActiveDescendant(item: NavItem): boolean {
                                   aria-current={isActiveItem ? 'page' : undefined}
                                   class={`sidebar-link flex-1 rounded-md px-2 py-1.5 text-sm transition-colors duration-200 outline-none ${getLinkStateClasses(
                                     isActiveItem,
-                                    'text-white/70 hover:text-white',
+                                    'text-white/70 hover:text-white'
                                   )} ${isActiveItem ? 'font-medium' : ''}`}
                                 >
                                   <span class="flex items-center justify-between gap-2">
@@ -159,7 +189,7 @@ function hasActiveDescendant(item: NavItem): boolean {
                                 {hasChildren && (
                                   <button
                                     type="button"
-                                    class="sidebar-toggle inline-flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md text-white/60 transition-colors duration-200 outline-none hover:bg-white/5 hover:text-white"
+                                    class="sidebar-toggle inline-flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md text-white/60 transition-colors duration-200 outline-none hover:text-white"
                                     aria-label={`Toggle ${item.title} items`}
                                     aria-expanded={isInitiallyOpen}
                                   >
@@ -172,7 +202,7 @@ function hasActiveDescendant(item: NavItem): boolean {
                               </div>
 
                               {hasChildren && (
-                                <ul class="sidebar-children mt-1 ml-2 space-y-0.5 border-l border-white/[0.06] pl-2.5">
+                                <ul class="sidebar-children mt-1 ml-3 space-y-0.5">
                                   {item.children?.map((child) => {
                                     const isChildActive = isActivePage(currentSlug, child.slug);
 
@@ -184,7 +214,7 @@ function hasActiveDescendant(item: NavItem): boolean {
                                           aria-current={isChildActive ? 'page' : undefined}
                                           class={`sidebar-link block rounded-md px-2 py-1.5 text-sm transition-colors duration-200 outline-none ${getLinkStateClasses(
                                             isChildActive,
-                                            'text-white/60 hover:bg-white/5 hover:text-white',
+                                            'text-white/60 hover:bg-white/5 hover:text-white'
                                           )} ${isChildActive ? 'font-medium' : ''}`}
                                         >
                                           <span class="flex items-center justify-between gap-2">

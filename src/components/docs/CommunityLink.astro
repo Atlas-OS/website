@@ -17,22 +17,21 @@ const isExternal = href.startsWith('http://') || href.startsWith('https://');
   href={href}
   target={isExternal ? '_blank' : undefined}
   rel={isExternal ? 'noopener noreferrer' : undefined}
-  class="community-link community-link-animated docs-surface not-prose group flex items-start gap-3 p-5 transition-opacity duration-200 hover:opacity-80"
+  class="community-link community-link-animated docs-surface not-prose group flex items-start gap-3 p-5 transition-[background-color,box-shadow,scale] duration-200 active:scale-[0.96]"
   data-component="community-link"
 >
   <div class="community-link-icon-wrapper flex-shrink-0">
-    <Icon name={icon} class="text-primary h-6 w-6 transition-transform" />
+    <Icon name={icon} class="h-6 w-6 text-primary transition-transform" />
   </div>
   <div class="min-w-0 flex-1">
-    <p class="text-base font-semibold text-white transition-opacity group-hover:opacity-80">
+    <p class="text-base font-semibold text-white">
       {title}
     </p>
     <p class="mt-2 text-sm" style="color: var(--docs-text-muted);">{description}</p>
   </div>
   <Icon
     name={isExternal ? 'tabler:arrow-up-right' : 'tabler:arrow-right'}
-    class="h-4 w-4 flex-shrink-0 transition-opacity group-hover:opacity-80"
-    style="color: var(--docs-text-muted);"
+    class="h-4 w-4 flex-shrink-0 text-white/45 transition-colors duration-200 group-hover:text-white/75"
   />
 </a>
 

@@ -1,5 +1,4 @@
 ---
-import { Image } from 'astro:assets';
 import AtlasLogomark from '@/assets/atlas-logomark.svg';
 import NavLink from '@/components/ui/NavLink.astro';
 import IconButton from '@/components/ui/IconButton.astro';
@@ -36,8 +35,8 @@ const mainNavItems = [
   { label: 'Support us', href: 'https://ko-fi.com/atlasos', isExternal: true },
 ];
 
-const docsSubNavItems = mainNavItems.filter(item => item.href === '/docs/install/' || item.href === '/docs/faq/');
-const hasActiveDocsSubItem = docsSubNavItems.some(item => isActive(item.href, currentPath));
+const docsSubNavItems = mainNavItems.filter((item) => item.href === '/docs/install/' || item.href === '/docs/faq/');
+const hasActiveDocsSubItem = docsSubNavItems.some((item) => isActive(item.href, currentPath));
 const isDocumentationActive = isOnDocsPage && !hasActiveDocsSubItem;
 ---
 
@@ -56,16 +55,18 @@ const isDocumentationActive = isOnDocsPage && !hasActiveDocsSubItem;
         class="group flex shrink-0 items-center transition-opacity hover:opacity-80"
       >
         <div class="relative">
-          <Image
-            src={AtlasLogomark}
+          <img
+            src={AtlasLogomark.src}
             alt="AtlasOS"
             width={100}
             height={32}
             class="relative z-10 block h-6 w-auto"
-            priority
+            loading="eager"
+            decoding="sync"
+            fetchpriority="high"
           />
           <div
-            class="bg-primary/10 group-hover:bg-primary/20 absolute -inset-2 -z-10 rounded-full opacity-70 blur-lg transition-[background-color,opacity] duration-300"
+            class="absolute -inset-2 -z-10 rounded-full bg-primary/10 opacity-70 blur-lg transition-[background-color,opacity] duration-300 group-hover:bg-primary/20"
           >
           </div>
         </div>
@@ -127,10 +128,7 @@ const isDocumentationActive = isOnDocsPage && !hasActiveDocsSubItem;
   {
     !isOnDocsPage && (
       <div id="mobile-menu" class="mobile-menu md:hidden" hidden inert>
-        <div
-          id="mobile-menu-content"
-          class="mobile-menu-content space-y-1 px-4 py-3 backdrop-blur-xl"
-        >
+        <div id="mobile-menu-content" class="mobile-menu-content space-y-1 px-4 py-3 backdrop-blur-xl">
           {mainNavItems.map((item) => {
             const itemIsActive =
               item.href === '/docs/' ? isDocumentationActive : !item.isExternal && isActive(item.href, currentPath);
@@ -142,7 +140,7 @@ const isDocumentationActive = isOnDocsPage && !hasActiveDocsSubItem;
                 target={item.isExternal ? '_blank' : undefined}
                 rel={item.isExternal ? 'noopener noreferrer' : undefined}
                 class={`block rounded-md px-4 py-2.5 text-sm font-medium text-white transition-colors duration-200 ${
-                  itemIsActive ? 'text-primary bg-white/5' : 'hover:bg-white/5'
+                  itemIsActive ? 'bg-white/5 text-primary' : 'hover:bg-white/5'
                 }`}
               >
                 {item.label}

@@ -92,6 +92,34 @@ function restoreSidebarScrollPosition(): void {
   pendingSidebarScrollTop = null;
 }
 
+function setupScrollActivity(scrollContainer: HTMLElement | null, signal: AbortSignal): void {
+  if (!scrollContainer) return;
+
+  let scrollIdleTimeout: number | undefined;
+
+  const hideScrollbar = () => {
+    scrollContainer.classList.remove('is-scrolling');
+
+    if (scrollIdleTimeout !== undefined) {
+      window.clearTimeout(scrollIdleTimeout);
+      scrollIdleTimeout = undefined;
+    }
+  };
+
+  const showScrollbar = () => {
+    scrollContainer.classList.add('is-scrolling');
+
+    if (scrollIdleTimeout !== undefined) {
+      window.clearTimeout(scrollIdleTimeout);
+    }
+
+    scrollIdleTimeout = window.setTimeout(hideScrollbar, 900);
+  };
+
+  scrollContainer.addEventListener('scroll', showScrollbar, { passive: true, signal });
+  signal.addEventListener('abort', hideScrollbar, { once: true });
+}
+
 function normalizePath(path: string): string {
   const withoutOrigin = path.startsWith('http') ? new URL(path).pathname : path;
   return withoutOrigin.replace(/\/+$/, '') || '/';
@@ -180,6 +208,7 @@ export function initSidebar(): void {
 
   document.addEventListener('astro:before-swap', saveSidebarScrollPosition, { signal });
   document.addEventListener('astro:after-swap', restoreSidebarScrollPosition, { signal });
+  setupScrollActivity(elements.scrollContainer, signal);
 
   window.addEventListener(
     'resize',

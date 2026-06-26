@@ -39,6 +39,12 @@ if (marginY === '6') {
     contain: layout style;
   }
 
+  :where(.prose) .quick-links-grid + h2:not(.not-prose):not(.not-prose *) {
+    margin-top: 3.25rem;
+    padding-top: 0;
+    border-top: none;
+  }
+
   html.motion-ready .quick-links-grid[data-animate] {
     opacity: 1;
     transform: none;

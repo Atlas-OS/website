@@ -16,6 +16,20 @@ button.docs-surface:hover,
   box-shadow: var(--shadow-surface-hover);
 }
 
+.quick-link-card,
+.community-link,
+.page-nav-card {
+  background: rgb(255 255 255 / 0.018);
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.04);
+}
+
+.quick-link-card:hover,
+.community-link:hover,
+.page-nav-card:hover {
+  background: rgb(255 255 255 / 0.035);
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.075);
+}
+
 /* Inline code/chips */
 .docs-inline {
   background: var(--docs-surface-bg);
