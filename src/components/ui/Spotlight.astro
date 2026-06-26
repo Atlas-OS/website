@@ -252,6 +252,10 @@ import { Icon } from 'astro-icon/components';
 </style>
 
 <script>
+  const PAGEFIND_PATH = '/pagefind/pagefind.js';
+  const PAGEFIND_DEBOUNCE_MS = 150;
+  const MAX_SEARCH_RESULTS = 10;
+
   interface AstroNavigation {
     navigate: (url: string) => void;
   }
@@ -262,6 +266,7 @@ import { Icon } from 'astro-icon/components';
 
   interface PagefindResult {
     id: string;
+    score?: number;
     data: () => Promise<PagefindResultData>;
   }
 
@@ -269,24 +274,43 @@ import { Icon } from 'astro-icon/components';
     url: string;
     content: string;
     excerpt: string;
-    meta: {
+    plain_excerpt?: string;
+    meta?: {
       title?: string;
       image?: string;
+      [key: string]: string | undefined;
     };
     sub_results?: Array<{
       url: string;
       title: string;
       excerpt: string;
+      plain_excerpt?: string;
     }>;
+  }
+
+  interface PagefindSearchOptions {
+    filters?: Record<string, unknown>;
+    sort?: Record<string, unknown>;
+    verbose?: boolean;
+    preload?: boolean;
   }
 
   interface PagefindSearchResponse {
     results: PagefindResult[];
+    unfilteredResultCount?: number;
+    filters?: Record<string, Record<string, number>>;
+    totalFilters?: Record<string, Record<string, number>>;
   }
 
   interface Pagefind {
     init: () => Promise<void>;
-    search: (query: string) => Promise<PagefindSearchResponse>;
+    search: (query: string, options?: PagefindSearchOptions) => Promise<PagefindSearchResponse>;
+    debouncedSearch: (
+      query: string,
+      options?: PagefindSearchOptions,
+      debounceTimeoutMs?: number,
+    ) => Promise<PagefindSearchResponse | null>;
+    preload: (query: string, options?: PagefindSearchOptions) => Promise<void>;
   }
 
   interface SearchResult {
@@ -296,25 +320,50 @@ import { Icon } from 'astro-icon/components';
   }
 
   let pagefind: Pagefind | null = null;
+  let pagefindLoadPromise: Promise<Pagefind | null> | null = null;
+  let pagefindUnavailableLogged = false;
   let selectedIndex = -1;
-  let searchDebounceTimer: ReturnType<typeof setTimeout> | null = null;
   let currentQuery = '';
+  let searchRunId = 0;
+  let spotlightController: AbortController | null = null;
+
+  const importPagefind = (modulePath: string): Promise<unknown> => import(/* @vite-ignore */ modulePath);
 
   async function loadPagefind(): Promise<Pagefind | null> {
     if (pagefind) return pagefind;
+    if (pagefindLoadPromise) return pagefindLoadPromise;
 
-    try {
-      const pagefindPath = '/pagefind/pagefind.js';
-      const importPagefind = (modulePath: string): Promise<unknown> => import(/* @vite-ignore */ modulePath);
+    pagefindLoadPromise = (async () => {
+      try {
+        const pf = (await importPagefind(PAGEFIND_PATH)) as Pagefind;
+        await pf.init();
+        pagefind = pf;
+        return pagefind;
+      } catch (error) {
+        pagefindLoadPromise = null;
 
-      const pf = (await importPagefind(pagefindPath)) as Pagefind;
-      await pf.init();
-      pagefind = pf;
-      return pagefind;
-    } catch {
-      console.warn('Pagefind not available - search index may not be built yet');
-      return null;
-    }
+        if (!pagefindUnavailableLogged) {
+          console.warn('Pagefind not available - search index may not be built yet', error);
+          pagefindUnavailableLogged = true;
+        }
+
+        return null;
+      }
+    })();
+
+    return pagefindLoadPromise;
+  }
+
+  function warmPagefind(query = '') {
+    void loadPagefind().then((pf) => {
+      const term = query.trim();
+      if (!pf || !term) return;
+      void pf.preload(term).catch(() => {});
+    });
+  }
+
+  function isCurrentSearch(runId: number, query: string): boolean {
+    return runId === searchRunId && query === currentQuery;
   }
 
   function openSpotlight() {
@@ -323,6 +372,7 @@ import { Icon } from 'astro-icon/components';
     const input = document.getElementById('spotlight-input') as HTMLInputElement;
 
     if (modal && backdrop && input) {
+      warmPagefind(input.value);
       modal.classList.add('open');
       backdrop.classList.add('open');
       backdrop.setAttribute('aria-hidden', 'false');
@@ -338,6 +388,7 @@ import { Icon } from 'astro-icon/components';
     const input = document.getElementById('spotlight-input') as HTMLInputElement;
 
     if (modal && backdrop && input) {
+      searchRunId += 1;
       modal.classList.remove('open');
       backdrop.classList.remove('open');
       backdrop.setAttribute('aria-hidden', 'true');
@@ -377,9 +428,12 @@ import { Icon } from 'astro-icon/components';
   }
 
   async function search(query: string) {
+    const runId = searchRunId + 1;
+    const term = query.trim();
+    searchRunId = runId;
     currentQuery = query;
 
-    if (!query.trim()) {
+    if (!term) {
       renderResults([], false);
       return;
     }
@@ -387,34 +441,53 @@ import { Icon } from 'astro-icon/components';
     showLoading();
 
     const pf = await loadPagefind();
+    if (!isCurrentSearch(runId, query)) return;
+
     if (!pf) {
       hideLoading();
       renderResults([], true);
       return;
     }
 
-    if (query !== currentQuery) return;
-
     try {
-      const searchResponse = await pf.search(query);
+      const searchResponse = await pf.debouncedSearch(term, {}, PAGEFIND_DEBOUNCE_MS);
 
-      if (query !== currentQuery) return;
+      if (!isCurrentSearch(runId, query)) return;
+      if (searchResponse === null) {
+        hideLoading();
+        return;
+      }
 
-      const resultsData = await Promise.all(searchResponse.results.slice(0, 10).map((r) => r.data()));
+      const results = await loadSearchResults(searchResponse.results.slice(0, MAX_SEARCH_RESULTS));
 
-      if (query !== currentQuery) return;
-
-      const results: SearchResult[] = resultsData.map((data) => ({
-        url: data.url,
-        title: data.meta?.title || extractTitleFromUrl(data.url),
-        excerpt: data.excerpt || '',
-      }));
+      if (!isCurrentSearch(runId, query)) return;
 
       renderResults(results, true);
-    } catch {
+    } catch (error) {
+      if (!isCurrentSearch(runId, query)) return;
+      console.warn('Pagefind search failed', error);
       hideLoading();
       renderResults([], true);
     }
+  }
+
+  async function loadSearchResults(results: PagefindResult[]): Promise<SearchResult[]> {
+    const loadedResults = await Promise.all(
+      results.map(async (result): Promise<SearchResult | null> => {
+        try {
+          const data = await result.data();
+          return {
+            url: data.url,
+            title: data.meta?.title || extractTitleFromUrl(data.url),
+            excerpt: data.excerpt || data.plain_excerpt || '',
+          };
+        } catch {
+          return null;
+        }
+      })
+    );
+
+    return loadedResults.filter((result): result is SearchResult => result !== null);
   }
 
   function extractTitleFromUrl(url: string): string {
@@ -430,14 +503,7 @@ import { Icon } from 'astro-icon/components';
   }
 
   function debouncedSearch(query: string) {
-    if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
-
-    if (!query.trim()) {
-      renderResults([], false);
-      return;
-    }
-
-    searchDebounceTimer = setTimeout(() => search(query), 150);
+    void search(query);
   }
 
   function createSvgIcon(paths: string[], className?: string, strokeWidth = '2') {
@@ -462,6 +528,15 @@ import { Icon } from 'astro-icon/components';
     });
 
     return svg;
+  }
+
+  function navigateToUrl(url: string) {
+    closeSpotlight();
+    if ((window as WindowWithAstro).astro?.navigate) {
+      (window as WindowWithAstro).astro?.navigate(url);
+    } else {
+      window.location.href = url;
+    }
   }
 
   function renderResults(results: SearchResult[], hasQuery: boolean) {
@@ -541,12 +616,7 @@ import { Icon } from 'astro-icon/components';
         e.stopPropagation();
         const url = el.getAttribute('data-url');
         if (url) {
-          closeSpotlight();
-          if ((window as WindowWithAstro).astro?.navigate) {
-            (window as WindowWithAstro).astro?.navigate(url);
-          } else {
-            window.location.href = url;
-          }
+          navigateToUrl(url);
         }
       });
       el.addEventListener('mousedown', (e) => e.preventDefault());
@@ -575,38 +645,51 @@ import { Icon } from 'astro-icon/components';
     if (selectedIndex >= 0 && selectedIndex < items.length) {
       const url = items[selectedIndex]?.getAttribute('data-url');
       if (url) {
-        closeSpotlight();
-        if ((window as WindowWithAstro).astro?.navigate) {
-          (window as WindowWithAstro).astro?.navigate(url);
-        } else {
-          window.location.href = url;
-        }
+        navigateToUrl(url);
       }
     }
   }
 
+  function cleanupSpotlight() {
+    spotlightController?.abort();
+    spotlightController = null;
+    document.body.style.overflow = '';
+    searchRunId += 1;
+  }
+
   function setupSpotlight() {
+    cleanupSpotlight();
+
     const searchButton = document.getElementById('navbar-search-button');
     const searchButtonMobile = document.getElementById('navbar-search-button-mobile');
     const input = document.getElementById('spotlight-input') as HTMLInputElement | null;
     const inputContainer = document.getElementById('spotlight-input-container');
     const backdrop = document.getElementById('spotlight-backdrop');
+    const modal = document.getElementById('spotlight-modal');
 
-    searchButton?.addEventListener('click', openSpotlight);
-    searchButtonMobile?.addEventListener('click', openSpotlight);
+    if (!modal || !backdrop || !input) return;
+
+    const controller = new AbortController();
+    const { signal } = controller;
+    spotlightController = controller;
+
+    searchButton?.addEventListener('click', openSpotlight, { signal });
+    searchButtonMobile?.addEventListener('click', openSpotlight, { signal });
 
     if (inputContainer && input) {
       inputContainer.addEventListener('click', (e) => {
         if (e.target !== input) input.focus();
-      });
+      }, { signal });
     }
 
     if (input) {
+      input.addEventListener('focus', () => warmPagefind(input.value), { signal });
       input.addEventListener('input', (e) => {
         const target = e.target as HTMLInputElement;
+        warmPagefind(target.value);
         debouncedSearch(target.value);
         selectedIndex = -1;
-      });
+      }, { signal });
 
       input.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowDown') {
@@ -619,28 +702,37 @@ import { Icon } from 'astro-icon/components';
           e.preventDefault();
           selectCurrentResult();
         }
-      });
+      }, { signal });
     }
 
-    backdrop?.addEventListener('click', closeSpotlight);
+    backdrop.addEventListener('click', closeSpotlight, { signal });
+
+    document.addEventListener(
+      'keydown',
+      (e) => {
+        if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
+          e.preventDefault();
+          if (modal.classList.contains('open')) {
+            closeSpotlight();
+          } else {
+            openSpotlight();
+          }
+        }
+        if (e.key === 'Escape' && modal.classList.contains('open')) {
+          closeSpotlight();
+        }
+      },
+      { signal }
+    );
+
+    document.addEventListener('astro:before-swap', cleanupSpotlight, { signal });
   }
 
-  document.addEventListener('keydown', (e) => {
-    if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
-      e.preventDefault();
-      const modal = document.getElementById('spotlight-modal');
-      if (modal?.classList.contains('open')) {
-        closeSpotlight();
-      } else {
-        openSpotlight();
-      }
-    }
-    if (e.key === 'Escape') {
-      const modal = document.getElementById('spotlight-modal');
-      if (modal?.classList.contains('open')) closeSpotlight();
-    }
-  });
-
   document.addEventListener('astro:page-load', setupSpotlight);
-  setupSpotlight();
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupSpotlight, { once: true });
+  } else {
+    setupSpotlight();
+  }
 </script>
