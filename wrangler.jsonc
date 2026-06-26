@@ -2,15 +2,16 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "atlasos-website",
   "main": "src/worker.ts",
-  "compatibility_date": "2026-02-18",
+  "compatibility_date": "2026-06-26",
   "compatibility_flags": ["nodejs_compat"],
-  "browser": { "binding": "BROWSER" },
+  "browser": { "binding": "BROWSER", "remote": true },
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
     "html_handling": "force-trailing-slash",
     "not_found_handling": "404-page",
-    "run_worker_first": ["/api/"]
+    "run_worker_first": ["/api/*"]
   },
+  "observability": { "enabled": true, "head_sampling_rate": 1 },
   "kv_namespaces": [{ "binding": "MS_ISO_LINKS", "id": "5c778e1859c64276b5fe5b4291deb857" }]
 }

@@ -8,6 +8,14 @@ interface Props {
 }
 
 const kapaLogoUrl = 'https://avatars.githubusercontent.com/u/78708182?s=128';
+const sansPreloads = [
+  { weight: 400, style: 'normal', subset: 'latin' },
+  { weight: 500, style: 'normal', subset: 'latin' },
+];
+const displayPreloads = [
+  { weight: 600, style: 'normal', subset: 'latin' },
+  { weight: 700, style: 'normal', subset: 'latin' },
+];
 ---
 
 <!doctype html>
@@ -15,8 +23,8 @@ const kapaLogoUrl = 'https://avatars.githubusercontent.com/u/78708182?s=128';
   <head>
     <meta charset="UTF-8" />
     <ClientRouter fallback="swap" />
-    <Font cssVariable="--font-sans-source" preload />
-    <Font cssVariable="--font-display-source" preload />
+    <Font cssVariable="--font-sans-source" preload={sansPreloads} />
+    <Font cssVariable="--font-display-source" preload={displayPreloads} />
     <Font cssVariable="--font-mono-source" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />

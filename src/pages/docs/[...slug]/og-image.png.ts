@@ -2,44 +2,65 @@ import { getDocsRouteParam, getPublishedDocs, type DocsEntry } from '@/utils/doc
 import { getSectionFromSlug, getSlugFromEntry } from '@/utils/navigation';
 import type { APIRoute } from 'astro';
 import type { GetStaticPaths } from 'astro';
-import { readFile } from 'fs/promises';
-import { resolve } from 'path';
-import satori from 'satori';
+import { Buffer } from 'node:buffer';
+import { readFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
+import satori, { type Font, type SatoriOptions } from 'satori';
 import sharp from 'sharp';
 
-let interFontData: ArrayBuffer | null = null;
-let interBoldFontData: ArrayBuffer | null = null;
+type DocsOgImageProps = {
+  entry: DocsEntry;
+};
 
-async function loadInterFont(): Promise<ArrayBuffer> {
-  if (interFontData) return interFontData;
+const OG_IMAGE_WIDTH = 1200;
+const OG_IMAGE_HEIGHT = 630;
+const INTER_MEDIUM_FONT_PATH = 'public/fonts/inter-latin-500-normal.ttf';
+const INTER_BOLD_FONT_PATH = 'public/fonts/inter-latin-700-normal.woff';
+const ATLAS_LOGO_PATH = 'src/assets/atlas-logo-white.svg';
 
-  const fontPath = resolve(process.cwd(), 'public/fonts/inter-latin-500-normal.ttf');
+let interFontsPromise: Promise<Font[]> | null = null;
+let atlasLogoDataUriPromise: Promise<string> | null = null;
+
+function getProjectPath(filePath: string): string {
+  return resolve(process.cwd(), filePath);
+}
+
+function getErrorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
+
+async function loadFontData(filePath: string, label: string): Promise<Buffer> {
+  const fontPath = getProjectPath(filePath);
   try {
-    const fontBuffer = await readFile(fontPath);
-    interFontData = fontBuffer.buffer;
-    return interFontData;
+    return await readFile(fontPath);
   } catch (error) {
     throw new Error(
-      `Failed to load Inter font at ${fontPath}. Ensure the font file exists in public/fonts/. Original error: ${error instanceof Error ? error.message : error}`,
+      `Failed to load ${label} font at ${fontPath}. Ensure the font file exists in public/fonts/. Original error: ${getErrorMessage(error)}`,
       { cause: error },
     );
   }
 }
 
-async function loadInterBoldFont(): Promise<ArrayBuffer> {
-  if (interBoldFontData) return interBoldFontData;
+function loadInterFonts(): Promise<Font[]> {
+  interFontsPromise ??= Promise.all([
+    loadFontData(INTER_MEDIUM_FONT_PATH, 'Inter Medium'),
+    loadFontData(INTER_BOLD_FONT_PATH, 'Inter Bold'),
+  ]).then(([interMediumFontData, interBoldFontData]) => [
+    {
+      name: 'Inter',
+      data: interMediumFontData,
+      weight: 500,
+      style: 'normal',
+    },
+    {
+      name: 'Inter',
+      data: interBoldFontData,
+      weight: 700,
+      style: 'normal',
+    },
+  ]);
 
-  const fontPath = resolve(process.cwd(), 'public/fonts/inter-latin-700-normal.woff');
-  try {
-    const fontBuffer = await readFile(fontPath);
-    interBoldFontData = fontBuffer.buffer;
-    return interBoldFontData;
-  } catch (error) {
-    throw new Error(
-      `Failed to load Inter Bold font at ${fontPath}. Ensure the font file exists in public/fonts/. Original error: ${error instanceof Error ? error.message : error}`,
-      { cause: error },
-    );
-  }
+  return interFontsPromise;
 }
 
 export const getStaticPaths = (async () => {
@@ -57,15 +78,19 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 async function loadAtlasLogo(): Promise<string> {
-  try {
-    const logoPath = resolve(process.cwd(), 'src/assets/atlas-logo-white.svg');
-    const logoSvg = await readFile(logoPath, 'utf-8');
-    const base64Svg = Buffer.from(logoSvg).toString('base64');
-    return `data:image/svg+xml;base64,${base64Svg}`;
-  } catch (error) {
-    console.warn('Could not load Atlas logo:', error);
-    return '';
-  }
+  atlasLogoDataUriPromise ??= (async () => {
+    try {
+      const logoPath = getProjectPath(ATLAS_LOGO_PATH);
+      const logoSvg = await readFile(logoPath, 'utf-8');
+      const base64Svg = Buffer.from(logoSvg, 'utf-8').toString('base64');
+      return `data:image/svg+xml;base64,${base64Svg}`;
+    } catch (error) {
+      console.warn('Could not load Atlas logo:', error);
+      return '';
+    }
+  })();
+
+  return atlasLogoDataUriPromise;
 }
 
 function getSectionIconPaths(section: string | null): string[] {
@@ -108,10 +133,8 @@ function getSectionIconPaths(section: string | null): string[] {
   return icons[section ?? ''] ?? defaultPaths;
 }
 
-export const GET: APIRoute = async function get({ props }) {
-  const { entry } = props as {
-    entry: DocsEntry;
-  };
+export const GET: APIRoute<DocsOgImageProps> = async function get({ props }) {
+  const { entry } = props;
   const title = entry.data.title || 'AtlasOS Documentation';
   const description = entry.data.description || '';
 
@@ -119,27 +142,11 @@ export const GET: APIRoute = async function get({ props }) {
   const section = getSectionFromSlug(slug);
   const sectionIconPaths = getSectionIconPaths(section);
 
-  const fontData = await loadInterFont();
-  const boldFontData = await loadInterBoldFont();
-  const fonts = [
-    {
-      name: 'Inter',
-      data: fontData,
-      weight: 400 as const,
-      style: 'normal' as const,
-    },
-    {
-      name: 'Inter',
-      data: boldFontData,
-      weight: 700 as const,
-      style: 'normal' as const,
-    },
-  ];
-
+  const fonts = await loadInterFonts();
   const logoDataUri = await loadAtlasLogo();
 
   const ICON_SIZE = 300;
-  const ICON_TOP = Math.round((630 - ICON_SIZE) / 2) + 20;
+  const ICON_TOP = Math.round((OG_IMAGE_HEIGHT - ICON_SIZE) / 2) + 20;
 
   const svg = await satori(
     {
@@ -282,15 +289,21 @@ export const GET: APIRoute = async function get({ props }) {
       },
     } as Parameters<typeof satori>[0],
     {
-      width: 1200,
-      height: 630,
+      width: OG_IMAGE_WIDTH,
+      height: OG_IMAGE_HEIGHT,
       fonts,
-    },
+    } satisfies SatoriOptions,
   );
 
-  const png = await sharp(Buffer.from(svg)).png().toBuffer();
+  const { data: png } = await sharp(Buffer.from(svg), {
+    density: 72,
+    failOn: 'error',
+    limitInputPixels: OG_IMAGE_WIDTH * OG_IMAGE_HEIGHT,
+  })
+    .png()
+    .toUint8Array();
 
-  return new Response(png as unknown as BodyInit, {
+  return new Response(new Uint8Array(png).buffer, {
     headers: {
       'Content-Type': 'image/png',
       'Cache-Control': 'public, max-age=31536000, immutable',

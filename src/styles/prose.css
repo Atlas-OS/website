@@ -1,4 +1,4 @@
-@reference "tailwindcss";
+@reference './global.css';
 
 .prose {
   color: rgb(255 255 255 / 0.9);
