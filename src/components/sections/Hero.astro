@@ -71,7 +71,7 @@ const links = {
         enthusiasts, gamers, and privacy-conscious individuals.
       </p>
       <p class="mb-4 text-sm text-white/70" data-animate data-animate-delay="7">
-        The latest version is <span class="font-semibold text-white">{ATLAS_RELEASE_LABEL}</span>
+        The latest version is <span id="atlas-release-label" class="font-semibold text-white">{ATLAS_RELEASE_LABEL}</span>
       </p>
       <div class="flex flex-wrap items-center justify-center gap-4" data-animate data-animate-delay="8">
         <Button variant="primary" size="lg" icon="tabler:chevron-right" iconPosition="after" id="get-started-btn">
@@ -438,7 +438,28 @@ const links = {
 </style>
 
 <script>
-  import { ATLAS_API_URL } from '@/constants';
+  import { ATLAS_API_URL, ATLAS_GITHUB_LATEST_RELEASE_API_URL } from '@/constants';
+
+  async function updateHeroReleaseLabel(): Promise<void> {
+    const releaseElement = document.getElementById('atlas-release-label');
+    if (!releaseElement) {
+      return;
+    }
+
+    try {
+      const response = await fetch(ATLAS_GITHUB_LATEST_RELEASE_API_URL);
+      if (!response.ok) {
+        throw new Error(`Release API request failed with status ${response.status}`);
+      }
+      const release = (await response.json()) as { tag_name?: string; name?: string };
+      const version = release.name || release.tag_name;
+      if (version) {
+        releaseElement.textContent = version.startsWith('Atlas') ? version : `Atlas v${version}`;
+      }
+    } catch {
+      // Keep the static fallback rendered from constants.
+    }
+  }
 
   async function updateHeroDownloadCount(): Promise<void> {
     const countElement = document.getElementById('hero-download-count');
@@ -606,6 +627,7 @@ const links = {
   }
 
   function initHero(): void {
+    updateHeroReleaseLabel();
     updateHeroDownloadCount();
     setupGetStartedButton();
     setupWallpaperAnimation();

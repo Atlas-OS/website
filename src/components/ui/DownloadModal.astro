@@ -167,7 +167,7 @@ const { links } = Astro.props;
               size="lg"
               fw
             >
-              Download AME Wizard
+              Download AME Beta
             </Button>
           </div>
 
@@ -190,7 +190,17 @@ const { links } = Astro.props;
 </dialog>
 
 <script>
-  import { ATLAS_API_URL, ATLAS_VERSION } from '@/constants';
+  import { ATLAS_API_URL, ATLAS_GITHUB_LATEST_RELEASE_API_URL, ATLAS_GITHUB_LATEST_RELEASE_URL } from '@/constants';
+
+  interface GitHubReleaseAsset {
+    name?: string;
+    browser_download_url?: string;
+  }
+
+  interface GitHubRelease {
+    html_url?: string;
+    assets?: GitHubReleaseAsset[];
+  }
 
   class DownloadModal {
     private modal: HTMLDialogElement;
@@ -252,7 +262,9 @@ const { links } = Astro.props;
       this.buttons.showDownloads.addEventListener('click', () => this.switchView('downloads'));
       this.buttons.showDocs.addEventListener('click', () => this.switchView('docs'));
       this.buttons.confirmGuide.addEventListener('change', () => this.updateConfirmState());
-      this.buttons.playbook.addEventListener('click', () => this.handleDownload());
+      this.buttons.playbook.addEventListener('click', () => {
+        void this.handleDownload();
+      });
 
       const guideLinks = this.modal.querySelectorAll('.download-modal-guide-link');
       guideLinks.forEach((link) => {
@@ -375,19 +387,35 @@ const { links } = Astro.props;
       }
     }
 
-    private handleDownload(): void {
+    private async fetchLatestPlaybookUrl(): Promise<string> {
+      const response = await fetch(ATLAS_GITHUB_LATEST_RELEASE_API_URL);
+      if (!response.ok) throw new Error(`Release API request failed with status ${response.status}`);
+
+      const release = (await response.json()) as GitHubRelease;
+      const playbookAsset = release.assets?.find((asset) => /AtlasPlaybook.*\.zip$/i.test(asset.name ?? ''));
+      return playbookAsset?.browser_download_url ?? release.html_url ?? ATLAS_GITHUB_LATEST_RELEASE_URL;
+    }
+
+    private async handleDownload(): Promise<void> {
       if (this.buttons.playbook.disabled) return;
 
       const originalContent = Array.from(this.buttons.playbook.childNodes).map((node) => node.cloneNode(true));
-      const downloadUrl = `https://cdn.jsdelivr.net/atlas/${ATLAS_VERSION}/AtlasPlaybook_v${ATLAS_VERSION}.zip`;
 
-      this.buttons.playbook.textContent = 'Downloading...';
+      this.buttons.playbook.textContent = 'Preparing download...';
       this.buttons.playbook.disabled = true;
 
-      const a = document.createElement('a');
-      a.href = downloadUrl;
-      a.download = '';
-      a.click();
+      try {
+        const downloadUrl = await this.fetchLatestPlaybookUrl();
+        const a = document.createElement('a');
+        a.href = downloadUrl;
+        if (/\.zip($|\?)/i.test(downloadUrl)) {
+          a.download = '';
+        }
+        a.click();
+      } catch (error) {
+        console.warn('Failed to resolve latest Atlas Playbook download.', error);
+        window.open(ATLAS_GITHUB_LATEST_RELEASE_URL, '_blank', 'noopener,noreferrer');
+      }
 
       this.incrementDownloadCount()
         .catch(() => {})
