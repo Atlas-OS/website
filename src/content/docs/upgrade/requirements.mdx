@@ -15,9 +15,9 @@ Verify you meet all requirements before upgrading.
 
 ## Version requirements
 
-- Your system must currently run **AtlasOS 0.4.1 or newer** (Windows 11 24H2 or 25H2)
-- **v0.4.0** requires a [fresh install](/docs/install/) to reach v0.5.0
-- **0.3.x** users must perform a [fresh install](/docs/install/)
+- Your system must currently run **AtlasOS v0.5.0**
+- **v0.4.1 and older** systems are not direct upgrade sources for the current Playbook
+- If an archived upgrade path is not published for your exact version, perform a [fresh install](/docs/install/)
 
 <Callout type="info" title="Not Sure?">
   See the [FAQ guide](/docs/faq/general/#checking-your-atlasos-version) for how to check your version.
@@ -41,8 +41,10 @@ Verify you meet all requirements before upgrading.
 
 ## Known limitations
 
-**Upgrading from 0.4.x<IconArrow />0.5.x:**
+**Upgrading from 0.5.0<IconArrow />newer 0.5.x releases:**
 
-The upgrade doesn't carry over Atlas folder configuration (General Configuration, Interface Tweaks, etc.). Re-apply these settings after the upgrade.
+The current Playbook is designed to preserve user files, applications, and most Atlas folder configuration during supported 0.5.x upgrades.
 
-This limitation doesn't apply when upgrading from 0.5.x to later versions.
+**Older versions:**
+
+AtlasOS v0.4.1 and earlier may need a fresh install or a specific archived upgrade path. Do not assume AME Beta will show an upgrade option unless the Playbook supports your installed version.

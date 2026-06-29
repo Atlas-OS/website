@@ -43,28 +43,29 @@ Follow these steps to upgrade AtlasOS.
 
 ## After upgrade
 
-### Re-apply Atlas folder configuration
+### Check Atlas folder configuration
 
-If upgrading from **0.4.x<IconArrow />0.5.x**, re-apply your Atlas folder configuration:
+After a supported 0.5.x upgrade, your apps, files, and most Atlas configuration should remain in place. Open the Atlas folder and confirm the settings you care about are still set as expected:
 
 1. Open the Atlas folder at <CodeInline text="C:\Windows\AtlasDesktop" />
-2. Review and re-apply your settings from the numbered sections (see [Atlas Configuration](/docs/atlas-configuration/))
+2. Review your settings from the numbered sections (see [Atlas Configuration](/docs/atlas-configuration/))
 
 <Callout type="tip">
-  This limitation only applies to upgrades from 0.4.x. Upgrades from 0.5.x+ will preserve your
-  configuration automatically.
+  The current Playbook advertises AtlasOS v0.5.0 as its direct upgrade source. Older versions may
+  require a fresh install or an archived upgrade path.
 </Callout>
 
 ## Troubleshooting
 
 ### AME Beta doesn't show upgrade option
 
-- Confirm you're on Atlas 0.4.1 or newer using the [version check guide](/docs/faq/general/#checking-your-atlasos-version)
+- Confirm you're on AtlasOS v0.5.0 using the [version check guide](/docs/faq/general/#checking-your-atlasos-version)
 - Use the latest AME Beta
+- Make sure the Playbook you are using supports upgrading from your installed Atlas version
 
-### Systems on 0.3.x
+### Older Atlas versions
 
-**0.3.x** systems cannot be upgraded in-place. Follow the [Installation guide](/docs/install/) for a clean reinstall.
+AtlasOS v0.4.1 and earlier are not direct upgrade sources for the current Playbook. Follow the [Installation guide](/docs/install/) for a clean reinstall unless an archived upgrade path is published for your exact version.
 
 ## Need help?
 

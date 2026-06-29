@@ -50,11 +50,11 @@ To enable background apps, run the <CodeInline text="Enable Background Apps.cmd"
 
 ## Bluetooth
 
-**When to use:** Enable if you need to connect Bluetooth devices like headphones, speakers, or game controllers.
+**When to use:** Disable only if you do not use Bluetooth devices like headphones, speakers, or game controllers.
 
-AtlasOS disables Bluetooth by default to reduce system overhead. If you use Bluetooth devices, you'll need to enable this feature.
+AtlasOS enables Bluetooth by default. If you do not use Bluetooth, you can disable it to reduce background services and context-menu entries.
 
-1. Run the <CodeInline text="Enable Bluetooth.cmd" /> script in <CodeInline text="6. Advanced Configuration" /><IconArrow /><CodeInline text="Services" /><IconArrow /><CodeInline text="Bluetooth" />
+1. Run <CodeInline text="Disable Bluetooth.cmd" /> or <CodeInline text="Enable Bluetooth (default).cmd" /> in <CodeInline text="6. Advanced Configuration" /><IconArrow /><CodeInline text="Services" /><IconArrow /><CodeInline text="Bluetooth" />
 2. Restart your system
 3. You may need to install Bluetooth drivers from your motherboard manufacturer's website
 
@@ -78,18 +78,30 @@ To switch methods:
 **Automatic:** Windows Update handles all driver installations automatically.
 **Manual:** You install drivers yourself for full control over versions.
 
+<span id="automatic-updates"></span>
+
+## Automatic Windows Updates
+
+**When to use:** Enable if you want Windows to install system updates automatically. Disable if you prefer update notifications and manual control.
+
+Atlas lets you choose automatic Windows Update behavior during installation. You can change it later from <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="Automatic Updates" />.
+
+- <CodeInline text="Disable Automatic Updates (default).cmd" /> restores the Atlas default.
+- <CodeInline text="Enable Automatic Updates.cmd" /> lets Windows install updates automatically.
+- <CodeInline text="Pause Updates" /> and <CodeInline text="Update Notifications" /> folders provide related controls.
+
 ## FSO and Game Bar
 
 **When to use:** Enable Game Bar if you want to record gameplay, take screenshots, or monitor performance. Disable FSO if you prefer fullscreen exclusive mode.
 
 Game Bar is a Windows feature for screen recording, screenshots, and performance monitoring. It relies on Fullscreen Optimizations (FSO), which AtlasOS enables by default.
 
-### Enable Game Bar
+### Restore the default
 
-AtlasOS removes Game Bar by default. To enable it:
+FSO and Game Bar support are enabled by default. To restore the default:
 
 1. Run the <CodeInline text="Enable FSO and Game Bar Support (default).cmd" /> script in <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="FSO and Game Bar" />
-2. Install Game Bar from the [Microsoft Store](https://apps.microsoft.com/store/detail/game-bar/9NZKPSTSNW4P)
+2. The script also installs Game Bar from the Microsoft Store if needed
 
 ### Disable FSO (Fullscreen Exclusive Mode)
 
@@ -196,11 +208,11 @@ Adjust timer resolution using the scripts in <CodeInline text="3. General Config
 
 ## Printing
 
-**When to use:** Enable if you need to print documents.
+**When to use:** Disable only if you never print documents or use print-to-PDF workflows.
 
-AtlasOS disables printing by default to improve responsiveness. Enable it if you use printers.
+AtlasOS enables printing by default. Disable it only if you do not use printers or Windows printing features.
 
-To enable printing, run the <CodeInline text="Enable Printing (default).cmd" /> script in <CodeInline text="6. Advanced Configuration" /><IconArrow /><CodeInline text="Services" /><IconArrow /><CodeInline text="Printing" /> and restart.
+To disable printing, run <CodeInline text="Disable Printing.cmd" /> in <CodeInline text="6. Advanced Configuration" /><IconArrow /><CodeInline text="Services" /><IconArrow /><CodeInline text="Printing" /> and restart. To restore the default, run <CodeInline text="Enable Printing (default).cmd" />.
 
 ## Search indexing
 

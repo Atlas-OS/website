@@ -1,6 +1,6 @@
 ---
 title: Security settings
-metaDescription: "AtlasOS security: mitigations, Defender, Core Isolation, UAC, Firewall."
+metaDescription: "AtlasOS security: mitigations, Defender, Core Isolation, UAC, and Firewall defaults."
 description: Configure security features.
 order: 24
 ---
@@ -49,7 +49,7 @@ Core isolation protects against vulnerabilities in Windows core processes. It ha
 
 For Windows 11 users, Core isolation features are typically enabled by default, as long as your CPU supports Windows 11.
 
-The <CodeInline text="Core Isolation (VBS)" /> folder contains <CodeInline text="Current Configuration.ps1" /> to check which Core isolation features are available and configured, plus shortcuts to Core isolation settings. AME Beta also has a prompt to disable Core isolation.
+The <CodeInline text="Core Isolation (VBS)" /> folder contains <CodeInline text="Current Configuration.cmd" /> to check which Core isolation features are available and configured, plus shortcuts to Core isolation settings. AME Beta also has a prompt to disable Core isolation.
 
 ### Core isolation features
 
@@ -68,11 +68,11 @@ UAC (User Account Control) is a feature in Windows that helps control what chang
 
 Note that most sophisticated malware can bypass UAC easily. The only reliable way to protect yourself against UAC bypasses is to set UAC to the maximum level.
 
-When UAC is disabled, everything will be run as Administrator. On the current version of Atlas, it is enabled by default. To disable it, run the <CodeInline text="Disable UAC.cmd" /> script in the <CodeInline text="User Account Control (UAC)" /> folder.
+When UAC is disabled, everything runs with fewer elevation prompts. On the current version of Atlas, UAC is enabled by default and the Atlas folder does not ship a UAC disable script. If you change UAC manually, treat it as an advanced Windows configuration change rather than a supported Atlas preset.
 
 ## Firewall
 
-Firewall is a built-in Windows feature that blocks unwanted connections. Atlas keeps it enabled by default to enhance system security. To disable it, run the <CodeInline text="Disable Windows Firewall.cmd" /> script in the <CodeInline text="Firewall" /> folder.
+Firewall is a built-in Windows feature that blocks unwanted connections. Atlas keeps it enabled by default to enhance system security. The current Atlas folder does not ship a Firewall disable script.
 
 ## Next steps
 

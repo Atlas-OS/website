@@ -10,7 +10,7 @@ import CodeInline from '@/components/docs/CodeInline.astro';
 
 # GPU settings - Resizable BAR
 
-Enable Resizable BAR (Base Address Register), or Smart Access Memory (SAM) on AMD, to improve CPU–GPU communication. It can improve in-game FPS by up to 15% by letting the CPU access the GPU's entire frame buffer at once.
+Enable Resizable BAR (Base Address Register), or Smart Access Memory (SAM) on AMD, to improve CPU-GPU communication. It can improve performance in supported games by letting the CPU access the GPU's entire frame buffer at once, but results vary by game and platform.
 
 ## How it works
 
@@ -22,13 +22,14 @@ Resizable BAR allows your CPU to access the GPU's entire frame buffer at once, e
 
 ## Requirements
 
-Resizable BAR requires the following graphics cards:
+Resizable BAR support depends on your GPU, motherboard, BIOS, and driver. It is commonly relevant for:
 
 - NVIDIA GeForce 30 series or newer
 - AMD Radeon RX 6000 Series or newer
+- Intel Arc graphics, where Intel recommends Resizable BAR for optimal performance
 
 <Callout type="warning" title="Hardware Requirements">
-  Don't enable this feature if you don't meet these specifications.
+  Don't enable this feature unless your GPU, motherboard, and BIOS support it.
 </Callout>
 
 <Callout type="info" title="Update BIOS First">

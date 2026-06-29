@@ -1,6 +1,6 @@
 ---
 title: Advanced options
-metaDescription: "AtlasOS advanced config: affinity, boot, DSCP, utilities. For power users."
+metaDescription: "AtlasOS advanced config: boot, driver tools, Microsoft Store, Process Explorer, services, and Windows Update."
 description: Advanced configuration for power users.
 order: 22
 ---
@@ -20,57 +20,55 @@ import Term from '@/components/docs/Term.astro';
 
 All configuration files listed here are in the <CodeInline text="6. Advanced Configuration" /> folder within the Atlas folder on your Desktop. If you can't find the Atlas folder, see <AtlasFolderRestoreLink />.
 
-## Affinity
+## Boot configuration
+
+Boot Configuration contains scripts for Windows boot appearance and behavior.
+
+- **Appearance** - Toggle boot logo, spinning animation, and the newer boot menu.
+- **Behavior** - Toggle advanced boot options, automatic repair, highest graphics mode, and kernel parameter editing at startup.
+- **View Current Values** - Check the current boot configuration before changing it.
+
+Incorrect boot settings can make recovery harder. Change one option at a time and make sure you know how to revert it.
+
+## Driver configuration
 
 <Term term="Affinities" definition="Settings that control which CPU core a driver or process runs on. Spreading them across cores can reduce bottlenecks." /> allow you to specify which core a driver or process runs on. As Windows puts most drivers on Core 0 by default, we can alter this to improve performance and latency. Allocating drivers to their own core will reduce interrupts on Core 0.
 
-This folder contains a few links to some tools to manually set driver affinities.
+The Driver Configuration folder contains links to tools and documentation for MSI mode, interrupt policy, and driver affinity configuration. These are manual tools for advanced troubleshooting and tuning.
 
-## Boot configuration
+## Microsoft Store
 
-This section lets you change the boot configuration for Windows, which can modify quality of life and pre-boot behavior.
+Microsoft Store contains scripts to disable or restore Microsoft Store access.
 
-Experimental options may improve performance in some cases, but incorrect changes can cause boot issues. Only modify settings you understand.
+- Run <CodeInline text="Disable Microsoft Store.cmd" /> only if you intentionally do not use Store apps.
+- Run <CodeInline text="Enable Microsoft Store (default).cmd" /> to restore the default Atlas state.
 
-## DSCP
-
-The <Term term="DSCP" definition="Differentiated Services Code Point - a network setting that prioritizes traffic from specific apps (e.g., games) for lower latency and better responsiveness." /> is a policy for managing network traffic. It prioritizes data from specific applications and games for lower latency and better responsiveness.
-
-When you run the script, it asks for an executable. Select the executable (game binary file) to enable DSCP.
-
-## NVIDIA Display Container
-
-This allows you to enable or disable the NVIDIA Display Container LS service, which connects to a few NVIDIA IPs and uses a small amount of CPU. These scripts are aimed at users that have a stripped driver, and people that barely touch the NVIDIA Control Panel.
-
-## Static IP
-
-In this section, you can configure a static IP address, which is useful if your computer serves as a local server or you need to set up port forwarding. This method also reduces the number of services required.
-
-## Utilities
-
-The files in this folder are open-source projects in our [GitHub utilities repository](https://github.com/Atlas-OS/utilities).
-
-### Process Explorer
+## Process Explorer
 
 Process Explorer is part of Microsoft Sysinternals. It is an advanced Task Manager that shows what resources each program uses. See [Microsoft's Process Explorer documentation](https://learn.microsoft.com/en-us/sysinternals/downloads/process-explorer).
 
-This folder has scripts that can automate the installation/uninstallation of this utility.
+This folder has scripts to install or uninstall Process Explorer.
 
-### Gameutil
+## Services
 
-Gameutil automates tasks: Timer Resolution, killing DWM or Explorer, disabling CPU Idle states, cleaning memory. See [usage instructions](https://github.com/Atlas-OS/utilities/tree/dev#gameutil-rs) on GitHub.
+The Services folder contains toggles for Windows and vendor services that Atlas exposes as optional configuration:
 
-Gameutil is not yet fully updated for Windows 11.
+<span id="nvidia-display-container"></span>
 
-### MSI Utility V3
+- **Bluetooth** - Enabled by default. Disable only if you do not use Bluetooth devices.
+- **Lanman Workstation (SMB)** - Enabled by default. Required by file sharing and some software such as AMD Ryzen Master.
+- **NVIDIA Display Container** - Enabled by default. Some stripped NVIDIA driver setups may disable it.
+- **Network Discovery** - Enabled by default. Controls local network discovery services.
+- **Printing** - Enabled by default. Disable only if you never print or use print-to-PDF workflows.
+- **Superfetch** - Toggle SysMain/Superfetch behavior.
 
-This utility enables Message Signaled Interrupts (MSI) on your devices, which can improve performance by reducing interrupt conflicts. A link in this folder explains the benefits and provides the MSI Utility V3 download.
+## Toggle Windows Updates
 
-## Wi-Fi
+Toggle Windows Updates contains the Windows Update toggle script and its README. Use it when you intentionally want to switch Windows Update behavior after installation.
 
-Wi-Fi enables wireless internet. Atlas enables it by default. To disable it, run <CodeInline text="Disable Wi-Fi.cmd" /> in the <CodeInline text="Wi-Fi" /> folder.
-
-You may need to [install drivers](/docs/essential-setup/drivers/) for Wi-Fi.
+<Callout type="info" title="Not in this folder">
+  DSCP, Static IP, Gameutil, and Wi-Fi scripts are not present in the current Atlas Advanced Configuration folder.
+</Callout>
 
 ## Next steps
 

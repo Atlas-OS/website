@@ -12,7 +12,7 @@ import { Icon } from 'astro-icon/components';
 
 # Atlas folder configuration
 
-The Atlas folder is at <CodeInline text="C:\Windows\AtlasDesktop" />. It holds configuration scripts and utilities. The Desktop or Start Menu shortcut opens it.
+The Atlas folder is at <CodeInline text="C:\Windows\AtlasDesktop" />. It holds configuration scripts, registry files, shortcuts, and utilities. The Desktop or Start Menu shortcut opens it.
 
 ## Folder structure
 
@@ -30,7 +30,7 @@ The Atlas folder is at <CodeInline text="C:\Windows\AtlasDesktop" />. It holds c
 └── 9. Troubleshooting`}
 />
 
-Each section contains <CodeInline text=".cmd" /> scripts and shortcuts. Double-click a script to run it. Most changes require a restart to take effect.
+Each section contains scripts, registry files, shortcuts, and helper utilities. Double-click the matching file to run it or open the linked settings page. Most changes require a restart to take effect.
 
 <Callout type="tip">
   Scripts marked with <CodeInline text="(default)" /> indicate Atlas's default configuration. Use the paired script without "(default)" to change the setting.
@@ -40,7 +40,7 @@ Each section contains <CodeInline text=".cmd" /> scripts and shortcuts. Double-c
 
 | Section | Description |
 |---------|-------------|
-| **1. Software** | Install AtlasOS Toolbox and other software |
+| **1. Software** | Install software through WinGet |
 | **2. Drivers** | GPU drivers and Windows Update driver options |
 | **3. General Configuration** | File sharing, power-saving, updates, Copilot, and more |
 | **4. Interface Tweaks** | Visual effects, context menus, File Explorer, Start Menu |
@@ -48,7 +48,9 @@ Each section contains <CodeInline text=".cmd" /> scripts and shortcuts. Double-c
 | **6. Advanced Configuration** | Services (Bluetooth, Printing, Network Discovery, NVIDIA Display Container, SuperFetch, SMB), Boot Configuration, Driver Configuration (MSI, Affinity), Microsoft Store, Process Explorer |
 | **7. Security** | Defender, mitigations, Core Isolation (VBS) |
 | **8. Additional Tools** | Links to HWMonitor, HWiNFO, Everything Search, Autoruns |
-| **9. Troubleshooting** | Network reset, Repair Windows Components, Safe Mode, and more |
+| **9. Troubleshooting** | Network reset, Repair Windows Components, Safe Mode, Microsoft Store fixes, and more |
+
+The folder root also contains shortcuts such as Atlas documentation and <CodeInline text="Install AtlasOS Toolbox.cmd" />.
 
 ## Sections 8 and 9
 
@@ -71,6 +73,8 @@ Scripts and shortcuts for common recovery tasks:
 - **Network** - Reset network settings to Atlas defaults or Windows defaults
 - **Repair Windows Components** - Fix corrupted Windows components
 - **Set services to defaults** - Restore Atlas services to their default state
+- **Fix MS Store Issues** - Repair common Microsoft Store problems
+- **Fix File Explorer Visual C++ Runtime Error** - Repair a common Explorer runtime error
 - **Fix Errors 2502 and 2503** - Resolve installer permission errors
 - **Safe Mode** - Boot into Safe Mode (with or without networking) or exit Safe Mode
 - **Telemetry Components** - Manage telemetry-related settings

@@ -36,13 +36,14 @@ First, check if Windows Update has already installed your graphics drivers:
 
 ## NVIDIA drivers
 
-Use NVCleanstall—a GUI alternative to manually stripping drivers.
+Most users should install the latest NVIDIA driver from NVIDIA. NVCleanstall is an optional advanced tool for users who want to customize which NVIDIA components are installed.
 
 ### Installation steps
 
-1. **Download NVCleanstall**
-   - Visit [TechPowerUp NVCleanstall](https://www.techpowerup.com/download/techpowerup-nvcleanstall)
-   - Download and open the application, then click **Next**
+1. **Download the driver or NVCleanstall**
+   - Standard path: use [NVIDIA's driver download page](https://www.nvidia.com/download/find.aspx)
+   - Advanced path: use [TechPowerUp NVCleanstall](https://www.techpowerup.com/download/techpowerup-nvcleanstall)
+   - If using NVCleanstall, download and open the application, then click **Next**
 
 <Callout type="info" title="Slow Download?">
   If the download is unusually slow or stuck, go to [NVIDIA's advanced driver
@@ -106,7 +107,7 @@ After running this command, download and extract [NVIDIA Profile Inspector](http
 
 ## AMD drivers
 
-Use RadeonSoftwareSlimmer—an open-source GUI alternative to manually stripping drivers.
+Most users should install the latest recommended AMD driver from AMD. RadeonSoftwareSlimmer is an optional advanced tool for users who want to remove AMD driver components before installation.
 
 ### Installation steps
 
@@ -158,7 +159,7 @@ Use RadeonSoftwareSlimmer—an open-source GUI alternative to manually stripping
      code="rundll32 display.dll,ShowAdapterSettings 0"
    />
 
-5. Disable the residual AMD services and drivers. Typically the **AMD Crash Defender** and **AMD External Events Utility** (required for VRR) services.
+5. Advanced users can disable residual AMD services and drivers such as **AMD Crash Defender**. Do not disable **AMD External Events Utility** if you use FreeSync/VRR or other AMD display features that depend on it.
 
 ### Disable Multi-Plane Overlay (MPO)
 
@@ -213,7 +214,8 @@ If you have both integrated and dedicated graphics:
 
 - **Download from official sources only** – Avoid third-party driver sites
 - **Keep drivers updated** – Check monthly or when you have issues
-- **Check manufacturer sites** – NVIDIA and AMD provide the latest releases; avoid third-party driver update tools
+- **Prefer manufacturer sites if unsure** – NVIDIA, AMD, Intel, and your device manufacturer provide the safest baseline installers
+- **Treat slimming tools as optional** – NVCleanstall and RadeonSoftwareSlimmer are for advanced users who understand the support trade-offs
 - **Avoid beta drivers** unless you need specific features—use stable releases
 
 ## Next steps

@@ -10,6 +10,7 @@ import Callout from '@/components/docs/Callout.astro';
 import QuickLinkCard from '@/components/docs/QuickLinkCard.astro';
 import QuickLinksGrid from '@/components/docs/QuickLinksGrid.astro';
 import CodeInline from '@/components/docs/CodeInline.astro';
+import IconArrow from '@/components/ui/IconArrow.astro';
 
 # Drivers guide
 
@@ -29,6 +30,10 @@ To switch to automatic installation via Windows Update, use the files in the <Co
   Use the files in the <CodeInline text="2. Drivers" /> directory in the Atlas folder to let
   Windows Update handle driver installation.
 </Callout>
+
+## Want to switch to automatic?
+
+Open <CodeInline text="C:\Windows\AtlasDesktop" /><IconArrow /><CodeInline text="2. Drivers" /><IconArrow /><CodeInline text="Drivers from Windows Update" /> and run <CodeInline text="Enable Drivers from Windows Update.reg" />. Restart afterward so Windows can apply the driver policy.
 
 ## Which drivers do I need?
 

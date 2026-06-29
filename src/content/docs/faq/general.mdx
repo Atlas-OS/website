@@ -24,53 +24,53 @@ Keep your AtlasOS installation current for the latest features, security updates
 
 Update options by version:
 
-<Table headers={['Version', 'Windows Update', 'Updating Atlas', 'Support from Atlas Team']}>
+<Table headers={['Version', 'Upgrade path', 'Support status', 'Notes']}>
   <TableRow>
-    <TableCell>v0.3.x</TableCell>
+    <TableCell>Current v0.5.x release</TableCell>
     <TableCell>
-      <Icon name="tabler:x" class="inline h-4 w-4" /> Cannot upgrade to v0.5.0
+      <Icon name="tabler:check" class="inline h-4 w-4" /> Stay current with supported Playbooks
     </TableCell>
     <TableCell>
-      <Icon name="tabler:x" class="inline h-4 w-4" /> No support
+      <Icon name="tabler:check" class="inline h-4 w-4" /> Supported
     </TableCell>
     <TableCell>
-      <Icon name="tabler:x" class="inline h-4 w-4" /> No support
+      <Icon name="tabler:check" class="inline h-4 w-4" /> Recommended version
     </TableCell>
   </TableRow>
   <TableRow>
-    <TableCell>v0.4.0</TableCell>
+    <TableCell>v0.5.0</TableCell>
     <TableCell>
-      <Icon name="tabler:x" class="inline h-4 w-4" /> Cannot upgrade to v0.5.0
+      <Icon name="tabler:check" class="inline h-4 w-4" /> Direct upgrade source for the current Playbook
     </TableCell>
     <TableCell>
-      <Icon name="tabler:x" class="inline h-4 w-4" /> No support
+      <Icon name="tabler:check" class="inline h-4 w-4" /> Supported for upgrade
     </TableCell>
     <TableCell>
-      <Icon name="tabler:x" class="inline h-4 w-4" /> No support
+      <Icon name="tabler:check" class="inline h-4 w-4" /> Use the latest AME Beta
     </TableCell>
   </TableRow>
   <TableRow>
     <TableCell>v0.4.1 (W11 24H2)</TableCell>
     <TableCell>
-      <Icon name="tabler:check" class="inline h-4 w-4" /> Can directly upgrade to v0.5.0
+      <Icon name="tabler:x" class="inline h-4 w-4" /> Not a direct source for the current Playbook
     </TableCell>
     <TableCell>
-      <Icon name="tabler:check" class="inline h-4 w-4" /> Fully supported
+      <Icon name="tabler:x" class="inline h-4 w-4" /> Legacy
     </TableCell>
     <TableCell>
-      <Icon name="tabler:check" class="inline h-4 w-4" /> Supported
+      <Icon name="tabler:alert-triangle" class="inline h-4 w-4" /> Use an archived path if published, otherwise reinstall
     </TableCell>
   </TableRow>
   <TableRow>
-    <TableCell>v0.5.0 (24H2 & 25H2)</TableCell>
+    <TableCell>v0.4.0 and earlier</TableCell>
     <TableCell>
-      <Icon name="tabler:check" class="inline h-4 w-4" /> Will be able to upgrade to future versions
+      <Icon name="tabler:x" class="inline h-4 w-4" /> Fresh install required
     </TableCell>
     <TableCell>
-      <Icon name="tabler:check" class="inline h-4 w-4" /> Will be supported in the future
+      <Icon name="tabler:x" class="inline h-4 w-4" /> Unsupported
     </TableCell>
     <TableCell>
-      <Icon name="tabler:check" class="inline h-4 w-4" /> Supported
+      <Icon name="tabler:x" class="inline h-4 w-4" /> Reinstall Windows and install the latest Atlas release
     </TableCell>
   </TableRow>
 </Table>
@@ -149,7 +149,7 @@ Atlas lets you choose your security level. You can toggle Windows Defender, [mit
 
 **Compared to unmodified Windows:** Microsoft Windows is the most trusted and secure. Atlas aims for similar security while being transparent. [Atlas is open source](https://github.com/Atlas-OS/Atlas); AME Beta's [backend is open source under MIT](https://github.com/Ameliorated-LLC/trusted-uninstaller-cli).
 
-**Legacy versions (v0.3 and earlier):** Insecure and unsupported. [Reinstall Windows and upgrade](/docs/install/requirements/) to the latest version. Newer versions add Windows Update, Defender, UAC by default, Core isolation, and improved transparency.
+**Legacy versions (v0.4.1 and earlier):** Not direct upgrade sources for the current Playbook. [Reinstall Windows and install Atlas](/docs/install/requirements/) unless a specific archived upgrade path is published for your exact version. Newer versions add Windows Update, Defender, UAC by default, Core isolation, and improved transparency.
 
 ## Resetting Atlas
 
