@@ -16,29 +16,33 @@ const currentPath = '/404/';
     <meta name="color-scheme" content="dark" />
   </Fragment>
   <Fragment slot="body">
-    <header>
-      <a href="#main-content" class="sr-only focus:not-sr-only">Skip to main content</a>
-      <Navbar currentPath={currentPath} isDocsPage={false} />
-    </header>
-    <main id="main-content" role="main">
-      <div class="flex min-h-[60vh] flex-col items-center justify-center px-4 py-16 text-center">
-        <h1
-          class="mb-4 bg-linear-to-b from-white to-blue-200 bg-clip-text text-4xl font-semibold tracking-tight text-transparent md:text-6xl"
-        >
-          404
-        </h1>
-        <p class="mx-auto mb-10 max-w-md leading-relaxed text-white/70">
-          The page you're looking for doesn't exist or has been moved. Head back home or browse our documentation to
-          find what you need.
-        </p>
-        <div class="flex flex-wrap items-center justify-center gap-4">
-          <Button variant="primary" size="lg" href="/" icon="tabler:home" iconPosition="before"> Back to home </Button>
-          <Button variant="secondary" size="lg" href="/docs/" icon="tabler:book" iconPosition="before">
-            Documentation
-          </Button>
+    <div class="flex min-h-dvh flex-col">
+      <header>
+        <a href="#main-content" class="sr-only focus:not-sr-only">Skip to main content</a>
+        <Navbar currentPath={currentPath} isDocsPage={false} />
+      </header>
+      <main id="main-content" class="flex flex-1" role="main">
+        <div class="flex flex-1 flex-col items-center justify-center px-4 py-16 text-center">
+          <h1
+            class="mb-4 bg-linear-to-b from-white to-blue-200 bg-clip-text text-4xl font-semibold tracking-tight text-transparent md:text-6xl"
+          >
+            404
+          </h1>
+          <p class="mx-auto mb-10 max-w-md leading-relaxed text-white/70">
+            The page you're looking for doesn't exist or has been moved. Head back home or browse our documentation to
+            find what you need.
+          </p>
+          <div class="flex flex-wrap items-center justify-center gap-4">
+            <Button variant="primary" size="lg" href="/" icon="tabler:home" iconPosition="before">
+              Back to home
+            </Button>
+            <Button variant="secondary" size="lg" href="/docs/" icon="tabler:book" iconPosition="before">
+              Documentation
+            </Button>
+          </div>
         </div>
-      </div>
-    </main>
-    <Footer />
+      </main>
+      <Footer />
+    </div>
   </Fragment>
 </BaseLayout>
