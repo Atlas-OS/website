@@ -741,10 +741,4 @@ import { Icon } from 'astro-icon/components';
   }
 
   document.addEventListener('astro:page-load', setupSpotlight);
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', setupSpotlight, { once: true });
-  } else {
-    setupSpotlight();
-  }
 </script>

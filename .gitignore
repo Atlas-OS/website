@@ -28,4 +28,5 @@ nul
 
 # legacy jampack cache
 .jampack/
+.wrangler/
 .wrangler-dry-run/

@@ -8,10 +8,9 @@
   Cache-Control: public, max-age=31536000, immutable
 
 /*
-  Cache-Control: public, max-age=0, must-revalidate
   X-Frame-Options: SAMEORIGIN
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://widget.kapa.ai https://pla.atlasos.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https://api.atlasos.net https://pla.atlasos.net https://cdn.jsdelivr.net https://download.ameliorated.io https://www.microsoft.com https://widget.kapa.ai https://*.kapa.ai; font-src 'self' data:; worker-src 'self' blob:; frame-src 'none'; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://widget.kapa.ai https://pla.atlasos.net https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https://api.atlasos.net https://api.github.com https://pla.atlasos.net https://cdn.jsdelivr.net https://download.ameliorated.io https://www.microsoft.com https://widget.kapa.ai https://*.kapa.ai https://proxy.kapa.ai https://kapa-widget-proxy-la7dkmplpq-uc.a.run.app https://metrics.kapa.ai https://www.google.com https://www.gstatic.com; font-src 'self' data: https://fonts.gstatic.com; worker-src 'self' blob:; frame-src 'self' https://www.google.com https://recaptcha.google.com; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'

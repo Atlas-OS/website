@@ -642,11 +642,5 @@ const links = {
     setupWallpaperAnimation();
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initHero);
-  } else {
-    initHero();
-  }
-
   document.addEventListener('astro:page-load', initHero);
 </script>

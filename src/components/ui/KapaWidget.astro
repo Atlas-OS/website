@@ -1,0 +1,135 @@
+---
+import { Icon } from 'astro-icon/components';
+---
+
+<button
+  id="ask-ai-button"
+  type="button"
+  class="fixed right-4 bottom-4 z-[190] inline-flex min-h-12 items-center gap-2 rounded-full bg-[#0b6fbd] px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-black/30 transition-[background-color,box-shadow,transform] duration-200 hover:bg-[#095a99] hover:shadow-xl focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-secondary focus-visible:outline-none active:scale-[0.97] disabled:cursor-wait disabled:opacity-80 sm:right-6 sm:bottom-6"
+  aria-haspopup="dialog"
+>
+  <Icon name="tabler:sparkles" class="h-5 w-5" aria-hidden="true" />
+  <span data-ask-ai-label>Ask AI</span>
+</button>
+
+<script>
+  const KAPA_SCRIPT_URL = 'https://widget.kapa.ai/kapa-widget.bundle.js';
+
+  type KapaCommand = 'open' | 'render' | 'unmount';
+  type KapaApi = ((command: KapaCommand, options?: unknown) => void) & {
+    q?: IArguments[];
+    c?: (args: IArguments) => void;
+  };
+
+  declare global {
+    interface Window {
+      Kapa?: KapaApi;
+      atlasKapaRendered?: boolean;
+    }
+  }
+
+  let kapaScriptPromise: Promise<void> | null = null;
+
+  function preinitializeKapa(): KapaApi {
+    if (window.Kapa) return window.Kapa;
+
+    const queue = function () {
+      queue.c?.(arguments);
+    } as KapaApi;
+    queue.q = [];
+    queue.c = (args) => queue.q?.push(args);
+    window.Kapa = queue;
+    return queue;
+  }
+
+  function loadKapaScript(): Promise<void> {
+    if (kapaScriptPromise) return kapaScriptPromise;
+
+    kapaScriptPromise = new Promise((resolve, reject) => {
+      const existingScript = document.querySelector<HTMLScriptElement>(`script[src="${KAPA_SCRIPT_URL}"]`);
+      if (existingScript?.dataset.loaded === 'true') {
+        resolve();
+        return;
+      }
+
+      const script = existingScript ?? document.createElement('script');
+      const handleLoad = () => {
+        script.dataset.loaded = 'true';
+        resolve();
+      };
+      const handleError = () => {
+        script.remove();
+        window.Kapa = undefined;
+        kapaScriptPromise = null;
+        reject(new Error('Could not load the AtlasOS AI assistant.'));
+      };
+
+      script.addEventListener('load', handleLoad, { once: true });
+      script.addEventListener('error', handleError, { once: true });
+
+      if (!existingScript) {
+        script.async = true;
+        script.src = KAPA_SCRIPT_URL;
+        const attributes = {
+          'data-website-id': 'd6dd374d-575e-4d3a-9462-00878d18f937',
+          'data-project-name': 'AtlasOS',
+          'data-project-color': '#0B6FBD',
+          'data-project-logo': 'https://atlasos.net/favicon.svg',
+          'data-modal-title': 'AtlasOS AI',
+          'data-modal-image': 'https://atlasos.net/favicon.svg',
+          'data-example-questions-col-span': '12',
+          'data-render-on-load': 'false',
+          'data-launcher-button-hidden': 'true',
+        };
+
+        Object.entries(attributes).forEach(([name, value]) => script.setAttribute(name, value));
+        document.head.appendChild(script);
+      }
+    });
+
+    return kapaScriptPromise;
+  }
+
+  function setButtonState(button: HTMLButtonElement, loading: boolean, label: string): void {
+    button.disabled = loading;
+    button.setAttribute('aria-busy', loading.toString());
+    const labelElement = button.querySelector<HTMLElement>('[data-ask-ai-label]');
+    if (labelElement) labelElement.textContent = label;
+  }
+
+  function setupAskAiButton(): void {
+    const button = document.querySelector<HTMLButtonElement>('#ask-ai-button');
+    if (!button || button.dataset.initialized === 'true') return;
+
+    button.dataset.initialized = 'true';
+    button.addEventListener('click', () => {
+      const kapa = preinitializeKapa();
+      if (window.atlasKapaRendered) {
+        kapa('open');
+        return;
+      }
+
+      setButtonState(button, true, 'Loading AI…');
+      const scriptPromise = loadKapaScript();
+      kapa('render', {
+        onRender: () => {
+          window.atlasKapaRendered = true;
+          setButtonState(button, false, 'Ask AI');
+          window.Kapa?.('open');
+        },
+      });
+
+      void scriptPromise.catch(() => {
+        setButtonState(button, false, 'Try Ask AI again');
+      });
+    });
+  }
+
+  preinitializeKapa();
+  document.addEventListener('astro:page-load', setupAskAiButton);
+  document.addEventListener('astro:before-swap', () => {
+    if (!window.atlasKapaRendered) return;
+    window.Kapa?.('unmount');
+    window.atlasKapaRendered = false;
+  });
+</script>

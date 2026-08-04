@@ -2,20 +2,15 @@
 import '@/styles/global.css';
 import { Font } from 'astro:assets';
 import { ClientRouter } from 'astro:transitions';
+import KapaWidget from '@/components/ui/KapaWidget.astro';
 
 interface Props {
   currentPath?: string;
 }
 
-const kapaLogoUrl = 'https://avatars.githubusercontent.com/u/78708182?s=128';
-const sansPreloads = [
-  { weight: 400, style: 'normal', subset: 'latin' },
-  { weight: 500, style: 'normal', subset: 'latin' },
-];
-const displayPreloads = [
-  { weight: 600, style: 'normal', subset: 'latin' },
-  { weight: 700, style: 'normal', subset: 'latin' },
-];
+const isHomePage = Astro.props.currentPath === '/';
+const sansPreloads = [{ weight: 400, style: 'normal', subset: 'latin' }];
+const displayPreloads = [{ weight: 600, style: 'normal', subset: 'latin' }];
 ---
 
 <!doctype html>
@@ -29,26 +24,9 @@ const displayPreloads = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
 
-    <!-- Resource hints for critical third-party domains -->
-    <link rel="preconnect" href="https://pla.atlasos.net" crossorigin />
-    <link rel="preconnect" href="https://api.atlasos.net" crossorigin />
-    <link rel="preconnect" href="https://widget.kapa.ai" crossorigin />
+    <!-- Only warm the API connection on the route that needs it during initial rendering. -->
+    {isHomePage && <link rel="preconnect" href="https://api.atlasos.net" crossorigin />}
     <link rel="dns-prefetch" href="https://pla.atlasos.net" />
-    <link rel="dns-prefetch" href="https://api.atlasos.net" />
-    <link rel="dns-prefetch" href="https://widget.kapa.ai" />
-
-    <script
-      is:inline
-      async
-      src="https://widget.kapa.ai/kapa-widget.bundle.js"
-      data-website-id="d6dd374d-575e-4d3a-9462-00878d18f937"
-      data-project-name="AtlasOS"
-      data-modal-title="AtlasOS AI"
-      data-project-color="#2894F3"
-      data-project-logo={kapaLogoUrl}
-      data-modal-image={kapaLogoUrl}
-      data-button-image={kapaLogoUrl}
-      data-modal-example-questions-col-span="12"></script>
 
     <!-- Favicons -->
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
@@ -64,6 +42,7 @@ const displayPreloads = [
   <body class="overflow-x-hidden">
     <slot name="body" />
     <slot />
+    <KapaWidget />
     <!-- Partytown -->
     <script is:inline type="text/partytown" src="https://pla.atlasos.net/js/script.js" data-domain="atlasos.net"
     ></script>

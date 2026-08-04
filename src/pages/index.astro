@@ -57,11 +57,5 @@ const sections = [
 <script>
   import { initScrollAnimations } from '@/utils/scroll-animations';
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initScrollAnimations);
-  } else {
-    initScrollAnimations();
-  }
-
   document.addEventListener('astro:page-load', initScrollAnimations);
 </script>

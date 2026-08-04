@@ -37,6 +37,6 @@ export default [
 
   prettierConfig,
   {
-    ignores: ['dist/', '.astro/', 'node_modules/'],
+    ignores: ['dist/', '.astro/', '.wrangler/', '.wrangler-dry-run/', 'node_modules/'],
   },
 ];

@@ -110,7 +110,9 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 </style>
 
 <script>
-  function setupTableOfContents() {
+  let tableOfContentsController: AbortController | null = null;
+
+  function setupTableOfContents(signal: AbortSignal) {
     const toc = document.querySelector('#toc');
     if (!toc) return;
     if (toc instanceof HTMLElement && toc.dataset.tocInitialized === 'true') return;
@@ -133,22 +135,33 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
     if (headings.length === 0) return;
 
+    let headingOffsets: Array<{ id: string; top: number }> = [];
+    let activeHeadingId: string | null = null;
+    let animationFrame = 0;
+
+    const measureHeadings = () => {
+      headingOffsets = headings.map((heading) => ({
+        id: heading.id,
+        top: heading.element.getBoundingClientRect().top + window.scrollY,
+      }));
+    };
+
     const updateActiveLink = () => {
+      animationFrame = 0;
       const scrollPosition = window.scrollY + 100;
-      let activeHeadingId: string | null = null;
+      let nextActiveHeadingId: string | null = null;
 
-      for (let i = headings.length - 1; i >= 0; i--) {
-        const heading = headings[i];
+      for (let i = headingOffsets.length - 1; i >= 0; i--) {
+        const heading = headingOffsets[i];
         if (!heading) continue;
-
-        const rect = heading.element.getBoundingClientRect();
-        const top = rect.top + window.scrollY;
-
-        if (scrollPosition >= top) {
-          activeHeadingId = heading.id;
+        if (scrollPosition >= heading.top) {
+          nextActiveHeadingId = heading.id;
           break;
         }
       }
+
+      if (nextActiveHeadingId === activeHeadingId) return;
+      activeHeadingId = nextActiveHeadingId;
 
       tocLinks.forEach((link) => {
         link.classList.remove('toc-active', 'text-white');
@@ -177,8 +190,18 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
       }
     };
 
-    window.addEventListener('scroll', updateActiveLink, { passive: true });
-    window.addEventListener('resize', updateActiveLink);
+    const scheduleUpdate = () => {
+      if (!animationFrame) animationFrame = window.requestAnimationFrame(updateActiveLink);
+    };
+    const handleResize = () => {
+      measureHeadings();
+      activeHeadingId = null;
+      scheduleUpdate();
+    };
+
+    measureHeadings();
+    window.addEventListener('scroll', scheduleUpdate, { passive: true, signal });
+    window.addEventListener('resize', handleResize, { signal });
     updateActiveLink();
   }
 
@@ -215,14 +238,10 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
   }
 
   function initTableOfContents() {
-    setupTableOfContents();
+    tableOfContentsController?.abort();
+    tableOfContentsController = new AbortController();
+    setupTableOfContents(tableOfContentsController.signal);
     setupCopyLink();
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initTableOfContents);
-  } else {
-    initTableOfContents();
   }
 
   document.addEventListener('astro:page-load', initTableOfContents);

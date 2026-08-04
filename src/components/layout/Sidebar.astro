@@ -250,11 +250,5 @@ function hasActiveDescendant(item: NavItem): boolean {
 <script>
   import { initSidebar } from '@/utils/ui';
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initSidebar);
-  } else {
-    initSidebar();
-  }
-
   document.addEventListener('astro:page-load', initSidebar);
 </script>

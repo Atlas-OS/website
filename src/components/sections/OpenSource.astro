@@ -119,16 +119,19 @@ const links = {
 
   type StarsCountResponse = { count: number };
   type RecentStar = { username: string; avatar: string };
+  type RecentStarsResponse = RecentStar[];
 
   class GitHubStarsManager {
     private starListItems: HTMLElement | null;
     private starCountEl: HTMLElement | null;
     private starBadgeEl: HTMLElement | null;
+    private signal: AbortSignal;
 
-    constructor() {
+    constructor(signal: AbortSignal) {
       this.starListItems = document.getElementById('gh-star-list-items');
       this.starCountEl = document.getElementById('star-amount-tag');
       this.starBadgeEl = document.getElementById('star-amount-badge');
+      this.signal = signal;
 
       this.initDropdown();
       this.updateStarInfo();
@@ -140,31 +143,39 @@ const links = {
       const wrapper = document.getElementById('gh-stars-wrap');
       if (!toggleBtn || !starList || !wrapper) return;
 
-      toggleBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const isOpen = starList.classList.toggle('show');
-        wrapper.classList.toggle('toggled', isOpen);
-        toggleBtn.classList.toggle('toggled', isOpen);
-        const icon = toggleBtn.querySelector('svg');
-        if (icon) icon.classList.toggle('rotate-180', isOpen);
-        toggleBtn.setAttribute('aria-expanded', isOpen.toString());
-      });
-
-      document.addEventListener('click', (event: MouseEvent) => {
-        const target = event.target as Node;
-        if (!wrapper.contains(target)) {
-          starList.classList.remove('show');
-          wrapper.classList.remove('toggled');
-          toggleBtn.classList.remove('toggled');
+      toggleBtn.addEventListener(
+        'click',
+        (e) => {
+          e.stopPropagation();
+          const isOpen = starList.classList.toggle('show');
+          wrapper.classList.toggle('toggled', isOpen);
+          toggleBtn.classList.toggle('toggled', isOpen);
           const icon = toggleBtn.querySelector('svg');
-          if (icon) icon.classList.remove('rotate-180');
-          toggleBtn.setAttribute('aria-expanded', 'false');
-        }
-      });
+          if (icon) icon.classList.toggle('rotate-180', isOpen);
+          toggleBtn.setAttribute('aria-expanded', isOpen.toString());
+        },
+        { signal: this.signal }
+      );
+
+      document.addEventListener(
+        'click',
+        (event: MouseEvent) => {
+          const target = event.target as Node;
+          if (!wrapper.contains(target)) {
+            starList.classList.remove('show');
+            wrapper.classList.remove('toggled');
+            toggleBtn.classList.remove('toggled');
+            const icon = toggleBtn.querySelector('svg');
+            if (icon) icon.classList.remove('rotate-180');
+            toggleBtn.setAttribute('aria-expanded', 'false');
+          }
+        },
+        { signal: this.signal }
+      );
     }
 
     private async fetchData<T>(url: string): Promise<T> {
-      const res = await fetch(url);
+      const res = await fetch(url, { signal: this.signal });
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       return res.json() as Promise<T>;
     }
@@ -186,7 +197,12 @@ const links = {
 
     private async updateStarInfo(): Promise<void> {
       try {
-        const starsResponse = (await this.fetchData(`${ATLAS_API_URL}stars`)) as StarsCountResponse;
+        const responses = await Promise.all([
+          this.fetchData(`${ATLAS_API_URL}stars`),
+          this.fetchData(`${ATLAS_API_URL}recent-stars`),
+        ]);
+        const starsResponse = responses[0] as StarsCountResponse;
+        const recentStars = responses[1] as RecentStarsResponse;
         if (!starsResponse || typeof starsResponse.count !== 'number') {
           throw new Error('Invalid star count data received');
         }
@@ -199,7 +215,6 @@ const links = {
           this.starBadgeEl.textContent = `${(count / 1000).toFixed(1)}k`;
         }
 
-        const recentStars = (await this.fetchData(`${ATLAS_API_URL}recent-stars`)) as RecentStar[];
         if (!Array.isArray(recentStars)) {
           throw new Error('Invalid recent stars data received');
         }
@@ -210,6 +225,7 @@ const links = {
           this.starListItems.replaceChildren(...items);
         }
       } catch {
+        if (this.signal.aborted) return;
         if (this.starCountEl) this.starCountEl.textContent = '--';
         if (this.starBadgeEl) this.starBadgeEl.textContent = '--';
         if (this.starListItems) {
@@ -223,13 +239,13 @@ const links = {
   }
 
   function init(): void {
-    new GitHubStarsManager();
-  }
+    const wrapper = document.getElementById('gh-stars-wrap');
+    if (!wrapper || wrapper.dataset.initialized === 'true') return;
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
+    wrapper.dataset.initialized = 'true';
+    const controller = new AbortController();
+    new GitHubStarsManager(controller.signal);
+    document.addEventListener('astro:before-swap', () => controller.abort(), { once: true });
   }
 
   document.addEventListener('astro:page-load', init);

@@ -9,6 +9,8 @@ const TOGGLE_INTERVAL_MS = 100;
 const MAX_FPS = 30;
 
 type DotState = {
+  width: number;
+  height: number;
   x: Float32Array;
   y: Float32Array;
   active: Uint8Array;
@@ -21,8 +23,14 @@ function getThemeColor(element: Element, name: string, fallback: string): string
   return getComputedStyle(element).getPropertyValue(name).trim() || fallback;
 }
 
-function buildDotState(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D): DotState {
-  const { clientWidth, clientHeight } = canvas;
+function buildDotState(
+  canvas: HTMLCanvasElement,
+  context: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+): DotState {
+  const clientWidth = Math.max(1, Math.round(width));
+  const clientHeight = Math.max(1, Math.round(height));
   const devicePixelRatio = window.devicePixelRatio || 1;
   canvas.width = Math.max(1, Math.round(clientWidth * devicePixelRatio));
   canvas.height = Math.max(1, Math.round(clientHeight * devicePixelRatio));
@@ -34,6 +42,8 @@ function buildDotState(canvas: HTMLCanvasElement, context: CanvasRenderingContex
   const rows = Math.ceil(clientHeight / SPACING);
   const dotsCount = cols * rows;
   const state: DotState = {
+    width: clientWidth,
+    height: clientHeight,
     x: new Float32Array(dotsCount),
     y: new Float32Array(dotsCount),
     active: new Uint8Array(dotsCount),
@@ -106,24 +116,27 @@ export function initFooterDotPattern(): void {
   const footerContext = context;
 
   footerCanvas.dataset.footerDotsInitialized = 'true';
-  const section = footerCanvas.closest('section');
   const controller = new AbortController();
   const { signal } = controller;
 
-  let state = buildDotState(footerCanvas, footerContext);
+  const initialBounds = footerCanvas.getBoundingClientRect();
+  let state = buildDotState(footerCanvas, footerContext, initialBounds.width, initialBounds.height);
   let animationId = 0;
   let lastToggleTime = performance.now();
   let lastDrawTime = performance.now();
   let mouseX = -1;
   let mouseY = -1;
   let isMouseOver = false;
+  let isVisible = false;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const activeColor = getThemeColor(footerCanvas, '--color-primary', '#3b82f6');
+  const inactiveColor = getThemeColor(footerCanvas, '--footer-dot-color', 'rgba(68, 68, 68, 0.3)');
 
-  const activeColor = () => getThemeColor(footerCanvas, '--color-primary', '#3b82f6');
-  const inactiveColor = () =>
-    getThemeColor(footerCanvas, '--footer-dot-color', 'rgba(68, 68, 68, 0.3)');
-
-  function resize(): void {
-    state = buildDotState(footerCanvas, footerContext);
+  function resize(width: number, height: number): void {
+    const nextWidth = Math.max(1, Math.round(width));
+    const nextHeight = Math.max(1, Math.round(height));
+    if (state.width === nextWidth && state.height === nextHeight) return;
+    state = buildDotState(footerCanvas, footerContext, nextWidth, nextHeight);
     draw();
   }
 
@@ -156,25 +169,23 @@ export function initFooterDotPattern(): void {
   }
 
   function draw(): void {
-    footerContext.clearRect(0, 0, footerCanvas.clientWidth, footerCanvas.clientHeight);
-    const active = activeColor();
-    const inactive = inactiveColor();
+    footerContext.clearRect(0, 0, state.width, state.height);
 
     for (let index = 0; index < state.x.length; index += 1) {
       if (state.isLogo[index]) continue;
       const hover = state.hoverIntensity[index]!;
       if (hover > 0.05) {
         const color = state.active[index]
-          ? active
+          ? activeColor
           : `rgb(59 130 246 / ${Math.min(hover * 1.5, 0.8)})`;
         drawDot(index, color, DOT_RADIUS * (1 + hover * 1.2));
       } else {
-        drawDot(index, state.active[index] ? active : inactive);
+        drawDot(index, state.active[index] ? activeColor : inactiveColor);
       }
     }
 
     for (let index = 0; index < state.x.length; index += 1) {
-      if (state.isLogo[index]) drawDot(index, active, DOT_RADIUS * 1.2);
+      if (state.isLogo[index]) drawDot(index, activeColor, DOT_RADIUS * 1.2);
     }
   }
 
@@ -186,6 +197,11 @@ export function initFooterDotPattern(): void {
   }
 
   function animate(): void {
+    if (!isVisible || document.hidden) {
+      animationId = 0;
+      return;
+    }
+
     const now = performance.now();
     if (now - lastDrawTime >= 1000 / MAX_FPS) {
       if (now - lastToggleTime >= TOGGLE_INTERVAL_MS) {
@@ -199,10 +215,21 @@ export function initFooterDotPattern(): void {
     animationId = window.requestAnimationFrame(animate);
   }
 
+  function startAnimation(): void {
+    if (reducedMotion || animationId || !isVisible || document.hidden) return;
+    lastDrawTime = performance.now();
+    animationId = window.requestAnimationFrame(animate);
+  }
+
+  function stopAnimation(): void {
+    if (!animationId) return;
+    window.cancelAnimationFrame(animationId);
+    animationId = 0;
+  }
+
   function updateMousePosition(event: MouseEvent): void {
-    const rect = footerCanvas.getBoundingClientRect();
-    mouseX = event.clientX - rect.left;
-    mouseY = event.clientY - rect.top;
+    mouseX = event.offsetX;
+    mouseY = event.offsetY;
     isMouseOver = true;
   }
 
@@ -212,21 +239,45 @@ export function initFooterDotPattern(): void {
     isMouseOver = false;
   }
 
-  window.addEventListener('resize', resize, { signal });
   footerCanvas.addEventListener('mousemove', updateMousePosition, { signal });
   footerCanvas.addEventListener('mouseleave', resetMousePosition, { signal });
-  section?.addEventListener('mousemove', updateMousePosition, { signal });
-  section?.addEventListener('mouseleave', resetMousePosition, { signal });
+  document.addEventListener(
+    'visibilitychange',
+    () => {
+      if (document.hidden) stopAnimation();
+      else startAnimation();
+    },
+    { signal },
+  );
+
+  const resizeObserver = new ResizeObserver(entries => {
+    const entry = entries[0];
+    if (entry) resize(entry.contentRect.width, entry.contentRect.height);
+  });
+  resizeObserver.observe(footerCanvas);
+
+  const visibilityObserver = new IntersectionObserver(
+    entries => {
+      isVisible = entries.some(entry => entry.isIntersecting);
+      if (isVisible) {
+        draw();
+        startAnimation();
+      } else {
+        stopAnimation();
+      }
+    },
+    { rootMargin: '100px 0px' },
+  );
+  visibilityObserver.observe(footerCanvas);
 
   draw();
-  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    animate();
-  }
 
   document.addEventListener(
     'astro:before-swap',
     () => {
-      window.cancelAnimationFrame(animationId);
+      stopAnimation();
+      resizeObserver.disconnect();
+      visibilityObserver.disconnect();
       controller.abort();
       delete footerCanvas.dataset.footerDotsInitialized;
     },

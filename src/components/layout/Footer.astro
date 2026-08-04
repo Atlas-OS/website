@@ -74,12 +74,6 @@ const year = new Date().getFullYear();
 <script>
   import { initFooterDotPattern } from '@/utils/footer-dot-pattern';
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initFooterDotPattern);
-  } else {
-    initFooterDotPattern();
-  }
-
   document.addEventListener('astro:page-load', initFooterDotPattern);
 </script>
 

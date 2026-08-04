@@ -186,6 +186,8 @@ const displayTitle = title || style.defaultTitle;
     const dismissButtons = document.querySelectorAll('.callout-dismiss');
 
     dismissButtons.forEach((button) => {
+      if (button instanceof HTMLElement && button.dataset.initialized === 'true') return;
+      if (button instanceof HTMLElement) button.dataset.initialized = 'true';
       button.addEventListener('click', () => {
         const callout = button.closest('.callout') as HTMLElement;
         if (callout) {
@@ -200,7 +202,6 @@ const displayTitle = title || style.defaultTitle;
   }
 
   document.addEventListener('astro:page-load', setupCalloutDismiss);
-  setupCalloutDismiss();
 </script>
 
 <style is:global>

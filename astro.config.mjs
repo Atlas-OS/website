@@ -134,20 +134,23 @@ export default defineConfig({
       cssVariable: '--font-sans-source',
       provider: fontProviders.fontsource(),
       weights: [400, 500, 600, 700],
+      styles: ['normal'],
       subsets: ['latin'],
     },
     {
       name: 'Archivo',
       cssVariable: '--font-display-source',
       provider: fontProviders.fontsource(),
-      weights: [400, 500, 600, 700],
+      weights: [600, 700],
+      styles: ['normal', 'italic'],
       subsets: ['latin'],
     },
     {
       name: 'Fira Code',
       cssVariable: '--font-mono-source',
       provider: fontProviders.fontsource(),
-      weights: [400, 500, 600, 700],
+      weights: [400, 600],
+      styles: ['normal'],
       subsets: ['latin'],
     },
   ],
@@ -214,7 +217,13 @@ export default defineConfig({
       rollupOptions: {
         external: ['/pagefind/pagefind.js'],
         output: {
-          assetFileNames: 'assets/[name].[hash][extname]',
+          assetFileNames: (assetInfo) => {
+            const sourceName = assetInfo.names?.[0] ?? 'asset';
+            const extension = path.extname(sourceName);
+            const baseName = path.basename(sourceName, extension);
+            const safeName = baseName.replace(/[^a-zA-Z0-9_-]+/g, '-').replace(/^-+|-+$/g, '');
+            return `assets/${safeName || 'asset'}.[hash][extname]`;
+          },
           chunkFileNames: 'assets/[name].[hash].js',
           entryFileNames: 'assets/[name].[hash].js',
         },
