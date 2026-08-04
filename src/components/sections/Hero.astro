@@ -99,7 +99,7 @@ const links = {
     >
     </div>
 
-    <div class="wallpaper-container relative z-10 hidden rounded-t-lg md:block" data-animate data-animate-delay="5">
+    <div class="wallpaper-container relative z-10 hidden rounded-t-lg md:block">
       <div class="relative overflow-hidden rounded-t-lg">
         <Picture
           src={AtlasWallpaper}
@@ -237,16 +237,6 @@ const links = {
     --motion-reveal-distance: 34px;
     --motion-reveal-blur: 8px;
     --motion-reveal-scale-start: 0.98;
-  }
-
-  .wallpaper-container[data-animate] {
-    transform: scale(0.96);
-    filter: blur(6px);
-  }
-
-  .wallpaper-container[data-animate].animate-in {
-    transform: scale(1);
-    filter: blur(0);
   }
 
   .wallpaper-animation {
