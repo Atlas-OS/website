@@ -4,7 +4,7 @@ import { Icon } from 'astro-icon/components';
 const year = new Date().getFullYear();
 ---
 
-<section class="bg-secondary relative mx-auto mt-32">
+<section class="relative mx-auto mt-32 bg-secondary">
   <div class="relative mx-auto h-px max-w-7xl bg-linear-to-r from-transparent via-white/10 to-transparent px-4">
     <div class="absolute top-0 left-1/2 h-px w-[30px] -translate-x-1/2 bg-white/70"></div>
   </div>
@@ -33,7 +33,7 @@ const year = new Date().getFullYear();
         &copy; {year} AtlasOS. Website under
         <a
           href="https://creativecommons.org/licenses/by-nc-nd/4.0/"
-          class="hover:text-primary underline"
+          class="underline hover:text-primary"
           target="_blank"
           rel="noopener noreferrer">CC BY-NC-ND 4.0</a
         >
@@ -44,7 +44,7 @@ const year = new Date().getFullYear();
           target="_blank"
           rel="noopener noreferrer"
           aria-label="GitHub"
-          class="hover:text-primary inline-flex min-h-10 min-w-10 items-center justify-center text-white"
+          class="inline-flex min-h-10 min-w-10 items-center justify-center text-white hover:text-primary"
           ><Icon name="tabler:brand-github" class="h-5 w-5" /><span class="sr-only">GitHub</span></a
         >
         <a
@@ -52,7 +52,7 @@ const year = new Date().getFullYear();
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Discord"
-          class="hover:text-primary inline-flex min-h-10 min-w-10 items-center justify-center text-white"
+          class="inline-flex min-h-10 min-w-10 items-center justify-center text-white hover:text-primary"
           ><Icon name="tabler:brand-discord" class="h-5 w-5" /><span class="sr-only">Discord</span></a
         >
         <a
@@ -60,7 +60,7 @@ const year = new Date().getFullYear();
           target="_blank"
           rel="noopener noreferrer"
           aria-label="X (Twitter)"
-          class="hover:text-primary inline-flex min-h-10 min-w-10 items-center justify-center text-white"
+          class="inline-flex min-h-10 min-w-10 items-center justify-center text-white hover:text-primary"
           ><Icon name="tabler:brand-x" class="h-5 w-5" /><span class="sr-only">X (Twitter)</span></a
         >
       </div>

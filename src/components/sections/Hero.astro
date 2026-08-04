@@ -50,13 +50,14 @@ const links = {
   <div class="relative mx-auto max-w-7xl overflow-visible">
     <div class="mx-auto max-w-4xl pb-12 text-center">
       <div
-        class="isolation-isolate shadow-primary/20 relative z-0 mb-4 inline-flex w-max items-center justify-center overflow-hidden rounded-full px-4 py-1.5 text-sm leading-5 font-medium shadow-inner backdrop-blur-[6px]"
+        class="isolation-isolate relative z-0 mb-4 inline-flex w-max items-center justify-center overflow-hidden rounded-full px-4 py-1.5 text-sm leading-5 font-medium shadow-inner shadow-primary/20 backdrop-blur-[6px]"
         data-animate
         data-animate-delay="2"
       >
-        <Icon name="tabler:users" class="text-primary mr-2 h-4 w-4" />
+        <Icon name="tabler:users" class="mr-2 h-4 w-4 text-primary" />
         <span class="text-sm text-white"
-          >Over <span id="hero-download-count" class="text-primary font-semibold tabular-nums">Loading...</span> people using AtlasOS</span
+          >Over <span id="hero-download-count" class="font-semibold text-primary tabular-nums">Loading...</span> people using
+          AtlasOS</span
         >
       </div>
       <h1
@@ -71,7 +72,9 @@ const links = {
         enthusiasts, gamers, and privacy-conscious individuals.
       </p>
       <p class="mb-4 text-sm text-white/70" data-animate data-animate-delay="7">
-        The latest version is <span id="atlas-release-label" class="font-semibold text-white">{ATLAS_RELEASE_LABEL}</span>
+        The latest version is <span id="atlas-release-label" class="font-semibold text-white"
+          >{ATLAS_RELEASE_LABEL}</span
+        >
       </p>
       <div class="flex flex-wrap items-center justify-center gap-4" data-animate data-animate-delay="8">
         <Button variant="primary" size="lg" icon="tabler:chevron-right" iconPosition="after" id="get-started-btn">
@@ -92,7 +95,7 @@ const links = {
 
   <div class="relative mx-auto mb-16 max-w-7xl px-4">
     <div
-      class="bg-primary/10 pointer-events-none absolute inset-x-0 -top-1/3 -z-10 -mx-40 hidden h-[500px] animate-pulse rounded-full blur-3xl md:block"
+      class="pointer-events-none absolute inset-x-0 -top-1/3 -z-10 -mx-40 hidden h-[500px] animate-pulse rounded-full bg-primary/10 blur-3xl md:block"
     >
     </div>
 
@@ -105,7 +108,7 @@ const links = {
           height={1080}
           formats={['avif', 'webp']}
           layout="full-width"
-          class="media-outline relative z-10 block h-auto w-full rounded-t-lg select-none shadow-[0_28px_90px_rgba(0,0,0,0.38)]"
+          class="media-outline relative z-10 block h-auto w-full rounded-t-lg shadow-[0_28px_90px_rgba(0,0,0,0.38)] select-none"
           draggable={false}
           loading="eager"
           decoding="async"
@@ -113,13 +116,19 @@ const links = {
         />
       </div>
       <div class="wallpaper-animation pointer-events-none absolute inset-0 z-20 overflow-hidden rounded-t-lg">
-        <svg class="wallpaper-animation-svg" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <svg
+          class="wallpaper-animation-svg"
+          viewBox="0 0 1 1"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+          focusable="false"
+        >
           <defs>
             <linearGradient id="hero-wallpaper-runner-gradient" x1="0" y1="100%" x2="0" y2="0">
-              <stop offset="0%" stop-color="rgba(72, 167, 255, 0)" />
-              <stop offset="25%" stop-color="rgba(20, 80, 200, 0.55)" />
-              <stop offset="68%" stop-color="rgba(150, 210, 255, 0.9)" />
-              <stop offset="100%" stop-color="rgb(72, 167, 255)" />
+              <stop offset="0%" stop-color="rgba(72, 167, 255, 0)"></stop>
+              <stop offset="25%" stop-color="rgba(20, 80, 200, 0.55)"></stop>
+              <stop offset="68%" stop-color="rgba(150, 210, 255, 0.9)"></stop>
+              <stop offset="100%" stop-color="rgb(72, 167, 255)"></stop>
             </linearGradient>
           </defs>
           <path class="wallpaper-animation-track"></path>
@@ -131,11 +140,11 @@ const links = {
   </div>
 
   <div
-    class="bg-primary/20 absolute top-40 left-0 -z-20 hidden h-96 w-96 rounded-full opacity-30 blur-[120px] md:block"
+    class="absolute top-40 left-0 -z-20 hidden h-96 w-96 rounded-full bg-primary/20 opacity-30 blur-[120px] md:block"
   >
   </div>
   <div
-    class="bg-primary/10 absolute top-60 right-0 -z-20 hidden h-96 w-96 rounded-full opacity-30 blur-[120px] md:block"
+    class="absolute top-60 right-0 -z-20 hidden h-96 w-96 rounded-full bg-primary/10 opacity-30 blur-[120px] md:block"
   >
   </div>
 
@@ -552,7 +561,10 @@ const links = {
       const paddingRight = parseFloat(layerStyles.paddingRight) || 0;
       const rawTopLeftRadius = parseFloat(layerStyles.borderTopLeftRadius) || 8;
       const rawTopRightRadius = parseFloat(layerStyles.borderTopRightRadius) || 8;
-      const baseCornerRadius = Math.max(2, Math.min(rawTopLeftRadius, rawTopRightRadius) - Math.max(paddingLeft, paddingRight) - strokeInset);
+      const baseCornerRadius = Math.max(
+        2,
+        Math.min(rawTopLeftRadius, rawTopRightRadius) - Math.max(paddingLeft, paddingRight) - strokeInset
+      );
       const enhancedCornerRadius = baseCornerRadius * 1.45;
       const pathData = createWallpaperRunnerPath(width, height, enhancedCornerRadius, strokeInset);
 
@@ -589,10 +601,7 @@ const links = {
         runner.style.strokeDashoffset = `${startOffset}`;
 
         const animation = runner.animate(
-          [
-            { strokeDashoffset: `${startOffset}` },
-            { strokeDashoffset: `${startOffset - pathLength}` },
-          ],
+          [{ strokeDashoffset: `${startOffset}` }, { strokeDashoffset: `${startOffset - pathLength}` }],
           {
             duration: 12000,
             easing: 'linear',

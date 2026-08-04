@@ -137,7 +137,8 @@ async function proxyMsApi(
     });
   } catch (error) {
     const didTimeOut =
-      error instanceof DOMException && (error.name === 'AbortError' || error.name === 'TimeoutError');
+      error instanceof DOMException &&
+      (error.name === 'AbortError' || error.name === 'TimeoutError');
     return errorResponse(
       didTimeOut ? 'Microsoft download API timed out.' : 'Failed to reach Microsoft download API.',
       corsHeaders,
@@ -298,8 +299,7 @@ async function getIsoLinkViaBrowserOnce(
     await page.evaluate(val => {
       const selects = Array.from(document.querySelectorAll('select'));
       const sel = selects.find(s => Array.from(s.options).some(o => o.value === val)) as
-        | HTMLSelectElement
-        | undefined;
+        HTMLSelectElement | undefined;
       if (!sel) return;
       sel.value = val;
       sel.dispatchEvent(new Event('change', { bubbles: true }));
@@ -366,8 +366,7 @@ async function getIsoLinkViaBrowserOnce(
     const href = await page.evaluate(text => {
       const anchors = Array.from(document.querySelectorAll('a'));
       const a = anchors.find(el => (el.textContent ?? '').includes(text)) as
-        | HTMLAnchorElement
-        | undefined;
+        HTMLAnchorElement | undefined;
       return a?.href ?? null;
     }, expectedLinkText);
 

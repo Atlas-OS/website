@@ -1,9 +1,4 @@
-import {
-  addDocsPrefix,
-  getSectionFromSlug,
-  getSlugFromEntry,
-  normalizeSlug,
-} from './slugs';
+import { addDocsPrefix, getSectionFromSlug, getSlugFromEntry, normalizeSlug } from './slugs';
 import type { BuildNavigationOptions, DocsEntry, NavItem, SectionNavItem } from './types';
 
 const FALLBACK_ORDER = 999;
@@ -120,10 +115,7 @@ function toNavItem(doc: NormalizedDocEntry): NavItem {
   };
 }
 
-function buildSectionItems(
-  sectionEntries: NormalizedDocEntry[],
-  section: string,
-): NavItem[] {
+function buildSectionItems(sectionEntries: NormalizedDocEntry[], section: string): NavItem[] {
   const entriesWithoutSectionIndex = sectionEntries.filter(doc => doc.relativeSegments.length > 0);
   if (entriesWithoutSectionIndex.length === 0) {
     return [];
@@ -184,10 +176,7 @@ function buildSectionItems(
   return sortByOrderAndTitle(sectionItems);
 }
 
-function buildSection(
-  sectionEntries: NormalizedDocEntry[],
-  section: string,
-): SectionNavItem {
+function buildSection(sectionEntries: NormalizedDocEntry[], section: string): SectionNavItem {
   const sectionIndex = sectionEntries.find(doc => doc.relativeSegments.length === 0);
   const sectionItems = buildSectionItems(sectionEntries, section);
 

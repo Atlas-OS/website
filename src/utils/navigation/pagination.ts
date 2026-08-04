@@ -50,10 +50,7 @@ function flattenNavigationTree(navTree: SectionNavItem[]): NavItem[] {
   return [...uniqueBySlug.values()];
 }
 
-export function getPrevNextPages(
-  entries: DocsEntry[],
-  currentSlug: string,
-): PrevNextPages {
+export function getPrevNextPages(entries: DocsEntry[], currentSlug: string): PrevNextPages {
   const navTree = buildNavigationTree(entries, { scope: 'full' }) as SectionNavItem[];
 
   if (navTree.length === 0) {
@@ -63,9 +60,7 @@ export function getPrevNextPages(
   const sortedTree = sortSectionsByPriority(navTree);
   const flattened = flattenNavigationTree(sortedTree);
   const normalizedCurrent = normalizeSlug(currentSlug);
-  const currentIndex = flattened.findIndex(
-    item => normalizeSlug(item.slug) === normalizedCurrent,
-  );
+  const currentIndex = flattened.findIndex(item => normalizeSlug(item.slug) === normalizedCurrent);
 
   if (currentIndex < 0) {
     return { prev: null, next: null };

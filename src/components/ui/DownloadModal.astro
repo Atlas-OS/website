@@ -23,14 +23,14 @@ const { links } = Astro.props;
     <div class="flex items-center justify-between border-b border-white/[0.06] px-5 py-4">
       <div class="flex items-center gap-3">
         <div
-          class="bg-primary/15 ring-primary/20 flex h-8 w-8 items-center justify-center rounded-lg ring-1 ring-inset"
+          class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/15 ring-1 ring-primary/20 ring-inset"
         >
           <Icon name="tabler:download" class="text-primary" size={14} />
         </div>
         <h2 id="download-modal-title" class="text-sm font-semibold tracking-tight text-white">Installing AtlasOS</h2>
       </div>
       <button
-        class="focus-visible:ring-primary/50 flex size-10 cursor-pointer items-center justify-center rounded-lg text-white/40 transition-[background-color,color,scale] duration-200 hover:bg-white/[0.06] hover:text-white/80 active:scale-[0.96] focus-visible:ring-2 focus-visible:outline-none"
+        class="flex size-10 cursor-pointer items-center justify-center rounded-lg text-white/40 transition-[background-color,color,scale] duration-200 hover:bg-white/[0.06] hover:text-white/80 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none active:scale-[0.96]"
         id="modal-close"
         aria-label="Close"
       >
@@ -55,13 +55,13 @@ const { links } = Astro.props;
             >
               <div class="flex items-start justify-between">
                 <div
-                  class="bg-primary/10 ring-primary/15 flex h-8 w-8 items-center justify-center rounded-lg ring-1 ring-inset"
+                  class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 ring-1 ring-primary/15 ring-inset"
                 >
                   <Icon name="tabler:book" class="text-primary/80" size={16} />
                 </div>
                 <Icon
                   name="tabler:arrow-up-right"
-                  class="group-hover:text-primary/60 text-white/20 transition-colors duration-200"
+                  class="text-white/20 transition-colors duration-200 group-hover:text-primary/60"
                   size={13}
                 />
               </div>
@@ -97,7 +97,7 @@ const { links } = Astro.props;
           <div class="border-t border-white/[0.05] pt-3">
             <button
               id="show-downloads"
-              class="group focus-visible:ring-primary/50 inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm text-white/40 transition-colors duration-200 hover:text-white/70 focus-visible:ring-2 focus-visible:outline-none"
+              class="group inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm text-white/40 transition-colors duration-200 hover:text-white/70 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none"
             >
               <span>I'm following the guide, show me the downloads</span>
               <Icon
@@ -124,7 +124,7 @@ const { links } = Astro.props;
             <div class="relative flex shrink-0 items-center">
               <input type="checkbox" id="confirm-guide" class="peer sr-only" />
               <div
-                class="peer-checked:border-primary peer-checked:bg-primary peer-focus:ring-primary/50 h-4 w-4 rounded border border-white/20 bg-white/5 transition-colors peer-focus:ring-2 peer-focus:ring-offset-1 peer-focus:ring-offset-zinc-950"
+                class="h-4 w-4 rounded border border-white/20 bg-white/5 transition-colors peer-checked:border-primary peer-checked:bg-primary peer-focus:ring-2 peer-focus:ring-primary/50 peer-focus:ring-offset-1 peer-focus:ring-offset-zinc-950"
               >
               </div>
               <Icon
@@ -138,7 +138,7 @@ const { links } = Astro.props;
                 href={links.install}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="download-modal-guide-link text-primary/80 hover:text-primary underline-offset-2 hover:underline"
+                class="download-modal-guide-link text-primary/80 underline-offset-2 hover:text-primary hover:underline"
                 >installation guide</a
               >.
             </p>
@@ -174,7 +174,7 @@ const { links } = Astro.props;
           <div class="border-t border-white/[0.05] pt-1">
             <button
               id="show-docs"
-              class="group focus-visible:ring-primary/50 inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm text-white/40 transition-colors duration-200 hover:text-white/70 focus-visible:ring-2 focus-visible:outline-none"
+              class="group inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm text-white/40 transition-colors duration-200 hover:text-white/70 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none"
             >
               <Icon
                 name="tabler:arrow-left"

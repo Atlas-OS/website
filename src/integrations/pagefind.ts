@@ -20,7 +20,12 @@ interface ResolvedPagefindIntegrationOptions extends PagefindIntegrationOptions 
 
 const defaultOptions: Pick<
   ResolvedPagefindIntegrationOptions,
-  'includeGlob' | 'outputSubdir' | 'failOnError' | 'forceLanguage' | 'keepIndexUrl' | 'writePlayground'
+  | 'includeGlob'
+  | 'outputSubdir'
+  | 'failOnError'
+  | 'forceLanguage'
+  | 'keepIndexUrl'
+  | 'writePlayground'
 > = {
   includeGlob: '**/*.{html}',
   outputSubdir: 'pagefind',
@@ -50,7 +55,8 @@ function createPagefindConfig(config: ResolvedPagefindIntegrationOptions): Pagef
 
   if (config.rootSelector) pagefindConfig.rootSelector = config.rootSelector;
   if (config.excludeSelectors?.length) pagefindConfig.excludeSelectors = config.excludeSelectors;
-  if (config.includeCharacters !== undefined) pagefindConfig.includeCharacters = config.includeCharacters;
+  if (config.includeCharacters !== undefined)
+    pagefindConfig.includeCharacters = config.includeCharacters;
   if (config.verbose !== undefined) pagefindConfig.verbose = config.verbose;
   if (config.logfile) pagefindConfig.logfile = config.logfile;
 

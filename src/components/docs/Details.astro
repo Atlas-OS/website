@@ -9,15 +9,18 @@ interface Props {
 const { summary, open = false } = Astro.props;
 ---
 
-<details
-  class="details docs-surface not-prose my-4 overflow-hidden"
-  data-component="details"
-  open={open}
->
-  <summary class="details-summary flex cursor-pointer items-center justify-between gap-3 px-4 py-3 text-sm font-medium transition-colors hover:bg-white/[0.04]"
-    style="color: var(--docs-text-primary);">
+<details class="details docs-surface not-prose my-4 overflow-hidden" data-component="details" open={open}>
+  <summary
+    class="details-summary flex cursor-pointer items-center justify-between gap-3 px-4 py-3 text-sm font-medium transition-colors hover:bg-white/[0.04]"
+    style="color: var(--docs-text-primary);"
+  >
     <span>{summary}</span>
-    <Icon name="tabler:chevron-down" class="details-summary-icon h-4 w-4 shrink-0 transition-transform duration-200" style="color: var(--docs-text-muted);" aria-hidden="true" />
+    <Icon
+      name="tabler:chevron-down"
+      class="details-summary-icon h-4 w-4 shrink-0 transition-transform duration-200"
+      style="color: var(--docs-text-muted);"
+      aria-hidden="true"
+    />
   </summary>
   <div class="details-content px-4 py-3" style="border-top: 1px solid var(--docs-surface-border);">
     <slot />

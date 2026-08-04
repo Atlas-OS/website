@@ -77,7 +77,7 @@ const { prev, next } = getPrevNextPages(allDocs, currentSlug);
         <div class="docs-main-inner">
           <article class="docs-article">
             <Breadcrumbs currentSlug={currentSlug} />
-            <div class="docs-content prose md:prose-lg max-w-none" data-pagefind-body>
+            <div class="docs-content prose max-w-none md:prose-lg" data-pagefind-body>
               <slot />
             </div>
             {showPageNav && <PageNav prev={prev || undefined} next={next || undefined} />}

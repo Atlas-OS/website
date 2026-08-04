@@ -79,17 +79,17 @@ export function getSlugFromId(id: string): string {
   }
 
   const segments = toPathSegments(id);
-  const withoutIndex =
-    segments[segments.length - 1] === 'index' ? segments.slice(0, -1) : segments;
+  const withoutIndex = segments[segments.length - 1] === 'index' ? segments.slice(0, -1) : segments;
   const result = withoutIndex.length > 0 ? addDocsPrefix(`/${withoutIndex.join('/')}/`) : '/docs/';
 
   slugCache.set(cacheKey, result);
   return result;
 }
 
-export function getSlugFromEntry(
-  entry: { id: string; data?: ({ slug?: string } & Record<string, unknown>) | undefined },
-): string {
+export function getSlugFromEntry(entry: {
+  id: string;
+  data?: ({ slug?: string } & Record<string, unknown>) | undefined;
+}): string {
   const customSlug = entry.data?.slug?.trim();
   if (!customSlug) {
     return getSlugFromId(entry.id);

@@ -2,7 +2,10 @@
 import DefaultLayout from '@/layouts/DefaultLayout.astro';
 ---
 
-<DefaultLayout title="About | AtlasOS" description="Learn about AtlasOS, a community-driven project focused on improving Windows performance, privacy, and usability.">
+<DefaultLayout
+  title="About | AtlasOS"
+  description="Learn about AtlasOS, a community-driven project focused on improving Windows performance, privacy, and usability."
+>
   <section class="mx-auto mt-16 max-w-4xl px-4">
     <h1 class="mb-6 text-4xl font-semibold tracking-tight text-white md:text-5xl">About AtlasOS</h1>
     <p class="mb-4 leading-relaxed text-white/75">
@@ -14,7 +17,12 @@ import DefaultLayout from '@/layouts/DefaultLayout.astro';
     </p>
     <p class="leading-relaxed text-white/75">
       Learn more in our <a class="text-primary hover:underline" href="/docs/">documentation</a> or contribute on
-      <a class="text-primary hover:underline" href="https://github.com/Atlas-OS/Atlas" target="_blank" rel="noopener noreferrer">GitHub</a>.
+      <a
+        class="text-primary hover:underline"
+        href="https://github.com/Atlas-OS/Atlas"
+        target="_blank"
+        rel="noopener noreferrer">GitHub</a
+      >.
     </p>
   </section>
 </DefaultLayout>

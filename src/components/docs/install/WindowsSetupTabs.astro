@@ -18,44 +18,84 @@ const showTpmCallout = variant === 'reverting';
 const detailedPartitionSelection = variant !== 'playbook';
 ---
 
-<Tabs items={[
-  { label: variant === 'playbook' ? 'Install from Windows (No USB)' : 'No USB Drive (recommended)', value: 'no-usb' },
-  { label: variant === 'playbook' ? 'Install from USB' : 'USB Drive', value: 'usb' }
-]} defaultTab="no-usb">
+<Tabs
+  items={[
+    { label: variant === 'playbook' ? 'Install from Windows (No USB)' : 'No USB Drive (recommended)', value: 'no-usb' },
+    { label: variant === 'playbook' ? 'Install from USB' : 'USB Drive', value: 'usb' },
+  ]}
+  defaultTab="no-usb"
+>
   <TabPanel value="no-usb" default>
     <p class="mb-4">
-      <strong>Best for:</strong> {variant === 'playbook' ? 'Users already running Windows who want the easiest installation method.' : variant === 'iso' ? 'Users already on Windows. Only works if you are already running Windows.' : 'Users already on Windows.'}
+      <strong>Best for:</strong>
+      {
+        variant === 'playbook'
+          ? 'Users already running Windows who want the easiest installation method.'
+          : variant === 'iso'
+            ? 'Users already on Windows. Only works if you are already running Windows.'
+            : 'Users already on Windows.'
+      }
     </p>
 
-    {showWindowsOldCallout && (
-      <Callout type="info" title="Windows.old">
-        {variant === 'iso' ? (
-          <>If you have enough free storage, <CodeInline text="Windows.old" /> will contain your old data
-          after the reinstall. You can retrieve data and delete it later. <a href="#step-4-post-install" class="text-primary font-medium hover:opacity-85">See cleanup below</a>.</>
-        ) : (
-          <>Only if you have enough free storage: after finishing the Windows reinstall, <CodeInline text="Windows.old" /> will
-          be at the start of your Windows drive, containing your old data. You can retrieve data from
-          the folder and delete it afterward.</>
-        )}
-      </Callout>
-    )}
+    {
+      showWindowsOldCallout && (
+        <Callout type="info" title="Windows.old">
+          {variant === 'iso' ? (
+            <>
+              If you have enough free storage, <CodeInline text="Windows.old" /> will contain your old data after the
+              reinstall. You can retrieve data and delete it later.{' '}
+              <a href="#step-4-post-install" class="font-medium text-primary hover:opacity-85">
+                See cleanup below
+              </a>
+              .
+            </>
+          ) : (
+            <>
+              Only if you have enough free storage: after finishing the Windows reinstall,{' '}
+              <CodeInline text="Windows.old" /> will be at the start of your Windows drive, containing your old data.
+              You can retrieve data from the folder and delete it afterward.
+            </>
+          )}
+        </Callout>
+      )
+    }
 
-    <ol class="list-decimal pl-6 space-y-4 [&>li]:pl-2">
+    <ol class="list-decimal space-y-4 pl-6 [&>li]:pl-2">
       <li>
-        <strong>Disconnect internet</strong> {variant === 'playbook' ? '(unplug ethernet, disable Wi-Fi)' : '- Unplug ethernet, disable Wi-Fi. Do not reconnect until instructed.'}
+        <strong>Disconnect internet</strong>
+        {
+          variant === 'playbook'
+            ? '(unplug ethernet, disable Wi-Fi)'
+            : '- Unplug ethernet, disable Wi-Fi. Do not reconnect until instructed.'
+        }
       </li>
 
       <li>
         <strong>Mount the ISO:</strong>
-        <ul class="mt-2 list-disc pl-6 space-y-1">
-          <li>Right-click {variant === 'iso' ? 'the injected ISO' : 'downloaded ISO'}<IconArrow /><strong>Open With</strong><IconArrow /><strong>File Explorer</strong></li>
-          <li>{variant === 'playbook' ? 'Note the drive letter (e.g.,' : <>Open <strong>This PC</strong> and note the drive letter (e.g.,</>} <CodeInline text={variant === 'playbook' ? 'H:' : 'H'} />)</li>
+        <ul class="mt-2 list-disc space-y-1 pl-6">
+          <li>
+            Right-click {variant === 'iso' ? 'the injected ISO' : 'downloaded ISO'}<IconArrow /><strong
+              >Open With</strong
+            ><IconArrow /><strong>File Explorer</strong>
+          </li>
+          <li>
+            {
+              variant === 'playbook' ? (
+                'Note the drive letter (e.g.,'
+              ) : (
+                <>
+                  Open <strong>This PC</strong> and note the drive letter (e.g.,
+                </>
+              )
+            }
+            <CodeInline text={variant === 'playbook' ? 'H:' : 'H'} />)
+          </li>
         </ul>
       </li>
 
       <li>
         <strong>Launch Windows Setup:</strong>
-        <ul class="mt-2 list-disc pl-6 space-y-1">
+        <ul class="mt-2 list-disc space-y-1 pl-6">
           <li>Press <CodeInline text="Win + R" /> {variant !== 'playbook' && 'to open the Run dialog'}</li>
           <li>Type: <CodeInline text="H:\sources\setup.exe" /> (replace H with your drive letter)</li>
           <li>Press <CodeInline text="Enter" /><IconArrow />Accept UAC prompt</li>
@@ -64,53 +104,116 @@ const detailedPartitionSelection = variant !== 'playbook';
     </ol>
 
     <Callout type="warning" title={variant === 'playbook' ? 'BitLocker Error?' : 'BitLocker message?'}>
-      {variant === 'playbook' ? (
-        <>See our <a href="/docs/faq/installation/#what-if-i-get-a-bitlocker-error" class="text-primary font-medium hover:opacity-85">BitLocker instructions</a> to suspend BitLocker first.</>
-      ) : (
-        <>If you see "Make sure BitLocker Drive Encryption is suspended", {variant === 'reverting' ? (
-        <>refer to our <a href="/docs/faq/installation/#what-if-i-get-a-bitlocker-error" class="text-primary font-medium hover:opacity-85">BitLocker instructions</a> to resolve this, then retry from step 3.</>
-      ) : (
-        <>see our <a href="/docs/faq/installation/#what-if-i-get-a-bitlocker-error" class="text-primary font-medium hover:opacity-85">BitLocker instructions</a>, then retry from step 3.</>
-      )}</>
-      )}
+      {
+        variant === 'playbook' ? (
+          <>
+            See our{' '}
+            <a
+              href="/docs/faq/installation/#what-if-i-get-a-bitlocker-error"
+              class="font-medium text-primary hover:opacity-85"
+            >
+              BitLocker instructions
+            </a>{' '}
+            to suspend BitLocker first.
+          </>
+        ) : (
+          <>
+            If you see "Make sure BitLocker Drive Encryption is suspended",{' '}
+            {variant === 'reverting' ? (
+              <>
+                refer to our{' '}
+                <a
+                  href="/docs/faq/installation/#what-if-i-get-a-bitlocker-error"
+                  class="font-medium text-primary hover:opacity-85"
+                >
+                  BitLocker instructions
+                </a>{' '}
+                to resolve this, then retry from step 3.
+              </>
+            ) : (
+              <>
+                see our{' '}
+                <a
+                  href="/docs/faq/installation/#what-if-i-get-a-bitlocker-error"
+                  class="font-medium text-primary hover:opacity-85"
+                >
+                  BitLocker instructions
+                </a>
+                , then retry from step 3.
+              </>
+            )}
+          </>
+        )
+      }
     </Callout>
 
-    <ol class="list-decimal pl-6 space-y-4 [&>li]:pl-2" start={4}>
+    <ol class="list-decimal space-y-4 pl-6 [&>li]:pl-2" start={4}>
       <li>
         <strong>Complete Windows Setup:</strong>
-        <ul class="mt-2 list-disc pl-6 space-y-1">
+        <ul class="mt-2 list-disc space-y-1 pl-6">
           <li>Select <strong>No thanks</strong> when prompted for updates</li>
           <li>Uncheck "I want to help make Windows installation better"</li>
-          <li>Click <strong>I don't have a product key</strong>{variant !== 'playbook' ? ' (Windows should auto-activate later)' : ''}</li>
+          <li>
+            Click <strong>I don't have a product key</strong>{
+              variant !== 'playbook' ? ' (Windows should auto-activate later)' : ''
+            }
+          </li>
           <li>Choose <strong>Windows Pro</strong> (or Pro for Workstations/Enterprise)</li>
           <li>Accept the license<IconArrow /><strong>Custom: Install Windows only (advanced)</strong></li>
-          <li>Select your Windows drive<IconArrow /><strong>Next</strong><IconArrow /><strong>OK</strong> (Windows.old warning)</li>
+          <li>
+            Select your Windows drive<IconArrow /><strong>Next</strong><IconArrow /><strong>OK</strong> (Windows.old warning)
+          </li>
           <li>Wait for installation to finish{variant === 'playbook' ? ' (~15-20 minutes)' : ''}</li>
         </ul>
       </li>
     </ol>
 
-    {showTpmCallout && (
-      <Callout type="info" title="Windows 11 requirement error?">
-        If you encounter an error that your PC doesn't meet the requirements, you may need to enable
-        TPM 2.0 in your BIOS/UEFI. See our <a href="/docs/faq/general/#enabling-tpm" class="text-primary font-medium hover:opacity-85">Enabling TPM</a> guide in the
-        General FAQ.
-      </Callout>
-    )}
+    {
+      showTpmCallout && (
+        <Callout type="info" title="Windows 11 requirement error?">
+          If you encounter an error that your PC doesn't meet the requirements, you may need to enable TPM 2.0 in your
+          BIOS/UEFI. See our{' '}
+          <a href="/docs/faq/general/#enabling-tpm" class="font-medium text-primary hover:opacity-85">
+            Enabling TPM
+          </a>{' '}
+          guide in the General FAQ.
+        </Callout>
+      )
+    }
   </TabPanel>
 
   <TabPanel value="usb">
     <p class="mb-4">
-      <strong>Best for:</strong> {variant === 'playbook' ? 'Users wanting a fresh install or those currently on Linux.' : variant === 'iso' ? 'Linux users or those wanting a fresh install. AME Beta and ISO injection only work in Windows.' : 'Linux users or those wanting a fresh install.'}
+      <strong>Best for:</strong>
+      {
+        variant === 'playbook'
+          ? 'Users wanting a fresh install or those currently on Linux.'
+          : variant === 'iso'
+            ? 'Linux users or those wanting a fresh install. AME Beta and ISO injection only work in Windows.'
+            : 'Linux users or those wanting a fresh install.'
+      }
     </p>
 
-    <ol class="list-decimal pl-6 space-y-4 [&>li]:pl-2">
+    <ol class="list-decimal space-y-4 pl-6 [&>li]:pl-2">
       <li>
         <strong>Create Ventoy USB:</strong>
-        <ul class="mt-2 list-disc pl-6 space-y-1">
-          <li>Download <a href="https://github.com/ventoy/Ventoy/releases/" class="text-primary font-medium hover:opacity-85" target="_blank" rel="noopener noreferrer">Ventoy</a> {variant !== 'playbook' && 'and extract it'}</li>
+        <ul class="mt-2 list-disc space-y-1 pl-6">
+          <li>
+            Download <a
+              href="https://github.com/ventoy/Ventoy/releases/"
+              class="font-medium text-primary hover:opacity-85"
+              target="_blank"
+              rel="noopener noreferrer">Ventoy</a
+            >
+            {variant !== 'playbook' && 'and extract it'}
+          </li>
           <li>Run <strong>Ventoy2Disk.exe</strong></li>
-          <li>Select USB drive<IconArrow /><strong>Install</strong> ({variant === 'playbook' && <IconInline name="tabler:alert-triangle" />} {variant === 'playbook' ? 'erases USB data!' : 'this destroys all data on the USB!'})</li>
+          <li>
+            Select USB drive<IconArrow /><strong>Install</strong> ({
+              variant === 'playbook' && <IconInline name="tabler:alert-triangle" />
+            }
+            {variant === 'playbook' ? 'erases USB data!' : 'this destroys all data on the USB!'})
+          </li>
           <li>Copy Windows ISO to USB drive (labeled Ventoy)</li>
         </ul>
       </li>
@@ -121,7 +224,7 @@ const detailedPartitionSelection = variant !== 'playbook';
 
       <li>
         <strong>Boot from USB:</strong>
-        <ul class="mt-2 list-disc pl-6 space-y-1">
+        <ul class="mt-2 list-disc space-y-1 pl-6">
           <li>Restart<IconArrow />Enter BIOS/UEFI (usually F12 or Del)</li>
           <li>Select your USB drive as the boot device (you may need to change boot order in BIOS settings)</li>
           <li>In Ventoy menu: Select Windows ISO<IconArrow /><strong>Boot in normal mode</strong></li>
@@ -130,53 +233,113 @@ const detailedPartitionSelection = variant !== 'playbook';
     </ol>
 
     <Callout type="warning" title={variant === 'playbook' ? 'Security Violation?' : 'Security Violation error?'}>
-      {variant === 'playbook' ? (
-        <>If Ventoy shows an error, <a href="https://ventoy.net/doc_secure.html" class="text-primary font-medium hover:opacity-85" target="_blank" rel="noopener noreferrer">enroll the key</a>.</>
-      ) : (
-        <>If you see a "Security Violation" error, follow <a href="https://ventoy.net/doc_secure.html" class="text-primary font-medium hover:opacity-85" target="_blank" rel="noopener noreferrer">Ventoy's key enrollment guide</a>. Briefly: load MokManager, choose Enroll Key From Disk, select <CodeInline text="VTOYEFI" /><IconArrow /><CodeInline text="ENROLL_THIS_KEY_IN_MOKMANAGER.cer" />, then Continue, Yes, Reboot. Boot from USB again.</>
-      )}
+      {
+        variant === 'playbook' ? (
+          <>
+            If Ventoy shows an error,{' '}
+            <a
+              href="https://ventoy.net/doc_secure.html"
+              class="font-medium text-primary hover:opacity-85"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              enroll the key
+            </a>
+            .
+          </>
+        ) : (
+          <>
+            If you see a "Security Violation" error, follow{' '}
+            <a
+              href="https://ventoy.net/doc_secure.html"
+              class="font-medium text-primary hover:opacity-85"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Ventoy's key enrollment guide
+            </a>
+            . Briefly: load MokManager, choose Enroll Key From Disk, select{' '}
+            <>
+              <CodeInline text="VTOYEFI" />
+              <IconArrow />
+              <CodeInline text="ENROLL_THIS_KEY_IN_MOKMANAGER.cer" />
+            </>
+            , then Continue, Yes, Reboot. Boot from USB again.
+          </>
+        )
+      }
     </Callout>
 
-    <ol class="list-decimal pl-6 space-y-4 [&>li]:pl-2" start={4}>
+    <ol class="list-decimal space-y-4 pl-6 [&>li]:pl-2" start={4}>
       <li>
         <strong>Start installation:</strong>
-        <ul class="mt-2 list-disc pl-6 space-y-1">
+        <ul class="mt-2 list-disc space-y-1 pl-6">
           <li>In the Ventoy menu, select the Windows ISO with arrow keys, press <strong>Enter</strong></li>
           <li>Click <strong>Boot in normal mode</strong>, press <strong>Enter</strong></li>
-          <li>For Windows 11: Click <strong>Next</strong> twice, then <strong>Previous version of setup</strong> (bottom left)</li>
+          <li>
+            For Windows 11: Click <strong>Next</strong> twice, then <strong>Previous version of setup</strong> (bottom left)
+          </li>
           <li>Select language<IconArrow /><strong>Next</strong><IconArrow /><strong>Install Now</strong></li>
           <li>Click <strong>I don't have a product key</strong></li>
           <li>Choose <strong>Windows Pro</strong> (or Pro for Workstations/Enterprise)</li>
         </ul>
       </li>
 
-      {detailedPartitionSelection ? (
-        <>
-          <li>
-            <strong>Partition selection:</strong>
-            <ul class="mt-2 list-disc pl-6 space-y-1">
-              <li><strong>Keeping data (recommended):</strong> Identify your Windows partition by size, select it, <strong>Next</strong>, <strong>OK</strong> (Windows.old warning)</li>
-              <li><strong>Deleting data on one drive:</strong> Identify the drive, delete its partitions one by one, select unallocated space, <strong>Next</strong></li>
-              <li><strong>Deleting data on all drives:</strong> Delete all partitions, select unallocated space for your target drive, <strong>Next</strong></li>
-            </ul>
-          </li>
-          <li>Wait for Windows to install.</li>
-        </>
-      ) : (
-        <>
-          <li>Accept license<IconArrow /><strong>Custom: Install Windows only (advanced)</strong></li>
-          <li>Select partition<IconArrow /><strong>Next</strong></li>
-          <li>Wait for installation (~15-20 minutes)</li>
-        </>
-      )}
+      {
+        detailedPartitionSelection ? (
+          <>
+            <li>
+              <strong>Partition selection:</strong>
+              <ul class="mt-2 list-disc space-y-1 pl-6">
+                <li>
+                  <strong>Keeping data (recommended):</strong> Identify your Windows partition by size, select it,{' '}
+                  <strong>Next</strong>, <strong>OK</strong> (Windows.old warning)
+                </li>
+                <li>
+                  <strong>Deleting data on one drive:</strong> Identify the drive, delete its partitions one by one,
+                  select unallocated space, <strong>Next</strong>
+                </li>
+                <li>
+                  <strong>Deleting data on all drives:</strong> Delete all partitions, select unallocated space for your
+                  target drive, <strong>Next</strong>
+                </li>
+              </ul>
+            </li>
+            <li>Wait for Windows to install.</li>
+          </>
+        ) : (
+          <>
+            <li>
+              Accept license
+              <>
+                <IconArrow />
+                <strong>Custom: Install Windows only (advanced)</strong>
+              </>
+            </li>
+            <li>
+              Select partition
+              <>
+                <IconArrow />
+                <strong>Next</strong>
+              </>
+            </li>
+            <li>Wait for installation (~15-20 minutes)</li>
+          </>
+        )
+      }
     </ol>
 
-    {showTpmCallout && (
-      <Callout type="info" title="Windows 11 requirement error?">
-        If you encounter an error that your PC doesn't meet the requirements, you may need to enable
-        TPM 2.0 in your BIOS/UEFI. See our <a href="/docs/faq/general/#enabling-tpm" class="text-primary font-medium hover:opacity-85">Enabling TPM</a> guide in the
-        General FAQ.
-      </Callout>
-    )}
+    {
+      showTpmCallout && (
+        <Callout type="info" title="Windows 11 requirement error?">
+          If you encounter an error that your PC doesn't meet the requirements, you may need to enable TPM 2.0 in your
+          BIOS/UEFI. See our{' '}
+          <a href="/docs/faq/general/#enabling-tpm" class="font-medium text-primary hover:opacity-85">
+            Enabling TPM
+          </a>{' '}
+          guide in the General FAQ.
+        </Callout>
+      )
+    }
   </TabPanel>
 </Tabs>

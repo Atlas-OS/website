@@ -38,7 +38,7 @@ function isExternalUrl(url: string): boolean {
             {item.href ? (
               <a
                 href={item.href}
-                class={`text-primary mb-1 block text-base leading-normal font-semibold hover:opacity-80 ${item.disabled ? 'text-white/60' : ''}`}
+                class={`mb-1 block text-base leading-normal font-semibold text-primary hover:opacity-80 ${item.disabled ? 'text-white/60' : ''}`}
                 {...linkAttrs}
               >
                 {item.title}

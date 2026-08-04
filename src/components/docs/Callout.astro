@@ -77,7 +77,8 @@ const displayTitle = title || style.defaultTitle;
   }
 
   .callout-animated {
-    animation: callout-fade-in var(--motion-duration-normal, 250ms) var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1));
+    animation: callout-fade-in var(--motion-duration-normal, 250ms)
+      var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1));
   }
 
   @keyframes callout-fade-in {
@@ -155,7 +156,7 @@ const displayTitle = title || style.defaultTitle;
   }
 
   .callout-content ul li::before {
-    content: "";
+    content: '';
     position: absolute;
     left: -1.25rem;
     top: 0.65em;
@@ -188,7 +189,8 @@ const displayTitle = title || style.defaultTitle;
       button.addEventListener('click', () => {
         const callout = button.closest('.callout') as HTMLElement;
         if (callout) {
-          callout.style.animation = 'callout-fade-out var(--motion-duration-normal, 250ms) var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1)) forwards';
+          callout.style.animation =
+            'callout-fade-out var(--motion-duration-normal, 250ms) var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1)) forwards';
           setTimeout(() => {
             callout.remove();
           }, 250);

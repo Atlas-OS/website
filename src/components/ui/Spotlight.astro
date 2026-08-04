@@ -308,7 +308,7 @@ import { Icon } from 'astro-icon/components';
     debouncedSearch: (
       query: string,
       options?: PagefindSearchOptions,
-      debounceTimeoutMs?: number,
+      debounceTimeoutMs?: number
     ) => Promise<PagefindSearchResponse | null>;
     preload: (query: string, options?: PagefindSearchOptions) => Promise<void>;
   }
@@ -677,32 +677,44 @@ import { Icon } from 'astro-icon/components';
     searchButtonMobile?.addEventListener('click', openSpotlight, { signal });
 
     if (inputContainer && input) {
-      inputContainer.addEventListener('click', (e) => {
-        if (e.target !== input) input.focus();
-      }, { signal });
+      inputContainer.addEventListener(
+        'click',
+        (e) => {
+          if (e.target !== input) input.focus();
+        },
+        { signal }
+      );
     }
 
     if (input) {
       input.addEventListener('focus', () => warmPagefind(input.value), { signal });
-      input.addEventListener('input', (e) => {
-        const target = e.target as HTMLInputElement;
-        warmPagefind(target.value);
-        debouncedSearch(target.value);
-        selectedIndex = -1;
-      }, { signal });
+      input.addEventListener(
+        'input',
+        (e) => {
+          const target = e.target as HTMLInputElement;
+          warmPagefind(target.value);
+          debouncedSearch(target.value);
+          selectedIndex = -1;
+        },
+        { signal }
+      );
 
-      input.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowDown') {
-          e.preventDefault();
-          navigateResults('down');
-        } else if (e.key === 'ArrowUp') {
-          e.preventDefault();
-          navigateResults('up');
-        } else if (e.key === 'Enter') {
-          e.preventDefault();
-          selectCurrentResult();
-        }
-      }, { signal });
+      input.addEventListener(
+        'keydown',
+        (e) => {
+          if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            navigateResults('down');
+          } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            navigateResults('up');
+          } else if (e.key === 'Enter') {
+            e.preventDefault();
+            selectCurrentResult();
+          }
+        },
+        { signal }
+      );
     }
 
     backdrop.addEventListener('click', closeSpotlight, { signal });

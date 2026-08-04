@@ -93,15 +93,23 @@ export default defineConfig({
     '/getting-started/installation/': '/docs/install/playbook/',
     '/getting-started/post-installation/': '/docs/install/setup/',
     '/getting-started/post-installation/atlas-folder/': '/docs/atlas-configuration/atlas-folder/',
-    '/getting-started/post-installation/atlas-folder/configuration/': '/docs/atlas-configuration/settings/',
-    '/getting-started/post-installation/atlas-folder/general-configuration/': '/docs/atlas-configuration/settings/',
-    '/getting-started/post-installation/atlas-folder/interface-tweaks/': '/docs/atlas-configuration/tweaks/',
-    '/getting-started/post-installation/atlas-folder/windows-settings/': '/docs/atlas-configuration/windows/',
-    '/getting-started/post-installation/atlas-folder/advanced-configuration/': '/docs/atlas-configuration/advanced/',
-    '/getting-started/post-installation/atlas-folder/security/': '/docs/atlas-configuration/security/',
+    '/getting-started/post-installation/atlas-folder/configuration/':
+      '/docs/atlas-configuration/settings/',
+    '/getting-started/post-installation/atlas-folder/general-configuration/':
+      '/docs/atlas-configuration/settings/',
+    '/getting-started/post-installation/atlas-folder/interface-tweaks/':
+      '/docs/atlas-configuration/tweaks/',
+    '/getting-started/post-installation/atlas-folder/windows-settings/':
+      '/docs/atlas-configuration/windows/',
+    '/getting-started/post-installation/atlas-folder/advanced-configuration/':
+      '/docs/atlas-configuration/advanced/',
+    '/getting-started/post-installation/atlas-folder/security/':
+      '/docs/atlas-configuration/security/',
     '/getting-started/post-installation/drivers/getting-started/': '/docs/essential-setup/drivers/',
-    '/getting-started/post-installation/software/getting-started/': '/docs/essential-setup/software/',
-    '/getting-started/post-installation/software/web-browsers/': '/docs/essential-setup/software/browsers/',
+    '/getting-started/post-installation/software/getting-started/':
+      '/docs/essential-setup/software/',
+    '/getting-started/post-installation/software/web-browsers/':
+      '/docs/essential-setup/software/browsers/',
     '/getting-started/reverting-atlas/': '/docs/faq/reverting/',
     '/general-faq/': '/docs/faq/general/',
     '/general-faq/atlas-and-security/': '/docs/faq/general/#security-and-atlasos',

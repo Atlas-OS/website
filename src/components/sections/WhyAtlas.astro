@@ -74,7 +74,11 @@ const features = [
           : "after:absolute after:right-0 after:bottom-0 after:left-0 after:h-px after:bg-linear-to-r after:from-transparent after:via-white/10 after:to-transparent after:content-[''] md:last:after:hidden";
 
         return (
-          <div class={`${baseClasses} ${paddingClass} ${afterClasses}`} data-animate data-animate-delay={String((index % 6) + 1)}>
+          <div
+            class={`${baseClasses} ${paddingClass} ${afterClasses}`}
+            data-animate
+            data-animate-delay={String((index % 6) + 1)}
+          >
             <div class="flex items-start">
               <div class="mt-0.5 mr-6 flex h-9 w-9 min-w-9 items-center justify-center rounded bg-white/5">
                 <Icon name={feature.icon} class="h-5 w-5 text-white/80" />

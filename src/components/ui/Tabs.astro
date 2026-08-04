@@ -24,7 +24,7 @@ const tabsId = `tabs-${Math.random().toString(36).substring(2, 11)}`;
           aria-controls={`${tabsId}-panel-${item.value}`}
           aria-selected={item.value === defaultTab ? 'true' : 'false'}
           tabindex={item.value === defaultTab ? '0' : '-1'}
-          class={`tab-button focus-visible:ring-primary/50 min-h-10 shrink-0 cursor-pointer border-b-2 px-4 py-2 text-sm font-medium transition-[border-color,color] duration-200 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none ${
+          class={`tab-button min-h-10 shrink-0 cursor-pointer border-b-2 px-4 py-2 text-sm font-medium transition-[border-color,color] duration-200 outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none ${
             item.value === defaultTab
               ? 'border-primary text-primary'
               : 'border-transparent text-white/60 hover:text-white/85'

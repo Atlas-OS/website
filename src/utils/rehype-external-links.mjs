@@ -47,8 +47,8 @@ function cleanUrl(value) {
 }
 
 export default function rehypeExternalLinks() {
-  return tree => {
-    walk(tree, node => {
+  return (tree) => {
+    walk(tree, (node) => {
       if (!isElement(node, 'a')) {
         return;
       }

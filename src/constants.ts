@@ -22,8 +22,10 @@ export const ATLAS_RELEASE_LABEL = `Atlas v${ATLAS_RELEASE_TAG_FALLBACK}` as con
 
 export const ATLAS_API_URL = 'https://api.atlasos.net/' as const;
 
-export const ATLAS_GITHUB_LATEST_RELEASE_API_URL = 'https://api.github.com/repos/Atlas-OS/Atlas/releases/latest' as const;
+export const ATLAS_GITHUB_LATEST_RELEASE_API_URL =
+  'https://api.github.com/repos/Atlas-OS/Atlas/releases/latest' as const;
 
-export const ATLAS_GITHUB_LATEST_RELEASE_URL = 'https://github.com/Atlas-OS/Atlas/releases/latest' as const;
+export const ATLAS_GITHUB_LATEST_RELEASE_URL =
+  'https://github.com/Atlas-OS/Atlas/releases/latest' as const;
 
 export const CONTACT_EMAIL = 'contact@atlasos.net' as const;
