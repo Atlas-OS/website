@@ -9,16 +9,16 @@ import Callout from '@/components/docs/Callout.astro';
 
 # Testing guide
 
-This guide covers recommended testing for alpha or release candidate builds. Found problems? See [the reporting issues page](/docs/contributing/reporting/).
+Use this checklist to test alpha and release-candidate builds. [Report every reproducible problem](/docs/contributing/reporting/).
 
-If you need to set up a virtual machine, see the [Playbook contributing page](/docs/contributing/playbook/) for instructions. You can also test on real hardware, especially for release candidates.
+Follow the [Playbook testing setup](/docs/contributing/playbook/#test-a-built-playbook) to create a virtual machine. Test release candidates on real hardware as well.
 
 <Callout type="info" title="Test on Stock Windows First">
   Verify that issues on Atlas don't occur on unmodified Windows in the same environment. This
   reduces false reports.
 </Callout>
 
-## Your personally used Windows features
+## Windows features you use
 
 Test the features you use, especially if your setup differs from typical. Examples:
 
@@ -33,7 +33,7 @@ Test the features you use, especially if your setup differs from typical. Exampl
 
 Try creating new user accounts and logging into them, and verify that all tweaks apply.
 
-## Your personally used apps/games
+## Apps and games you use
 
 Test all software and games you use in a realistic environment. Install drivers properly first. Confirm you can't reproduce issues on stock Windows in the same environment.
 
@@ -60,11 +60,11 @@ Consider testing local network features such as:
 
 Test the Atlas folder thoroughly:
 
-- Testing each script and checking if it does its functionality
+- Run each script and confirm that it performs the named action
   - Especially the significant scripts like disabling Defender
   - If prompted for anything, test various inputs
-  - Make sure to restart if prompted
-- Suggesting improvements for:
+  - Restart when prompted
+- Look for improvements to:
   - Structure
   - User experience
   - Folder organization

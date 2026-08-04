@@ -10,34 +10,35 @@ import CodeInline from '@/components/docs/CodeInline.astro';
 
 # Security settings
 
-This section lists Security options in the Atlas folder, how to change them, and their defaults.
+Use this page to review each security option, its default, and the file that changes it.
 
 All configuration files listed here are in the <CodeInline text="7. Security" /> folder within the Atlas folder on your Desktop.
 
-<Callout type="danger" title="Your Risk">
-Disabling security features is at **your own risk**, and you should only disable any security features if:
+<Callout type="danger" title="Understand the risk">
+Disable a security feature only if:
 
-- You know what it does
-- You know how to keep yourself safe without it
+- You understand what it protects
+- You accept the added risk and know how to protect the system without it
 
-**Atlas isn't responsible** for any damages caused by disabling security features against our recommendations.
+Disabling protection can expose your files, accounts, and system to attack. Atlas does not accept
+responsibility for damage caused by disabling security features against these recommendations.
 </Callout>
 
 ## Mitigations
 
 Mitigations are software or hardware techniques that address security vulnerabilities or weaknesses in the CPU. They help prevent software (e.g., vulnerable games) from being exploited to remotely execute code on your system.
 
-Atlas provides scripts and a prompt to enable or disable mitigations within Windows. Some older CPUs see significant performance gains from disabling mitigations. However, this benefit applies mainly to older CPUs. Newer CPUs (like [Zen 4 CPUs](https://www.phoronix.com/news/AMD-Zen-4-Mitigations-Off)) can be negatively impacted if you disable mitigations, as they are designed to work with these mitigations.
+Atlas provides scripts and an installation prompt for Windows mitigations. Disabling mitigations can improve performance on some older CPUs. On newer CPUs, including [Zen 4](https://www.phoronix.com/news/AMD-Zen-4-Mitigations-Off), disabling them can reduce performance as well as security.
 
 Atlas disables [Fault Tolerant Heap](https://learn.microsoft.com/en-us/windows/win32/win7appqual/fault-tolerant-heap 'Microsoft FTH documentation') by default. FTH applies non-CPU mitigations to repeatedly crashing processes, at the cost of significantly reduced performance. If you have consistent application crashes, try enabling FTH.
 
-If you have disabled mitigations and face issues with anticheat software, run the <CodeInline text="Set Windows Default Mitigations.cmd" /> script in the <CodeInline text="Mitigations" /> folder. Alternatively, if you want the maximum security, you can use <CodeInline text="Enable All Mitigations.cmd" />, but that forces all mitigations to be enabled (unlike the Windows default), which can reduce performance significantly and may reduce compatibility.
+If an anticheat stops working after you disable mitigations, run <CodeInline text="Set Windows Default Mitigations.cmd" /> in the <CodeInline text="Mitigations" /> folder. To enable every available mitigation, run <CodeInline text="Enable All Mitigations.cmd" />. This is stricter than the Windows default and can reduce performance or compatibility.
 
 ## Defender
 
 Defender protects against many threats (ransomware, spyware). Some users disable it for privacy and performance on older hardware. Disabling Defender increases infection risk; Atlas doesn't recommend it.
 
-If you use another trustworthy antivirus program, you don't need to disable Defender.
+If you use another trusted antivirus, you do not need to disable Defender manually.
 
 Atlas lets you fully toggle Defender at a component level. Run <CodeInline text="Toggle Defender.cmd" /> in the <CodeInline text="Defender" /> folder to enable or disable it. The folder also contains tweaks for Defender and Windows Security.
 
@@ -45,7 +46,7 @@ Atlas lets you fully toggle Defender at a component level. Run <CodeInline text=
 
 [Core isolation](https://support.microsoft.com/en-us/windows/core-isolation-e30ed737-17d8-42f3-a2a9-87521df09b78) is a Windows security feature that protects core processes from malicious software by running them in a virtualized environment.
 
-Core isolation protects against vulnerabilities in Windows core processes. It has a [significant performance cost](https://www.tomshardware.com/news/windows-11-gaming-benchmarks-performance-vbs-hvci-security), especially on older CPUs. We recommend disabling it for most users—the performance impact outweighs the security benefits.
+Core isolation can have a [significant performance cost](https://www.tomshardware.com/news/windows-11-gaming-benchmarks-performance-vbs-hvci-security), especially on older CPUs. Atlas recommends disabling it for most users because the performance cost outweighs the added protection.
 
 For Windows 11 users, Core isolation features are typically enabled by default, as long as your CPU supports Windows 11.
 
@@ -53,20 +54,20 @@ The <CodeInline text="Core Isolation (VBS)" /> folder contains <CodeInline text=
 
 ### Core isolation features
 
-Note that not all features may be available, depending on your hardware security support and Windows edition. Windows 11 should generally have more Core isolation features.
+Available features depend on your hardware and Windows edition. Windows 11 usually exposes more Core isolation features.
 
 - **Memory integrity** - Also known as HVCI or 'Hypervisor-protected Code Integrity' - Like a security guard between the core components of Windows
 - **Credential Guard** - Protects <CodeInline text="lsass.exe" /> by preventing attackers from stealing/dumping credentials from it - <CodeInline text="lsass.exe" /> contains lots of authentication tokens used by Windows
 - **Microsoft Vulnerable Driver Blocklist** - A blocklist to block drivers with known security vulnerabilities, as drivers have unrestricted access to a system
 - **Firmware protection** - Protects against a compromised UEFI/BIOS
-- **Memory access protection** - Also known as 'Kernel DMA protection' - Prevents attacks that can occur when a malicious PCI device is plugged in - A malicious PCI device could be plugged in through a Thunderbolt port, as an example
+- **Memory access protection** - Also called Kernel DMA protection. Blocks malicious PCI devices, including devices connected through a Thunderbolt port, from accessing memory
 - **Kernel-mode Hardware-enforced Stack Protection** - Protects against [Return-Oriented Programming (ROP)](https://en.wikipedia.org/wiki/Return-oriented_programming) attacks
 
 ## UAC
 
 UAC (User Account Control) is a feature in Windows that helps control what changes software can make to your computer. It helps protect against applications malfunctioning or making harmful changes to your computer.
 
-Note that most sophisticated malware can bypass UAC easily. The only reliable way to protect yourself against UAC bypasses is to set UAC to the maximum level.
+Sophisticated malware can bypass lower UAC levels. Set UAC to its highest level for the strongest prompt protection.
 
 When UAC is disabled, everything runs with fewer elevation prompts. On the current version of Atlas, UAC is enabled by default and the Atlas folder does not ship a UAC disable script. If you change UAC manually, treat it as an advanced Windows configuration change rather than a supported Atlas preset.
 

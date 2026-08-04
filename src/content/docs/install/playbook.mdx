@@ -17,7 +17,7 @@ import IconInline from '@/components/ui/IconInline.astro';
 
 # Playbook installation method
 
-Follow these steps in order. The full process (Windows reinstall, updates, Atlas installation) takes about 30–45 minutes. Atlas installation alone takes about 15 minutes. Before continuing, see [who Atlas is for](/docs/faq/installation/#who-is-atlas-designed-for).
+Complete these steps in order. Reinstalling Windows, applying updates, and installing Atlas takes about 30–45 minutes. Atlas itself takes about 15 minutes. Before you start, check [whether Atlas fits your needs](/docs/faq/installation/#who-is-atlas-designed-for).
 
 ## Step 1: Download Windows ISO
 
@@ -27,13 +27,11 @@ You need a clean Windows 11 ISO to reinstall Windows.
 
 ## Step 2: Prepare network drivers (recommended)
 
-You may lose internet after Windows installation if network drivers are missing.
+Download network drivers now so you can reconnect if Windows does not install them.
 
-**Download now:**
-
-1. Search for your motherboard or device model + "network drivers"
-2. Download the latest drivers
-3. Save to a USB drive or external storage
+1. Search for your motherboard or device model followed by "network driver"
+2. Download the latest driver from the manufacturer's support site
+3. Save the installer to a USB drive or other external storage
 
 <Callout type="info" title="Can't find drivers?">
   Check your manufacturer's support page or search Device Manager for your
@@ -42,7 +40,7 @@ You may lose internet after Windows installation if network drivers are missing.
 
 ## Step 3: Reinstall Windows
 
-Choose your installation method below.
+Choose how to reinstall Windows.
 
 <WindowsSetupTabs variant="playbook" />
 
@@ -64,7 +62,7 @@ Choose your installation method below.
   { label: 'Manual Installation (Advanced)', value: 'manual' }
 ]} defaultTab="windows-update">
   <TabPanel value="windows-update" default>
-    **Recommended for:** Beginners who want the easiest setup.
+    Choose this option for the simplest setup.
 
     - Connect to internet
     - Windows installs drivers automatically
@@ -73,7 +71,7 @@ Choose your installation method below.
   </TabPanel>
 
   <TabPanel value="manual">
-    **Recommended for:** Advanced users who want full control over driver versions.
+    Choose this option to control each driver version yourself.
 
     - **Settings**<IconArrow />**Windows Update**<IconArrow />**Pause updates** (1 week)
     - Connect to internet
@@ -108,7 +106,8 @@ Update Windows and Microsoft Store apps before installing Atlas.
    - Check for updates again to confirm everything is current
 
 <Callout type="info" title="Important">
-  Update Windows and Microsoft Store apps fully before proceeding. After restart, check both again.
+  Install every Windows and Microsoft Store update before you continue. After each restart, check
+  both services again.
 </Callout>
 
 ## Step 7: Install AtlasOS
@@ -127,13 +126,13 @@ Update Windows and Microsoft Store apps before installing Atlas.
 
 4. **Install AtlasOS:**
    - Open <CodeInline text="AME Beta.exe" />
-   - If SmartScreen warning: **More info**<IconArrow />**Run anyway** (safe to ignore)
+   - If SmartScreen blocks the app, select **More info**<IconArrow />**Run anyway**
    - Click **Updates**<IconArrow />Update AME Beta if available
    - Drag <CodeInline text="Atlas Playbook.apbx" /> into AME Beta
    - Follow on-screen instructions
 
 <Callout type="warning" title="AME Beta deleted?">
-  Add it as an exclusion in Windows Security or disable Real-time protection temporarily.
+  Follow the [AME Beta troubleshooting steps](/docs/faq/ame/#ame-beta-deleted-or-closed-suddenly).
 </Callout>
 
 ## Installation complete <IconInline name="tabler:confetti" size="md" />

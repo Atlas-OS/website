@@ -14,9 +14,9 @@ import IconArrow from '@/components/ui/IconArrow.astro';
 
 # Drivers guide
 
-Install the drivers your hardware needs. You chose manual installation during setup; this guide walks you through it.
+Install the drivers that match your hardware. Follow this guide if you selected manual driver installation during setup.
 
-## Why manual installation?
+## Benefits of manual installation
 
 Manual installation gives you:
 
@@ -24,20 +24,13 @@ Manual installation gives you:
 - **Potentially lower** system resource usage
 - **Fewer** potentially unwanted applications
 
-To switch to automatic installation via Windows Update, use the files in the <CodeInline text="2. Drivers" /> directory in the Atlas folder. See <AtlasFolderRestoreLink /> if you can't find it.
-
-<Callout type="info" title="Want to Switch to Automatic?">
-  Use the files in the <CodeInline text="2. Drivers" /> directory in the Atlas folder to let
-  Windows Update handle driver installation.
-</Callout>
-
-## Want to switch to automatic?
+## Switch to automatic installation
 
 Open <CodeInline text="C:\Windows\AtlasDesktop" /><IconArrow /><CodeInline text="2. Drivers" /><IconArrow /><CodeInline text="Drivers from Windows Update" /> and run <CodeInline text="Enable Drivers from Windows Update.reg" />. Restart afterward so Windows can apply the driver policy.
 
 ## Which drivers do I need?
 
-Start with the drivers your system needs:
+Install only the drivers for hardware in your system:
 
 - **Graphics (GPU/iGPU)** – Display output and gaming
 - **Audio** – Sound from speakers or headphones
@@ -51,8 +44,8 @@ Start with the drivers your system needs:
 </Callout>
 
 <Callout type="tip">
-  Install in this order: Graphics → Network → Audio → Chipset → Other (Bluetooth, etc.). Display
-  and internet work first, then the rest.
+  Install drivers in this order: graphics → network → audio → chipset → other devices.
+  This restores display and internet support first.
 </Callout>
 
 ## Driver installation guides

@@ -20,7 +20,7 @@ Configuration files are in the Atlas folder on your Desktop:
 - **Bluetooth, Network Discovery, Printing, etc.:** <CodeInline text="6. Advanced Configuration" /><IconArrow /><CodeInline text="Services" />
 - **Driver updates:** <CodeInline text="2. Drivers" /><IconArrow /><CodeInline text="Drivers from Windows Update" />
 
-If you can't find the Atlas folder, see <AtlasFolderRestoreLink />.
+If the Atlas folder is missing, follow the <AtlasFolderRestoreLink />.
 
 <Callout type="info" title="Restart required">
   Most changes require a restart. A reminder appears when needed.
@@ -52,11 +52,11 @@ To enable background apps, run the <CodeInline text="Enable Background Apps.cmd"
 
 **When to use:** Disable only if you do not use Bluetooth devices like headphones, speakers, or game controllers.
 
-AtlasOS enables Bluetooth by default. If you do not use Bluetooth, you can disable it to reduce background services and context-menu entries.
+AtlasOS enables Bluetooth by default. Disable it if you do not use Bluetooth devices.
 
 1. Run <CodeInline text="Disable Bluetooth.cmd" /> or <CodeInline text="Enable Bluetooth (default).cmd" /> in <CodeInline text="6. Advanced Configuration" /><IconArrow /><CodeInline text="Services" /><IconArrow /><CodeInline text="Bluetooth" />
 2. Restart your system
-3. You may need to install Bluetooth drivers from your motherboard manufacturer's website
+3. If Bluetooth still does not work, install its driver from your motherboard or device manufacturer's support site
 
 <Callout type="tip">
   Need help finding Bluetooth drivers? Check [our drivers
@@ -67,7 +67,7 @@ AtlasOS enables Bluetooth by default. If you do not use Bluetooth, you can disab
 
 **When to use:** Switch between automatic and manual driver installation based on your preference.
 
-When installing AtlasOS, you choose between Automatic Driver Installation (via Windows Update) or Manual Driver Installation. You can change this choice later if needed.
+During installation, you choose automatic driver installation through Windows Update or manual installation. Use these files to switch methods later.
 
 To switch methods:
 
@@ -84,7 +84,7 @@ To switch methods:
 
 **When to use:** Enable if you want Windows to install system updates automatically. Disable if you prefer update notifications and manual control.
 
-Atlas lets you choose automatic Windows Update behavior during installation. You can change it later from <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="Automatic Updates" />.
+During installation, you choose how Atlas handles automatic Windows updates. To change that choice, open <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="Automatic Updates" />.
 
 - <CodeInline text="Disable Automatic Updates (default).cmd" /> restores the Atlas default.
 - <CodeInline text="Enable Automatic Updates.cmd" /> lets Windows install updates automatically.
@@ -186,7 +186,7 @@ To disable CPU idle, use the appropriate script in <CodeInline text="3. General 
 
 **When to use:** Enable if you want your system to save its state to disk when shutting down (useful for quick resume).
 
-Hibernation saves your system's current state to disk so you can resume where you left off. AtlasOS disables it by default due to potential stability issues.
+Hibernation saves the current session to disk and restores it when you start Windows again. AtlasOS disables it by default because it can cause stability problems.
 
 To enable hibernation, run the <CodeInline text="Enable Hibernation.cmd" /> script in <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="Hibernation" />.
 
@@ -245,7 +245,7 @@ Learn more about [Open-Shell](https://github.com/Open-Shell/Open-Shell-Menu) and
 
 **When to use:** Disable only if you don't need the ability to restore your system to a previous state and want to save disk space.
 
-System Restore creates snapshots of your system that you can use to revert to a previous state. It's enabled by default but uses disk space.
+System Restore creates snapshots that let you return Windows to an earlier state. Atlas enables it by default, and the snapshots use disk space.
 
 To disable System Restore, run the <CodeInline text="Disable System Restore.cmd" /> script in <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="System Restore" /> and restart.
 

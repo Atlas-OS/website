@@ -13,7 +13,7 @@ import WindowsSetupTabs from '@/components/docs/install/WindowsSetupTabs.astro';
 
 # ISO injection
 
-Inject the Atlas Playbook into a Windows ISO before installation. For experienced users who want pre-configured installation media.
+Inject the Atlas Playbook into a Windows ISO to create preconfigured installation media. Use this experimental method only if you are comfortable reinstalling and troubleshooting Windows.
 
 <Callout type="danger" title="Experimental">
   ISO injection is available in current Atlas 0.5.x Playbooks, but it is still experimental.
@@ -28,7 +28,7 @@ Inject the Atlas Playbook into a Windows ISO before installation. For experience
 
 ## Step 1: Download Windows ISO
 
-Download a Windows ISO first. Choose your version.
+Download the Windows ISO that matches your CPU architecture.
 
 <WindowsIsoDownload includeAmeBeta={true} />
 
@@ -46,15 +46,15 @@ Download a Windows ISO first. Choose your version.
 
 ## Step 3: Reinstall Windows
 
-Back up valuable data to an external drive or cloud storage before continuing.
+Back up all important data to external or cloud storage before you reinstall Windows.
 
 <WindowsSetupTabs variant="iso" />
 
 ## Step 4: Post-install
 
-**OOBE:** AME uses a custom out-of-box experience. Follow the on-screen instructions. Connect to the internet when asked—AtlasOS needs it to install. Wait for the new user script to run before continuing.
+**Complete Windows setup:** Follow AME's on-screen setup instructions. Connect to the internet when prompted, then wait for the new-user script to finish.
 
-**Windows.old cleanup:** If earlier steps mentioned <CodeInline text="Windows.old" />, your previous data is at the start of your Windows drive. After retrieving what you need:
+**Remove Windows.old:** If Windows Setup kept your previous installation, recover any files you need from <CodeInline text="Windows.old" />, then remove the folder:
 
 1. Open **Windows Settings**<IconArrow />**System**<IconArrow />**Storage**
 2. Click **Temporary files** and wait for the scan

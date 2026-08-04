@@ -10,13 +10,13 @@ import CodeInline from '@/components/docs/CodeInline.astro';
 
 # Contributing to the Atlas Playbook
 
-This guide covers modifying, testing, and building Atlas. Read the [Contribution Guidelines](/docs/contributing/) first.
+Use this guide to modify, build, and test the Atlas Playbook. Read the [contribution guide](/docs/contributing/) first.
 
 ## How the Playbook works
 
 ### What Playbooks are
 
-AME Playbooks are bundles of regular scripts, executables, and other files alongside script-like AME [YAML](https://gettaurus.org/docs/YAMLTutorial/) files. These YAML files have commands called [actions](https://docs.ameliorated.io/developers/actions.html), which can do things like running executables or setting Registry entries.
+AME Playbooks bundle scripts, executables, supporting files, and [YAML](https://gettaurus.org/docs/YAMLTutorial/) instructions. YAML commands called [actions](https://docs.ameliorated.io/developers/actions.html) run executables, change Registry entries, and perform other installation work.
 
 [AME Beta](https://ameliorated.io/) is the easy-to-use GUI for users to run Playbooks, and it uses the open-source [TrustedUninstaller](https://github.com/Ameliorated-LLC/trusted-uninstaller-cli) as its backend.
 
@@ -65,31 +65,30 @@ To test existing builds, check [GitHub Actions](https://github.com/Atlas-OS/Atla
 3. Navigate to <CodeInline text="src\playbook" /> in the cloned Atlas repo
 4. If on Windows, run <CodeInline text="build-playbook.cmd" />, else use <CodeInline text="build-playbook.sh" />
 
-## How to run your built Playbooks
+## Test a built Playbook
 
-We use virtual machines for testing unless testing a final release on real hardware. This section explains how we set up VMs.
+Test development builds in a virtual machine. Test final release candidates on real hardware as well.
 
 ### Virtualization software
 
-We recommend:
+Choose one of these virtualization tools:
 
 - **[Hyper-V](https://learn.microsoft.com/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v)** - Type-1 hypervisor (fastest), built into Windows
 - **[VMWare Workstation](https://www.vmware.com/products/desktop-hypervisor.html)** - Type-2 hypervisor, good UI and features
 
 ### Snapshotting
 
-Snapshotting saves the current memory, disk, and settings of a VM so you can restore it later. For Atlas, test one Playbook, revert to unmodified Windows, then test another. You can also save snapshots for specific tests.
+A snapshot records a VM's memory, disk, and settings. Restore an unmodified Windows snapshot before each Playbook test so every test starts from the same state.
 
 ### Which snapshots to make
 
-<Callout type="tip" title="Setup your snapshots ready for a Playbook">
-  It's best to make your initial snapshots already set up with [AME
-  Beta](https://download.ameliorated.io/AME%20Beta.zip) and some essential utilities (e.g.
-  [Sysinternals](https://learn.microsoft.com/sysinternals/downloads/)) so you can just
-  drag-and-drop a Playbook as soon as you go to a snapshot.
+<Callout type="tip" title="Prepare each snapshot">
+  Add [AME Beta](https://download.ameliorated.io/AME%20Beta.zip) and essential tools such as
+  [Sysinternals](https://learn.microsoft.com/sysinternals/downloads/) before you save a snapshot.
+  You can then restore it and start each Playbook test immediately.
 </Callout>
 
-We recommend making three initial snapshots:
+Create these initial snapshots:
 
 - Stock Windows **without** Windows Updates installed
   - For testing installing Windows Updates after installing Atlas
@@ -99,6 +98,6 @@ We recommend making three initial snapshots:
 - **Optional:** A current release Atlas snapshot if you need to test anything there
   - Helpful in diagnosing [GitHub Issues](https://github.com/Atlas-OS/Atlas/issues)
 
-### That's it!
+### Test your Playbook
 
-Your Atlas Playbook should be ready for testing. Test what you are working on thoroughly.
+Test the changed behavior, related features, failure paths, and reversal steps before you submit a pull request.

@@ -12,7 +12,7 @@ import IconArrow from '@/components/ui/IconArrow.astro';
 
 # Post-install FAQ
 
-Common questions about configuring and using AtlasOS after installation.
+Find the Atlas folder, install drivers, and restore common settings after installation.
 
 ## Atlas folder
 
@@ -26,11 +26,11 @@ If you can't find the Atlas folder, see <AtlasFolderRestoreLink samePage={true} 
 
 ### Restoring the Atlas folder
 
-If the Atlas folder is missing (e.g., the desktop shortcut was deleted or the folder was removed):
+First, check whether the shortcut or the folder itself is missing.
 
-**If only the desktop shortcut was deleted:** The folder may still exist at <CodeInline text="C:\Windows\AtlasDesktop" />. Open File Explorer, navigate to <CodeInline text="C:\Windows" />, right-click the AtlasDesktop folder, and select **Send to**<IconArrow />**Desktop (create shortcut)**.
+**If only the Desktop shortcut is missing:** Open <CodeInline text="C:\Windows" /> in File Explorer. Right-click <CodeInline text="AtlasDesktop" />, then select **Send to**<IconArrow />**Desktop (create shortcut)**.
 
-**If the folder at <CodeInline text="C:\Windows\AtlasDesktop" /> is missing:** Re-apply the Atlas Playbook using AME Beta. Download the latest [Atlas Playbook](https://atlasos.net) and [AME Beta](https://ameliorated.io/), then drag the playbook into AME Beta. This restores the Atlas folder without reinstalling Windows.
+**If <CodeInline text="C:\Windows\AtlasDesktop" /> is missing:** Download the latest [Atlas Playbook](https://atlasos.net) and [AME Beta](https://ameliorated.io/). Open AME Beta and drag the Playbook into it to restore the folder without reinstalling Windows.
 
 ### What's in the Atlas folder?
 
@@ -45,7 +45,7 @@ The Atlas folder contains configuration files, scripts, and utilities for custom
 
 ### Do I need to install drivers manually?
 
-It depends on which installation method you chose:
+Follow the driver method you chose during installation:
 
 - **Windows Update method**: Drivers install automatically
 - **Manual method**: Install drivers manually

@@ -15,13 +15,11 @@ import { Icon } from 'astro-icon/components';
 
 # General FAQ
 
-General questions about AtlasOS features, updates, and usage.
+Find answers about AtlasOS features, updates, compatibility, and security.
 
 ## Keeping AtlasOS updated
 
 Keep your AtlasOS installation current for the latest features, security updates, and compatibility. Update options depend on your version.
-
-Update options by version:
 
 <Table headers={['Version', 'Upgrade path', 'Support status', 'Notes']}>
   <TableRow>
@@ -76,11 +74,11 @@ Update options by version:
 
 ## Checking your AtlasOS version
 
-Atlas doesn't display its version in Windows Settings. To check your version:
+Windows Settings does not show the Atlas version. Use these checks:
 
-1. **Compare installation date:** Check the [Atlas releases page](https://github.com/Atlas-OS/Atlas/releases) - if you installed before a release date, you're on that version or earlier
-2. **Check the Playbook:** If you still have the Atlas Playbook file (<CodeInline text=".apbx" />) you used to install, its filename often includes the version (e.g., <CodeInline text="Atlas Playbook 0.5.x" />)
-3. **Atlas folder:** Open the Atlas folder on your Desktop or at <CodeInline text="C:\Windows\AtlasDesktop" /> - some scripts may reference the version; otherwise, use the methods above
+1. **Check the Playbook file:** If you kept the <CodeInline text=".apbx" /> file used for installation, read the version in its filename, such as <CodeInline text="Atlas Playbook 0.5.x" />
+2. **Compare the installation date:** Find the Atlas release published immediately before your installation date on the [releases page](https://github.com/Atlas-OS/Atlas/releases)
+3. **Check the Atlas folder:** Open <CodeInline text="C:\Windows\AtlasDesktop" /> and look for a version reference in its scripts
 
 ## Performance
 
@@ -118,11 +116,11 @@ Most Windows software works with Atlas. Some enterprise software may require spe
 
 ### Can I use Windows Update?
 
-Yes, Windows Update works normally. You can configure driver updates through the Atlas folder.
+Yes. Configure Windows Update and driver updates from the Atlas folder.
 
 ## Enabling TPM
 
-Windows 11 requires **Trusted Platform Module (TPM) 2.0** to be enabled. If you encounter an error that your PC doesn't meet the requirements during installation, you may need to enable TPM in your BIOS/UEFI.
+Windows 11 requires **Trusted Platform Module (TPM) 2.0**. If Windows Setup reports that your PC does not meet the requirements, check TPM in your BIOS or UEFI.
 
 <Callout type="warning" title="Proceed with caution">
   Modifying BIOS/UEFI settings incorrectly can cause system instability. Only change settings you
@@ -131,7 +129,7 @@ Windows 11 requires **Trusted Platform Module (TPM) 2.0** to be enabled. If you 
 
 ### Steps
 
-1. **Restart your computer** and immediately press the BIOS/UEFI key repeatedly (common keys: <CodeInline text="DEL" />, <CodeInline text="F2" />, <CodeInline text="F10" />, <CodeInline text="F12" />, <CodeInline text="ESC" /> - check your manual or startup screen).
+1. **Open the BIOS or UEFI:** Restart the computer and repeatedly press the setup key shown in your manual or startup screen. Common keys include <CodeInline text="DEL" />, <CodeInline text="F2" />, <CodeInline text="F10" />, <CodeInline text="F12" />, and <CodeInline text="ESC" />.
 
 2. **Find the TPM setting** - Look in sections like Security, Advanced, Trusted Computing, or CPU Configuration. Setting names may include:
    - <CodeInline text="TPM" /> / <CodeInline text="TPM Device" /> / <CodeInline text="TPM State" />
@@ -144,9 +142,9 @@ Windows 11 requires **Trusted Platform Module (TPM) 2.0** to be enabled. If you 
 
 ## Security and AtlasOS
 
-Atlas lets you choose your security level. You can toggle Windows Defender, [mitigations](/docs/atlas-configuration/security/#mitigations), and automatic Windows updates. Atlas alerts you through pre-install prompts, [documentation](/docs/atlas-configuration/security/), and Atlas folder scripts. You can change security settings anytime after install.
+Atlas lets you configure Windows Defender, [mitigations](/docs/atlas-configuration/security/#mitigations), and automatic Windows updates. Review each tradeoff in the [security documentation](/docs/atlas-configuration/security/) before changing a default.
 
-**Compared to unmodified Windows:** Microsoft Windows is the most trusted and secure. Atlas aims for similar security while being transparent. [Atlas is open source](https://github.com/Atlas-OS/Atlas); AME Beta's [backend is open source under MIT](https://github.com/Ameliorated-LLC/trusted-uninstaller-cli).
+**Compared with unmodified Windows:** Modifying Windows changes its tested security baseline. Review the [Atlas source](https://github.com/Atlas-OS/Atlas) and AME Beta's [open-source backend](https://github.com/Ameliorated-LLC/trusted-uninstaller-cli) before you install.
 
 **Legacy versions (v0.4.1 and earlier):** Not direct upgrade sources for the current Playbook. [Reinstall Windows and install Atlas](/docs/install/requirements/) unless a specific archived upgrade path is published for your exact version. Newer versions add Windows Update, Defender, UAC by default, Core isolation, and improved transparency.
 

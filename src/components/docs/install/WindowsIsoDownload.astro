@@ -40,10 +40,7 @@ const tabItems = [
         .
       </>
     ) : (
-      <>
-        Intel/AMD CPUs use x64. ARM (Snapdragon) systems use ARM64. Make sure you download the correct ISO for your CPU
-        architecture.
-      </>
+      <>Download x64 for an Intel or AMD CPU. Download ARM64 for a Qualcomm Snapdragon or another supported ARM CPU.</>
     )
   }
 </Callout>
@@ -709,10 +706,7 @@ const tabItems = [
         if (skuError) throw new Error(skuError);
         renderLanguageSelect(data, arch);
       } catch {
-        showError(
-          'Could not fetch languages. The download service may be temporarily unavailable — try another method below.',
-          () => fetchLanguages(arch)
-        );
+        showError('Unable to load languages. Try another download method below.', () => fetchLanguages(arch));
       }
     }
 
@@ -756,7 +750,10 @@ const tabItems = [
         const data = await res.json();
         renderDownloads(data);
       } catch {
-        showError('Could not generate download links. Please retry or use the Microsoft website tab.', fetchDownload);
+        showError(
+          'Unable to generate download links. Try again or download from the Microsoft website tab.',
+          fetchDownload
+        );
       }
     }
 
@@ -775,12 +772,12 @@ const tabItems = [
     function getProxyErrorMessage(errors: ProxyError[]): string {
       const first = errors[0];
       if (!first?.Value)
-        return 'The download service is temporarily unavailable. Please try again in a moment or use the Microsoft website tab.';
+        return 'The download service is temporarily unavailable. Try again shortly or use the Microsoft website tab.';
       if (first.Key === 'ErrorSettings.SentinelReject') {
-        return 'The download service is temporarily unavailable. Please try again in a moment or use the Microsoft website tab.';
+        return 'The download service is temporarily unavailable. Try again shortly or use the Microsoft website tab.';
       }
       if (first.Key === 'ErrorSettings.BrowserRenderingFailed') {
-        return 'The download service is temporarily unavailable. Please try again in a moment or use the Microsoft website tab.';
+        return 'The download service is temporarily unavailable. Try again shortly or use the Microsoft website tab.';
       }
       if (first.Key === 'ErrorSettings.ProductKeyValidationError') {
         return 'This language could not be retrieved from the download service. Try a different language or use the Microsoft website tab.';

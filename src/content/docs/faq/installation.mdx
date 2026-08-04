@@ -10,11 +10,11 @@ import IconArrow from '@/components/ui/IconArrow.astro';
 
 <h1 class="sr-only">Installation FAQ</h1>
 
-Common questions and troubleshooting for AtlasOS installation.
+Find requirements and fixes for common AtlasOS installation problems.
 
 ## What do I need before installing?
 
-- **Windows 11**: Pro, Pro for Workstations, or Enterprise (Home is not supported; you can [upgrade via product key](https://www.microsoft.com/windows/get-windows-11) if needed)
+- **Windows 11**: Pro, Pro for Workstations, or Enterprise. Atlas does not support Home; [upgrade with a product key](https://www.microsoft.com/windows/get-windows-11) before installing
 - **64-bit CPU (x64) or ARM CPU (ARM64)**: Use the matching Windows ISO for your architecture ([how to check](https://support.microsoft.com/en-us/windows/which-version-of-windows-operating-system-am-i-running-628bec99-476a-2c13-5296-9dd081cdd808))
 - **A backup of all important data**: Atlas installs by reinstalling Windows; your current setup will be replaced
 - **USB drive**: Only needed for the [ISO injection method](/docs/install/iso/). The [Playbook method](/docs/install/playbook/) (recommended) installs directly from Windows with no USB required
@@ -23,7 +23,7 @@ For a full checklist, see [Installation requirements](/docs/install/requirements
 
 ## Who is Atlas designed for?
 
-Atlas is for enthusiasts who want better privacy, performance, and control over Windows. We don't recommend installing if:
+Atlas is for enthusiasts who want more privacy, performance, and control over Windows. Do not install Atlas if:
 
 - You don't fully own the computer
 - You're not comfortable troubleshooting Windows issues
@@ -71,7 +71,7 @@ Atlas disables many components for performance and privacy. See the [Atlas sourc
 
 ## Why disconnect internet during Windows installation?
 
-Disconnecting prevents Windows from auto-installing drivers and updates, giving you more control over the process.
+Disconnect the internet to stop Windows Setup from installing drivers and updates before you choose how to manage them.
 
 ## What if installation fails?
 
@@ -89,12 +89,12 @@ Common causes:
 3. Select **Previous version of Windows**<IconArrow />**Remove files**
 
 <Callout type="tip">
-  This frees up significant disk space after you've retrieved any needed data.
+  Remove this folder only after you recover every file you need from the previous installation.
 </Callout>
 
 ## What should I do after installation?
 
-After installation, follow these guides:
+After installation:
 
 - [Essential Setup](/docs/essential-setup/) - Install drivers and optimize hardware
 - [Atlas Configuration](/docs/atlas-configuration/) - Configure Atlas folder settings

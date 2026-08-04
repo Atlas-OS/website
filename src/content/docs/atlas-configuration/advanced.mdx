@@ -12,13 +12,12 @@ import Term from '@/components/docs/Term.astro';
 
 # Advanced configuration
 
-<Callout type="danger" title="Advanced Users Only">
-  Avoid this section if you are not confident in your technical ability. Misinterpretation can cause
-  compatibility issues. Understand each setting and how to revert it before changing. Advanced users
-  only.
+<Callout type="danger" title="Advanced users only">
+  Use these settings only if you understand their effects and know how to reverse them. A wrong
+  setting can cause compatibility or recovery problems.
 </Callout>
 
-All configuration files listed here are in the <CodeInline text="6. Advanced Configuration" /> folder within the Atlas folder on your Desktop. If you can't find the Atlas folder, see <AtlasFolderRestoreLink />.
+Open <CodeInline text="6. Advanced Configuration" /> in the Atlas folder on your Desktop. If the Atlas folder is missing, follow the <AtlasFolderRestoreLink />.
 
 ## Boot configuration
 
@@ -28,11 +27,11 @@ Boot Configuration contains scripts for Windows boot appearance and behavior.
 - **Behavior** - Toggle advanced boot options, automatic repair, highest graphics mode, and kernel parameter editing at startup.
 - **View Current Values** - Check the current boot configuration before changing it.
 
-Incorrect boot settings can make recovery harder. Change one option at a time and make sure you know how to revert it.
+Incorrect boot settings can make Windows harder to recover. Change one option at a time and record its original value.
 
 ## Driver configuration
 
-<Term term="Affinities" definition="Settings that control which CPU core a driver or process runs on. Spreading them across cores can reduce bottlenecks." /> allow you to specify which core a driver or process runs on. As Windows puts most drivers on Core 0 by default, we can alter this to improve performance and latency. Allocating drivers to their own core will reduce interrupts on Core 0.
+<Term term="Affinities" definition="Settings that control which CPU core a driver or process runs on. Spreading them across cores can reduce bottlenecks." /> assign a driver or process to specific CPU cores. Windows places most driver activity on Core 0 by default. Moving selected drivers can reduce Core 0 interrupts and improve latency, but poor assignments can reduce performance.
 
 The Driver Configuration folder contains links to tools and documentation for MSI mode, interrupt policy, and driver affinity configuration. These are manual tools for advanced troubleshooting and tuning.
 
@@ -64,7 +63,7 @@ The Services folder contains toggles for Windows and vendor services that Atlas 
 
 ## Toggle Windows Updates
 
-Toggle Windows Updates contains the Windows Update toggle script and its README. Use it when you intentionally want to switch Windows Update behavior after installation.
+The Toggle Windows Updates folder contains the Windows Update script and its README. Read the README, then run the script to change update behavior after installation.
 
 <Callout type="info" title="Not in this folder">
   DSCP, Static IP, Gameutil, and Wi-Fi scripts are not present in the current Atlas Advanced Configuration folder.

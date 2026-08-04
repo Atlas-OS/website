@@ -13,19 +13,19 @@ import QuickLinksGrid from '@/components/docs/QuickLinksGrid.astro';
 
 # Software
 
-Use a package manager to install software. You can also install executables directly from official sources.
+Install software with WinGet or download it directly from the publisher's official site.
 
-We use **WinGet** (Windows Package Manager), which is usually included with Windows 11 through App Installer.
+Atlas software scripts use **WinGet** (Windows Package Manager). Windows 11 normally installs it through App Installer.
 
 ## What is WinGet?
 
-WinGet is Microsoft's Windows package manager, installed via the App Installer package on the Microsoft Store. The community runs the repository. It works like apt-get on Linux and Homebrew on macOS.
+WinGet is Microsoft's Windows package manager. The Microsoft Store installs it as part of App Installer, and the community maintains its package repository.
 
 If an Atlas script says WinGet is missing or outdated, update App Installer from the Microsoft Store or GitHub before using WinGet-based installers.
 
 ## Installing software with WinGet
 
-Go to the <CodeInline text="1. Software" /> folder in the Atlas folder and run <CodeInline text="Install Software.cmd" />. Or install manually:
+Open <CodeInline text="1. Software" /> in the Atlas folder and run <CodeInline text="Install Software.cmd" />. To install a package directly, run:
 
 <CodeBlock
   title="Install with winget:"

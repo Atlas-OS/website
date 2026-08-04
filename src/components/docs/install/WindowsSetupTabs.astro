@@ -20,20 +20,23 @@ const detailedPartitionSelection = variant !== 'playbook';
 
 <Tabs
   items={[
-    { label: variant === 'playbook' ? 'Install from Windows (No USB)' : 'No USB Drive (recommended)', value: 'no-usb' },
-    { label: variant === 'playbook' ? 'Install from USB' : 'USB Drive', value: 'usb' },
+    {
+      label: variant === 'playbook' ? 'Install from Windows (no USB)' : 'Install without a USB (recommended)',
+      value: 'no-usb',
+    },
+    { label: 'Install from a USB', value: 'usb' },
   ]}
   defaultTab="no-usb"
 >
   <TabPanel value="no-usb" default>
     <p class="mb-4">
-      <strong>Best for:</strong>
+      <strong>Choose this method if:</strong>
       {
         variant === 'playbook'
-          ? 'Users already running Windows who want the easiest installation method.'
+          ? 'You already run Windows and want the simplest installation method.'
           : variant === 'iso'
-            ? 'Users already on Windows. Only works if you are already running Windows.'
-            : 'Users already on Windows.'
+            ? 'You already run Windows. This method does not work from Linux.'
+            : 'You currently run Windows.'
       }
     </p>
 
@@ -42,8 +45,8 @@ const detailedPartitionSelection = variant !== 'playbook';
         <Callout type="info" title="Windows.old">
           {variant === 'iso' ? (
             <>
-              If you have enough free storage, <CodeInline text="Windows.old" /> will contain your old data after the
-              reinstall. You can retrieve data and delete it later.{' '}
+              If the drive has enough free space, Windows Setup saves your previous installation in{' '}
+              <CodeInline text="Windows.old" />. Recover the files you need, then delete the folder.{' '}
               <a href="#step-4-post-install" class="font-medium text-primary hover:opacity-85">
                 See cleanup below
               </a>
@@ -51,9 +54,8 @@ const detailedPartitionSelection = variant !== 'playbook';
             </>
           ) : (
             <>
-              Only if you have enough free storage: after finishing the Windows reinstall,{' '}
-              <CodeInline text="Windows.old" /> will be at the start of your Windows drive, containing your old data.
-              You can retrieve data from the folder and delete it afterward.
+              If the drive has enough free space, Windows Setup saves your previous installation in{' '}
+              <CodeInline text="Windows.old" />. Recover the files you need, then delete the folder.
             </>
           )}
         </Callout>
@@ -103,7 +105,7 @@ const detailedPartitionSelection = variant !== 'playbook';
       </li>
     </ol>
 
-    <Callout type="warning" title={variant === 'playbook' ? 'BitLocker Error?' : 'BitLocker message?'}>
+    <Callout type="warning" title="BitLocker message?">
       {
         variant === 'playbook' ? (
           <>
@@ -118,21 +120,21 @@ const detailedPartitionSelection = variant !== 'playbook';
           </>
         ) : (
           <>
-            If you see "Make sure BitLocker Drive Encryption is suspended",{' '}
+            If Windows Setup tells you to suspend BitLocker,{' '}
             {variant === 'reverting' ? (
               <>
-                refer to our{' '}
+                follow the{' '}
                 <a
                   href="/docs/faq/installation/#what-if-i-get-a-bitlocker-error"
                   class="font-medium text-primary hover:opacity-85"
                 >
                   BitLocker instructions
-                </a>{' '}
-                to resolve this, then retry from step 3.
+                </a>
+                , then retry from step 3.
               </>
             ) : (
               <>
-                see our{' '}
+                follow the{' '}
                 <a
                   href="/docs/faq/installation/#what-if-i-get-a-bitlocker-error"
                   class="font-medium text-primary hover:opacity-85"
@@ -171,12 +173,12 @@ const detailedPartitionSelection = variant !== 'playbook';
     {
       showTpmCallout && (
         <Callout type="info" title="Windows 11 requirement error?">
-          If you encounter an error that your PC doesn't meet the requirements, you may need to enable TPM 2.0 in your
-          BIOS/UEFI. See our{' '}
+          If Windows Setup says your PC does not meet the requirements, check that TPM 2.0 is enabled in your BIOS or
+          UEFI. Follow the{' '}
           <a href="/docs/faq/general/#enabling-tpm" class="font-medium text-primary hover:opacity-85">
-            Enabling TPM
+            TPM setup
           </a>{' '}
-          guide in the General FAQ.
+          steps in the General FAQ.
         </Callout>
       )
     }
@@ -184,13 +186,13 @@ const detailedPartitionSelection = variant !== 'playbook';
 
   <TabPanel value="usb">
     <p class="mb-4">
-      <strong>Best for:</strong>
+      <strong>Choose this method if:</strong>
       {
         variant === 'playbook'
-          ? 'Users wanting a fresh install or those currently on Linux.'
+          ? 'You want a clean installation or currently run Linux.'
           : variant === 'iso'
-            ? 'Linux users or those wanting a fresh install. AME Beta and ISO injection only work in Windows.'
-            : 'Linux users or those wanting a fresh install.'
+            ? 'You want a clean installation or currently run Linux. Create the injected ISO from Windows first.'
+            : 'You want a clean installation or currently run Linux.'
       }
     </p>
 
@@ -226,7 +228,7 @@ const detailedPartitionSelection = variant !== 'playbook';
         <strong>Boot from USB:</strong>
         <ul class="mt-2 list-disc space-y-1 pl-6">
           <li>Restart<IconArrow />Enter BIOS/UEFI (usually F12 or Del)</li>
-          <li>Select your USB drive as the boot device (you may need to change boot order in BIOS settings)</li>
+          <li>Select the USB drive as the boot device. Change the BIOS boot order if it does not appear</li>
           <li>In Ventoy menu: Select Windows ISO<IconArrow /><strong>Boot in normal mode</strong></li>
         </ul>
       </li>
@@ -332,12 +334,12 @@ const detailedPartitionSelection = variant !== 'playbook';
     {
       showTpmCallout && (
         <Callout type="info" title="Windows 11 requirement error?">
-          If you encounter an error that your PC doesn't meet the requirements, you may need to enable TPM 2.0 in your
-          BIOS/UEFI. See our{' '}
+          If Windows Setup says your PC does not meet the requirements, check that TPM 2.0 is enabled in your BIOS or
+          UEFI. Follow the{' '}
           <a href="/docs/faq/general/#enabling-tpm" class="font-medium text-primary hover:opacity-85">
-            Enabling TPM
+            TPM setup
           </a>{' '}
-          guide in the General FAQ.
+          steps in the General FAQ.
         </Callout>
       )
     }
