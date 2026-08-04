@@ -34,7 +34,16 @@ const {
 const classes = [spacing && 'my-6', rounded && 'rounded-lg', 'media-outline', className].filter(Boolean).join(' ');
 ---
 
-<video src={src} controls={controls} muted={muted} autoplay={autoplay} loop={loop} class={classes} preload={preload}>
+<video
+  src={src}
+  controls={controls}
+  muted={muted}
+  autoplay={autoplay}
+  loop={loop}
+  class={classes}
+  preload={preload}
+  data-video-player
+>
   {
     tracks.map((track) => (
       <track
@@ -47,3 +56,18 @@ const classes = [spacing && 'my-6', rounded && 'rounded-lg', 'media-outline', cl
     ))
   }
 </video>
+
+<script>
+  function initializeVideos(): void {
+    const videos = document.querySelectorAll<HTMLVideoElement>('video[data-video-player]');
+
+    for (const video of videos) {
+      if (video.dataset.videoInitialized === 'true') continue;
+
+      video.dataset.videoInitialized = 'true';
+      video.load();
+    }
+  }
+
+  document.addEventListener('astro:page-load', initializeVideos);
+</script>
