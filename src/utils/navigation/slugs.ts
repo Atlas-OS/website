@@ -86,16 +86,8 @@ export function getSlugFromId(id: string): string {
   return result;
 }
 
-export function getSlugFromEntry(entry: {
-  id: string;
-  data?: ({ slug?: string } & Record<string, unknown>) | undefined;
-}): string {
-  const customSlug = entry.data?.slug?.trim();
-  if (!customSlug) {
-    return getSlugFromId(entry.id);
-  }
-
-  return addDocsPrefix(`/${customSlug}/`);
+export function getSlugFromEntry(entry: { id: string }): string {
+  return getSlugFromId(entry.id);
 }
 
 export function getSectionFromSlug(slug: string): string | null {
