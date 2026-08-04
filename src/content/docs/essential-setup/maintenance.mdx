@@ -1,0 +1,121 @@
+---
+title: Maintenance
+metaDescription: 'Keep AtlasOS clean over time: temporary files, startup apps, uninstalling software, and trusted cleaning tools.'
+description: Keep your installation clean over time.
+order: 4
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeBlock from '@/components/docs/CodeBlock.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+import IconArrow from '@/components/ui/IconArrow.astro';
+
+# Maintenance
+
+Atlas transforms Windows once, when you apply the Playbook. It does not clean or maintain anything afterward. Temporary files, startup apps, and unused software build up on any Windows installation over time. This page covers keeping yours clean.
+
+## Start with the built-in tools
+
+Windows includes basic maintenance tools. Try these before installing anything.
+
+### Storage Sense
+
+Storage Sense removes temporary files and empties the Recycle Bin on a schedule.
+
+1. Open **Settings**<IconArrow />**System**<IconArrow />**Storage**
+2. Turn on **Storage Sense**
+3. Click **Storage Sense** to configure what it cleans and how often
+
+### Disk Cleanup
+
+Disk Cleanup removes temporary files, old Windows Update files, and thumbnails.
+
+1. Press **Win + R**, type <CodeInline text="cleanmgr" />, press **Enter**
+2. Select the drive to clean
+3. Click **Clean up system files** to include update leftovers
+
+### Startup apps
+
+Programs that start with Windows slow down boot and use resources in the background.
+
+1. Press **Ctrl + Shift + Esc** to open Task Manager
+2. Go to **Startup apps**
+3. Disable anything you do not need at startup
+
+### Uninstalling software
+
+Open **Settings**<IconArrow />**Apps**<IconArrow />**Installed apps**. Sort by size or install date to find software you no longer use.
+
+## What to avoid
+
+The PC cleaner category has a bad reputation for good reasons. Avoid:
+
+- **Registry cleaners.** They do not deliver measurable speed improvements on modern Windows, and a bad deletion can break software.
+- **Invented problem counts.** A scan that reports hundreds of "errors" on a healthy PC is selling fear, not maintenance.
+- **Bundled installers.** If a cleaner's installer offers a toolbar, a browser, or a second app, close it.
+
+## eclean
+
+We built an app for everything on this page. The recommendation is ours, so judge it with that in mind.
+
+eclean is free and built by the team behind AtlasOS. One app covers:
+
+- Junk files and disk space
+- Startup apps, services, and scheduled tasks
+- Uninstalling software and its leftovers
+- Hardware details and live sensors
+
+Every change is explained before it is applied. Supported changes can be undone.
+
+[Download eclean](https://eclean.gg/)
+
+## Third-party tools
+
+Prefer something else? These tools also go further than the built-ins. All of them work on AtlasOS.
+
+### BleachBit
+
+BleachBit is a free, open-source cleaner. It removes junk files and browser data. The interface is minimal and there are no upsells.
+
+<CodeBlock title="Install with winget:" code="winget install -e --id BleachBit.BleachBit" />
+
+[Download BleachBit](https://www.bleachbit.org/)
+
+### CCleaner
+
+CCleaner is the best-known cleaner. The free version works, but decline the bundled offers during installation and expect upgrade prompts. Skip its registry cleaner.
+
+<CodeBlock title="Install with winget:" code="winget install -e --id Piriform.CCleaner" />
+
+[Download CCleaner](https://www.ccleaner.com/)
+
+### Revo Uninstaller
+
+Revo removes software along with the leftover files and registry entries a normal uninstall misses. Useful for stubborn programs.
+
+<CodeBlock title="Install with winget:" code="winget install -e --id RevoUninstaller.RevoUninstaller" />
+
+[Download Revo Uninstaller](https://www.revouninstaller.com/)
+
+### WizTree
+
+WizTree shows what is using your disk space. It scans in seconds and lists the largest files and folders, so you can decide what to remove.
+
+<CodeBlock title="Install with winget:" code="winget install -e --id AntibodySoftware.WizTree" />
+
+[Download WizTree](https://diskanalyzer.com/)
+
+## A simple routine
+
+Every month or two:
+
+1. Clear temporary files with Storage Sense or a cleaner
+2. Review startup apps and disable new entries
+3. Uninstall software you no longer use
+4. Keep at least 15% of your system drive free
+
+## Next steps
+
+- **[Software recommendations](/docs/essential-setup/software/)** - Browsers, antivirus, media players, and more
+- **[System information tools](/docs/essential-setup/software/system-info/)** - Monitor temperatures and hardware
+- **[Configure Atlas](/docs/atlas-configuration/)** - Customize your installation

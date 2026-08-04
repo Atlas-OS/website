@@ -1,0 +1,21 @@
+---
+import EcleanMark from '@/assets/eclean-mark.svg';
+import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+---
+
+<section class="relative mx-auto mt-32 mb-32 max-w-7xl px-4 text-center">
+  <a
+    href="https://eclean.gg/atlasos/"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="inline-flex max-w-full flex-wrap items-center justify-center gap-2 text-sm text-white/50 transition-colors hover:text-white/80"
+    data-animate
+  >
+    <Image src={EcleanMark} alt="" width={16} height={16} class="h-4 w-4 rounded-[3px] select-none" draggable={false} />
+    <span
+      >Did you know? We also build <span class="font-semibold text-white/80">eclean</span> — everyday Windows maintenance</span
+    >
+    <Icon name="tabler:arrow-up-right" class="h-3.5 w-3.5" aria-hidden="true" />
+  </a>
+</section>
