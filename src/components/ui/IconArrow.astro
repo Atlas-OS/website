@@ -17,4 +17,5 @@ const sizeClasses = {
 const classes = `inline align-middle ${sizeClasses[size]} mx-1.5 shrink-0 ${className}`.trim();
 ---
 
-<Icon name={name} class={classes} />
+<span class="sr-only"> then </span>
+<Icon name={name} class={classes} aria-hidden="true" />

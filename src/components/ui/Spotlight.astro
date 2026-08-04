@@ -16,25 +16,30 @@ import { Icon } from 'astro-icon/components';
   role="dialog"
   aria-modal="true"
   aria-labelledby="spotlight-title"
+  aria-hidden="true"
+  inert
   style="background-color: var(--bg-primary); max-height: min(520px, 80vh);"
 >
   <h2 id="spotlight-title" class="sr-only">Search documentation</h2>
 
   <div id="spotlight-input-container" class="flex flex-shrink-0 cursor-text items-center gap-3 px-5 py-4">
-    <Icon name="tabler:search" class="h-[18px] w-[18px] flex-shrink-0 text-white/35" aria-hidden="true" />
+    <Icon name="tabler:search" class="h-[18px] w-[18px] flex-shrink-0 text-white/55" aria-hidden="true" />
+    <label for="spotlight-input" class="sr-only">Search documentation</label>
     <input
       type="text"
       id="spotlight-input"
-      aria-describedby="spotlight-title"
-      class="flex-1 bg-transparent text-[15px] text-white/90 placeholder:text-white/30 focus:ring-0 focus:outline-none"
-      placeholder="Search documentation..."
+      role="combobox"
+      aria-autocomplete="list"
+      aria-controls="spotlight-list"
+      aria-expanded="false"
+      class="flex-1 bg-transparent text-base text-white/90 placeholder:text-white/45 focus:ring-0 focus:outline-none sm:text-[15px]"
+      placeholder="Search documentation…"
       autocomplete="off"
       autocorrect="off"
       spellcheck="false"
     />
-    <label for="spotlight-input" class="sr-only">Search documentation</label>
     <kbd
-      class="hidden flex-shrink-0 items-center rounded-md border border-white/[0.06] bg-white/[0.04] px-2 py-1 font-mono text-xs text-white/35 sm:inline-flex"
+      class="hidden flex-shrink-0 items-center rounded-md border border-white/[0.08] bg-white/[0.04] px-2 py-1 font-mono text-xs text-white/55 sm:inline-flex"
     >
       Esc
     </kbd>
@@ -47,20 +52,31 @@ import { Icon } from 'astro-icon/components';
       <div
         class="mb-3 flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.06] bg-white/[0.03]"
       >
-        <Icon name="tabler:book" class="h-5 w-5 text-white/25" aria-hidden="true" />
+        <Icon name="tabler:book" class="h-5 w-5 text-white/50" aria-hidden="true" />
       </div>
-      <p class="text-sm font-medium text-white/40">Search the docs</p>
-      <p class="mt-1 text-xs text-white/20">Pages, guides, and reference</p>
+      <p class="text-sm font-medium text-white/70">Search the docs</p>
+      <p class="mt-1 text-xs text-white/45">Pages, guides, and reference</p>
     </div>
 
     <div id="spotlight-empty" class="hidden px-6 py-10 text-center">
-      <p class="text-sm text-white/40">No results found</p>
-      <p class="mt-1 text-xs text-white/20">Try a different search term</p>
+      <div role="status" aria-live="polite">
+        <p class="text-sm text-white/70">No results for “<span id="spotlight-empty-query"></span>”</p>
+        <p class="mt-1 text-xs text-white/45">Try another search term.</p>
+      </div>
+      <button
+        type="button"
+        id="spotlight-clear-search"
+        class="mt-4 inline-flex min-h-10 items-center justify-center rounded-md bg-white/[0.05] px-3 text-sm font-medium text-white/70 transition-[background-color,color,scale] duration-150 hover:bg-white/[0.08] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary active:scale-[0.96]"
+      >
+        Clear search
+      </button>
     </div>
 
     <div
       id="spotlight-loading"
-      class="flex hidden items-center justify-center gap-2.5 px-6 py-10 text-sm text-white/35"
+      class="flex hidden items-center justify-center gap-2.5 px-6 py-10 text-sm text-white/60"
+      role="status"
+      aria-live="polite"
     >
       <span class="loading-spinner h-4 w-4 flex-shrink-0" aria-hidden="true"></span>
       <span>Searching&hellip;</span>
@@ -69,6 +85,8 @@ import { Icon } from 'astro-icon/components';
     <ul
       id="spotlight-list"
       class="py-2"
+      role="listbox"
+      aria-label="Search results"
       style="list-style: none; padding-top: 0.5rem; padding-bottom: 0.5rem; margin: 0;"
     >
     </ul>
@@ -76,15 +94,15 @@ import { Icon } from 'astro-icon/components';
 
   <div id="spotlight-footer" class="hidden flex-shrink-0 border-t border-white/[0.06] px-5 py-2.5">
     <div class="flex items-center gap-4">
-      <span class="flex items-center gap-1.5 text-xs text-white/25">
+      <span class="flex items-center gap-1.5 text-xs text-white/50">
         <kbd class="rounded border border-white/[0.08] bg-white/[0.04] px-1.5 py-0.5 font-mono text-[10px]">↑↓</kbd>
         Navigate
       </span>
-      <span class="flex items-center gap-1.5 text-xs text-white/25">
+      <span class="flex items-center gap-1.5 text-xs text-white/50">
         <kbd class="rounded border border-white/[0.08] bg-white/[0.04] px-1.5 py-0.5 font-mono text-[10px]">↵</kbd>
         Open
       </span>
-      <span class="flex items-center gap-1.5 text-xs text-white/25">
+      <span class="flex items-center gap-1.5 text-xs text-white/50">
         <kbd class="rounded border border-white/[0.08] bg-white/[0.04] px-1.5 py-0.5 font-mono text-[10px]">Esc</kbd>
         Close
       </span>
@@ -178,7 +196,7 @@ import { Icon } from 'astro-icon/components';
     border-radius: 0.5rem !important;
     border: 1px solid rgb(255 255 255 / 0.06) !important;
     background-color: rgb(255 255 255 / 0.03) !important;
-    color: rgb(255 255 255 / 0.35) !important;
+    color: rgb(255 255 255 / 0.5) !important;
   }
 
   .spotlight-item.selected .spotlight-item-icon {
@@ -204,8 +222,8 @@ import { Icon } from 'astro-icon/components';
   }
 
   .spotlight-item-path {
-    font-size: 0.6875rem !important;
-    color: rgb(255 255 255 / 0.3) !important;
+    font-size: 0.75rem !important;
+    color: rgb(255 255 255 / 0.48) !important;
     font-family: var(--font-mono, monospace) !important;
     line-height: 1.4 !important;
     white-space: nowrap !important;
@@ -240,7 +258,7 @@ import { Icon } from 'astro-icon/components';
   }
 
   #spotlight-input::placeholder {
-    color: rgb(255 255 255 / 0.28);
+    color: rgb(255 255 255 / 0.45);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -252,6 +270,8 @@ import { Icon } from 'astro-icon/components';
 </style>
 
 <script>
+  import { closeSidebar } from '@/utils/ui/sidebar';
+
   const PAGEFIND_PATH = '/pagefind/pagefind.js';
   const PAGEFIND_DEBOUNCE_MS = 150;
   const MAX_SEARCH_RESULTS = 10;
@@ -326,6 +346,8 @@ import { Icon } from 'astro-icon/components';
   let currentQuery = '';
   let searchRunId = 0;
   let spotlightController: AbortController | null = null;
+  let lastFocusedElement: HTMLElement | null = null;
+  let spotlightBackgroundState: Array<{ element: HTMLElement; wasInert: boolean }> = [];
 
   const importPagefind = (modulePath: string): Promise<unknown> => import(/* @vite-ignore */ modulePath);
 
@@ -366,16 +388,54 @@ import { Icon } from 'astro-icon/components';
     return runId === searchRunId && query === currentQuery;
   }
 
+  function setSearchTriggerExpansion(expanded: boolean) {
+    for (const button of document.querySelectorAll<HTMLElement>(
+      '#navbar-search-button, #navbar-search-button-mobile'
+    )) {
+      button.setAttribute('aria-expanded', String(expanded));
+    }
+  }
+
+  function setSpotlightBackgroundInert(isInert: boolean, modal?: HTMLElement, backdrop?: HTMLElement) {
+    if (isInert) {
+      if (spotlightBackgroundState.length > 0 || !modal || !backdrop) return;
+
+      for (const child of Array.from(document.body.children)) {
+        if (!(child instanceof HTMLElement) || child === modal || child === backdrop) continue;
+        if (child.matches('script, style')) continue;
+
+        spotlightBackgroundState.push({ element: child, wasInert: child.inert });
+        child.inert = true;
+      }
+      return;
+    }
+
+    for (const { element, wasInert } of spotlightBackgroundState) {
+      element.inert = wasInert;
+    }
+    spotlightBackgroundState = [];
+  }
+
   function openSpotlight() {
     const modal = document.getElementById('spotlight-modal');
     const backdrop = document.getElementById('spotlight-backdrop');
     const input = document.getElementById('spotlight-input') as HTMLInputElement;
 
     if (modal && backdrop && input) {
+      const activeElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+      lastFocusedElement = activeElement?.closest('#sidebar')
+        ? document.getElementById('sidebar-toggle-button')
+        : activeElement;
+      closeSidebar();
+      setSpotlightBackgroundInert(true, modal, backdrop);
       warmPagefind(input.value);
+      modal.removeAttribute('inert');
+      modal.setAttribute('aria-hidden', 'false');
       modal.classList.add('open');
       backdrop.classList.add('open');
       backdrop.setAttribute('aria-hidden', 'false');
+      input.setAttribute('aria-expanded', 'true');
+      setSearchTriggerExpansion(true);
       document.body.style.overflow = 'hidden';
 
       setTimeout(() => input.focus(), 80);
@@ -390,13 +450,40 @@ import { Icon } from 'astro-icon/components';
     if (modal && backdrop && input) {
       searchRunId += 1;
       modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      modal.setAttribute('inert', '');
       backdrop.classList.remove('open');
       backdrop.setAttribute('aria-hidden', 'true');
+      input.setAttribute('aria-expanded', 'false');
+      input.removeAttribute('aria-activedescendant');
+      setSearchTriggerExpansion(false);
       document.body.style.overflow = '';
       input.value = '';
       selectedIndex = -1;
       currentQuery = '';
       renderResults([], false);
+      setSpotlightBackgroundInert(false);
+      lastFocusedElement?.focus();
+      lastFocusedElement = null;
+    }
+  }
+
+  function trapSpotlightFocus(event: KeyboardEvent, modal: HTMLElement) {
+    if (event.key !== 'Tab' || !modal.classList.contains('open')) return;
+
+    const focusable = Array.from(
+      modal.querySelectorAll<HTMLElement>('input, a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
+    ).filter((element) => element.getClientRects().length > 0);
+    const first = focusable[0];
+    const last = focusable.at(-1);
+    if (!first || !last) return;
+
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
     }
   }
 
@@ -542,6 +629,7 @@ import { Icon } from 'astro-icon/components';
   function renderResults(results: SearchResult[], hasQuery: boolean) {
     const list = document.getElementById('spotlight-list');
     const empty = document.getElementById('spotlight-empty');
+    const emptyQuery = document.getElementById('spotlight-empty-query');
 
     if (!list || !empty) return;
 
@@ -553,8 +641,10 @@ import { Icon } from 'astro-icon/components';
       setIdleVisible(!hasQuery);
       setFooterVisible(false);
       if (hasQuery) {
+        if (emptyQuery) emptyQuery.textContent = currentQuery.trim();
         empty.classList.remove('hidden');
       } else {
+        if (emptyQuery) emptyQuery.textContent = '';
         empty.classList.add('hidden');
       }
       return;
@@ -570,6 +660,9 @@ import { Icon } from 'astro-icon/components';
       const path = '/' + (result.url.replace(/^\//, '').replace(/\/$/, '') || '');
       const item = document.createElement('li');
       item.className = `spotlight-item ${index === selectedIndex ? 'selected' : ''}`.trim();
+      item.id = `spotlight-option-${index}`;
+      item.setAttribute('role', 'option');
+      item.setAttribute('aria-selected', String(index === selectedIndex));
       item.dataset.index = String(index);
       item.dataset.url = result.url;
 
@@ -625,9 +718,11 @@ import { Icon } from 'astro-icon/components';
 
   function navigateResults(direction: 'up' | 'down') {
     const items = document.querySelectorAll('.spotlight-item');
+    const input = document.getElementById('spotlight-input');
     if (items.length === 0) return;
 
     items[selectedIndex]?.classList.remove('selected');
+    items[selectedIndex]?.setAttribute('aria-selected', 'false');
 
     if (direction === 'down') {
       selectedIndex = (selectedIndex + 1) % items.length;
@@ -637,6 +732,8 @@ import { Icon } from 'astro-icon/components';
 
     const target = items[selectedIndex];
     target?.classList.add('selected');
+    target?.setAttribute('aria-selected', 'true');
+    if (target?.id) input?.setAttribute('aria-activedescendant', target.id);
     target?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   }
 
@@ -653,6 +750,7 @@ import { Icon } from 'astro-icon/components';
   function cleanupSpotlight() {
     spotlightController?.abort();
     spotlightController = null;
+    setSpotlightBackgroundInert(false);
     document.body.style.overflow = '';
     searchRunId += 1;
   }
@@ -664,6 +762,7 @@ import { Icon } from 'astro-icon/components';
     const searchButtonMobile = document.getElementById('navbar-search-button-mobile');
     const input = document.getElementById('spotlight-input') as HTMLInputElement | null;
     const inputContainer = document.getElementById('spotlight-input-container');
+    const clearSearchButton = document.getElementById('spotlight-clear-search');
     const backdrop = document.getElementById('spotlight-backdrop');
     const modal = document.getElementById('spotlight-modal');
 
@@ -717,7 +816,22 @@ import { Icon } from 'astro-icon/components';
       );
     }
 
+    clearSearchButton?.addEventListener(
+      'click',
+      () => {
+        searchRunId += 1;
+        currentQuery = '';
+        selectedIndex = -1;
+        input.value = '';
+        input.removeAttribute('aria-activedescendant');
+        renderResults([], false);
+        input.focus();
+      },
+      { signal }
+    );
+
     backdrop.addEventListener('click', closeSpotlight, { signal });
+    modal.addEventListener('keydown', (event) => trapSpotlightFocus(event, modal), { signal });
 
     document.addEventListener(
       'keydown',

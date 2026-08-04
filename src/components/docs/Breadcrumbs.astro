@@ -69,10 +69,10 @@ const breadcrumbStructuredData = {
 
 {
   breadcrumbs.length > 1 && (
-    <nav aria-label="Breadcrumb" class="breadcrumbs-animated mb-6">
+    <nav aria-label="Breadcrumb" class="mb-6">
       <ol class="flex flex-wrap items-center text-sm" style="color: var(--docs-text-muted);">
         {breadcrumbs.map((crumb, index) => (
-          <li class="breadcrumb-item flex items-center" style={`animation-delay: ${index * 50}ms`}>
+          <li class="breadcrumb-item flex items-center" data-breadcrumb-path={crumb.href}>
             {index > 0 && (
               <Icon
                 name="tabler:chevron-right"
@@ -82,13 +82,17 @@ const breadcrumbStructuredData = {
               />
             )}
             {index === breadcrumbs.length - 1 ? (
-              <span class="font-medium" style="color: var(--docs-text-secondary);">
+              <span
+                class="breadcrumb-label inline-block font-medium"
+                style="color: var(--docs-text-secondary);"
+                aria-current="page"
+              >
                 {crumb.title}
               </span>
             ) : (
               <a
                 href={crumb.href}
-                class="py-1 transition-opacity duration-200 hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                class="breadcrumb-label inline-block py-1 transition-opacity duration-200 hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                 style="border-radius: var(--docs-radius-sm);"
               >
                 <span>{crumb.title}</span>
@@ -102,27 +106,69 @@ const breadcrumbStructuredData = {
   )
 }
 
+<script>
+  let previousBreadcrumbPaths: string[] | null = null;
+
+  function getBreadcrumbItems(): HTMLElement[] {
+    return Array.from(document.querySelectorAll<HTMLElement>('[data-breadcrumb-path]'));
+  }
+
+  function captureBreadcrumbPaths() {
+    previousBreadcrumbPaths = getBreadcrumbItems().map((item) => item.dataset.breadcrumbPath || '');
+  }
+
+  function animateChangedBreadcrumbs() {
+    if (!previousBreadcrumbPaths) return;
+
+    const items = getBreadcrumbItems();
+    const currentPaths = items.map((item) => item.dataset.breadcrumbPath || '');
+    let commonPathLength = 0;
+
+    while (
+      commonPathLength < previousBreadcrumbPaths.length &&
+      commonPathLength < currentPaths.length &&
+      previousBreadcrumbPaths[commonPathLength] === currentPaths[commonPathLength]
+    ) {
+      commonPathLength += 1;
+    }
+
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const parentChanged = previousBreadcrumbPaths[1] !== currentPaths[1];
+
+      if (parentChanged) {
+        for (const item of items.slice(1)) {
+          item.classList.add('breadcrumb-branch-entering');
+          item.addEventListener('animationend', () => item.classList.remove('breadcrumb-branch-entering'), {
+            once: true,
+          });
+        }
+      } else {
+        for (const item of items.slice(commonPathLength)) {
+          const label = item.querySelector<HTMLElement>('.breadcrumb-label');
+          if (!label) continue;
+
+          label.classList.add('breadcrumb-label-entering');
+          label.addEventListener('animationend', () => label.classList.remove('breadcrumb-label-entering'), {
+            once: true,
+          });
+        }
+      }
+    }
+
+    previousBreadcrumbPaths = null;
+  }
+
+  document.addEventListener('astro:before-swap', captureBreadcrumbPaths);
+  document.addEventListener('astro:page-load', animateChangedBreadcrumbs);
+</script>
+
 <style>
-  .breadcrumbs-animated {
-    animation: breadcrumbs-fade-in var(--motion-duration-normal, 250ms)
-      var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1)) backwards;
-  }
-
-  @keyframes breadcrumbs-fade-in {
-    from {
-      opacity: 0;
-      transform: translateY(-5px);
+  @media (prefers-reduced-motion: no-preference) {
+    .breadcrumb-branch-entering,
+    .breadcrumb-label-entering {
+      animation: breadcrumb-item-fade-in var(--motion-duration-fast, 180ms)
+        var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1)) backwards;
     }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .breadcrumb-item {
-    animation: breadcrumb-item-fade-in var(--motion-duration-fast, 180ms)
-      var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1)) backwards;
   }
 
   @keyframes breadcrumb-item-fade-in {

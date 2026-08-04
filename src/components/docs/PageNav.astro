@@ -25,18 +25,19 @@ const { prev, next } = Astro.props;
           <a
             href={prev.href}
             data-astro-prefetch="hover"
-            class="page-nav-card docs-surface group relative order-2 flex items-center gap-4 overflow-hidden p-6 transition-[background-color,box-shadow,opacity,scale,transform] duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black active:scale-[0.96] md:order-1"
+            class="page-nav-card docs-surface group relative flex items-center gap-4 overflow-hidden p-6 transition-[background-color,box-shadow,opacity,scale,transform] duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black active:scale-[0.96]"
           >
             <div class="relative z-10 flex-shrink-0">
               <div class="page-nav-icon flex h-12 w-12 items-center justify-center transition-[background-color,box-shadow] duration-300">
                 <Icon
                   name="tabler:arrow-left"
-                  class="h-5 w-5 text-white/60 transition-colors duration-300 group-hover:text-primary"
+                  class="h-5 w-5 text-white/60 transition-colors duration-200 group-hover:text-primary"
+                  aria-hidden="true"
                 />
               </div>
             </div>
             <div class="relative z-10 min-w-0 flex-1">
-              <div class="mb-1.5 text-xs font-medium tracking-wider text-white/50 transition-colors duration-300 group-hover:text-primary/80">
+              <div class="mb-1.5 text-xs font-medium tracking-wider text-white/60 transition-colors duration-200 group-hover:text-primary/80">
                 Previous
               </div>
               <h3 class="mb-1 text-lg font-semibold text-white transition-colors duration-300 group-hover:text-primary">
@@ -55,10 +56,10 @@ const { prev, next } = Astro.props;
           <a
             href={next.href}
             data-astro-prefetch="hover"
-            class="page-nav-card docs-surface group relative order-1 flex items-center gap-4 overflow-hidden p-6 transition-[background-color,box-shadow,opacity,scale,transform] duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black active:scale-[0.96] md:order-2"
+            class="page-nav-card docs-surface group relative flex items-center gap-4 overflow-hidden p-6 transition-[background-color,box-shadow,opacity,scale,transform] duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black active:scale-[0.96]"
           >
-            <div class="relative z-10 min-w-0 flex-1 text-right">
-              <div class="mb-1.5 text-xs font-medium tracking-wider text-white/50 transition-colors duration-300 group-hover:text-primary/80">
+            <div class="relative z-10 min-w-0 flex-1 text-end">
+              <div class="mb-1.5 text-xs font-medium tracking-wider text-white/60 transition-colors duration-200 group-hover:text-primary/80">
                 Next
               </div>
               <h3 class="mb-1 text-lg font-semibold text-white transition-colors duration-300 group-hover:text-primary">
@@ -74,7 +75,8 @@ const { prev, next } = Astro.props;
               <div class="page-nav-icon flex h-12 w-12 items-center justify-center transition-[background-color,box-shadow] duration-300">
                 <Icon
                   name="tabler:arrow-right"
-                  class="h-5 w-5 text-white/60 transition-colors duration-300 group-hover:text-primary"
+                  class="h-5 w-5 text-white/60 transition-colors duration-200 group-hover:text-primary"
+                  aria-hidden="true"
                 />
               </div>
             </div>

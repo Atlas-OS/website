@@ -53,34 +53,38 @@ const tabItems = [
     <div class="msdl-widget not-prose" data-msdl-root={msdlId}>
       <!-- Step: idle — architecture selection -->
       <div data-msdl-step="idle">
-        <p class="mb-3 text-[11px] font-medium tracking-widest text-white/25 uppercase">Architecture</p>
+        <p class="mb-3 text-xs font-medium tracking-widest text-white/60 uppercase">Architecture</p>
         <div class="grid grid-cols-2 gap-2">
           <button
             type="button"
             data-msdl-arch-btn="x64"
-            class="iso-arch-btn group relative flex cursor-pointer flex-col gap-3 rounded-lg bg-white/[0.02] px-4 py-4 text-left shadow-[var(--shadow-surface)] transition-[background-color,box-shadow,scale] duration-200 focus-visible:outline-none active:scale-[0.96]"
+            aria-label="Download Windows ISO for x64 (Intel and AMD)"
+            class="iso-arch-btn group relative flex cursor-pointer flex-col gap-3 rounded-lg bg-white/[0.02] px-4 py-4 text-left shadow-[var(--shadow-surface)] transition-[background-color,box-shadow,scale] duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/70 active:scale-[0.96]"
           >
             <Icon
               name="tabler:device-desktop"
-              class="h-5 w-5 text-white/30 transition-colors duration-200 group-hover:text-primary/70"
+              class="h-5 w-5 text-white/55 transition-colors duration-200 group-hover:text-primary/80"
+              aria-hidden="true"
             />
             <div>
               <p class="text-sm font-semibold text-white/85">x64</p>
-              <p class="text-xs text-white/35">Intel &amp; AMD</p>
+              <p class="text-xs text-white/60">Intel &amp; AMD</p>
             </div>
           </button>
           <button
             type="button"
             data-msdl-arch-btn="arm64"
-            class="iso-arch-btn group relative flex cursor-pointer flex-col gap-3 rounded-lg bg-white/[0.02] px-4 py-4 text-left shadow-[var(--shadow-surface)] transition-[background-color,box-shadow,scale] duration-200 focus-visible:outline-none active:scale-[0.96]"
+            aria-label="Download Windows ISO for ARM64 (Qualcomm Snapdragon)"
+            class="iso-arch-btn group relative flex cursor-pointer flex-col gap-3 rounded-lg bg-white/[0.02] px-4 py-4 text-left shadow-[var(--shadow-surface)] transition-[background-color,box-shadow,scale] duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/70 active:scale-[0.96]"
           >
             <Icon
               name="tabler:device-laptop"
-              class="h-5 w-5 text-white/30 transition-colors duration-200 group-hover:text-primary/70"
+              class="h-5 w-5 text-white/55 transition-colors duration-200 group-hover:text-primary/80"
+              aria-hidden="true"
             />
             <div>
               <p class="text-sm font-semibold text-white/85">ARM64</p>
-              <p class="text-xs text-white/35">Qualcomm Snapdragon</p>
+              <p class="text-xs text-white/60">Qualcomm Snapdragon</p>
             </div>
           </button>
         </div>
@@ -100,9 +104,9 @@ const tabItems = [
 
       <!-- Step: loading-langs -->
       <div data-msdl-step="loading-langs" class="hidden">
-        <div class="iso-loading flex flex-col items-center gap-4 py-10">
+        <div class="iso-loading flex flex-col items-center gap-4 py-10" role="status" aria-live="polite">
           <div class="iso-loading-spinner" aria-hidden="true"></div>
-          <p class="text-sm font-medium text-white/50">
+          <p class="text-sm font-medium text-white/70">
             Fetching languages<span class="iso-loading-ellipsis" aria-hidden="true"></span>
           </p>
         </div>
@@ -114,27 +118,27 @@ const tabItems = [
           <button
             type="button"
             data-msdl-back
-            class="flex items-center gap-1 rounded text-xs text-white/35 transition-colors duration-150 hover:text-white/65 focus-visible:outline-none"
+            class="-ml-2 flex min-h-9 items-center gap-1 rounded px-2 text-xs text-white/65 transition-colors duration-150 hover:text-white/90 focus-visible:outline-2 focus-visible:outline-primary/70"
           >
-            <Icon name="tabler:arrow-left" class="h-3.5 w-3.5" />
+            <Icon name="tabler:arrow-left" class="h-3.5 w-3.5" aria-hidden="true" />
             Back
           </button>
-          <span class="text-white/15">/</span>
-          <span class="text-[11px] font-medium text-white/40" data-msdl-arch-label></span>
+          <span class="text-white/35" aria-hidden="true">/</span>
+          <span class="text-xs font-medium text-white/65" data-msdl-arch-label></span>
         </div>
         <div class="space-y-3">
           <div data-msdl-select-wrapper>
             <button
               type="button"
               data-msdl-select-trigger
-              class="msdl-select-trigger flex min-h-10 w-full cursor-pointer items-center justify-between gap-2 rounded-lg bg-white/[0.03] px-3 py-2.5 text-left text-sm shadow-[var(--shadow-surface)] transition-[background-color,box-shadow,scale] duration-150 hover:bg-white/[0.05] hover:shadow-[var(--shadow-surface-hover)] focus-visible:outline-none active:scale-[0.96]"
+              class="msdl-select-trigger flex min-h-11 w-full cursor-pointer items-center justify-between gap-2 rounded-lg bg-white/[0.03] px-3 py-2.5 text-left text-sm shadow-[var(--shadow-surface)] transition-[background-color,box-shadow,scale] duration-150 hover:bg-white/[0.05] hover:shadow-[var(--shadow-surface-hover)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/70 active:scale-[0.96]"
               aria-haspopup="listbox"
               aria-expanded="false"
             >
-              <span data-msdl-select-value class="text-white/30">Choose a language&hellip;</span>
+              <span data-msdl-select-value class="text-white/60">Choose a language&hellip;</span>
               <svg
                 data-msdl-select-chevron
-                class="h-3.5 w-3.5 shrink-0 text-white/25 transition-transform duration-200"
+                class="h-3.5 w-3.5 shrink-0 text-white/55 transition-transform duration-200"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="none"
@@ -150,8 +154,8 @@ const tabItems = [
             <!-- Panel injected by JS -->
           </div>
 
-          <p class="text-xs text-white/30">
-            Match your Windows display language — check <strong class="font-medium text-white/45"
+          <p class="text-xs text-white/60">
+            Match your Windows display language — check <strong class="font-medium text-white/80"
               >Settings &rarr; Time &amp; language</strong
             >.
           </p>
@@ -159,26 +163,26 @@ const tabItems = [
             type="button"
             data-msdl-get-download
             disabled
-            class="iso-get-download-btn flex min-h-10 w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-white transition-[background-color,box-shadow,color,opacity,scale] duration-150 focus-visible:outline-none active:scale-[0.96] disabled:cursor-not-allowed disabled:opacity-35"
+            class="iso-get-download-btn flex min-h-11 w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-white transition-[background-color,box-shadow,color,opacity,scale] duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/70 active:scale-[0.96] disabled:cursor-not-allowed disabled:opacity-35"
           >
             Get download link
-            <Icon name="tabler:arrow-right" class="h-4 w-4 transition-transform duration-150" />
+            <Icon name="tabler:arrow-right" class="h-4 w-4 transition-transform duration-150" aria-hidden="true" />
           </button>
         </div>
       </div>
 
       <!-- Step: loading-download -->
       <div data-msdl-step="loading-download" class="hidden">
-        <div class="iso-loading flex flex-col items-center gap-4 py-10">
+        <div class="iso-loading flex flex-col items-center gap-4 py-10" role="status" aria-live="polite">
           <div class="iso-loading-spinner" aria-hidden="true"></div>
-          <p class="text-sm font-medium text-white/50">
+          <p class="text-sm font-medium text-white/70">
             Generating link<span class="iso-loading-ellipsis" aria-hidden="true"></span>
           </p>
         </div>
       </div>
 
       <!-- Step: done -->
-      <div data-msdl-step="done" class="hidden">
+      <div data-msdl-step="done" class="hidden" role="status" aria-live="polite">
         <div class="flex flex-col items-center py-6 text-center">
           <div class="iso-success-rings relative mb-4 flex h-14 w-14 items-center justify-center">
             <div class="iso-success-ring-outer absolute inset-0 rounded-full border border-green-500/[0.12]"></div>
@@ -186,15 +190,15 @@ const tabItems = [
               class="iso-success-ring-inner absolute inset-2 rounded-full border border-green-500/20 bg-green-500/[0.04]"
             >
             </div>
-            <Icon name="tabler:check" class="relative z-10 h-5 w-5 text-green-400" />
+            <Icon name="tabler:check" class="relative z-10 h-5 w-5 text-green-400" aria-hidden="true" />
           </div>
           <p class="mb-1 text-sm font-semibold text-white/90">Download started</p>
-          <p class="text-xs text-white/35">Your ISO file is being downloaded</p>
+          <p class="text-xs text-white/65">Your ISO file is being downloaded</p>
         </div>
 
         <div class="rounded-lg border border-white/[0.05] bg-white/[0.02]">
           <div class="border-b border-white/[0.04] px-3 py-2">
-            <p class="text-[10px] font-semibold tracking-widest text-white/20 uppercase">
+            <p class="text-xs font-semibold tracking-wider text-white/60 uppercase">
               Didn&rsquo;t start? Download manually
             </p>
           </div>
@@ -204,32 +208,32 @@ const tabItems = [
         <button
           type="button"
           data-msdl-restart
-          class="mt-4 flex items-center gap-1.5 text-xs text-white/25 transition-colors duration-150 hover:text-white/50 focus-visible:outline-none"
+          class="mt-3 -ml-2 flex min-h-9 items-center gap-1.5 rounded px-2 text-xs text-white/65 transition-colors duration-150 hover:text-white/90 focus-visible:outline-2 focus-visible:outline-primary/70"
         >
-          <Icon name="tabler:arrow-left" class="h-3 w-3" />
+          <Icon name="tabler:arrow-left" class="h-3 w-3" aria-hidden="true" />
           Start over
         </button>
       </div>
 
-      <div data-msdl-step="error" class="hidden">
+      <div data-msdl-step="error" class="hidden" role="alert">
         <div class="mb-4 flex items-start gap-3 rounded-lg border border-red-500/[0.12] bg-red-500/[0.03] p-3.5">
-          <Icon name="tabler:alert-circle" class="mt-0.5 h-4 w-4 shrink-0 text-red-400/70" />
-          <p class="text-xs leading-relaxed text-white/50" data-msdl-error-msg></p>
+          <Icon name="tabler:alert-circle" class="mt-0.5 h-4 w-4 shrink-0 text-red-400/80" aria-hidden="true" />
+          <p class="text-xs leading-relaxed text-white/75" data-msdl-error-msg></p>
         </div>
         <div class="flex items-center gap-3">
           <button
             type="button"
             data-msdl-retry
-            class="flex items-center gap-1.5 rounded text-xs text-white/35 transition-colors duration-150 hover:text-white/65 focus-visible:outline-none"
+            class="flex min-h-9 items-center gap-1.5 rounded px-2 text-xs text-white/65 transition-colors duration-150 hover:text-white/90 focus-visible:outline-2 focus-visible:outline-primary/70"
           >
-            <Icon name="tabler:refresh" class="h-3.5 w-3.5" />
+            <Icon name="tabler:refresh" class="h-3.5 w-3.5" aria-hidden="true" />
             Retry
           </button>
           <span class="h-3 w-px bg-white/10"></span>
           <button
             type="button"
             data-msdl-restart
-            class="text-xs text-white/35 transition-colors duration-150 hover:text-white/65 focus-visible:outline-none"
+            class="min-h-9 rounded px-2 text-xs text-white/65 transition-colors duration-150 hover:text-white/90 focus-visible:outline-2 focus-visible:outline-primary/70"
           >
             Start over
           </button>
@@ -569,7 +573,7 @@ const tabItems = [
         opt.dataset.value = String(sku.Id);
         opt.textContent = sku.LocalizedLanguage;
         opt.className =
-          'w-full cursor-pointer px-3 py-2.5 text-left text-sm text-white/65 transition-colors duration-100 hover:bg-white/[0.06] hover:text-white/90 focus:outline-none focus:bg-white/[0.06] focus:text-white/90';
+          'w-full cursor-pointer px-3 py-2.5 text-left text-sm text-white/75 transition-colors duration-100 hover:bg-white/[0.06] hover:text-white focus:outline-2 focus:-outline-offset-2 focus:outline-primary/70 focus:bg-white/[0.06] focus:text-white';
 
         opt.addEventListener('click', () =>
           selectOption(sku.Id, sku.LocalizedLanguage, sku.Language, sku.FriendlyFileNames)
@@ -613,8 +617,8 @@ const tabItems = [
 
     function selectOption(id: string | number, label: string, language: string, friendlyFileNames?: string[]) {
       valueEl.textContent = label;
-      valueEl.classList.remove('text-white/35');
-      valueEl.classList.add('text-white/85');
+      valueEl.classList.remove('text-white/60');
+      valueEl.classList.add('text-white/90');
       onSelect(id, label, language, friendlyFileNames);
       closePanel();
       trigger.focus();
@@ -661,8 +665,8 @@ const tabItems = [
       reset() {
         closePanel();
         valueEl.textContent = 'Choose a language\u2026';
-        valueEl.classList.remove('text-white/85');
-        valueEl.classList.add('text-white/35');
+        valueEl.classList.remove('text-white/90');
+        valueEl.classList.add('text-white/60');
       },
     };
   }

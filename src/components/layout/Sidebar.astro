@@ -151,6 +151,7 @@ function hasActiveDescendant(item: NavItem): boolean {
                           const hasChildren = Boolean(item.children?.length);
                           const hasActiveChild = hasActiveDescendant(item);
                           const isInitiallyOpen = hasActiveChild || isActiveItem;
+                          const childListId = `sidebar-children-${item.slug.replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '')}`;
                           const groupClasses = [
                             'sidebar-item',
                             hasChildren && 'sidebar-item-with-children',
@@ -189,9 +190,10 @@ function hasActiveDescendant(item: NavItem): boolean {
                                 {hasChildren && (
                                   <button
                                     type="button"
-                                    class="sidebar-toggle inline-flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md text-white/60 transition-colors duration-200 outline-none hover:text-white"
+                                    class="sidebar-toggle inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md text-white/60 transition-colors duration-150 outline-none hover:text-white"
                                     aria-label={`Toggle ${item.title} items`}
                                     aria-expanded={isInitiallyOpen}
+                                    aria-controls={childListId}
                                   >
                                     <Icon
                                       name="tabler:chevron-down"
@@ -202,7 +204,7 @@ function hasActiveDescendant(item: NavItem): boolean {
                               </div>
 
                               {hasChildren && (
-                                <ul class="sidebar-children mt-1 ml-3 space-y-0.5">
+                                <ul id={childListId} class="sidebar-children mt-1 ml-3 space-y-0.5">
                                   {item.children?.map((child) => {
                                     const isChildActive = isActivePage(currentSlug, child.slug);
 

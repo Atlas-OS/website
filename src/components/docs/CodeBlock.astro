@@ -26,7 +26,7 @@ const blockId = `code-block-${Math.random().toString(36).slice(2, 9)}`;
         <span>{title}</span>
         <button
           type="button"
-          class="code-block-copy flex size-10 shrink-0 items-center justify-center rounded-[var(--docs-radius-md)] opacity-0 transition-[background-color,opacity,scale] duration-200 group-hover:opacity-100 hover:bg-white/10 focus:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-primary)] active:scale-[0.96]"
+          class="code-block-copy flex size-10 shrink-0 items-center justify-center rounded-[var(--docs-radius-md)] opacity-60 transition-[background-color,opacity,scale] duration-150 group-hover:opacity-100 hover:bg-white/10 focus:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-primary)] active:scale-[0.96]"
           style="color: var(--docs-text-muted);"
           aria-label="Copy code"
           data-code={blockId}
@@ -49,7 +49,7 @@ const blockId = `code-block-${Math.random().toString(36).slice(2, 9)}`;
       !title && (
         <button
           type="button"
-          class="code-block-copy absolute top-2 right-2 flex size-10 items-center justify-center rounded-[var(--docs-radius-md)] opacity-0 transition-[background-color,opacity,scale] duration-200 group-hover:opacity-100 hover:bg-white/10 focus:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-primary)] active:scale-[0.96]"
+          class="code-block-copy absolute top-2 right-2 flex size-10 items-center justify-center rounded-[var(--docs-radius-md)] opacity-60 transition-[background-color,opacity,scale] duration-150 group-hover:opacity-100 hover:bg-white/10 focus:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-primary)] active:scale-[0.96]"
           style="color: var(--docs-text-muted);"
           aria-label="Copy code"
           data-code={blockId}
@@ -64,6 +64,7 @@ const blockId = `code-block-${Math.random().toString(36).slice(2, 9)}`;
       )
     }
   </div>
+  <span class="sr-only" role="status" aria-live="polite" data-code-copy-status></span>
 </div>
 
 <style is:global>
@@ -101,6 +102,7 @@ const blockId = `code-block-${Math.random().toString(36).slice(2, 9)}`;
       const blockId = btn.getAttribute('data-code');
       const block = document.querySelector(`[data-code-block-id="${blockId}"]`);
       const codeEl = block?.querySelector('.code-block-pre code');
+      const status = block?.querySelector<HTMLElement>('[data-code-copy-status]');
       if (!codeEl) return;
 
       btn.addEventListener('click', async () => {
@@ -109,12 +111,15 @@ const blockId = `code-block-${Math.random().toString(36).slice(2, 9)}`;
           await navigator.clipboard.writeText(text);
           btn.setAttribute('aria-label', 'Copied!');
           btn.setAttribute('data-copied', 'true');
+          if (status) status.textContent = 'Code copied';
           setTimeout(() => {
             btn.setAttribute('aria-label', 'Copy code');
             btn.setAttribute('data-copied', 'false');
+            if (status) status.textContent = '';
           }, 2000);
         } catch {
           btn.setAttribute('aria-label', 'Copy failed');
+          if (status) status.textContent = 'Unable to copy code';
         }
       });
     });

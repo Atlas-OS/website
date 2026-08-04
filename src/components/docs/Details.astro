@@ -11,7 +11,7 @@ const { summary, open = false } = Astro.props;
 
 <details class="details docs-surface not-prose my-4 overflow-hidden" data-component="details" open={open}>
   <summary
-    class="details-summary flex cursor-pointer items-center justify-between gap-3 px-4 py-3 text-sm font-medium transition-colors hover:bg-white/[0.04]"
+    class="details-summary flex min-h-11 cursor-pointer items-center justify-between gap-3 rounded-[var(--docs-radius-md)] px-4 py-3 text-sm font-medium transition-colors hover:bg-white/[0.04] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
     style="color: var(--docs-text-primary);"
   >
     <span>{summary}</span>

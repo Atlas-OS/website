@@ -2,6 +2,7 @@ const DESKTOP_BREAKPOINT = 1024;
 
 let teardown: (() => void) | null = null;
 let pendingSidebarScrollTop: number | null = null;
+let sidebarBackgroundState: Array<{ element: HTMLElement; wasInert: boolean }> = [];
 
 type SidebarElements = {
   sidebar: HTMLElement | null;
@@ -21,14 +22,50 @@ function getSidebarElements(): SidebarElements {
   };
 }
 
+function setSidebarBackgroundInert(isInert: boolean, sidebar: HTMLElement): void {
+  if (isInert) {
+    if (sidebarBackgroundState.length > 0) return;
+
+    for (const child of Array.from(document.body.children)) {
+      if (!(child instanceof HTMLElement) || child.matches('script, style')) continue;
+
+      if (child.contains(sidebar)) {
+        for (const section of Array.from(child.children)) {
+          if (!(section instanceof HTMLElement)) continue;
+          if (section === sidebar || section.id === 'sidebar-backdrop') continue;
+
+          sidebarBackgroundState.push({ element: section, wasInert: section.inert });
+          section.inert = true;
+        }
+        continue;
+      }
+
+      sidebarBackgroundState.push({ element: child, wasInert: child.inert });
+      child.inert = true;
+    }
+    return;
+  }
+
+  for (const { element, wasInert } of sidebarBackgroundState) {
+    element.inert = wasInert;
+  }
+  sidebarBackgroundState = [];
+}
+
 function setSidebarOpen(isOpen: boolean, elements: SidebarElements): void {
-  const { sidebar, toggleButton, backdrop } = elements;
+  const { sidebar, toggleButton, closeButton, backdrop } = elements;
   if (!sidebar) {
     return;
   }
 
+  const isMobile = window.innerWidth < DESKTOP_BREAKPOINT;
+  const wasOpen = sidebar.classList.contains('open');
+
   sidebar.classList.toggle('open', isOpen);
-  document.body.classList.toggle('sidebar-open', isOpen);
+  document.body.classList.toggle('sidebar-open', isMobile && isOpen);
+  sidebar.toggleAttribute('inert', isMobile && !isOpen);
+  sidebar.setAttribute('aria-hidden', String(isMobile && !isOpen));
+  setSidebarBackgroundInert(isMobile && isOpen, sidebar);
 
   if (toggleButton) {
     toggleButton.setAttribute('aria-expanded', String(isOpen));
@@ -39,6 +76,36 @@ function setSidebarOpen(isOpen: boolean, elements: SidebarElements): void {
     backdrop.classList.toggle('opacity-0', !isOpen);
     backdrop.classList.toggle('pointer-events-none', !isOpen);
     backdrop.setAttribute('aria-hidden', String(!isOpen));
+  }
+
+  if (!isMobile) return;
+
+  if (isOpen && !wasOpen) {
+    requestAnimationFrame(() => closeButton?.focus());
+  } else if (!isOpen && wasOpen) {
+    requestAnimationFrame(() => toggleButton?.focus());
+  }
+}
+
+function trapSidebarFocus(sidebar: HTMLElement, event: KeyboardEvent): void {
+  if (event.key !== 'Tab' || !sidebar.classList.contains('open')) return;
+
+  const focusable = Array.from(
+    sidebar.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+    ),
+  ).filter(element => !element.hasAttribute('inert') && element.getClientRects().length > 0);
+
+  const first = focusable[0];
+  const last = focusable.at(-1);
+  if (!first || !last) return;
+
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
   }
 }
 
@@ -195,6 +262,13 @@ export function initSidebar(): void {
     signal,
   });
   elements.backdrop?.addEventListener('click', () => setSidebarOpen(false, elements), { signal });
+  elements.sidebar.addEventListener(
+    'keydown',
+    event => trapSidebarFocus(elements.sidebar!, event),
+    {
+      signal,
+    },
+  );
 
   document.addEventListener(
     'keydown',
@@ -213,7 +287,10 @@ export function initSidebar(): void {
   window.addEventListener(
     'resize',
     () => {
-      if (window.innerWidth >= DESKTOP_BREAKPOINT) {
+      if (
+        window.innerWidth >= DESKTOP_BREAKPOINT ||
+        !elements.sidebar?.classList.contains('open')
+      ) {
         setSidebarOpen(false, elements);
       }
     },

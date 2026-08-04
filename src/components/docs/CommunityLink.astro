@@ -21,7 +21,7 @@ const isExternal = href.startsWith('http://') || href.startsWith('https://');
   data-component="community-link"
 >
   <div class="community-link-icon-wrapper flex-shrink-0">
-    <Icon name={icon} class="h-6 w-6 text-primary transition-transform" />
+    <Icon name={icon} class="h-6 w-6 text-primary transition-transform" aria-hidden="true" />
   </div>
   <div class="min-w-0 flex-1">
     <p class="text-base font-semibold text-white">
@@ -32,6 +32,7 @@ const isExternal = href.startsWith('http://') || href.startsWith('https://');
   <Icon
     name={isExternal ? 'tabler:arrow-up-right' : 'tabler:arrow-right'}
     class="h-4 w-4 flex-shrink-0 text-white/45 transition-colors duration-200 group-hover:text-white/75"
+    aria-hidden="true"
   />
 </a>
 

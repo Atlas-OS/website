@@ -16,6 +16,8 @@ const { id, mobile = false, class: className = '' } = Astro.props;
       id={id || 'navbar-search-button-mobile'}
       type="button"
       aria-label="Search"
+      aria-expanded="false"
+      aria-haspopup="dialog"
       class={`inline-flex size-10 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap text-white shadow-[var(--shadow-surface)] transition-[background-color,box-shadow,opacity,scale] duration-200 outline-none hover:bg-white/[0.04] hover:opacity-80 hover:shadow-[var(--shadow-surface-hover)] active:scale-[0.96] disabled:pointer-events-none disabled:opacity-50 sm:hidden ${className}`}
       style="background-color: var(--bg-primary);"
     >
@@ -37,7 +39,7 @@ const { id, mobile = false, class: className = '' } = Astro.props;
             class="absolute top-1/2 left-3 size-[14px] -translate-y-1/2 text-white/60"
             aria-hidden="true"
           />
-          <span class="mt-[1px] block max-w-full truncate text-sm text-white/60">Search docs...</span>
+          <span class="mt-[1px] block max-w-full truncate text-sm text-white/60">Search docs…</span>
           <kbd class="absolute top-1/2 right-2 hidden -translate-y-1/2 items-center gap-1 rounded-md bg-white/5 px-2 py-1 font-mono text-xs text-white/50 shadow-[var(--shadow-surface)] xl:inline-flex">
             <span>Ctrl</span>
             <span class="text-white/30">+</span>

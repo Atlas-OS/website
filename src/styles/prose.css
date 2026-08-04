@@ -61,8 +61,15 @@
 :where(.prose) > ol:not(.not-prose):not(.not-prose *),
 :where(.prose) ul:not(.not-prose):not(.not-prose *),
 :where(.prose) ol:not(.not-prose):not(.not-prose *) {
-  @apply mb-4 ml-5;
+  @apply mb-4;
+  margin-inline-start: 1.25rem;
+  margin-left: 0;
   padding-inline: 0;
+}
+
+:where(.prose) > ol:not(.not-prose):not(.not-prose *),
+:where(.prose) ol:not(.not-prose):not(.not-prose *) {
+  padding-inline-start: 1.75rem;
 }
 
 /* Nested lists: tighter indentation and spacing */
@@ -70,7 +77,7 @@
 :where(.prose) ul ol:not(.not-prose),
 :where(.prose) ol ul:not(.not-prose),
 :where(.prose) ol ol:not(.not-prose) {
-  margin-left: var(--prose-relaxed);
+  margin-inline-start: var(--prose-relaxed);
   margin-top: var(--prose-tight);
   margin-bottom: var(--prose-tight);
 }
@@ -90,24 +97,25 @@
   :where(.prose) > ol:not(.not-prose):not(.not-prose *),
   :where(.prose) ul:not(.not-prose):not(.not-prose *),
   :where(.prose) ol:not(.not-prose):not(.not-prose *) {
-    @apply mb-4 ml-0;
+    @apply mb-4;
+    margin-inline-start: 0;
   }
 }
 
 :where(.prose) ul:not(.not-prose):not(.not-prose *) {
   list-style: none;
-  padding-left: 0;
+  padding-inline-start: 0;
 }
 
 :where(.prose) ul:not(.not-prose):not(.not-prose *) li {
   position: relative;
-  padding-left: 1.25rem;
+  padding-inline-start: 1.25rem;
 }
 
 :where(.prose) ul:not(.not-prose):not(.not-prose *) li::before {
   content: '';
   position: absolute;
-  left: 0;
+  inset-inline-start: 0;
   top: 0.65em;
   width: 0.35em;
   height: 0.35em;
@@ -149,7 +157,11 @@
 :where(.prose) a:not(.not-prose):not(.not-prose *) {
   @apply text-base;
   color: var(--color-primary);
-  text-decoration: none;
+  text-decoration-line: underline;
+  text-decoration-color: color-mix(in oklch, var(--color-primary) 45%, transparent);
+  text-decoration-thickness: from-font;
+  text-underline-offset: 0.18em;
+  text-decoration-skip-ink: auto;
   transition:
     color 0.2s ease-in-out,
     opacity 0.2s ease-in-out;
@@ -158,8 +170,9 @@
 
 :where(.prose) > a:not(.not-prose):not(.not-prose *):hover,
 :where(.prose) a:not(.not-prose):not(.not-prose *):hover {
-  opacity: 0.85;
+  opacity: 1;
   color: var(--color-primary);
+  text-decoration-color: currentColor;
 }
 
 :where(.prose) > strong:not(.not-prose):not(.not-prose *),
@@ -213,7 +226,10 @@
 :where(.prose) > blockquote:not(.not-prose):not(.not-prose *),
 :where(.prose) blockquote:not(.not-prose):not(.not-prose *) {
   @apply my-5 border-l-4 py-2 pl-6 italic;
-  border-color: var(--color-primary);
+  border-left: 0;
+  border-inline-start: 4px solid var(--color-primary);
+  padding-left: 0;
+  padding-inline-start: 1.5rem;
   background-color: rgb(255 255 255 / 0.03);
   color: rgb(255 255 255 / 0.8);
   font-size: 1.125rem;
@@ -237,11 +253,16 @@
 :where(.prose) > table:not(.not-prose):not(.not-prose *),
 :where(.prose) table:not(.not-prose):not(.not-prose *) {
   @apply my-5 w-full border-collapse;
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-gutter: stable;
   font-size: 1rem;
 }
 
 :where(.prose) th:not(.not-prose):not(.not-prose *) {
-  @apply border px-5 py-4 text-left font-semibold;
+  @apply border px-5 py-4 font-semibold;
+  text-align: start;
   border-color: rgb(255 255 255 / 0.06);
   background-color: rgb(255 255 255 / 0.05);
   color: white;
@@ -265,15 +286,6 @@
 
 :where(.prose) > *:last-child:not(.not-prose):not(.not-prose *) {
   margin-bottom: 0;
-}
-
-:where(.prose) > *:not(.not-prose):not(.not-prose *):focus,
-:where(.prose)
-  *:not(.not-prose):not(.not-prose *):not(a):not(button):not(input):not(textarea):not(
-    select
-  ):focus {
-  outline: none;
-  box-shadow: none;
 }
 
 :where(.prose) a:not(.not-prose):not(.not-prose *):focus-visible {

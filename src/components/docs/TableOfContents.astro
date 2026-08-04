@@ -37,7 +37,7 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
                 <li>
                   <a
                     href={`#${heading.slug}`}
-                    class={`toc-link block w-full text-left text-sm transition-colors duration-200 ${
+                    class={`toc-link block min-h-8 w-full rounded-sm py-1 text-start text-sm transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
                       heading.depth === 3 ? 'pl-6' : 'pl-4'
                     } hover:text-[var(--docs-text-primary)]`}
                     style="scroll-behavior: smooth;"
@@ -53,7 +53,7 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
             <button
               type="button"
               id="toc-copy-link"
-              class="toc-utility-link inline-flex items-center gap-2 text-left text-sm transition-colors duration-200 hover:text-[var(--docs-text-primary)]"
+              class="toc-utility-link -mx-2 inline-flex min-h-9 items-center gap-2 rounded-md px-2 text-start text-sm transition-colors duration-150 hover:text-[var(--docs-text-primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               style="color: var(--docs-text-muted);"
             >
               <Icon name="tabler:copy" class="h-4 w-4 shrink-0" aria-hidden="true" />
@@ -63,13 +63,14 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
               href="https://github.com/Atlas-OS/website/issues"
               target="_blank"
               rel="noopener noreferrer"
-              class="toc-utility-link inline-flex items-center gap-2 text-sm transition-colors duration-200 hover:text-[var(--docs-text-primary)]"
+              class="toc-utility-link -mx-2 inline-flex min-h-9 items-center gap-2 rounded-md px-2 text-sm transition-colors duration-150 hover:text-[var(--docs-text-primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               style="color: var(--docs-text-muted);"
             >
               <Icon name="tabler:message-report" class="h-4 w-4 shrink-0" aria-hidden="true" />
               <span>Share feedback</span>
             </a>
           </div>
+          <span id="toc-copy-status" class="sr-only" role="status" aria-live="polite" />
         </div>
       </nav>
     </aside>
@@ -165,6 +166,7 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
       tocLinks.forEach((link) => {
         link.classList.remove('toc-active', 'text-white');
+        link.removeAttribute('aria-current');
       });
 
       if (activeHeadingId) {
@@ -172,6 +174,7 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
         if (activeLink) {
           activeLink.classList.add('toc-active');
+          activeLink.setAttribute('aria-current', 'location');
 
           const linkRect = activeLink.getBoundingClientRect();
           const containerRect = marker.parentElement?.getBoundingClientRect();
@@ -213,6 +216,7 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
     btn.addEventListener('click', async () => {
       const label = btn.querySelector<HTMLElement>('[data-copy-link-label]');
+      const status = document.getElementById('toc-copy-status');
       const originalText = label?.textContent || 'Copy link';
       const setLabel = (text: string) => {
         if (label) {
@@ -224,14 +228,18 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
       try {
         await navigator.clipboard.writeText(window.location.href);
-        setLabel('Copied!');
+        setLabel('Copied');
+        if (status) status.textContent = 'Page link copied';
         setTimeout(() => {
           setLabel(originalText);
+          if (status) status.textContent = '';
         }, 2000);
       } catch {
-        setLabel('Copy failed');
+        setLabel('Unable to copy');
+        if (status) status.textContent = 'Unable to copy the page link';
         setTimeout(() => {
           setLabel('Copy link');
+          if (status) status.textContent = '';
         }, 2000);
       }
     });

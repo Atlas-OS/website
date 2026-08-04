@@ -63,6 +63,16 @@ export function initCopyCodeButtons() {
   const prose = document.querySelector('.prose');
   if (!prose) return;
 
+  let status = document.getElementById('prose-copy-status');
+  if (!status) {
+    status = document.createElement('span');
+    status.id = 'prose-copy-status';
+    status.className = 'sr-only';
+    status.setAttribute('role', 'status');
+    status.setAttribute('aria-live', 'polite');
+    document.body.appendChild(status);
+  }
+
   const pres = prose.querySelectorAll('pre');
   pres.forEach(pre => {
     if (
@@ -86,7 +96,7 @@ export function initCopyCodeButtons() {
     const button = document.createElement('button');
     button.type = 'button';
     button.className =
-      'copy-code-btn absolute right-2 top-2 flex h-10 w-10 items-center justify-center rounded-[var(--docs-radius-md)] opacity-0 transition-[background-color,opacity,scale] duration-200 hover:bg-white/10 active:scale-[0.96] focus:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-primary)] group-hover:opacity-100';
+      'copy-code-btn absolute right-2 top-2 flex h-10 w-10 items-center justify-center rounded-[var(--docs-radius-md)] opacity-60 transition-[background-color,opacity,scale] duration-150 hover:bg-white/10 active:scale-[0.96] focus:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-primary)] group-hover:opacity-100';
     button.setAttribute('aria-label', 'Copy code');
     button.replaceChildren(createCopyIcon());
 
@@ -96,12 +106,15 @@ export function initCopyCodeButtons() {
         await copyText(text);
         button.replaceChildren(createCheckIcon());
         button.setAttribute('aria-label', 'Copied!');
+        status.textContent = 'Code copied';
         setTimeout(() => {
           button.replaceChildren(createCopyIcon());
           button.setAttribute('aria-label', 'Copy code');
+          status.textContent = '';
         }, 2000);
       } catch {
         button.setAttribute('aria-label', 'Copy failed');
+        status.textContent = 'Unable to copy code';
       }
     });
 
