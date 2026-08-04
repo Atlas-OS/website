@@ -79,7 +79,7 @@ function hasActiveDescendant(item: NavItem): boolean {
               class="inline-flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-md text-sm font-medium text-white shadow-[var(--shadow-surface)] transition-[background-color,box-shadow,opacity,scale] duration-200 outline-none hover:bg-white/[0.04] hover:opacity-80 hover:shadow-[var(--shadow-surface-hover)] active:scale-[0.96]"
               style="background-color: var(--bg-primary);"
             >
-              <Icon name="tabler:x" class="h-5 w-5" aria-hidden="true" />
+              <Icon name="tabler:x" is:inline class="h-5 w-5" aria-hidden="true" />
             </button>
           </div>
 
@@ -98,6 +98,7 @@ function hasActiveDescendant(item: NavItem): boolean {
                   <span class="flex min-w-0 items-center gap-2">
                     <Icon
                       name={getSectionIcon(homeSection.sectionSlug)}
+                      is:inline
                       class="sidebar-primary-icon h-4 w-4 shrink-0"
                       aria-hidden="true"
                     />
@@ -128,6 +129,7 @@ function hasActiveDescendant(item: NavItem): boolean {
                       <span class="flex min-w-0 items-center gap-2">
                         <Icon
                           name={getSectionIcon(section.sectionSlug)}
+                          is:inline
                           class="sidebar-primary-icon h-4 w-4 shrink-0"
                           aria-hidden="true"
                         />
@@ -197,6 +199,7 @@ function hasActiveDescendant(item: NavItem): boolean {
                                   >
                                     <Icon
                                       name="tabler:chevron-down"
+                                      is:inline
                                       class="sidebar-arrow pointer-events-none h-4 w-4 transition-transform duration-200"
                                     />
                                   </button>
