@@ -62,12 +62,10 @@ const links = {
       </div>
       <h1
         class="mb-6 bg-linear-to-b from-white to-blue-200 bg-clip-text text-4xl font-semibold tracking-tight text-transparent md:text-7xl"
-        data-animate
-        data-animate-delay="4"
       >
         Optimized Windows. <br /> Designed for enthusiasts.
       </h1>
-      <p class="mx-auto mb-10 max-w-2xl leading-relaxed text-white/70" data-animate data-animate-delay="6">
+      <p class="mx-auto mb-10 max-w-2xl leading-relaxed text-white/70">
         AtlasOS is creating a "kinder" Windows experience. Reducing bloatware and optimizing performance for
         enthusiasts, gamers, and privacy-conscious individuals.
       </p>
@@ -463,6 +461,11 @@ const links = {
   async function updateHeroDownloadCount(): Promise<void> {
     const countElement = document.getElementById('hero-download-count');
     if (!countElement) {
+      return;
+    }
+
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      countElement.textContent = '2,000,000';
       return;
     }
 

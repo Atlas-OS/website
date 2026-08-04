@@ -136,6 +136,7 @@ export default defineConfig({
       weights: [400, 500, 600, 700],
       styles: ['normal'],
       subsets: ['latin'],
+      display: 'optional',
     },
     {
       name: 'Archivo',
@@ -144,6 +145,7 @@ export default defineConfig({
       weights: [600, 700],
       styles: ['normal', 'italic'],
       subsets: ['latin'],
+      display: 'optional',
     },
     {
       name: 'Fira Code',
@@ -152,6 +154,7 @@ export default defineConfig({
       weights: [400, 600],
       styles: ['normal'],
       subsets: ['latin'],
+      display: 'optional',
     },
   ],
 

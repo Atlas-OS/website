@@ -134,7 +134,9 @@ const links = {
       this.signal = signal;
 
       this.initDropdown();
-      this.updateStarInfo();
+      if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+        this.updateStarInfo();
+      }
     }
 
     private initDropdown(): void {
