@@ -3,12 +3,19 @@ import { closeSidebar } from './sidebar';
 
 const PAGEFIND_PATH = '/pagefind/pagefind.js';
 const SEARCH_DEBOUNCE_MS = 150;
-const MAX_RESULTS = 10;
+const MAX_RESULTS = 8;
+
+interface PagefindSubResult {
+  url: string;
+  title: string;
+  excerpt: string;
+}
 
 interface PagefindResultData {
   url: string;
   excerpt: string;
   meta?: { title?: string };
+  sub_results?: PagefindSubResult[];
 }
 
 interface PagefindResult {
@@ -27,8 +34,14 @@ interface Pagefind {
 }
 
 interface SearchResult {
-  url: string;
+  /** Page title. */
   title: string;
+  /** Heading of the best matching section, when it differs from the page title. */
+  section: string | null;
+  /** URL of the best matching section (includes the heading anchor when available). */
+  url: string;
+  /** Pagefind excerpt HTML; matched terms are wrapped in `<mark>`. */
+  excerpt: string;
 }
 
 let pagefindPromise: Promise<Pagefind | null> | null = null;
@@ -61,10 +74,67 @@ function titleFromUrl(url: string): string {
     .join(' ');
 }
 
+/** Pagefind excerpts only contain text and `<mark>`; strip anything else defensively. */
+function sanitizeExcerpt(html: string): string {
+  return html.replace(/<(?!\/?mark\b)[^>]*>/gi, '');
+}
+
+function toSearchResult(data: PagefindResultData): SearchResult {
+  const title = data.meta?.title || titleFromUrl(data.url);
+  const best = data.sub_results?.[0];
+  const section = best && best.title && best.title !== title ? best.title : null;
+
+  return {
+    title,
+    section,
+    url: best?.url ?? data.url,
+    excerpt: sanitizeExcerpt(best?.excerpt ?? data.excerpt ?? ''),
+  };
+}
+
 const FILE_ICON =
   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21h-10a2 2 0 0 1-2-2v-14a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/></svg>';
 const CHEVRON_ICON =
   '<svg class="spotlight-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg>';
+
+function renderItem(result: SearchResult, index: number): HTMLLIElement {
+  const item = document.createElement('li');
+  item.className = 'spotlight-item';
+  item.id = `spotlight-option-${index}`;
+  item.setAttribute('role', 'option');
+  item.setAttribute('aria-selected', 'false');
+  item.dataset.url = result.url;
+
+  const icon = document.createElement('div');
+  icon.className = 'spotlight-item-icon';
+  icon.innerHTML = FILE_ICON;
+
+  const body = document.createElement('div');
+  body.className = 'spotlight-item-body';
+
+  const heading = document.createElement('p');
+  heading.className = 'spotlight-item-title';
+  heading.textContent = result.title;
+  if (result.section) {
+    const separator = document.createElement('span');
+    separator.className = 'spotlight-item-separator';
+    separator.setAttribute('aria-hidden', 'true');
+    separator.textContent = '›';
+    const section = document.createElement('span');
+    section.className = 'spotlight-item-section';
+    section.textContent = result.section;
+    heading.append(separator, section);
+  }
+
+  const excerpt = document.createElement('p');
+  excerpt.className = 'spotlight-item-excerpt';
+  excerpt.innerHTML = result.excerpt;
+
+  body.append(heading, excerpt);
+  item.append(icon, body);
+  item.insertAdjacentHTML('beforeend', CHEVRON_ICON);
+  return item;
+}
 
 interface SpotlightElements {
   modal: HTMLElement;
@@ -224,23 +294,10 @@ export function initSpotlight(signal: AbortSignal): void {
       return;
     }
 
-    list.replaceChildren(
-      ...results.map((result, index) => {
-        const item = document.createElement('li');
-        item.className = 'spotlight-item';
-        item.id = `spotlight-option-${index}`;
-        item.setAttribute('role', 'option');
-        item.setAttribute('aria-selected', 'false');
-        item.dataset.url = result.url;
-
-        const path = `/${result.url.replace(/^\/|\/$/g, '')}`;
-        item.innerHTML = `<div class="spotlight-item-icon">${FILE_ICON}</div><div class="spotlight-item-body"><p class="spotlight-item-title"></p><p class="spotlight-item-path"></p></div>${CHEVRON_ICON}`;
-        item.querySelector('.spotlight-item-title')!.textContent = result.title;
-        item.querySelector('.spotlight-item-path')!.textContent = path;
-        return item;
-      }),
-    );
+    list.replaceChildren(...results.map(renderItem));
     setState('results');
+    // Enter opens the first result without an extra arrow press.
+    select(0);
   }
 
   async function search(query: string): Promise<void> {
@@ -268,15 +325,12 @@ export function initSpotlight(signal: AbortSignal): void {
       if (!isCurrent() || response === null) return;
 
       const loaded = await Promise.all(
-        response.results.slice(0, MAX_RESULTS).map(async result => {
-          const data = await result.data().catch(() => null);
-          return data ? { url: data.url, title: data.meta?.title || titleFromUrl(data.url) } : null;
-        }),
+        response.results.slice(0, MAX_RESULTS).map(result => result.data().catch(() => null)),
       );
       if (!isCurrent()) return;
 
       render(
-        loaded.filter((result): result is SearchResult => result !== null),
+        loaded.filter((data): data is PagefindResultData => data !== null).map(toSearchResult),
         query,
       );
     } catch (error) {

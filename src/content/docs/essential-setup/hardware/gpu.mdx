@@ -1,14 +1,14 @@
 ---
-title: GPU settings
+title: "GPU settings - Resizable BAR"
 metaDescription: "AtlasOS Resizable BAR (SAM): requirements, status check, BIOS config for NVIDIA and AMD."
 description: Enable Resizable BAR for GPU performance.
 order: 3
+sidebar:
+  label: "GPU settings"
 ---
 
 import Callout from '@/components/docs/Callout.astro';
 import CodeInline from '@/components/docs/CodeInline.astro';
-
-# GPU settings - Resizable BAR
 
 Enable Resizable BAR (Base Address Register), or Smart Access Memory (SAM) on AMD, to improve CPU-GPU communication. It can improve performance in supported games by letting the CPU access the GPU's entire frame buffer at once, but results vary by game and platform.
 

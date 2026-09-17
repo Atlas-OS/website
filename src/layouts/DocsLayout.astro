@@ -67,16 +67,20 @@ const { prev, next } = showPageNav ? await getDocsPagination(currentPath) : { pr
         tabindex="-1"
       >
         <div class="docs-main-inner">
-          <article class="docs-article">
+          <article class="docs-article" data-pagefind-body>
             <Breadcrumbs currentSlug={currentPath} />
-            <div class="docs-content prose max-w-none md:prose-lg" data-pagefind-body>
+            <header class="docs-header">
+              <h1 class="docs-title">{title}</h1>
+            </header>
+            <TableOfContents headings={headings} variant="inline" />
+            <div class="docs-content prose max-w-none md:prose-lg">
               <slot />
             </div>
             {showPageNav && <PageNav prev={prev} next={next} />}
           </article>
         </div>
       </main>
-      <TableOfContents headings={headings} />
+      <TableOfContents headings={headings} variant="sidebar" />
     </div>
     <Spotlight />
   </Fragment>
@@ -115,9 +119,25 @@ const { prev, next } = showPageNav ? await getDocsPagination(currentPath) : { pr
     width: min(100%, 76rem);
   }
 
+  /* Caps body copy near 75 characters per line at the 16px reading size. */
   .docs-article {
-    max-width: 56rem;
+    max-width: 44rem;
     padding-inline: clamp(0.125rem, 1vw, 0.5rem);
+  }
+
+  .docs-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .docs-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 1.5rem + 1.5vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: white;
+    text-wrap: balance;
   }
 
   .docs-content {

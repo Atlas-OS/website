@@ -9,8 +9,8 @@ interface Props {
 const { type = 'info', title } = Astro.props;
 
 const variants = {
-  info: { icon: 'tabler:info-circle', accent: 'border-l-primary/50', color: 'text-primary', title: 'Info' },
-  tip: { icon: 'tabler:bulb', accent: 'border-l-primary/50', color: 'text-primary', title: 'Tip' },
+  info: { icon: 'tabler:info-circle', accent: 'border-l-primary/50', color: 'text-link', title: 'Info' },
+  tip: { icon: 'tabler:bulb', accent: 'border-l-primary/50', color: 'text-link', title: 'Tip' },
   warning: {
     icon: 'tabler:alert-triangle',
     accent: 'border-l-yellow-500/50',
@@ -80,7 +80,7 @@ const displayTitle = title ?? variant.title;
   }
 
   .callout-content a {
-    color: var(--color-primary);
+    color: var(--color-link);
     text-decoration: none;
     font-weight: 500;
     transition: opacity var(--motion-duration-fast) var(--motion-ease-out);
@@ -124,7 +124,7 @@ const displayTitle = title ?? variant.title;
   .callout-content code {
     background-color: var(--docs-surface-bg);
     border: 1px solid var(--docs-surface-border);
-    color: var(--color-primary);
+    color: var(--color-link);
     padding: 0.125rem 0.375rem;
     border-radius: var(--docs-radius-sm);
     font-size: 0.875em;

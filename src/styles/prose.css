@@ -156,9 +156,9 @@
 :where(.prose) > a:not(.not-prose):not(.not-prose *),
 :where(.prose) a:not(.not-prose):not(.not-prose *) {
   @apply text-base;
-  color: var(--color-primary);
+  color: var(--color-link);
   text-decoration-line: underline;
-  text-decoration-color: color-mix(in oklch, var(--color-primary) 45%, transparent);
+  text-decoration-color: color-mix(in oklch, var(--color-link) 45%, transparent);
   text-decoration-thickness: from-font;
   text-underline-offset: 0.18em;
   text-decoration-skip-ink: auto;
@@ -171,7 +171,7 @@
 :where(.prose) > a:not(.not-prose):not(.not-prose *):hover,
 :where(.prose) a:not(.not-prose):not(.not-prose *):hover {
   opacity: 1;
-  color: var(--color-primary);
+  color: var(--color-link);
   text-decoration-color: currentColor;
 }
 
@@ -193,7 +193,7 @@
   background-color: rgb(255 255 255 / 0.06);
   border: 1px solid rgb(255 255 255 / 0.06);
   border-radius: var(--docs-radius-sm);
-  color: var(--color-primary);
+  color: var(--color-link);
   font-size: 0.9em;
 }
 

@@ -23,7 +23,7 @@ const structuredData = {
 ---
 
 {breadcrumbs.length > 1 && (
-  <nav aria-label="Breadcrumb" class="mb-6">
+  <nav aria-label="Breadcrumb" class="mb-6" data-pagefind-ignore>
     <ol class="flex flex-wrap items-center text-sm text-[var(--docs-text-muted)]">
       {breadcrumbs.map((crumb, index) => (
         <li class="breadcrumb-item flex items-center" data-breadcrumb-path={crumb.href}>

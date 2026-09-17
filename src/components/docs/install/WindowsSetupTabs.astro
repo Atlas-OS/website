@@ -30,7 +30,7 @@ const detailedPartitionSelection = variant !== 'playbook';
 >
   <TabPanel value="no-usb" default>
     <p class="mb-4">
-      <strong>Choose this method if:</strong>
+      <strong>Choose this method if:</strong>{' '}
       {variant === 'playbook'
         ? 'You already run Windows and want the simplest installation method.'
         : variant === 'iso'
@@ -60,10 +60,10 @@ const detailedPartitionSelection = variant !== 'playbook';
 
     <ol class="list-decimal space-y-4 pl-6 [&>li]:pl-2">
       <li>
-        <strong>Disconnect internet</strong>
+        <strong>Disconnect internet:</strong>{' '}
         {variant === 'playbook'
-          ? '(unplug ethernet, disable Wi-Fi)'
-          : '- Unplug ethernet, disable Wi-Fi. Do not reconnect until instructed.'}
+          ? 'unplug ethernet and disable Wi-Fi.'
+          : 'unplug ethernet and disable Wi-Fi. Do not reconnect until instructed.'}
       </li>
 
       <li>
@@ -195,7 +195,7 @@ const detailedPartitionSelection = variant !== 'playbook';
 
   <TabPanel value="usb">
     <p class="mb-4">
-      <strong>Choose this method if:</strong>
+      <strong>Choose this method if:</strong>{' '}
       {variant === 'playbook'
         ? 'You want a clean installation or currently run Linux.'
         : variant === 'iso'
@@ -217,7 +217,7 @@ const detailedPartitionSelection = variant !== 'playbook';
             >
               Ventoy
             </a>
-            {variant !== 'playbook' && 'and extract it'}
+            {variant !== 'playbook' && ' and extract it'}
           </li>
           <li>
             Run <strong>Ventoy2Disk.exe</strong>
@@ -233,7 +233,7 @@ const detailedPartitionSelection = variant !== 'playbook';
       </li>
 
       <li>
-        <strong>Disconnect internet</strong> - Unplug ethernet, disable Wi-Fi. Do not reconnect until instructed.
+        <strong>Disconnect internet:</strong> unplug ethernet and disable Wi-Fi. Do not reconnect until instructed.
       </li>
 
       <li>

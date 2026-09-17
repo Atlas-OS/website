@@ -46,7 +46,7 @@ const tabItems = [
     <div class="msdl-widget not-prose" data-msdl-root>
       <!-- Step: idle — architecture selection -->
       <div data-msdl-step="idle">
-        <p class="mb-3 text-xs font-medium tracking-widest text-white/60 uppercase">Architecture</p>
+        <p class="mb-3 text-xs font-medium tracking-widest text-white/70 uppercase">Architecture</p>
         <div class="grid grid-cols-2 gap-2">
           <button
             type="button"
@@ -61,7 +61,7 @@ const tabItems = [
             />
             <div>
               <p class="text-sm font-semibold text-white/85">x64</p>
-              <p class="text-xs text-white/60">Intel &amp; AMD</p>
+              <p class="text-xs text-white/70">Intel &amp; AMD</p>
             </div>
           </button>
           <button
@@ -77,7 +77,7 @@ const tabItems = [
             />
             <div>
               <p class="text-sm font-semibold text-white/85">ARM64</p>
-              <p class="text-xs text-white/60">Qualcomm Snapdragon</p>
+              <p class="text-xs text-white/70">Qualcomm Snapdragon</p>
             </div>
           </button>
         </div>
@@ -133,7 +133,7 @@ const tabItems = [
               aria-haspopup="listbox"
               aria-expanded="false"
             >
-              <span data-msdl-select-value class="text-white/60">
+              <span data-msdl-select-value class="text-white/70">
                 Choose a language&hellip;
               </span>
               <svg
@@ -154,7 +154,7 @@ const tabItems = [
             <!-- Panel injected by JS -->
           </div>
 
-          <p class="text-xs text-white/60">
+          <p class="text-xs text-white/70">
             Match your Windows display language — check{' '}
             <strong class="font-medium text-white/80">Settings &rarr; Time &amp; language</strong>.
           </p>
@@ -194,7 +194,7 @@ const tabItems = [
 
         <div class="rounded-lg border border-white/[0.05] bg-white/[0.02]">
           <div class="border-b border-white/[0.04] px-3 py-2">
-            <p class="text-xs font-semibold tracking-wider text-white/60 uppercase">
+            <p class="text-xs font-semibold tracking-wider text-white/70 uppercase">
               Didn&rsquo;t start? Download manually
             </p>
           </div>
@@ -631,7 +631,7 @@ const tabItems = [
 
     function selectOption(id: string | number, label: string, language: string, friendlyFileNames?: string[]) {
       valueEl.textContent = label;
-      valueEl.classList.remove('text-white/60');
+      valueEl.classList.remove('text-white/70');
       valueEl.classList.add('text-white/90');
       onSelect(id, label, language, friendlyFileNames);
       closePanel();
@@ -680,7 +680,7 @@ const tabItems = [
         closePanel();
         valueEl.textContent = 'Choose a language\u2026';
         valueEl.classList.remove('text-white/90');
-        valueEl.classList.add('text-white/60');
+        valueEl.classList.add('text-white/70');
       },
     };
   }
@@ -830,7 +830,7 @@ const tabItems = [
         link.target = '_blank';
         link.rel = 'noopener noreferrer';
         link.className =
-          'flex w-full items-center gap-2.5 rounded-md px-2.5 py-2 text-xs text-white/60 transition-colors duration-150 hover:bg-white/[0.04] hover:text-white/85';
+          'flex w-full items-center gap-2.5 rounded-md px-2.5 py-2 text-xs text-white/70 transition-colors duration-150 hover:bg-white/[0.04] hover:text-white/85';
 
         const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         icon.setAttribute('class', 'h-3.5 w-3.5 shrink-0 text-white/30');

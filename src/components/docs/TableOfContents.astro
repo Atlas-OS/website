@@ -1,16 +1,50 @@
 ---
+import type { MarkdownHeading } from 'astro';
 import { Icon } from 'astro-icon/components';
 
 interface Props {
-  headings?: Array<{ depth: number; slug: string; text: string }>;
+  headings?: MarkdownHeading[];
+  /**
+   * `sidebar` renders the fixed column shown from the xl breakpoint;
+   * `inline` renders a collapsible list for narrower viewports, placed at the top of the article.
+   */
+  variant?: 'sidebar' | 'inline';
 }
 
-const { headings = [] } = Astro.props;
+const { headings = [], variant = 'sidebar' } = Astro.props;
+const entries = headings.filter((heading) => heading.depth === 2 || heading.depth === 3);
+const showInline = variant === 'inline' && entries.length > 0;
+const showSidebar = variant === 'sidebar' && entries.length > 0;
 
-const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
+const linkClass =
+  'toc-link block min-h-8 w-full rounded-sm py-1 text-start text-sm transition-colors duration-150 hover:text-[var(--docs-text-primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary';
 ---
 
-{filteredHeadings.length > 0 && (
+{showInline && (
+  <details class="toc-inline docs-surface not-prose mb-8 xl:hidden" data-pagefind-ignore>
+    <summary class="flex min-h-11 cursor-pointer items-center justify-between gap-3 px-4 py-2.5 text-sm font-semibold text-[var(--docs-text-secondary)]">
+      <span>On this page</span>
+      <Icon
+        name="tabler:chevron-down"
+        class="toc-inline-icon h-4 w-4 shrink-0 text-[var(--docs-text-muted)] transition-transform duration-200"
+        aria-hidden="true"
+      />
+    </summary>
+    <nav aria-label="On this page" class="border-t border-[var(--docs-surface-border)] px-4 py-3">
+      <ul class="space-y-1">
+        {entries.map((heading) => (
+          <li>
+            <a href={`#${heading.slug}`} class:list={[linkClass, heading.depth === 3 ? 'pl-4' : '']}>
+              {heading.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </details>
+)}
+
+{showSidebar && (
   <aside
     id="toc"
     data-pagefind-ignore
@@ -19,9 +53,7 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
   >
     <nav class="sticky top-6 z-10 -mr-2 max-h-[calc(100vh-4rem)] overflow-y-auto px-2" aria-label="On this page">
       <div class="space-y-4">
-        <h2 class="mb-4 text-sm font-semibold" style="color: var(--docs-text-muted);">
-          On this page
-        </h2>
+        <h2 class="mb-4 text-sm font-semibold text-[var(--docs-text-muted)]">On this page</h2>
         <div class="relative">
           <div
             id="toc-marker"
@@ -32,14 +64,12 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
           </div>
 
           <ul class="space-y-2">
-            {filteredHeadings.map((heading) => (
+            {entries.map((heading) => (
               <li>
                 <a
                   href={`#${heading.slug}`}
-                  class={`toc-link block min-h-8 w-full rounded-sm py-1 text-start text-sm transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
-                    heading.depth === 3 ? 'pl-6' : 'pl-4'
-                  } hover:text-[var(--docs-text-primary)]`}
-                  style="scroll-behavior: smooth;"
+                  class:list={[linkClass, heading.depth === 3 ? 'pl-6' : 'pl-4']}
+                  data-toc-link
                 >
                   {heading.text}
                 </a>
@@ -52,18 +82,17 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
           <button
             type="button"
             id="toc-copy-link"
-            class="toc-utility-link -mx-2 inline-flex min-h-9 items-center gap-2 rounded-md px-2 text-start text-sm transition-colors duration-150 hover:text-[var(--docs-text-primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-            style="color: var(--docs-text-muted);"
+            class="toc-utility-link -mx-2 inline-flex min-h-9 items-center gap-2 rounded-md px-2 text-start text-sm text-[var(--docs-text-muted)] transition-colors duration-150 hover:text-[var(--docs-text-primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
-            <Icon name="tabler:copy" class="h-4 w-4 shrink-0" aria-hidden="true" />
+            <Icon name="tabler:copy" class="copy-code-icon h-4 w-4 shrink-0" aria-hidden="true" />
+            <Icon name="tabler:check" class="copy-code-check h-4 w-4 shrink-0" aria-hidden="true" />
             <span data-copy-link-label>Copy link</span>
           </button>
           <a
             href="https://github.com/Atlas-OS/website/issues"
             target="_blank"
             rel="noopener noreferrer"
-            class="toc-utility-link -mx-2 inline-flex min-h-9 items-center gap-2 rounded-md px-2 text-sm transition-colors duration-150 hover:text-[var(--docs-text-primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-            style="color: var(--docs-text-muted);"
+            class="toc-utility-link -mx-2 inline-flex min-h-9 items-center gap-2 rounded-md px-2 text-sm text-[var(--docs-text-muted)] transition-colors duration-150 hover:text-[var(--docs-text-primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
             <Icon name="tabler:message-report" class="h-4 w-4 shrink-0" aria-hidden="true" />
             <span>Share feedback</span>
@@ -77,7 +106,8 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
 <style>
   #toc {
-    background-color: transparent;
+    /* Keep the utilities clear of the floating "Ask AI" button. */
+    padding-bottom: 6rem;
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
   }
@@ -103,148 +133,139 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
     color: var(--docs-text-muted);
   }
 
-  .toc-active {
-    color: var(--color-primary);
+  .toc-link[aria-current='location'] {
+    color: var(--color-link);
+  }
+
+  .toc-inline summary {
+    list-style: none;
+  }
+
+  .toc-inline summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .toc-inline[open] .toc-inline-icon {
+    transform: rotate(180deg);
+  }
+
+  #toc-copy-link .copy-code-check {
+    display: none;
+  }
+
+  #toc-copy-link[data-copied='true'] .copy-code-icon {
+    display: none;
+  }
+
+  #toc-copy-link[data-copied='true'] .copy-code-check {
+    display: block;
   }
 </style>
 
 <script>
+  import { bindCopyButton } from '@/utils/clipboard';
   import { onPageLoad } from '@/utils/page-lifecycle';
 
-  function setupTableOfContents(signal: AbortSignal) {
-    const toc = document.querySelector('#toc');
-    if (!toc) return;
-    if (toc instanceof HTMLElement && toc.dataset.tocInitialized === 'true') return;
-    if (toc instanceof HTMLElement) {
-      toc.dataset.tocInitialized = 'true';
-    }
+  const SCROLL_OFFSET = 100;
 
-    const tocLinks = Array.from(toc.querySelectorAll('a.toc-link'));
-    const marker = toc.querySelector('#toc-marker') as HTMLElement;
+  /** Highlight the heading currently at the top of the viewport and move the marker beside it. */
+  function setupActiveHeading(signal: AbortSignal) {
+    const toc = document.getElementById('toc');
+    const marker = document.getElementById('toc-marker');
+    if (!toc || !marker) return;
 
-    if (!tocLinks.length || !marker) return;
-
-    const headingIds = tocLinks.map((link) => link.getAttribute('href')?.substring(1)).filter(Boolean) as string[];
-    const headings = headingIds
-      .map((id) => {
-        const el = document.getElementById(id);
-        return el ? { id, element: el } : null;
-      })
-      .filter((h): h is { id: string; element: HTMLElement } => h !== null);
-
+    const links = [...toc.querySelectorAll<HTMLAnchorElement>('[data-toc-link]')];
+    const headings = links
+      .map((link) => document.getElementById(decodeURIComponent(link.hash.slice(1))))
+      .filter((element): element is HTMLElement => element !== null);
     if (headings.length === 0) return;
 
-    let headingOffsets: Array<{ id: string; top: number }> = [];
-    let activeHeadingId: string | null = null;
-    let animationFrame = 0;
+    let offsets: number[] = [];
+    let activeId: string | null = null;
+    let frame = 0;
 
-    const measureHeadings = () => {
-      headingOffsets = headings.map((heading) => ({
-        id: heading.id,
-        top: heading.element.getBoundingClientRect().top + window.scrollY,
-      }));
+    const measure = () => {
+      offsets = headings.map((heading) => heading.getBoundingClientRect().top + window.scrollY);
     };
 
-    const updateActiveLink = () => {
-      animationFrame = 0;
-      const scrollPosition = window.scrollY + 100;
-      let nextActiveHeadingId: string | null = null;
-
-      for (let i = headingOffsets.length - 1; i >= 0; i--) {
-        const heading = headingOffsets[i];
-        if (!heading) continue;
-        if (scrollPosition >= heading.top) {
-          nextActiveHeadingId = heading.id;
+    const update = () => {
+      frame = 0;
+      const position = window.scrollY + SCROLL_OFFSET;
+      let nextId: string | null = null;
+      for (let i = offsets.length - 1; i >= 0; i -= 1) {
+        if (position >= offsets[i]!) {
+          nextId = headings[i]!.id;
           break;
         }
       }
+      if (nextId === activeId) return;
+      activeId = nextId;
 
-      if (nextActiveHeadingId === activeHeadingId) return;
-      activeHeadingId = nextActiveHeadingId;
-
-      tocLinks.forEach((link) => {
-        link.classList.remove('toc-active', 'text-white');
-        link.removeAttribute('aria-current');
-      });
-
-      if (activeHeadingId) {
-        const activeLink = tocLinks.find((link) => link.getAttribute('href') === `#${activeHeadingId}`) as HTMLElement;
-
-        if (activeLink) {
-          activeLink.classList.add('toc-active');
-          activeLink.setAttribute('aria-current', 'location');
-
-          const linkRect = activeLink.getBoundingClientRect();
-          const containerRect = marker.parentElement?.getBoundingClientRect();
-
-          if (containerRect) {
-            const top = linkRect.top - containerRect.top;
-            const height = linkRect.height;
-
-            marker.style.top = `${top}px`;
-            marker.style.height = `${height}px`;
-            marker.style.opacity = '1';
-          }
+      let activeLink: HTMLAnchorElement | undefined;
+      for (const link of links) {
+        const isActive = decodeURIComponent(link.hash.slice(1)) === activeId;
+        if (isActive) {
+          link.setAttribute('aria-current', 'location');
+          activeLink = link;
+        } else {
+          link.removeAttribute('aria-current');
         }
-      } else {
-        marker.style.opacity = '0';
       }
+
+      if (!activeLink || !marker.parentElement) {
+        marker.style.opacity = '0';
+        return;
+      }
+      const linkRect = activeLink.getBoundingClientRect();
+      const containerRect = marker.parentElement.getBoundingClientRect();
+      marker.style.top = `${linkRect.top - containerRect.top}px`;
+      marker.style.height = `${linkRect.height}px`;
+      marker.style.opacity = '1';
     };
 
-    const scheduleUpdate = () => {
-      if (!animationFrame) animationFrame = window.requestAnimationFrame(updateActiveLink);
-    };
-    const handleResize = () => {
-      measureHeadings();
-      activeHeadingId = null;
-      scheduleUpdate();
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update);
     };
 
-    measureHeadings();
-    window.addEventListener('scroll', scheduleUpdate, { passive: true, signal });
-    window.addEventListener('resize', handleResize, { signal });
-    updateActiveLink();
+    measure();
+    update();
+    window.addEventListener('scroll', schedule, { passive: true, signal });
+    window.addEventListener(
+      'resize',
+      () => {
+        measure();
+        activeId = null;
+        schedule();
+      },
+      { signal }
+    );
+    signal.addEventListener('abort', () => cancelAnimationFrame(frame), { once: true });
   }
 
-  function setupCopyLink() {
-    const btn = document.getElementById('toc-copy-link');
-    if (!btn) return;
-    if (btn.dataset.copyBound === 'true') return;
-    btn.dataset.copyBound = 'true';
+  function setupCopyLink(signal: AbortSignal) {
+    const button = document.getElementById('toc-copy-link');
+    if (!button) return;
+    const label = button.querySelector<HTMLElement>('[data-copy-link-label]');
 
-    btn.addEventListener('click', async () => {
-      const label = btn.querySelector<HTMLElement>('[data-copy-link-label]');
-      const status = document.getElementById('toc-copy-status');
-      const originalText = label?.textContent || 'Copy link';
-      const setLabel = (text: string) => {
-        if (label) {
-          label.textContent = text;
-        } else {
-          btn.textContent = text;
-        }
-      };
-
-      try {
-        await navigator.clipboard.writeText(window.location.href);
-        setLabel('Copied');
-        if (status) status.textContent = 'Page link copied';
-        setTimeout(() => {
-          setLabel(originalText);
-          if (status) status.textContent = '';
-        }, 2000);
-      } catch {
-        setLabel('Unable to copy');
-        if (status) status.textContent = 'Unable to copy the page link';
-        setTimeout(() => {
-          setLabel('Copy link');
-          if (status) status.textContent = '';
-        }, 2000);
-      }
+    bindCopyButton(button, {
+      getText: () => window.location.href,
+      status: document.getElementById('toc-copy-status'),
+      labels: { idle: 'Copy link', copied: 'Link copied', failed: 'Unable to copy link' },
+      announcements: { copied: 'Page link copied', failed: 'Unable to copy the page link' },
+      signal,
     });
+
+    if (label) {
+      const observer = new MutationObserver(() => {
+        label.textContent = button.dataset.copied === 'true' ? 'Link copied' : 'Copy link';
+      });
+      observer.observe(button, { attributes: true, attributeFilter: ['data-copied'] });
+      signal.addEventListener('abort', () => observer.disconnect(), { once: true });
+    }
   }
 
   onPageLoad((signal) => {
-    setupTableOfContents(signal);
-    setupCopyLink();
+    setupActiveHeading(signal);
+    setupCopyLink(signal);
   });
 </script>
