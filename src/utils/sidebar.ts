@@ -162,7 +162,9 @@ function syncActiveLink(sidebar: HTMLElement, activePath = window.location.pathn
   for (const group of sidebar.querySelectorAll<HTMLElement>('[data-sidebar-group]')) {
     const containsPage = group.querySelector('a[aria-current="page"]') !== null;
     const key = group.dataset.sidebarKey ?? '';
-    setGroupOpen(group, containsPage || remembered[key] === true);
+    // Sections default open, nested groups default closed; a remembered choice wins unless the page is inside.
+    const defaultOpen = group.dataset.sidebarDefault === 'open';
+    setGroupOpen(group, containsPage || (remembered[key] ?? defaultOpen));
   }
 }
 

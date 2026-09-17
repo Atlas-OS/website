@@ -82,7 +82,7 @@ const listId = (href: string) => `sidebar-list-${href.replace(/[^a-z0-9]+/gi, '-
 
             {regularSections.map((section) => {
               const hasItems = section.items.length > 0;
-              const isOpen = isCurrent(section.href) || containsCurrent(section.items);
+              const isOpen = true; // Sections start open so the whole map is visible; users can collapse them.
               const sectionListId = listId(section.href);
 
               return (
@@ -90,6 +90,7 @@ const listId = (href: string) => `sidebar-list-${href.replace(/[^a-z0-9]+/gi, '-
                   class:list={['sidebar-section', hasItems && !isOpen && 'is-collapsed']}
                   data-sidebar-group={hasItems ? '' : undefined}
                   data-sidebar-key={section.href}
+                  data-sidebar-default="open"
                 >
                   <div class="group flex items-center gap-1 rounded-md transition-colors duration-200 hover:bg-white/5">
                     <a

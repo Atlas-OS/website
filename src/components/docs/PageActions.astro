@@ -10,12 +10,6 @@ interface Props {
 
 const { editUrl, markdownUrl } = Astro.props;
 
-const prompt = `Read ${markdownUrl} so I can ask questions about it.`;
-const assistants = [
-  { label: 'Open in ChatGPT', href: `https://chatgpt.com/?q=${encodeURIComponent(prompt)}` },
-  { label: 'Open in Claude', href: `https://claude.ai/new?q=${encodeURIComponent(prompt)}` },
-];
-
 const actionClass =
   'inline-flex min-h-9 items-center gap-1.5 rounded-md px-2 text-sm text-[var(--docs-text-muted)] transition-colors duration-150 hover:text-[var(--docs-text-primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary';
 ---
@@ -32,20 +26,10 @@ const actionClass =
 
   <span class="page-actions-divider" aria-hidden="true"></span>
 
-  <button type="button" class={actionClass} data-copy-page={markdownUrl}>
-    <Icon name="tabler:copy" class="copy-code-icon h-4 w-4 shrink-0" aria-hidden="true" />
-    <Icon name="tabler:check" class="copy-code-check h-4 w-4 shrink-0" aria-hidden="true" />
-    <span data-copy-page-label>Copy page as Markdown</span>
-  </button>
-
-  {assistants.map((assistant) => (
-    <a href={assistant.href} target="_blank" rel="noopener noreferrer" class={actionClass}>
-      <Icon name="tabler:sparkles" class="h-4 w-4 shrink-0" aria-hidden="true" />
-      {assistant.label}
-    </a>
-  ))}
-
-  <span class="sr-only" role="status" aria-live="polite" data-copy-page-status></span>
+  <a href={markdownUrl} class={actionClass}>
+    <Icon name="tabler:file-text" class="h-4 w-4 shrink-0" aria-hidden="true" />
+    View as Markdown
+  </a>
 </div>
 
 <style>
@@ -54,75 +38,4 @@ const actionClass =
     height: 1rem;
     background: rgba(255, 255, 255, 0.1);
   }
-
-  .page-actions .copy-code-check {
-    display: none;
-  }
-
-  .page-actions [data-copied='true'] .copy-code-icon {
-    display: none;
-  }
-
-  .page-actions [data-copied='true'] .copy-code-check {
-    display: block;
-  }
 </style>
-
-<script>
-  import { copyText } from '@/utils/clipboard';
-  import { onPageLoad } from '@/utils/page-lifecycle';
-
-  const markdownCache = new Map<string, Promise<string>>();
-
-  function fetchMarkdown(url: string): Promise<string> {
-    let pending = markdownCache.get(url);
-    if (!pending) {
-      // Same-origin path so previews and staging copy their own Markdown, not production's.
-      pending = fetch(new URL(url).pathname).then((response) => {
-        if (!response.ok) throw new Error(`Markdown request failed with status ${response.status}`);
-        return response.text();
-      });
-      pending.catch(() => markdownCache.delete(url));
-      markdownCache.set(url, pending);
-    }
-    return pending;
-  }
-
-  onPageLoad((signal) => {
-    for (const button of document.querySelectorAll<HTMLElement>('[data-copy-page]')) {
-      const url = button.dataset.copyPage;
-      const label = button.querySelector<HTMLElement>('[data-copy-page-label]');
-      const status = button.parentElement?.querySelector<HTMLElement>('[data-copy-page-status]');
-      if (!url) continue;
-
-      // Some browsers only allow clipboard writes shortly after the click, so fetch ahead on intent.
-      const warm = () => void fetchMarkdown(url).catch(() => {});
-      button.addEventListener('pointerenter', warm, { signal });
-      button.addEventListener('focus', warm, { signal });
-
-      let resetTimer: number | undefined;
-      button.addEventListener(
-        'click',
-        async () => {
-          window.clearTimeout(resetTimer);
-          try {
-            await copyText(await fetchMarkdown(url));
-            button.dataset.copied = 'true';
-            if (label) label.textContent = 'Copied';
-            if (status) status.textContent = 'Page copied as Markdown';
-          } catch {
-            button.dataset.copied = 'false';
-            if (label) label.textContent = 'Unable to copy';
-            if (status) status.textContent = 'Unable to copy the page';
-          }
-          resetTimer = window.setTimeout(() => {
-            button.dataset.copied = 'false';
-            if (label) label.textContent = 'Copy page as Markdown';
-            if (status) status.textContent = '';
-          }, 2000);
-        },
-        { signal }
-      );
-    }
-  });
-</script>
