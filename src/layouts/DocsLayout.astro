@@ -43,7 +43,6 @@ const editUrl = entry?.filePath
   ? `https://github.com/Atlas-OS/website/edit/main/${entry.filePath.replace(/\\/g, '/')}`
   : null;
 const markdownUrl = entry ? docsMarkdownUrl(entry, site) : null;
-const hasTableOfContents = headings.some((heading) => heading.depth === 2 || heading.depth === 3);
 const { prev, next } = showPageNav ? await getDocsPagination(currentPath) : { prev: null, next: null };
 ---
 
@@ -69,11 +68,7 @@ const { prev, next } = showPageNav ? await getDocsPagination(currentPath) : { pr
     <Navbar currentPath={currentPath} isDocsPage={true} />
     <div class="docs-shell relative z-10">
       <Sidebar currentSlug={currentPath} />
-      <main
-        class:list={['docs-main scroll-pt-24 docs-main--with-sidebar', hasTableOfContents && 'docs-main--with-toc']}
-        id="main-content"
-        tabindex="-1"
-      >
+      <main class="docs-main docs-main--with-sidebar scroll-pt-24" id="main-content" tabindex="-1">
         <div class="docs-main-inner">
           <article class="docs-article" data-pagefind-body>
             <Breadcrumbs currentSlug={currentPath} />
@@ -87,9 +82,9 @@ const { prev, next } = showPageNav ? await getDocsPagination(currentPath) : { pr
             {editUrl && markdownUrl && <PageActions editUrl={editUrl} markdownUrl={markdownUrl} />}
             {showPageNav && <PageNav prev={prev} next={next} />}
           </article>
+          <TableOfContents headings={headings} variant="sidebar" />
         </div>
       </main>
-      <TableOfContents headings={headings} variant="sidebar" />
     </div>
     <Spotlight />
   </Fragment>
@@ -110,8 +105,8 @@ const { prev, next } = showPageNav ? await getDocsPagination(currentPath) : { pr
   .docs-shell {
     --docs-header-height: 3.5rem;
     --docs-sidebar-width: 18rem;
-    --docs-toc-width: 18rem;
-    --docs-toc-inset: clamp(1.5rem, calc((100vw - 96rem) / 2), 7rem);
+    --docs-toc-width: 16rem;
+    --docs-article-width: 44rem;
     min-height: calc(100vh - var(--docs-header-height));
   }
 
@@ -123,14 +118,20 @@ const { prev, next } = showPageNav ? await getDocsPagination(currentPath) : { pr
     padding: clamp(2rem, 4vw, 3rem) clamp(1rem, 2.5vw, 2rem) clamp(2rem, 4vw, 3rem);
   }
 
+  /*
+   * Article and table of contents travel together as one centred unit, so they never drift
+   * apart on wide screens. The TOC column is always reserved from the xl breakpoint so the
+   * article does not shift between pages with and without headings.
+   */
   .docs-main-inner {
-    margin: 0 auto;
-    width: min(100%, 76rem);
+    display: grid;
+    grid-template-columns: minmax(0, var(--docs-article-width));
+    justify-content: center;
+    column-gap: clamp(2.5rem, 4vw, 4rem);
   }
 
-  /* Caps body copy near 75 characters per line at the 16px reading size. */
   .docs-article {
-    max-width: 44rem;
+    min-width: 0;
     padding-inline: clamp(0.125rem, 1vw, 0.5rem);
   }
 
@@ -161,8 +162,8 @@ const { prev, next } = showPageNav ? await getDocsPagination(currentPath) : { pr
   }
 
   @media (min-width: 1280px) {
-    .docs-main--with-toc {
-      padding-right: calc(var(--docs-toc-width) + var(--docs-toc-inset) + 1.5rem);
+    .docs-main-inner {
+      grid-template-columns: minmax(0, var(--docs-article-width)) var(--docs-toc-width);
     }
   }
 

@@ -45,13 +45,12 @@ const linkClass =
 )}
 
 {showSidebar && (
-  <aside
-    id="toc"
-    data-pagefind-ignore
-    class="fixed z-20 hidden overflow-y-auto px-6 py-6 xl:block"
-    style="top: var(--docs-header-height); right: var(--docs-toc-inset); width: var(--docs-toc-width); height: calc(100vh - var(--docs-header-height));"
-  >
-    <nav class="sticky top-6 z-10 -mr-2 max-h-[calc(100vh-4rem)] overflow-y-auto px-2" aria-label="On this page">
+  <aside id="toc" data-pagefind-ignore class="toc-column hidden min-w-0 xl:block">
+    <nav
+      class="toc-panel sticky overflow-y-auto px-2"
+      style="top: calc(var(--docs-header-height) + 1.5rem); max-height: calc(100vh - var(--docs-header-height) - 3rem);"
+      aria-label="On this page"
+    >
       <div class="space-y-4">
         <h2 class="mb-4 text-sm font-semibold text-[var(--docs-text-muted)]">On this page</h2>
         <div class="toc-rail relative">
@@ -105,27 +104,27 @@ const linkClass =
 )}
 
 <style>
-  #toc {
+  .toc-panel {
     /* Keep the utilities clear of the floating "Ask AI" button. */
     padding-bottom: 6rem;
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
   }
 
-  #toc::-webkit-scrollbar {
+  .toc-panel::-webkit-scrollbar {
     width: 6px;
   }
 
-  #toc::-webkit-scrollbar-track {
+  .toc-panel::-webkit-scrollbar-track {
     background: transparent;
   }
 
-  #toc::-webkit-scrollbar-thumb {
+  .toc-panel::-webkit-scrollbar-thumb {
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 3px;
   }
 
-  #toc::-webkit-scrollbar-thumb:hover {
+  .toc-panel::-webkit-scrollbar-thumb:hover {
     background-color: rgba(255, 255, 255, 0.2);
   }
 
