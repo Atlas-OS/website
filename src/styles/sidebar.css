@@ -1,5 +1,7 @@
 #sidebar {
   transform-origin: left center;
+  /* Same hairline as the navbar's bottom border, so the two meet in a clean T-junction. */
+  border-inline-end: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 #sidebar nav {
