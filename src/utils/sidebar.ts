@@ -1,4 +1,5 @@
 const DESKTOP_BREAKPOINT = '(min-width: 1024px)';
+const STORAGE_KEY = 'atlas-docs-sidebar';
 
 const desktopQuery = () => window.matchMedia(DESKTOP_BREAKPOINT);
 
@@ -23,6 +24,43 @@ function getElements(): SidebarElements | null {
     scrollContainer: document.getElementById('sidebar-scroll'),
   };
 }
+
+/* ------------------------------------------------------------------------- */
+/* Remembered open/closed state for sections and groups (per tab session)    */
+/* ------------------------------------------------------------------------- */
+
+type OpenState = Record<string, boolean>;
+
+function readOpenState(): OpenState {
+  try {
+    const raw = sessionStorage.getItem(STORAGE_KEY);
+    return raw ? (JSON.parse(raw) as OpenState) : {};
+  } catch {
+    return {};
+  }
+}
+
+function writeOpenState(state: OpenState): void {
+  try {
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch {
+    // Storage can be unavailable in private modes; the sidebar still works without memory.
+  }
+}
+
+function setGroupOpen(group: HTMLElement, isOpen: boolean, remember = false): void {
+  group.classList.toggle('is-collapsed', !isOpen);
+  group
+    .querySelector(':scope > .group > .sidebar-toggle')
+    ?.setAttribute('aria-expanded', String(isOpen));
+
+  const key = group.dataset.sidebarKey;
+  if (remember && key) writeOpenState({ ...readOpenState(), [key]: isOpen });
+}
+
+/* ------------------------------------------------------------------------- */
+/* Mobile drawer                                                             */
+/* ------------------------------------------------------------------------- */
 
 let inertBackground: Array<{ element: HTMLElement; wasInert: boolean }> = [];
 
@@ -98,10 +136,9 @@ function trapFocus(sidebar: HTMLElement, event: KeyboardEvent): void {
   }
 }
 
-function setGroupOpen(group: HTMLElement, isOpen: boolean): void {
-  group.classList.toggle('is-collapsed', !isOpen);
-  group.querySelector('.sidebar-toggle')?.setAttribute('aria-expanded', String(isOpen));
-}
+/* ------------------------------------------------------------------------- */
+/* Active page                                                               */
+/* ------------------------------------------------------------------------- */
 
 function normalizePath(path: string): string {
   return path.replace(/\/+$/, '') || '/';
@@ -109,7 +146,8 @@ function normalizePath(path: string): string {
 
 /**
  * The sidebar persists across View Transitions, so the active link is resolved on the client
- * for every navigation. Styling keys off `aria-current`; groups open when they contain the page.
+ * for every navigation. Styling keys off `aria-current`. Sections and groups open when they
+ * contain the page; everything else follows what the user last chose in this session.
  */
 function syncActiveLink(sidebar: HTMLElement, activePath = window.location.pathname): void {
   const currentPath = normalizePath(activePath);
@@ -120,23 +158,26 @@ function syncActiveLink(sidebar: HTMLElement, activePath = window.location.pathn
     else link.removeAttribute('aria-current');
   }
 
+  const remembered = readOpenState();
   for (const group of sidebar.querySelectorAll<HTMLElement>('[data-sidebar-group]')) {
-    setGroupOpen(group, group.querySelector('a[aria-current="page"]') !== null);
+    const containsPage = group.querySelector('a[aria-current="page"]') !== null;
+    const key = group.dataset.sidebarKey ?? '';
+    setGroupOpen(group, containsPage || remembered[key] === true);
   }
 }
 
 function setupGroups(sidebar: HTMLElement, signal: AbortSignal): void {
-  for (const group of sidebar.querySelectorAll<HTMLElement>('[data-sidebar-group]')) {
-    const toggle = group.querySelector<HTMLButtonElement>('.sidebar-toggle');
-    toggle?.addEventListener(
-      'click',
-      event => {
-        event.preventDefault();
-        setGroupOpen(group, group.classList.contains('is-collapsed'));
-      },
-      { signal },
-    );
-  }
+  sidebar.addEventListener(
+    'click',
+    event => {
+      const toggle = (event.target as Element).closest<HTMLElement>('.sidebar-toggle');
+      const group = toggle?.closest<HTMLElement>('[data-sidebar-group]');
+      if (!toggle || !group) return;
+      event.preventDefault();
+      setGroupOpen(group, group.classList.contains('is-collapsed'), true);
+    },
+    { signal },
+  );
 }
 
 function setupScrollbarReveal(scrollContainer: HTMLElement | null, signal: AbortSignal): void {

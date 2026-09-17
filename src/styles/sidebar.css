@@ -42,14 +42,6 @@
   background-color: rgba(255, 255, 255, 0.32);
 }
 
-.sidebar-section {
-  position: relative;
-}
-
-.sidebar-section + .sidebar-section {
-  padding-top: 0.25rem;
-}
-
 /* Links: every state keys off `aria-current`, which the client keeps in sync across navigations. */
 .sidebar-primary-link,
 .sidebar-link {
@@ -65,15 +57,6 @@
 
 .sidebar-link {
   color: rgba(255, 255, 255, 0.7);
-}
-
-.sidebar-link-nested {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.sidebar-primary-link:not([aria-current='page']):hover,
-.sidebar-link-nested:not([aria-current='page']):hover {
-  background: rgba(255, 255, 255, 0.05);
 }
 
 .sidebar-primary-link:not([aria-current='page']):hover,
@@ -128,30 +111,77 @@
   font-weight: 400;
 }
 
+/* Hierarchy rail: nested lists hang off a thin line; the active page lights up its segment. */
+.sidebar-rail {
+  position: relative;
+  margin-block: 0.125rem 0.375rem;
+  margin-inline-start: 0.875rem;
+  padding-inline-start: 0.625rem;
+  border-inline-start: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-rail-nested {
+  margin-inline-start: 0.5rem;
+  margin-block-end: 0.25rem;
+}
+
+.sidebar-rail > li {
+  position: relative;
+}
+
+.sidebar-rail > li + li {
+  margin-top: 0.125rem;
+}
+
+.sidebar-rail > li:has(> .group > a[aria-current='page'])::before,
+.sidebar-rail > li:has(> a[aria-current='page'])::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: calc(-0.625rem - 1px);
+  top: 0.375rem;
+  bottom: 0.375rem;
+  width: 2px;
+  border-radius: 999px;
+  background: var(--color-primary);
+}
+
 .sidebar-toggle {
   opacity: 0.72;
 }
 
-.sidebar-item-with-children:not(.is-collapsed) > .group .sidebar-toggle {
+.sidebar-section:not(.is-collapsed) > .group .sidebar-toggle,
+.sidebar-item:not(.is-collapsed) > .group .sidebar-toggle {
   opacity: 1;
 }
 
-.sidebar-children {
-  max-height: 500px;
+/* Collapse with a grid track so height animates to its natural size. */
+.sidebar-collapsible {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows var(--motion-duration-normal) var(--motion-ease-out);
+}
+
+.sidebar-collapsible > * {
+  min-height: 0;
   overflow: hidden;
-  transition: max-height var(--motion-duration-normal) var(--motion-ease-out);
 }
 
-.sidebar-item-with-children.is-collapsed .sidebar-children {
-  max-height: 0;
+.is-collapsed > .sidebar-collapsible {
+  grid-template-rows: 0fr;
 }
 
-.sidebar-item-with-children.is-collapsed .sidebar-arrow {
+.is-collapsed > .sidebar-collapsible > * {
+  visibility: hidden;
+  transition: visibility 0s var(--motion-duration-normal);
+}
+
+.is-collapsed > .group .sidebar-arrow {
   transform: rotate(-90deg);
 }
 
 #sidebar:not(.initialized) .sidebar-arrow,
-#sidebar:not(.initialized) .sidebar-children {
+#sidebar:not(.initialized) .sidebar-collapsible,
+#sidebar:not(.initialized) .sidebar-collapsible > * {
   transition: none;
 }
 

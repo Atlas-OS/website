@@ -1,6 +1,7 @@
 ---
 import SEO from '@/components/core/SEO.astro';
 import Breadcrumbs from '@/components/docs/Breadcrumbs.astro';
+import PageActions from '@/components/docs/PageActions.astro';
 import PageNav from '@/components/docs/PageNav.astro';
 import TableOfContents from '@/components/docs/TableOfContents.astro';
 import Navbar from '@/components/layout/Navbar.astro';
@@ -8,7 +9,8 @@ import Sidebar from '@/components/layout/Sidebar.astro';
 import Spotlight from '@/components/ui/Spotlight.astro';
 import { SITE_URL } from '@/constants';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getDocsPagination, normalizeDocsPath } from '@/utils/docs';
+import { getDocsIndex, getDocsPagination, normalizeDocsPath } from '@/utils/docs';
+import { docsMarkdownUrl } from '@/utils/docs-markdown';
 import type { MarkdownHeading } from 'astro';
 import '@/styles/prose.css';
 
@@ -35,6 +37,12 @@ const {
 } = Astro.props;
 
 const currentPath = normalizeDocsPath(currentSlug);
+const site = Astro.site ?? SITE_URL;
+const entry = (await getDocsIndex()).get(currentPath);
+const editUrl = entry?.filePath
+  ? `https://github.com/Atlas-OS/website/edit/main/${entry.filePath.replace(/\\/g, '/')}`
+  : null;
+const markdownUrl = entry ? docsMarkdownUrl(entry, site) : null;
 const hasTableOfContents = headings.some((heading) => heading.depth === 2 || heading.depth === 3);
 const { prev, next } = showPageNav ? await getDocsPagination(currentPath) : { prev: null, next: null };
 ---
@@ -76,6 +84,7 @@ const { prev, next } = showPageNav ? await getDocsPagination(currentPath) : { pr
             <div class="docs-content prose max-w-none md:prose-lg">
               <slot />
             </div>
+            {editUrl && markdownUrl && <PageActions editUrl={editUrl} markdownUrl={markdownUrl} />}
             {showPageNav && <PageNav prev={prev} next={next} />}
           </article>
         </div>

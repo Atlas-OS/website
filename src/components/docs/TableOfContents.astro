@@ -54,7 +54,7 @@ const linkClass =
     <nav class="sticky top-6 z-10 -mr-2 max-h-[calc(100vh-4rem)] overflow-y-auto px-2" aria-label="On this page">
       <div class="space-y-4">
         <h2 class="mb-4 text-sm font-semibold text-[var(--docs-text-muted)]">On this page</h2>
-        <div class="relative">
+        <div class="toc-rail relative">
           <div
             id="toc-marker"
             class="absolute left-0 w-[2px] rounded-full bg-primary opacity-0 transition-[height,opacity,top] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1.0)]"
@@ -127,6 +127,18 @@ const linkClass =
 
   #toc::-webkit-scrollbar-thumb:hover {
     background-color: rgba(255, 255, 255, 0.2);
+  }
+
+  /* Faint rail the active marker travels along. */
+  .toc-rail::before {
+    content: '';
+    position: absolute;
+    top: 0.25rem;
+    bottom: 0.25rem;
+    left: 0;
+    width: 2px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
   }
 
   .toc-link {

@@ -300,11 +300,16 @@
   border-color: rgb(255 255 255 / 0.06);
 }
 
+/* Screenshots get a two-ring frame (hairline plus a soft brand halo) so every image sits the same way. */
 :where(.prose) > img:not(.not-prose):not(.not-prose *),
 :where(.prose) img:not(.not-prose):not(.not-prose *) {
   @apply my-6 rounded-lg;
   max-width: 100%;
   height: auto;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    0 0 0 4px color-mix(in oklch, var(--color-primary) 10%, transparent),
+    0 24px 60px rgba(0, 0, 0, 0.3);
 }
 
 :where(.prose) > *:first-child:not(.not-prose):not(.not-prose *):not(h1) {

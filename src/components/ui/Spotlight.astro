@@ -1,5 +1,11 @@
 ---
+import { docsSectionKey, getDocsTree } from '@/utils/docs';
 import { Icon } from 'astro-icon/components';
+
+// Section labels in sidebar order, so search results can be grouped the same way the docs are.
+const sectionLabels = Object.fromEntries(
+  (await getDocsTree()).map((section) => [docsSectionKey(section.href) ?? '', section.title])
+);
 ---
 
 <div
@@ -82,7 +88,13 @@ import { Icon } from 'astro-icon/components';
       <span>Searching&hellip;</span>
     </div>
 
-    <ul id="spotlight-list" class="m-0 list-none p-2" role="listbox" aria-label="Search results"></ul>
+    <ul
+      id="spotlight-list"
+      class="m-0 list-none p-2"
+      role="listbox"
+      aria-label="Search results"
+      data-sections={JSON.stringify(sectionLabels)}
+    ></ul>
   </div>
 
   <div id="spotlight-footer" class="hidden flex-shrink-0 border-t border-white/[0.06] px-5 py-2.5">
@@ -244,6 +256,19 @@ import { Icon } from 'astro-icon/components';
 
   #spotlight-modal:has(#spotlight-input:focus-visible) {
     border-color: color-mix(in oklch, var(--color-primary) 55%, transparent);
+  }
+
+  .spotlight-group {
+    margin: 0.5rem 0.875rem 0.25rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgb(255 255 255 / 0.5);
+  }
+
+  .spotlight-group:first-child {
+    margin-top: 0.25rem;
   }
 
   .spotlight-item-arrow {

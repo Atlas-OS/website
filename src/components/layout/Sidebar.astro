@@ -25,8 +25,9 @@ const sectionIcons: Record<string, string> = {
 };
 
 const isCurrent = (href: string) => href === currentPath;
-const containsCurrent = (item: DocsNavItem) => item.children?.some((child) => isCurrent(child.href)) ?? false;
-const childListId = (href: string) => `sidebar-children-${href.replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '')}`;
+const containsCurrent = (items: DocsNavItem[]): boolean =>
+  items.some((item) => isCurrent(item.href) || (item.children ? containsCurrent(item.children) : false));
+const listId = (href: string) => `sidebar-list-${href.replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '')}`;
 ---
 
 {sections.length > 0 && (
@@ -58,13 +59,13 @@ const childListId = (href: string) => `sidebar-children-${href.replace(/[^a-z0-9
         </div>
 
         <div id="sidebar-scroll" class="flex-1 overflow-y-auto px-3 py-4">
-          <nav class="space-y-5" aria-label="Documentation navigation">
+          <nav class="space-y-1" aria-label="Documentation navigation">
             {home && (
               <a
                 href={home.href}
                 data-astro-prefetch="viewport"
                 aria-current={isCurrent(home.href) ? 'page' : undefined}
-                class="sidebar-primary-link flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-sm font-semibold"
+                class="sidebar-primary-link mb-3 flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-sm font-semibold"
               >
                 <span class="flex min-w-0 items-center gap-2">
                   <Icon
@@ -79,99 +80,130 @@ const childListId = (href: string) => `sidebar-children-${href.replace(/[^a-z0-9
               </a>
             )}
 
-            {regularSections.map((section) => (
-              <section class="sidebar-section space-y-2">
-                <a
-                  href={section.href}
-                  data-astro-prefetch="viewport"
-                  aria-current={isCurrent(section.href) ? 'page' : undefined}
-                  class="sidebar-primary-link flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-sm font-semibold"
+            {regularSections.map((section) => {
+              const hasItems = section.items.length > 0;
+              const isOpen = isCurrent(section.href) || containsCurrent(section.items);
+              const sectionListId = listId(section.href);
+
+              return (
+                <section
+                  class:list={['sidebar-section', hasItems && !isOpen && 'is-collapsed']}
+                  data-sidebar-group={hasItems ? '' : undefined}
+                  data-sidebar-key={section.href}
                 >
-                  <span class="flex min-w-0 items-center gap-2">
-                    <Icon
-                      name={sectionIcons[section.href] ?? 'tabler:file-text'}
-                      is:inline
-                      class="sidebar-primary-icon h-4 w-4 shrink-0"
-                      aria-hidden="true"
-                    />
-                    <span class="truncate">{section.title}</span>
-                  </span>
-                  {section.badge && <span class="sidebar-badge">{section.badge}</span>}
-                </a>
+                  <div class="group flex items-center gap-1 rounded-md transition-colors duration-200 hover:bg-white/5">
+                    <a
+                      href={section.href}
+                      data-astro-prefetch="viewport"
+                      aria-current={isCurrent(section.href) ? 'page' : undefined}
+                      class="sidebar-primary-link flex min-w-0 flex-1 items-center justify-between gap-2 rounded-md px-2 py-1.5 text-sm font-semibold"
+                    >
+                      <span class="flex min-w-0 items-center gap-2">
+                        <Icon
+                          name={sectionIcons[section.href] ?? 'tabler:file-text'}
+                          is:inline
+                          class="sidebar-primary-icon h-4 w-4 shrink-0"
+                          aria-hidden="true"
+                        />
+                        <span class="truncate">{section.title}</span>
+                      </span>
+                      {section.badge && <span class="sidebar-badge">{section.badge}</span>}
+                    </a>
+                    {hasItems && (
+                      <button
+                        type="button"
+                        class="sidebar-toggle inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md text-white/60 transition-colors duration-150 outline-none hover:text-white"
+                        aria-label={`Toggle ${section.title} pages`}
+                        aria-expanded={isOpen}
+                        aria-controls={sectionListId}
+                      >
+                        <Icon
+                          name="tabler:chevron-down"
+                          is:inline
+                          class="sidebar-arrow pointer-events-none h-4 w-4 transition-transform duration-200"
+                          aria-hidden="true"
+                        />
+                      </button>
+                    )}
+                  </div>
 
-                {section.items.length > 0 && (
-                  <ul class="space-y-0.5 pl-2">
-                    {section.items.map((item) => {
-                      const hasChildren = Boolean(item.children?.length);
-                      const isOpen = isCurrent(item.href) || containsCurrent(item);
-                      const listId = childListId(item.href);
+                  {hasItems && (
+                    <div class="sidebar-collapsible">
+                      <ul id={sectionListId} class="sidebar-list sidebar-rail">
+                        {section.items.map((item) => {
+                          const hasChildren = Boolean(item.children?.length);
+                          const itemOpen = isCurrent(item.href) || containsCurrent(item.children ?? []);
+                          const childListId = listId(item.href);
 
-                      return (
-                        <li
-                          class:list={[
-                            'sidebar-item',
-                            hasChildren && 'sidebar-item-with-children',
-                            hasChildren && !isOpen && 'is-collapsed',
-                          ]}
-                          data-sidebar-group={hasChildren ? '' : undefined}
-                        >
-                          <div class="group flex items-center gap-1 rounded-md transition-colors duration-200 hover:bg-white/5">
-                            <a
-                              href={item.href}
-                              data-astro-prefetch="viewport"
-                              aria-current={isCurrent(item.href) ? 'page' : undefined}
-                              class="sidebar-link flex-1 rounded-md px-2 py-1.5 text-sm"
+                          return (
+                            <li
+                              class:list={['sidebar-item', hasChildren && !itemOpen && 'is-collapsed']}
+                              data-sidebar-group={hasChildren ? '' : undefined}
+                              data-sidebar-key={hasChildren ? item.href : undefined}
                             >
-                              <span class="flex items-center justify-between gap-2">
-                                <span class="truncate">{item.title}</span>
-                                {item.badge && <span class="sidebar-badge sidebar-badge-sm">{item.badge}</span>}
-                              </span>
-                            </a>
+                              <div class="group flex items-center gap-1 rounded-md transition-colors duration-200 hover:bg-white/5">
+                                <a
+                                  href={item.href}
+                                  data-astro-prefetch="viewport"
+                                  aria-current={isCurrent(item.href) ? 'page' : undefined}
+                                  class="sidebar-link flex-1 rounded-md px-2 py-1.5 text-sm"
+                                >
+                                  <span class="flex items-center justify-between gap-2">
+                                    <span class="truncate">{item.title}</span>
+                                    {item.badge && <span class="sidebar-badge sidebar-badge-sm">{item.badge}</span>}
+                                  </span>
+                                </a>
 
-                            {hasChildren && (
-                              <button
-                                type="button"
-                                class="sidebar-toggle inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md text-white/60 transition-colors duration-150 outline-none hover:text-white"
-                                aria-label={`Toggle ${item.title} items`}
-                                aria-expanded={isOpen}
-                                aria-controls={listId}
-                              >
-                                <Icon
-                                  name="tabler:chevron-down"
-                                  is:inline
-                                  class="sidebar-arrow pointer-events-none h-4 w-4 transition-transform duration-200"
-                                  aria-hidden="true"
-                                />
-                              </button>
-                            )}
-                          </div>
-
-                          {hasChildren && (
-                            <ul id={listId} class="sidebar-children mt-1 ml-3 space-y-0.5">
-                              {item.children?.map((child) => (
-                                <li>
-                                  <a
-                                    href={child.href}
-                                    data-astro-prefetch="viewport"
-                                    aria-current={isCurrent(child.href) ? 'page' : undefined}
-                                    class="sidebar-link sidebar-link-nested block rounded-md px-2 py-1.5 text-sm"
+                                {hasChildren && (
+                                  <button
+                                    type="button"
+                                    class="sidebar-toggle inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md text-white/60 transition-colors duration-150 outline-none hover:text-white"
+                                    aria-label={`Toggle ${item.title} pages`}
+                                    aria-expanded={itemOpen}
+                                    aria-controls={childListId}
                                   >
-                                    <span class="flex items-center justify-between gap-2">
-                                      <span class="truncate">{child.title}</span>
-                                      {child.badge && <span class="sidebar-badge sidebar-badge-sm">{child.badge}</span>}
-                                    </span>
-                                  </a>
-                                </li>
-                              ))}
-                            </ul>
-                          )}
-                        </li>
-                      );
-                    })}
-                  </ul>
-                )}
-              </section>
-            ))}
+                                    <Icon
+                                      name="tabler:chevron-down"
+                                      is:inline
+                                      class="sidebar-arrow pointer-events-none h-4 w-4 transition-transform duration-200"
+                                      aria-hidden="true"
+                                    />
+                                  </button>
+                                )}
+                              </div>
+
+                              {hasChildren && (
+                                <div class="sidebar-collapsible">
+                                  <ul id={childListId} class="sidebar-list sidebar-rail sidebar-rail-nested">
+                                    {item.children?.map((child) => (
+                                      <li>
+                                        <a
+                                          href={child.href}
+                                          data-astro-prefetch="viewport"
+                                          aria-current={isCurrent(child.href) ? 'page' : undefined}
+                                          class="sidebar-link sidebar-link-nested block rounded-md px-2 py-1.5 text-sm"
+                                        >
+                                          <span class="flex items-center justify-between gap-2">
+                                            <span class="truncate">{child.title}</span>
+                                            {child.badge && (
+                                              <span class="sidebar-badge sidebar-badge-sm">{child.badge}</span>
+                                            )}
+                                          </span>
+                                        </a>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              )}
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  )}
+                </section>
+              );
+            })}
           </nav>
         </div>
       </div>

@@ -1,0 +1,50 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+
+interface Props {
+  /** Imported image (`import shot from '@/assets/...'`) or a `/assets/...` path from `public/`. */
+  src: ImageMetadata | string;
+  /** Describes the image for readers who cannot see it. Use `""` when the caption already says it all. */
+  alt: string;
+  /** Visible caption rendered below the frame. */
+  caption?: string;
+  width?: number;
+  height?: number;
+  loading?: 'lazy' | 'eager';
+  class?: string;
+}
+
+const { src, alt, caption, width, height, loading = 'lazy', class: className = '' } = Astro.props;
+const imageClass = 'block h-auto w-full rounded-[calc(var(--docs-radius-lg)-3px)]';
+---
+
+<figure class:list={['docs-figure not-prose my-6', className]} data-component="figure">
+  <div class="docs-figure-frame">
+    {typeof src === 'string' ? (
+      <img src={src} alt={alt} width={width} height={height} loading={loading} decoding="async" class={imageClass} />
+    ) : (
+      <Image src={src} alt={alt} width={width} height={height} loading={loading} class={imageClass} />
+    )}
+  </div>
+  {caption && <figcaption class="mt-3 text-center text-sm text-[var(--docs-text-muted)]">{caption}</figcaption>}
+</figure>
+
+<style>
+  /* Gradient hairline frame: brand blue fading to a neutral edge, sitting on the surface shadow. */
+  .docs-figure-frame {
+    padding: 3px;
+    border-radius: var(--docs-radius-lg);
+    background: linear-gradient(
+      135deg,
+      color-mix(in oklch, var(--color-primary) 45%, transparent),
+      rgba(255, 255, 255, 0.08) 45%,
+      color-mix(in oklch, var(--color-primary) 25%, transparent)
+    );
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  }
+
+  .docs-figure-frame :global(img) {
+    background: var(--docs-panel-bg);
+  }
+</style>

@@ -136,6 +136,44 @@ function renderItem(result: SearchResult, index: number): HTMLLIElement {
   return item;
 }
 
+/**
+ * Group results under their docs section, in sidebar order, with a non-focusable heading row.
+ * Option ids stay sequential across groups so arrow-key navigation is unaffected.
+ */
+function renderGrouped(
+  results: SearchResult[],
+  sectionLabels: Record<string, string>,
+): HTMLLIElement[] {
+  const sectionOf = (url: string) => url.replace(/^\/docs\/?/, '').split('/')[0] ?? '';
+  const order = Object.keys(sectionLabels);
+  const groups = new Map<string, SearchResult[]>();
+
+  for (const result of results) {
+    const key = sectionOf(result.url);
+    const group = groups.get(key);
+    if (group) group.push(result);
+    else groups.set(key, [result]);
+  }
+
+  const sortedKeys = [...groups.keys()].sort(
+    (a, b) =>
+      (order.indexOf(a) + 1 || Number.MAX_SAFE_INTEGER) -
+      (order.indexOf(b) + 1 || Number.MAX_SAFE_INTEGER),
+  );
+
+  const nodes: HTMLLIElement[] = [];
+  let index = 0;
+  for (const key of sortedKeys) {
+    const heading = document.createElement('li');
+    heading.className = 'spotlight-group';
+    heading.setAttribute('role', 'presentation');
+    heading.textContent = sectionLabels[key] ?? 'Documentation';
+    nodes.push(heading);
+    for (const result of groups.get(key)!) nodes.push(renderItem(result, index++));
+  }
+  return nodes;
+}
+
 interface SpotlightElements {
   modal: HTMLElement;
   backdrop: HTMLElement;
@@ -185,6 +223,13 @@ export function initSpotlight(signal: AbortSignal): void {
 
   const isOpen = () => modal.classList.contains('open');
   const items = () => [...list.querySelectorAll<HTMLElement>('.spotlight-item')];
+
+  let sectionLabels: Record<string, string> = {};
+  try {
+    sectionLabels = JSON.parse(list.dataset.sections ?? '{}') as Record<string, string>;
+  } catch {
+    // Fall back to ungrouped labels if the embedded map is malformed.
+  }
 
   function setBackgroundInert(isInert: boolean): void {
     if (!isInert) {
@@ -294,7 +339,7 @@ export function initSpotlight(signal: AbortSignal): void {
       return;
     }
 
-    list.replaceChildren(...results.map(renderItem));
+    list.replaceChildren(...renderGrouped(results, sectionLabels));
     setState('results');
     // Enter opens the first result without an extra arrow press.
     select(0);
