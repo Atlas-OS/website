@@ -1,14 +1,5 @@
 ---
-import {
-  buildNavigationTree,
-  isActivePage,
-  normalizeSlug,
-  prepareSidebarNavigation,
-  shouldSkipItem,
-  type NavItem,
-  type SectionNavItem,
-} from '@/utils/navigation';
-import { getPublishedDocs } from '@/utils/docs-content';
+import { DOCS_ROOT, getDocsTree, normalizeDocsPath, type DocsNavItem } from '@/utils/docs';
 import { Icon } from 'astro-icon/components';
 import '@/styles/sidebar.css';
 
@@ -16,15 +7,12 @@ interface Props {
   currentSlug: string;
 }
 
-const { currentSlug } = Astro.props;
+const currentPath = normalizeDocsPath(Astro.props.currentSlug);
+const sections = await getDocsTree();
+const home = sections.find((section) => section.href === DOCS_ROOT);
+const regularSections = sections.filter((section) => section.href !== DOCS_ROOT);
 
-const allDocs = await getPublishedDocs();
-const sectionNavItems = prepareSidebarNavigation(buildNavigationTree(allDocs, { scope: 'full' }) as SectionNavItem[]);
-
-const homeSection = sectionNavItems.find((section) => normalizeSlug(section.sectionSlug) === '/docs/');
-const regularSections = sectionNavItems.filter((section) => normalizeSlug(section.sectionSlug) !== '/docs/');
-
-const sectionIconBySlug: Record<string, string> = {
+const sectionIcons: Record<string, string> = {
   '/docs/': 'tabler:home',
   '/docs/install/': 'tabler:rocket',
   '/docs/upgrade/': 'tabler:arrow-up',
@@ -36,224 +24,163 @@ const sectionIconBySlug: Record<string, string> = {
   '/docs/branding/': 'tabler:palette',
 };
 
-function getLinkStateClasses(isActive: boolean, inactiveClasses: string): string {
-  return isActive ? 'sidebar-active-link' : inactiveClasses;
-}
-
-function getSectionIcon(slug: string): string {
-  return sectionIconBySlug[normalizeSlug(slug)] ?? 'tabler:file-text';
-}
-
-function hasActiveDescendant(item: NavItem): boolean {
-  if (!item.children || item.children.length === 0) {
-    return false;
-  }
-
-  return item.children.some((child) => isActivePage(currentSlug, child.slug));
-}
+const isCurrent = (href: string) => href === currentPath;
+const containsCurrent = (item: DocsNavItem) => item.children?.some((child) => isCurrent(child.href)) ?? false;
+const childListId = (href: string) => `sidebar-children-${href.replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '')}`;
 ---
 
-{
-  sectionNavItems.length > 0 && (
-    <>
-      <div
-        id="sidebar-backdrop"
-        class="pointer-events-none fixed inset-0 z-30 bg-black/50 opacity-0 backdrop-blur-sm transition-opacity duration-200 lg:hidden"
-        aria-hidden="true"
-      />
+{sections.length > 0 && (
+  <>
+    <div
+      id="sidebar-backdrop"
+      class="pointer-events-none fixed inset-0 z-30 bg-black/50 opacity-0 backdrop-blur-sm transition-opacity duration-200 lg:hidden"
+      aria-hidden="true"
+    />
 
-      <aside
-        id="sidebar"
-        data-pagefind-ignore
-        class="fixed left-0 z-40 transition-transform duration-[250ms] lg:translate-x-0"
-        style="top: var(--docs-header-height); width: min(var(--docs-sidebar-width), 86vw); height: calc(100vh - var(--docs-header-height));"
-        transition:persist="docs-sidebar"
-      >
-        <div class="flex h-full flex-col">
-          <div class="flex items-center justify-between border-b border-white/[0.06] px-4 py-3 lg:hidden">
-            <h2 class="text-sm font-semibold text-white">Documentation</h2>
-            <button
-              id="sidebar-close-button"
-              type="button"
-              aria-label="Close sidebar"
-              class="inline-flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-md text-sm font-medium text-white shadow-[var(--shadow-surface)] transition-[background-color,box-shadow,opacity,scale] duration-200 outline-none hover:bg-white/[0.04] hover:opacity-80 hover:shadow-[var(--shadow-surface-hover)] active:scale-[0.96]"
-              style="background-color: var(--bg-primary);"
-            >
-              <Icon name="tabler:x" is:inline class="h-5 w-5" aria-hidden="true" />
-            </button>
-          </div>
+    <aside
+      id="sidebar"
+      data-pagefind-ignore
+      class="fixed left-0 z-40 transition-transform duration-[250ms] lg:translate-x-0"
+      style="top: var(--docs-header-height); width: min(var(--docs-sidebar-width), 86vw); height: calc(100vh - var(--docs-header-height));"
+      transition:persist="docs-sidebar"
+    >
+      <div class="flex h-full flex-col">
+        <div class="flex items-center justify-between border-b border-white/[0.06] px-4 py-3 lg:hidden">
+          <h2 class="text-sm font-semibold text-white">Documentation</h2>
+          <button
+            id="sidebar-close-button"
+            type="button"
+            aria-label="Close sidebar"
+            class="inline-flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-md bg-[var(--bg-primary)] text-sm font-medium text-white shadow-[var(--shadow-surface)] transition-[background-color,box-shadow,opacity,scale] duration-200 outline-none hover:bg-white/[0.04] hover:opacity-80 hover:shadow-[var(--shadow-surface-hover)] active:scale-[0.96]"
+          >
+            <Icon name="tabler:x" is:inline class="h-5 w-5" aria-hidden="true" />
+          </button>
+        </div>
 
-          <div id="sidebar-scroll" class="flex-1 overflow-y-auto px-3 py-4">
-            <nav class="space-y-5" aria-label="Documentation navigation">
-              {homeSection && (
+        <div id="sidebar-scroll" class="flex-1 overflow-y-auto px-3 py-4">
+          <nav class="space-y-5" aria-label="Documentation navigation">
+            {home && (
+              <a
+                href={home.href}
+                data-astro-prefetch="viewport"
+                aria-current={isCurrent(home.href) ? 'page' : undefined}
+                class="sidebar-primary-link flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-sm font-semibold"
+              >
+                <span class="flex min-w-0 items-center gap-2">
+                  <Icon
+                    name={sectionIcons[home.href] ?? 'tabler:file-text'}
+                    is:inline
+                    class="sidebar-primary-icon h-4 w-4 shrink-0"
+                    aria-hidden="true"
+                  />
+                  <span class="truncate">{home.title}</span>
+                </span>
+                {home.badge && <span class="sidebar-badge">{home.badge}</span>}
+              </a>
+            )}
+
+            {regularSections.map((section) => (
+              <section class="sidebar-section space-y-2">
                 <a
-                  href={homeSection.sectionSlug}
+                  href={section.href}
                   data-astro-prefetch="viewport"
-                  aria-current={isActivePage(currentSlug, homeSection.sectionSlug) ? 'page' : undefined}
-                  class={`sidebar-home-link flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-sm font-semibold transition-colors duration-200 outline-none ${getLinkStateClasses(
-                    isActivePage(currentSlug, homeSection.sectionSlug),
-                    'text-white/85 hover:bg-white/5 hover:text-white'
-                  )}`}
+                  aria-current={isCurrent(section.href) ? 'page' : undefined}
+                  class="sidebar-primary-link flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-sm font-semibold"
                 >
                   <span class="flex min-w-0 items-center gap-2">
                     <Icon
-                      name={getSectionIcon(homeSection.sectionSlug)}
+                      name={sectionIcons[section.href] ?? 'tabler:file-text'}
                       is:inline
                       class="sidebar-primary-icon h-4 w-4 shrink-0"
                       aria-hidden="true"
                     />
-                    <span class="truncate">{homeSection.sectionTitle}</span>
+                    <span class="truncate">{section.title}</span>
                   </span>
-                  {homeSection.badge && (
-                    <span class="shrink-0 rounded-md border border-white/[0.08] px-1.5 py-0.5 text-[10px] font-medium tracking-wide text-white/60">
-                      {homeSection.badge}
-                    </span>
-                  )}
+                  {section.badge && <span class="sidebar-badge">{section.badge}</span>}
                 </a>
-              )}
 
-              {regularSections.map((section) => {
-                const sectionIsActive = isActivePage(currentSlug, section.sectionSlug);
+                {section.items.length > 0 && (
+                  <ul class="space-y-0.5 pl-2">
+                    {section.items.map((item) => {
+                      const hasChildren = Boolean(item.children?.length);
+                      const isOpen = isCurrent(item.href) || containsCurrent(item);
+                      const listId = childListId(item.href);
 
-                return (
-                  <section class="sidebar-section space-y-2">
-                    <a
-                      href={section.sectionSlug}
-                      data-astro-prefetch="viewport"
-                      aria-current={sectionIsActive ? 'page' : undefined}
-                      class={`sidebar-section-link flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-sm font-semibold transition-colors duration-200 ${getLinkStateClasses(
-                        sectionIsActive,
-                        'text-white/85 hover:bg-white/5 hover:text-white'
-                      )}`}
-                    >
-                      <span class="flex min-w-0 items-center gap-2">
-                        <Icon
-                          name={getSectionIcon(section.sectionSlug)}
-                          is:inline
-                          class="sidebar-primary-icon h-4 w-4 shrink-0"
-                          aria-hidden="true"
-                        />
-                        <span class="truncate">{section.sectionTitle}</span>
-                      </span>
-                      {section.badge && (
-                        <span class="shrink-0 rounded-md border border-white/[0.08] px-1.5 py-0.5 text-[10px] font-medium tracking-wide text-white/60">
-                          {section.badge}
-                        </span>
-                      )}
-                    </a>
-
-                    {section.items.length > 0 && (
-                      <ul class="space-y-0.5 pl-2">
-                        {section.items.map((item) => {
-                          if (shouldSkipItem(item, section.sectionSlug)) {
-                            return null;
-                          }
-
-                          const isActiveItem = isActivePage(currentSlug, item.slug);
-                          const hasChildren = Boolean(item.children?.length);
-                          const hasActiveChild = hasActiveDescendant(item);
-                          const isInitiallyOpen = hasActiveChild || isActiveItem;
-                          const childListId = `sidebar-children-${item.slug.replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '')}`;
-                          const groupClasses = [
+                      return (
+                        <li
+                          class:list={[
                             'sidebar-item',
                             hasChildren && 'sidebar-item-with-children',
-                            hasChildren && !isInitiallyOpen && 'is-collapsed',
-                          ]
-                            .filter(Boolean)
-                            .join(' ');
-
-                          return (
-                            <li
-                              class={groupClasses}
-                              data-sidebar-group={hasChildren ? '' : undefined}
-                              data-sidebar-key={hasChildren ? item.slug : undefined}
-                              data-sidebar-active={hasChildren ? String(isInitiallyOpen) : undefined}
+                            hasChildren && !isOpen && 'is-collapsed',
+                          ]}
+                          data-sidebar-group={hasChildren ? '' : undefined}
+                        >
+                          <div class="group flex items-center gap-1 rounded-md transition-colors duration-200 hover:bg-white/5">
+                            <a
+                              href={item.href}
+                              data-astro-prefetch="viewport"
+                              aria-current={isCurrent(item.href) ? 'page' : undefined}
+                              class="sidebar-link flex-1 rounded-md px-2 py-1.5 text-sm"
                             >
-                              <div class="group flex items-center gap-1 rounded-md transition-colors duration-200 hover:bg-white/5">
-                                <a
-                                  href={item.slug}
-                                  data-astro-prefetch="viewport"
-                                  aria-current={isActiveItem ? 'page' : undefined}
-                                  class={`sidebar-link flex-1 rounded-md px-2 py-1.5 text-sm transition-colors duration-200 outline-none ${getLinkStateClasses(
-                                    isActiveItem,
-                                    'text-white/70 hover:text-white'
-                                  )} ${isActiveItem ? 'font-medium' : ''}`}
-                                >
-                                  <span class="flex items-center justify-between gap-2">
-                                    <span class="truncate">{item.title}</span>
-                                    {item.badge && (
-                                      <span class="rounded-md border border-white/[0.06] px-1 py-0.5 text-[10px] tracking-wide text-white/60">
-                                        {item.badge}
-                                      </span>
-                                    )}
-                                  </span>
-                                </a>
+                              <span class="flex items-center justify-between gap-2">
+                                <span class="truncate">{item.title}</span>
+                                {item.badge && <span class="sidebar-badge sidebar-badge-sm">{item.badge}</span>}
+                              </span>
+                            </a>
 
-                                {hasChildren && (
-                                  <button
-                                    type="button"
-                                    class="sidebar-toggle inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md text-white/60 transition-colors duration-150 outline-none hover:text-white"
-                                    aria-label={`Toggle ${item.title} items`}
-                                    aria-expanded={isInitiallyOpen}
-                                    aria-controls={childListId}
+                            {hasChildren && (
+                              <button
+                                type="button"
+                                class="sidebar-toggle inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md text-white/60 transition-colors duration-150 outline-none hover:text-white"
+                                aria-label={`Toggle ${item.title} items`}
+                                aria-expanded={isOpen}
+                                aria-controls={listId}
+                              >
+                                <Icon
+                                  name="tabler:chevron-down"
+                                  is:inline
+                                  class="sidebar-arrow pointer-events-none h-4 w-4 transition-transform duration-200"
+                                  aria-hidden="true"
+                                />
+                              </button>
+                            )}
+                          </div>
+
+                          {hasChildren && (
+                            <ul id={listId} class="sidebar-children mt-1 ml-3 space-y-0.5">
+                              {item.children?.map((child) => (
+                                <li>
+                                  <a
+                                    href={child.href}
+                                    data-astro-prefetch="viewport"
+                                    aria-current={isCurrent(child.href) ? 'page' : undefined}
+                                    class="sidebar-link sidebar-link-nested block rounded-md px-2 py-1.5 text-sm"
                                   >
-                                    <Icon
-                                      name="tabler:chevron-down"
-                                      is:inline
-                                      class="sidebar-arrow pointer-events-none h-4 w-4 transition-transform duration-200"
-                                    />
-                                  </button>
-                                )}
-                              </div>
-
-                              {hasChildren && (
-                                <ul id={childListId} class="sidebar-children mt-1 ml-3 space-y-0.5">
-                                  {item.children?.map((child) => {
-                                    const isChildActive = isActivePage(currentSlug, child.slug);
-
-                                    return (
-                                      <li>
-                                        <a
-                                          href={child.slug}
-                                          data-astro-prefetch="viewport"
-                                          aria-current={isChildActive ? 'page' : undefined}
-                                          class={`sidebar-link block rounded-md px-2 py-1.5 text-sm transition-colors duration-200 outline-none ${getLinkStateClasses(
-                                            isChildActive,
-                                            'text-white/60 hover:bg-white/5 hover:text-white'
-                                          )} ${isChildActive ? 'font-medium' : ''}`}
-                                        >
-                                          <span class="flex items-center justify-between gap-2">
-                                            <span class="truncate">{child.title}</span>
-                                            {child.badge && (
-                                              <span class="rounded-md border border-white/[0.06] px-1 py-0.5 text-[10px] tracking-wide text-white/60">
-                                                {child.badge}
-                                              </span>
-                                            )}
-                                          </span>
-                                        </a>
-                                      </li>
-                                    );
-                                  })}
-                                </ul>
-                              )}
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    )}
-                  </section>
-                );
-              })}
-            </nav>
-          </div>
+                                    <span class="flex items-center justify-between gap-2">
+                                      <span class="truncate">{child.title}</span>
+                                      {child.badge && <span class="sidebar-badge sidebar-badge-sm">{child.badge}</span>}
+                                    </span>
+                                  </a>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
+              </section>
+            ))}
+          </nav>
         </div>
-      </aside>
-    </>
-  )
-}
+      </div>
+    </aside>
+  </>
+)}
 
 <script>
-  import { initSidebar } from '@/utils/ui';
+  import { initSidebar } from '@/utils/sidebar';
 
   document.addEventListener('astro:page-load', initSidebar);
 </script>

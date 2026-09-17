@@ -1,39 +1,36 @@
 ---
+import { stableId } from '@/utils/stable-id';
+
 interface Props {
   items: Array<{ label: string; value: string }>;
   defaultTab?: string;
+  /** Override the generated id when the same tab set appears more than once on a page. */
+  id?: string;
 }
 
-const { items, defaultTab = items[0]?.value || '' } = Astro.props;
-const tabsId = `tabs-${Math.random().toString(36).substring(2, 11)}`;
+const { items, defaultTab = items[0]?.value ?? '', id } = Astro.props;
+const tabsId = id ?? stableId('tabs', ...items.map((item) => item.value));
 ---
 
-<div class="tabs-container" data-tabs-id={tabsId}>
+<div class="tabs-container" data-tabs-id={tabsId} data-default-tab={defaultTab}>
   <div
-    class="tabs-list mb-4 flex flex-nowrap gap-2 overflow-x-auto"
-    style="border-bottom: 1px solid var(--docs-surface-border);"
+    class="tabs-list mb-4 flex flex-nowrap gap-2 overflow-x-auto border-b border-[var(--docs-surface-border)]"
     role="tablist"
   >
-    {
-      items.map((item) => (
-        <button
-          type="button"
-          role="tab"
-          id={`${tabsId}-tab-${item.value}`}
-          data-tab={item.value}
-          aria-controls={`${tabsId}-panel-${item.value}`}
-          aria-selected={item.value === defaultTab ? 'true' : 'false'}
-          tabindex={item.value === defaultTab ? '0' : '-1'}
-          class={`tab-button min-h-10 shrink-0 cursor-pointer border-b-2 px-4 py-2 text-sm font-medium transition-[border-color,color] duration-200 outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none ${
-            item.value === defaultTab
-              ? 'border-primary text-primary'
-              : 'border-transparent text-white/60 hover:text-white/85'
-          }`}
-        >
-          {item.label}
-        </button>
-      ))
-    }
+    {items.map((item) => (
+      <button
+        type="button"
+        role="tab"
+        id={`${tabsId}-tab-${item.value}`}
+        data-tab={item.value}
+        aria-controls={`${tabsId}-panel-${item.value}`}
+        aria-selected={item.value === defaultTab ? 'true' : 'false'}
+        tabindex={item.value === defaultTab ? 0 : -1}
+        class="tab-button min-h-10 shrink-0 cursor-pointer border-b-2 border-transparent px-4 py-2 text-sm font-medium text-white/60 transition-[border-color,color] duration-200 outline-none hover:text-white/85 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none aria-selected:border-primary aria-selected:text-primary"
+      >
+        {item.label}
+      </button>
+    ))}
   </div>
 
   <div class="tab-content">
@@ -42,89 +39,69 @@ const tabsId = `tabs-${Math.random().toString(36).substring(2, 11)}`;
 </div>
 
 <script>
-  function initTabs(container: HTMLElement) {
-    if (container.dataset.tabsInitialized === 'true') return;
-    container.dataset.tabsInitialized = 'true';
+  import { onPageLoad } from '@/utils/page-lifecycle';
 
+  function initTabs(container: HTMLElement, signal: AbortSignal) {
     const tabsId = container.dataset.tabsId;
     if (!tabsId) return;
 
-    const buttons = container.querySelectorAll<HTMLButtonElement>('[role="tab"]');
-    const panels = container.querySelectorAll<HTMLElement>('[data-tab-panel]');
+    const tabs = [...container.querySelectorAll<HTMLButtonElement>(':scope > .tabs-list > [role="tab"]')];
+    const panels = [...container.querySelectorAll<HTMLElement>(':scope > .tab-content > [data-tab-panel]')];
 
-    panels.forEach((panel) => {
-      const tabValue = panel.dataset.tabPanel;
-      if (!tabValue) return;
-      panel.id = `${tabsId}-panel-${tabValue}`;
-      panel.setAttribute('aria-labelledby', `${tabsId}-tab-${tabValue}`);
-      panel.setAttribute('tabindex', '0');
-    });
-
-    function switchTab(tabValue: string, shouldFocus = false) {
-      buttons.forEach((btn) => {
-        const isSelected = btn.dataset.tab === tabValue;
-        btn.setAttribute('aria-selected', isSelected ? 'true' : 'false');
-        btn.setAttribute('tabindex', isSelected ? '0' : '-1');
-        if (isSelected) {
-          btn.classList.remove('border-transparent', 'text-white/60', 'hover:text-white/85');
-          btn.classList.add('border-primary', 'text-primary');
-          if (shouldFocus) btn.focus();
-        } else {
-          btn.classList.remove('border-primary', 'text-primary');
-          btn.classList.add('border-transparent', 'text-white/60', 'hover:text-white/85');
-        }
-      });
-
-      panels.forEach((panel) => {
-        const isVisible = panel.getAttribute('data-tab-panel') === tabValue;
-        panel.classList.toggle('hidden', !isVisible);
-        panel.toggleAttribute('hidden', !isVisible);
-      });
+    for (const panel of panels) {
+      const value = panel.dataset.tabPanel;
+      if (!value) continue;
+      panel.id = `${tabsId}-panel-${value}`;
+      panel.setAttribute('aria-labelledby', `${tabsId}-tab-${value}`);
+      panel.tabIndex = 0;
     }
 
-    buttons.forEach((button, index) => {
-      button.addEventListener('click', () => {
-        const tabValue = button.dataset.tab;
-        if (tabValue) {
-          switchTab(tabValue);
-        }
-      });
+    function select(value: string, focus = false) {
+      for (const tab of tabs) {
+        const isSelected = tab.dataset.tab === value;
+        tab.setAttribute('aria-selected', String(isSelected));
+        tab.tabIndex = isSelected ? 0 : -1;
+        if (isSelected && focus) tab.focus();
+      }
+      for (const panel of panels) {
+        panel.hidden = panel.dataset.tabPanel !== value;
+      }
+    }
 
-      button.addEventListener('keydown', (event) => {
-        const lastIndex = buttons.length - 1;
-        let nextIndex: number | null = null;
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => tab.dataset.tab && select(tab.dataset.tab), { signal });
 
-        if (event.key === 'ArrowRight') nextIndex = index === lastIndex ? 0 : index + 1;
-        if (event.key === 'ArrowLeft') nextIndex = index === 0 ? lastIndex : index - 1;
-        if (event.key === 'Home') nextIndex = 0;
-        if (event.key === 'End') nextIndex = lastIndex;
-        if (nextIndex === null) return;
+      tab.addEventListener(
+        'keydown',
+        (event) => {
+          const last = tabs.length - 1;
+          const nextIndex = {
+            ArrowRight: index === last ? 0 : index + 1,
+            ArrowLeft: index === 0 ? last : index - 1,
+            Home: 0,
+            End: last,
+          }[event.key];
+          if (nextIndex === undefined) return;
 
-        event.preventDefault();
-        const nextTab = buttons[nextIndex]?.dataset.tab;
-        if (nextTab) switchTab(nextTab, true);
-      });
+          event.preventDefault();
+          const next = tabs[nextIndex]?.dataset.tab;
+          if (next) select(next, true);
+        },
+        { signal }
+      );
     });
+
+    select(container.dataset.defaultTab ?? tabs[0]?.dataset.tab ?? '');
   }
 
-  document.addEventListener('astro:page-load', () => {
-    document.querySelectorAll('.tabs-container').forEach((container) => {
-      if (container instanceof HTMLElement) {
-        initTabs(container);
-      }
-    });
+  onPageLoad((signal) => {
+    for (const container of document.querySelectorAll<HTMLElement>('.tabs-container')) {
+      initTabs(container, signal);
+    }
   });
 </script>
 
 <style>
-  .tab-content [data-tab-panel] {
-    display: block;
-  }
-
-  .tab-content [data-tab-panel].hidden {
-    display: none;
-  }
-
   .tabs-list {
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.1) transparent;

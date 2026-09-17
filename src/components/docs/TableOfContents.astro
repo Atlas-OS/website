@@ -10,72 +10,70 @@ const { headings = [] } = Astro.props;
 const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 ---
 
-{
-  filteredHeadings.length > 0 && (
-    <aside
-      id="toc"
-      data-pagefind-ignore
-      class="fixed z-20 hidden overflow-y-auto px-6 py-6 xl:block"
-      style="top: var(--docs-header-height); right: var(--docs-toc-inset); width: var(--docs-toc-width); height: calc(100vh - var(--docs-header-height));"
-    >
-      <nav class="sticky top-6 z-10 -mr-2 max-h-[calc(100vh-4rem)] overflow-y-auto px-2" aria-label="On this page">
-        <div class="space-y-4">
-          <h2 class="mb-4 text-sm font-semibold" style="color: var(--docs-text-muted);">
-            On this page
-          </h2>
-          <div class="relative">
-            <div
-              id="toc-marker"
-              class="absolute left-0 w-[2px] rounded-full bg-primary opacity-0 transition-[height,opacity,top] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1.0)]"
-              style="top: 0; height: 0;"
-            >
-              <div class="absolute inset-0 bg-primary/50 blur-[2px]" />
-            </div>
-
-            <ul class="space-y-2">
-              {filteredHeadings.map((heading) => (
-                <li>
-                  <a
-                    href={`#${heading.slug}`}
-                    class={`toc-link block min-h-8 w-full rounded-sm py-1 text-start text-sm transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
-                      heading.depth === 3 ? 'pl-6' : 'pl-4'
-                    } hover:text-[var(--docs-text-primary)]`}
-                    style="scroll-behavior: smooth;"
-                  >
-                    {heading.text}
-                  </a>
-                </li>
-              ))}
-            </ul>
+{filteredHeadings.length > 0 && (
+  <aside
+    id="toc"
+    data-pagefind-ignore
+    class="fixed z-20 hidden overflow-y-auto px-6 py-6 xl:block"
+    style="top: var(--docs-header-height); right: var(--docs-toc-inset); width: var(--docs-toc-width); height: calc(100vh - var(--docs-header-height));"
+  >
+    <nav class="sticky top-6 z-10 -mr-2 max-h-[calc(100vh-4rem)] overflow-y-auto px-2" aria-label="On this page">
+      <div class="space-y-4">
+        <h2 class="mb-4 text-sm font-semibold" style="color: var(--docs-text-muted);">
+          On this page
+        </h2>
+        <div class="relative">
+          <div
+            id="toc-marker"
+            class="absolute left-0 w-[2px] rounded-full bg-primary opacity-0 transition-[height,opacity,top] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1.0)]"
+            style="top: 0; height: 0;"
+          >
+            <div class="absolute inset-0 bg-primary/50 blur-[2px]" />
           </div>
 
-          <div class="toc-utilities mt-6 flex flex-col gap-2 border-t border-white/[0.06] pt-4">
-            <button
-              type="button"
-              id="toc-copy-link"
-              class="toc-utility-link -mx-2 inline-flex min-h-9 items-center gap-2 rounded-md px-2 text-start text-sm transition-colors duration-150 hover:text-[var(--docs-text-primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-              style="color: var(--docs-text-muted);"
-            >
-              <Icon name="tabler:copy" class="h-4 w-4 shrink-0" aria-hidden="true" />
-              <span data-copy-link-label>Copy link</span>
-            </button>
-            <a
-              href="https://github.com/Atlas-OS/website/issues"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="toc-utility-link -mx-2 inline-flex min-h-9 items-center gap-2 rounded-md px-2 text-sm transition-colors duration-150 hover:text-[var(--docs-text-primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-              style="color: var(--docs-text-muted);"
-            >
-              <Icon name="tabler:message-report" class="h-4 w-4 shrink-0" aria-hidden="true" />
-              <span>Share feedback</span>
-            </a>
-          </div>
-          <span id="toc-copy-status" class="sr-only" role="status" aria-live="polite" />
+          <ul class="space-y-2">
+            {filteredHeadings.map((heading) => (
+              <li>
+                <a
+                  href={`#${heading.slug}`}
+                  class={`toc-link block min-h-8 w-full rounded-sm py-1 text-start text-sm transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
+                    heading.depth === 3 ? 'pl-6' : 'pl-4'
+                  } hover:text-[var(--docs-text-primary)]`}
+                  style="scroll-behavior: smooth;"
+                >
+                  {heading.text}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
-      </nav>
-    </aside>
-  )
-}
+
+        <div class="toc-utilities mt-6 flex flex-col gap-2 border-t border-white/[0.06] pt-4">
+          <button
+            type="button"
+            id="toc-copy-link"
+            class="toc-utility-link -mx-2 inline-flex min-h-9 items-center gap-2 rounded-md px-2 text-start text-sm transition-colors duration-150 hover:text-[var(--docs-text-primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            style="color: var(--docs-text-muted);"
+          >
+            <Icon name="tabler:copy" class="h-4 w-4 shrink-0" aria-hidden="true" />
+            <span data-copy-link-label>Copy link</span>
+          </button>
+          <a
+            href="https://github.com/Atlas-OS/website/issues"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="toc-utility-link -mx-2 inline-flex min-h-9 items-center gap-2 rounded-md px-2 text-sm transition-colors duration-150 hover:text-[var(--docs-text-primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            style="color: var(--docs-text-muted);"
+          >
+            <Icon name="tabler:message-report" class="h-4 w-4 shrink-0" aria-hidden="true" />
+            <span>Share feedback</span>
+          </a>
+        </div>
+        <span id="toc-copy-status" class="sr-only" role="status" aria-live="polite" />
+      </div>
+    </nav>
+  </aside>
+)}
 
 <style>
   #toc {
@@ -111,7 +109,7 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 </style>
 
 <script>
-  let tableOfContentsController: AbortController | null = null;
+  import { onPageLoad } from '@/utils/page-lifecycle';
 
   function setupTableOfContents(signal: AbortSignal) {
     const toc = document.querySelector('#toc');
@@ -245,12 +243,8 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
     });
   }
 
-  function initTableOfContents() {
-    tableOfContentsController?.abort();
-    tableOfContentsController = new AbortController();
-    setupTableOfContents(tableOfContentsController.signal);
+  onPageLoad((signal) => {
+    setupTableOfContents(signal);
     setupCopyLink();
-  }
-
-  document.addEventListener('astro:page-load', initTableOfContents);
+  });
 </script>

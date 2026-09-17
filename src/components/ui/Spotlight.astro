@@ -5,26 +5,28 @@ import { Icon } from 'astro-icon/components';
 <div
   id="spotlight-backdrop"
   class="pointer-events-none fixed inset-0 z-[100] bg-black/70 opacity-0 backdrop-blur-sm"
-  style="transition: opacity var(--motion-duration-normal) var(--motion-ease-out);"
   aria-hidden="true"
->
-</div>
+></div>
 
 <div
   id="spotlight-modal"
-  class="pointer-events-none fixed top-[20%] left-1/2 z-[101] flex w-[90vw] max-w-xl flex-col overflow-hidden rounded-2xl border border-white/[0.07] opacity-0 shadow-2xl shadow-black/50"
+  class="pointer-events-none fixed top-[20%] left-1/2 z-[101] flex w-[90vw] max-w-xl flex-col overflow-hidden rounded-2xl border border-white/[0.07] bg-[var(--bg-primary)] opacity-0 shadow-2xl shadow-black/50"
   role="dialog"
   aria-modal="true"
   aria-labelledby="spotlight-title"
   aria-hidden="true"
   inert
-  style="background-color: var(--bg-primary); max-height: min(520px, 80vh);"
+  style="max-height: min(520px, 80vh);"
 >
-  <h2 id="spotlight-title" class="sr-only">Search documentation</h2>
+  <h2 id="spotlight-title" class="sr-only">
+    Search documentation
+  </h2>
 
   <div id="spotlight-input-container" class="flex flex-shrink-0 cursor-text items-center gap-3 px-5 py-4">
     <Icon name="tabler:search" class="h-[18px] w-[18px] flex-shrink-0 text-white/55" aria-hidden="true" />
-    <label for="spotlight-input" class="sr-only">Search documentation</label>
+    <label for="spotlight-input" class="sr-only">
+      Search documentation
+    </label>
     <input
       type="text"
       id="spotlight-input"
@@ -32,15 +34,13 @@ import { Icon } from 'astro-icon/components';
       aria-autocomplete="list"
       aria-controls="spotlight-list"
       aria-expanded="false"
-      class="flex-1 bg-transparent text-base text-white/90 placeholder:text-white/45 focus:ring-0 focus:outline-none sm:text-[15px]"
+      class="flex-1 border-none bg-transparent text-base text-white/90 shadow-none outline-none placeholder:text-white/45 focus:ring-0 focus:outline-none sm:text-[15px]"
       placeholder="Search documentation…"
       autocomplete="off"
       autocorrect="off"
       spellcheck="false"
     />
-    <kbd
-      class="hidden flex-shrink-0 items-center rounded-md border border-white/[0.08] bg-white/[0.04] px-2 py-1 font-mono text-xs text-white/55 sm:inline-flex"
-    >
+    <kbd class="hidden flex-shrink-0 items-center rounded-md border border-white/[0.08] bg-white/[0.04] px-2 py-1 font-mono text-xs text-white/55 sm:inline-flex">
       Esc
     </kbd>
   </div>
@@ -49,9 +49,7 @@ import { Icon } from 'astro-icon/components';
 
   <div id="spotlight-results" class="min-h-0 flex-1 overflow-y-auto">
     <div id="spotlight-idle" class="flex flex-col items-center justify-center px-6 py-10 text-center">
-      <div
-        class="mb-3 flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.06] bg-white/[0.03]"
-      >
+      <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.06] bg-white/[0.03]">
         <Icon name="tabler:book" class="h-5 w-5 text-white/50" aria-hidden="true" />
       </div>
       <p class="text-sm font-medium text-white/70">Search the docs</p>
@@ -60,7 +58,9 @@ import { Icon } from 'astro-icon/components';
 
     <div id="spotlight-empty" class="hidden px-6 py-10 text-center">
       <div role="status" aria-live="polite">
-        <p class="text-sm text-white/70">No results for “<span id="spotlight-empty-query"></span>”</p>
+        <p class="text-sm text-white/70">
+          No results for “<span id="spotlight-empty-query"></span>”
+        </p>
         <p class="mt-1 text-xs text-white/45">Try another search term.</p>
       </div>
       <button
@@ -74,7 +74,7 @@ import { Icon } from 'astro-icon/components';
 
     <div
       id="spotlight-loading"
-      class="flex hidden items-center justify-center gap-2.5 px-6 py-10 text-sm text-white/60"
+      class="hidden items-center justify-center gap-2.5 px-6 py-10 text-sm text-white/60 [&:not(.hidden)]:flex"
       role="status"
       aria-live="polite"
     >
@@ -82,14 +82,7 @@ import { Icon } from 'astro-icon/components';
       <span>Searching&hellip;</span>
     </div>
 
-    <ul
-      id="spotlight-list"
-      class="py-2"
-      role="listbox"
-      aria-label="Search results"
-      style="list-style: none; padding-top: 0.5rem; padding-bottom: 0.5rem; margin: 0;"
-    >
-    </ul>
+    <ul id="spotlight-list" class="m-0 list-none p-2" role="listbox" aria-label="Search results"></ul>
   </div>
 
   <div id="spotlight-footer" class="hidden flex-shrink-0 border-t border-white/[0.06] px-5 py-2.5">
@@ -114,7 +107,6 @@ import { Icon } from 'astro-icon/components';
   #spotlight-modal {
     transform: translate(-50%, 0) scale(0.97);
     filter: blur(6px);
-    will-change: transform, opacity, filter;
     transition:
       opacity var(--motion-duration-normal) var(--motion-ease-out),
       transform var(--motion-duration-normal) var(--motion-ease-out),
@@ -137,128 +129,109 @@ import { Icon } from 'astro-icon/components';
     pointer-events: auto;
   }
 
-  #spotlight-list {
-    list-style: none !important;
-    padding: 0.5rem !important;
-    margin: 0 !important;
-  }
-
   #spotlight-results {
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.07) transparent;
   }
+
   #spotlight-results::-webkit-scrollbar {
     width: 4px;
   }
+
   #spotlight-results::-webkit-scrollbar-track {
     background: transparent;
   }
+
   #spotlight-results::-webkit-scrollbar-thumb {
     background-color: rgba(255, 255, 255, 0.07);
     border-radius: 2px;
   }
 
   .spotlight-item {
-    display: flex !important;
-    align-items: center !important;
-    gap: 0.75rem !important;
-    padding: 0.625rem 0.875rem !important;
-    border-radius: 0.625rem !important;
-    cursor: pointer !important;
-    list-style: none !important;
-    margin: 0 !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    background-color: transparent !important;
-    border: 1px solid transparent !important;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.625rem 0.875rem;
+    border: 1px solid transparent;
+    border-radius: 0.625rem;
+    cursor: pointer;
     transition:
       background-color 120ms ease,
-      border-color 120ms ease !important;
+      border-color 120ms ease;
   }
 
   .spotlight-item:hover {
-    background-color: rgb(255 255 255 / 0.04) !important;
-    border-color: rgb(255 255 255 / 0.05) !important;
+    background-color: rgb(255 255 255 / 0.04);
+    border-color: rgb(255 255 255 / 0.05);
   }
 
   .spotlight-item.selected {
-    background-color: rgb(255 255 255 / 0.06) !important;
-    border-color: rgb(255 255 255 / 0.07) !important;
+    background-color: rgb(255 255 255 / 0.06);
+    border-color: rgb(255 255 255 / 0.07);
   }
 
   .spotlight-item-icon {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    flex-shrink: 0 !important;
-    width: 2rem !important;
-    height: 2rem !important;
-    border-radius: 0.5rem !important;
-    border: 1px solid rgb(255 255 255 / 0.06) !important;
-    background-color: rgb(255 255 255 / 0.03) !important;
-    color: rgb(255 255 255 / 0.5) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgb(255 255 255 / 0.06);
+    background-color: rgb(255 255 255 / 0.03);
+    color: rgb(255 255 255 / 0.5);
+  }
+
+  .spotlight-item-icon svg {
+    width: 1rem;
+    height: 1rem;
   }
 
   .spotlight-item.selected .spotlight-item-icon {
-    border-color: var(--color-primary, #3b82f6) !important;
-    background-color: color-mix(in oklch, var(--color-primary, #3b82f6) 10%, transparent) !important;
-    color: var(--color-primary, #3b82f6) !important;
+    border-color: var(--color-primary);
+    background-color: color-mix(in oklch, var(--color-primary) 10%, transparent);
+    color: var(--color-primary);
   }
 
   .spotlight-item-body {
-    flex: 1 !important;
-    min-width: 0 !important;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .spotlight-item-title,
+  .spotlight-item-path {
+    margin: 0;
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .spotlight-item-title {
-    font-size: 0.8125rem !important;
-    font-weight: 500 !important;
-    color: rgb(255 255 255 / 0.85) !important;
-    line-height: 1.4 !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    margin: 0 !important;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: rgb(255 255 255 / 0.85);
   }
 
   .spotlight-item-path {
-    font-size: 0.75rem !important;
-    color: rgb(255 255 255 / 0.48) !important;
-    font-family: var(--font-mono, monospace) !important;
-    line-height: 1.4 !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    margin-top: 0.125rem !important;
-    margin-bottom: 0 !important;
+    margin-top: 0.125rem;
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    color: rgb(255 255 255 / 0.48);
   }
 
   .spotlight-item-arrow {
-    flex-shrink: 0 !important;
-    color: rgb(255 255 255 / 0) !important;
-    transition: color 120ms ease !important;
-    width: 0.875rem !important;
-    height: 0.875rem !important;
+    flex-shrink: 0;
+    width: 0.875rem;
+    height: 0.875rem;
+    color: transparent;
+    transition: color 120ms ease;
   }
 
   .spotlight-item.selected .spotlight-item-arrow {
-    color: rgb(255 255 255 / 0.3) !important;
-  }
-
-  #spotlight-input {
-    outline: none !important;
-    border: none !important;
-    background: transparent !important;
-  }
-
-  #spotlight-input:focus {
-    outline: none !important;
-    border: none !important;
-    box-shadow: none !important;
-  }
-
-  #spotlight-input::placeholder {
-    color: rgb(255 255 255 / 0.45);
+    color: rgb(255 255 255 / 0.3);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -270,589 +243,8 @@ import { Icon } from 'astro-icon/components';
 </style>
 
 <script>
-  import { closeSidebar } from '@/utils/ui/sidebar';
+  import { onPageLoad } from '@/utils/page-lifecycle';
+  import { initSpotlight } from '@/utils/spotlight';
 
-  const PAGEFIND_PATH = '/pagefind/pagefind.js';
-  const PAGEFIND_DEBOUNCE_MS = 150;
-  const MAX_SEARCH_RESULTS = 10;
-
-  interface AstroNavigation {
-    navigate: (url: string) => void;
-  }
-
-  interface WindowWithAstro extends Window {
-    astro?: AstroNavigation;
-  }
-
-  interface PagefindResult {
-    id: string;
-    score?: number;
-    data: () => Promise<PagefindResultData>;
-  }
-
-  interface PagefindResultData {
-    url: string;
-    content: string;
-    excerpt: string;
-    plain_excerpt?: string;
-    meta?: {
-      title?: string;
-      image?: string;
-      [key: string]: string | undefined;
-    };
-    sub_results?: Array<{
-      url: string;
-      title: string;
-      excerpt: string;
-      plain_excerpt?: string;
-    }>;
-  }
-
-  interface PagefindSearchOptions {
-    filters?: Record<string, unknown>;
-    sort?: Record<string, unknown>;
-    verbose?: boolean;
-    preload?: boolean;
-  }
-
-  interface PagefindSearchResponse {
-    results: PagefindResult[];
-    unfilteredResultCount?: number;
-    filters?: Record<string, Record<string, number>>;
-    totalFilters?: Record<string, Record<string, number>>;
-  }
-
-  interface Pagefind {
-    init: () => Promise<void>;
-    search: (query: string, options?: PagefindSearchOptions) => Promise<PagefindSearchResponse>;
-    debouncedSearch: (
-      query: string,
-      options?: PagefindSearchOptions,
-      debounceTimeoutMs?: number
-    ) => Promise<PagefindSearchResponse | null>;
-    preload: (query: string, options?: PagefindSearchOptions) => Promise<void>;
-  }
-
-  interface SearchResult {
-    url: string;
-    title: string;
-    excerpt: string;
-  }
-
-  let pagefind: Pagefind | null = null;
-  let pagefindLoadPromise: Promise<Pagefind | null> | null = null;
-  let pagefindUnavailableLogged = false;
-  let selectedIndex = -1;
-  let currentQuery = '';
-  let searchRunId = 0;
-  let spotlightController: AbortController | null = null;
-  let lastFocusedElement: HTMLElement | null = null;
-  let spotlightBackgroundState: Array<{ element: HTMLElement; wasInert: boolean }> = [];
-
-  const importPagefind = (modulePath: string): Promise<unknown> => import(/* @vite-ignore */ modulePath);
-
-  async function loadPagefind(): Promise<Pagefind | null> {
-    if (pagefind) return pagefind;
-    if (pagefindLoadPromise) return pagefindLoadPromise;
-
-    pagefindLoadPromise = (async () => {
-      try {
-        const pf = (await importPagefind(PAGEFIND_PATH)) as Pagefind;
-        await pf.init();
-        pagefind = pf;
-        return pagefind;
-      } catch (error) {
-        pagefindLoadPromise = null;
-
-        if (!pagefindUnavailableLogged) {
-          console.warn('Pagefind not available - search index may not be built yet', error);
-          pagefindUnavailableLogged = true;
-        }
-
-        return null;
-      }
-    })();
-
-    return pagefindLoadPromise;
-  }
-
-  function warmPagefind(query = '') {
-    void loadPagefind().then((pf) => {
-      const term = query.trim();
-      if (!pf || !term) return;
-      void pf.preload(term).catch(() => {});
-    });
-  }
-
-  function isCurrentSearch(runId: number, query: string): boolean {
-    return runId === searchRunId && query === currentQuery;
-  }
-
-  function setSearchTriggerExpansion(expanded: boolean) {
-    for (const button of document.querySelectorAll<HTMLElement>(
-      '#navbar-search-button, #navbar-search-button-mobile'
-    )) {
-      button.setAttribute('aria-expanded', String(expanded));
-    }
-  }
-
-  function setSpotlightBackgroundInert(isInert: boolean, modal?: HTMLElement, backdrop?: HTMLElement) {
-    if (isInert) {
-      if (spotlightBackgroundState.length > 0 || !modal || !backdrop) return;
-
-      for (const child of Array.from(document.body.children)) {
-        if (!(child instanceof HTMLElement) || child === modal || child === backdrop) continue;
-        if (child.matches('script, style')) continue;
-
-        spotlightBackgroundState.push({ element: child, wasInert: child.inert });
-        child.inert = true;
-      }
-      return;
-    }
-
-    for (const { element, wasInert } of spotlightBackgroundState) {
-      element.inert = wasInert;
-    }
-    spotlightBackgroundState = [];
-  }
-
-  function openSpotlight() {
-    const modal = document.getElementById('spotlight-modal');
-    const backdrop = document.getElementById('spotlight-backdrop');
-    const input = document.getElementById('spotlight-input') as HTMLInputElement;
-
-    if (modal && backdrop && input) {
-      const activeElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-      lastFocusedElement = activeElement?.closest('#sidebar')
-        ? document.getElementById('sidebar-toggle-button')
-        : activeElement;
-      closeSidebar();
-      setSpotlightBackgroundInert(true, modal, backdrop);
-      warmPagefind(input.value);
-      modal.removeAttribute('inert');
-      modal.setAttribute('aria-hidden', 'false');
-      modal.classList.add('open');
-      backdrop.classList.add('open');
-      backdrop.setAttribute('aria-hidden', 'false');
-      input.setAttribute('aria-expanded', 'true');
-      setSearchTriggerExpansion(true);
-      document.body.style.overflow = 'hidden';
-
-      setTimeout(() => input.focus(), 80);
-    }
-  }
-
-  function closeSpotlight() {
-    const modal = document.getElementById('spotlight-modal');
-    const backdrop = document.getElementById('spotlight-backdrop');
-    const input = document.getElementById('spotlight-input') as HTMLInputElement;
-
-    if (modal && backdrop && input) {
-      searchRunId += 1;
-      modal.classList.remove('open');
-      modal.setAttribute('aria-hidden', 'true');
-      modal.setAttribute('inert', '');
-      backdrop.classList.remove('open');
-      backdrop.setAttribute('aria-hidden', 'true');
-      input.setAttribute('aria-expanded', 'false');
-      input.removeAttribute('aria-activedescendant');
-      setSearchTriggerExpansion(false);
-      document.body.style.overflow = '';
-      input.value = '';
-      selectedIndex = -1;
-      currentQuery = '';
-      renderResults([], false);
-      setSpotlightBackgroundInert(false);
-      lastFocusedElement?.focus();
-      lastFocusedElement = null;
-    }
-  }
-
-  function trapSpotlightFocus(event: KeyboardEvent, modal: HTMLElement) {
-    if (event.key !== 'Tab' || !modal.classList.contains('open')) return;
-
-    const focusable = Array.from(
-      modal.querySelectorAll<HTMLElement>('input, a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
-    ).filter((element) => element.getClientRects().length > 0);
-    const first = focusable[0];
-    const last = focusable.at(-1);
-    if (!first || !last) return;
-
-    if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault();
-      last.focus();
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault();
-      first.focus();
-    }
-  }
-
-  function setIdleVisible(visible: boolean) {
-    const idle = document.getElementById('spotlight-idle');
-    if (idle) idle.classList.toggle('hidden', !visible);
-  }
-
-  function setFooterVisible(visible: boolean) {
-    const footer = document.getElementById('spotlight-footer');
-    if (footer) footer.classList.toggle('hidden', !visible);
-  }
-
-  function showLoading() {
-    const list = document.getElementById('spotlight-list');
-    const empty = document.getElementById('spotlight-empty');
-    const loading = document.getElementById('spotlight-loading');
-
-    if (list) list.replaceChildren();
-    if (empty) empty.classList.add('hidden');
-    if (loading) loading.classList.remove('hidden');
-    setIdleVisible(false);
-    setFooterVisible(false);
-  }
-
-  function hideLoading() {
-    const loading = document.getElementById('spotlight-loading');
-    if (loading) loading.classList.add('hidden');
-  }
-
-  async function search(query: string) {
-    const runId = searchRunId + 1;
-    const term = query.trim();
-    searchRunId = runId;
-    currentQuery = query;
-
-    if (!term) {
-      renderResults([], false);
-      return;
-    }
-
-    showLoading();
-
-    const pf = await loadPagefind();
-    if (!isCurrentSearch(runId, query)) return;
-
-    if (!pf) {
-      hideLoading();
-      renderResults([], true);
-      return;
-    }
-
-    try {
-      const searchResponse = await pf.debouncedSearch(term, {}, PAGEFIND_DEBOUNCE_MS);
-
-      if (!isCurrentSearch(runId, query)) return;
-      if (searchResponse === null) {
-        hideLoading();
-        return;
-      }
-
-      const results = await loadSearchResults(searchResponse.results.slice(0, MAX_SEARCH_RESULTS));
-
-      if (!isCurrentSearch(runId, query)) return;
-
-      renderResults(results, true);
-    } catch (error) {
-      if (!isCurrentSearch(runId, query)) return;
-      console.warn('Pagefind search failed', error);
-      hideLoading();
-      renderResults([], true);
-    }
-  }
-
-  async function loadSearchResults(results: PagefindResult[]): Promise<SearchResult[]> {
-    const loadedResults = await Promise.all(
-      results.map(async (result): Promise<SearchResult | null> => {
-        try {
-          const data = await result.data();
-          return {
-            url: data.url,
-            title: data.meta?.title || extractTitleFromUrl(data.url),
-            excerpt: data.excerpt || data.plain_excerpt || '',
-          };
-        } catch {
-          return null;
-        }
-      })
-    );
-
-    return loadedResults.filter((result): result is SearchResult => result !== null);
-  }
-
-  function extractTitleFromUrl(url: string): string {
-    const path = url.replace(/^\//, '').replace(/\/$/, '');
-    if (!path) return 'Home';
-    const segments = path.split('/');
-    const last = segments[segments.length - 1] ?? '';
-    if (!last) return 'Home';
-    return last
-      .split('-')
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
-  }
-
-  function debouncedSearch(query: string) {
-    void search(query);
-  }
-
-  function createSvgIcon(paths: string[], className?: string, strokeWidth = '2') {
-    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svg.setAttribute('viewBox', '0 0 24 24');
-    svg.setAttribute('fill', 'none');
-    svg.setAttribute('stroke', 'currentColor');
-    svg.setAttribute('stroke-width', strokeWidth);
-    svg.setAttribute('stroke-linecap', 'round');
-    svg.setAttribute('stroke-linejoin', 'round');
-    svg.setAttribute('aria-hidden', 'true');
-    if (className) svg.setAttribute('class', className);
-
-    paths.forEach((pathData, index) => {
-      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      path.setAttribute('d', pathData);
-      if (index === 0) {
-        path.setAttribute('stroke', 'none');
-        path.setAttribute('fill', 'none');
-      }
-      svg.appendChild(path);
-    });
-
-    return svg;
-  }
-
-  function navigateToUrl(url: string) {
-    closeSpotlight();
-    if ((window as WindowWithAstro).astro?.navigate) {
-      (window as WindowWithAstro).astro?.navigate(url);
-    } else {
-      window.location.href = url;
-    }
-  }
-
-  function renderResults(results: SearchResult[], hasQuery: boolean) {
-    const list = document.getElementById('spotlight-list');
-    const empty = document.getElementById('spotlight-empty');
-    const emptyQuery = document.getElementById('spotlight-empty-query');
-
-    if (!list || !empty) return;
-
-    hideLoading();
-
-    if (results.length === 0) {
-      list.replaceChildren();
-      selectedIndex = -1;
-      setIdleVisible(!hasQuery);
-      setFooterVisible(false);
-      if (hasQuery) {
-        if (emptyQuery) emptyQuery.textContent = currentQuery.trim();
-        empty.classList.remove('hidden');
-      } else {
-        if (emptyQuery) emptyQuery.textContent = '';
-        empty.classList.add('hidden');
-      }
-      return;
-    }
-
-    empty.classList.add('hidden');
-    setIdleVisible(false);
-    setFooterVisible(true);
-
-    const fragment = document.createDocumentFragment();
-
-    results.forEach((result, index) => {
-      const path = '/' + (result.url.replace(/^\//, '').replace(/\/$/, '') || '');
-      const item = document.createElement('li');
-      item.className = `spotlight-item ${index === selectedIndex ? 'selected' : ''}`.trim();
-      item.id = `spotlight-option-${index}`;
-      item.setAttribute('role', 'option');
-      item.setAttribute('aria-selected', String(index === selectedIndex));
-      item.dataset.index = String(index);
-      item.dataset.url = result.url;
-
-      const iconWrapper = document.createElement('div');
-      iconWrapper.className = 'spotlight-item-icon';
-      iconWrapper.appendChild(
-        createSvgIcon(
-          [
-            'M0 0h24v24H0z',
-            'M14 3v4a1 1 0 0 0 1 1h4',
-            'M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z',
-          ],
-          undefined,
-          '1.75'
-        )
-      );
-
-      const body = document.createElement('div');
-      body.className = 'spotlight-item-body';
-
-      const title = document.createElement('p');
-      title.className = 'spotlight-item-title';
-      title.textContent = result.title;
-
-      const pathElement = document.createElement('p');
-      pathElement.className = 'spotlight-item-path';
-      pathElement.textContent = path;
-
-      body.replaceChildren(title, pathElement);
-      item.replaceChildren(
-        iconWrapper,
-        body,
-        createSvgIcon(['M0 0h24v24H0z', 'M9 6l6 6l-6 6'], 'spotlight-item-arrow')
-      );
-      fragment.appendChild(item);
-    });
-
-    list.replaceChildren(fragment);
-
-    list.querySelectorAll('.spotlight-item').forEach((item) => {
-      const el = item as HTMLElement;
-      el.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const url = el.getAttribute('data-url');
-        if (url) {
-          navigateToUrl(url);
-        }
-      });
-      el.addEventListener('mousedown', (e) => e.preventDefault());
-    });
-  }
-
-  function navigateResults(direction: 'up' | 'down') {
-    const items = document.querySelectorAll('.spotlight-item');
-    const input = document.getElementById('spotlight-input');
-    if (items.length === 0) return;
-
-    items[selectedIndex]?.classList.remove('selected');
-    items[selectedIndex]?.setAttribute('aria-selected', 'false');
-
-    if (direction === 'down') {
-      selectedIndex = (selectedIndex + 1) % items.length;
-    } else {
-      selectedIndex = selectedIndex <= 0 ? items.length - 1 : selectedIndex - 1;
-    }
-
-    const target = items[selectedIndex];
-    target?.classList.add('selected');
-    target?.setAttribute('aria-selected', 'true');
-    if (target?.id) input?.setAttribute('aria-activedescendant', target.id);
-    target?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-  }
-
-  function selectCurrentResult() {
-    const items = document.querySelectorAll('.spotlight-item');
-    if (selectedIndex >= 0 && selectedIndex < items.length) {
-      const url = items[selectedIndex]?.getAttribute('data-url');
-      if (url) {
-        navigateToUrl(url);
-      }
-    }
-  }
-
-  function cleanupSpotlight() {
-    spotlightController?.abort();
-    spotlightController = null;
-    setSpotlightBackgroundInert(false);
-    document.body.style.overflow = '';
-    searchRunId += 1;
-  }
-
-  function setupSpotlight() {
-    cleanupSpotlight();
-
-    const searchButton = document.getElementById('navbar-search-button');
-    const searchButtonMobile = document.getElementById('navbar-search-button-mobile');
-    const input = document.getElementById('spotlight-input') as HTMLInputElement | null;
-    const inputContainer = document.getElementById('spotlight-input-container');
-    const clearSearchButton = document.getElementById('spotlight-clear-search');
-    const backdrop = document.getElementById('spotlight-backdrop');
-    const modal = document.getElementById('spotlight-modal');
-
-    if (!modal || !backdrop || !input) return;
-
-    const controller = new AbortController();
-    const { signal } = controller;
-    spotlightController = controller;
-
-    searchButton?.addEventListener('click', openSpotlight, { signal });
-    searchButtonMobile?.addEventListener('click', openSpotlight, { signal });
-
-    if (inputContainer && input) {
-      inputContainer.addEventListener(
-        'click',
-        (e) => {
-          if (e.target !== input) input.focus();
-        },
-        { signal }
-      );
-    }
-
-    if (input) {
-      input.addEventListener('focus', () => warmPagefind(input.value), { signal });
-      input.addEventListener(
-        'input',
-        (e) => {
-          const target = e.target as HTMLInputElement;
-          warmPagefind(target.value);
-          debouncedSearch(target.value);
-          selectedIndex = -1;
-        },
-        { signal }
-      );
-
-      input.addEventListener(
-        'keydown',
-        (e) => {
-          if (e.key === 'ArrowDown') {
-            e.preventDefault();
-            navigateResults('down');
-          } else if (e.key === 'ArrowUp') {
-            e.preventDefault();
-            navigateResults('up');
-          } else if (e.key === 'Enter') {
-            e.preventDefault();
-            selectCurrentResult();
-          }
-        },
-        { signal }
-      );
-    }
-
-    clearSearchButton?.addEventListener(
-      'click',
-      () => {
-        searchRunId += 1;
-        currentQuery = '';
-        selectedIndex = -1;
-        input.value = '';
-        input.removeAttribute('aria-activedescendant');
-        renderResults([], false);
-        input.focus();
-      },
-      { signal }
-    );
-
-    backdrop.addEventListener('click', closeSpotlight, { signal });
-    modal.addEventListener('keydown', (event) => trapSpotlightFocus(event, modal), { signal });
-
-    document.addEventListener(
-      'keydown',
-      (e) => {
-        if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
-          e.preventDefault();
-          if (modal.classList.contains('open')) {
-            closeSpotlight();
-          } else {
-            openSpotlight();
-          }
-        }
-        if (e.key === 'Escape' && modal.classList.contains('open')) {
-          closeSpotlight();
-        }
-      },
-      { signal }
-    );
-
-    document.addEventListener('astro:before-swap', cleanupSpotlight, { signal });
-  }
-
-  document.addEventListener('astro:page-load', setupSpotlight);
+  onPageLoad(initSpotlight);
 </script>

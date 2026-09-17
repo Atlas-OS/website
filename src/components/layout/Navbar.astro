@@ -65,35 +65,31 @@ const isDocumentationActive = isOnDocsPage && !hasActiveDocsSubItem;
             decoding="sync"
             fetchpriority="high"
           />
-          <div
-            class="absolute -inset-2 -z-10 rounded-full bg-primary/10 opacity-70 blur-lg transition-[background-color,opacity] duration-300 group-hover:bg-primary/20"
-          >
-          </div>
+          <div class="absolute -inset-2 -z-10 rounded-full bg-primary/10 opacity-70 blur-lg transition-[background-color,opacity] duration-300 group-hover:bg-primary/20"></div>
         </div>
       </a>
 
       <nav class="hidden items-center gap-1 lg:flex">
-        <NavLink href="/docs/" isActive={isDocumentationActive}> Documentation </NavLink>
+        <NavLink href="/docs/" isActive={isDocumentationActive}>
+          {' '}
+          Documentation{' '}
+        </NavLink>
 
-        {
-          mainNavItems.slice(1).map((item) => (
-            <NavLink href={item.href} isActive={isActive(item.href, currentPath)} external={item.isExternal}>
-              {item.label}
-            </NavLink>
-          ))
-        }
+        {mainNavItems.slice(1).map((item) => (
+          <NavLink href={item.href} isActive={isActive(item.href, currentPath)} external={item.isExternal}>
+            {item.label}
+          </NavLink>
+        ))}
       </nav>
     </div>
 
     <div class="flex shrink-0 items-center gap-3">
-      {
-        isOnDocsPage && (
-          <>
-            <SearchButton />
-            <SearchButton mobile={true} />
-          </>
-        )
-      }
+      {isOnDocsPage && (
+        <>
+          <SearchButton />
+          <SearchButton mobile={true} />
+        </>
+      )}
 
       <div class="hidden items-center gap-2 sm:flex">
         <SocialIconLink href="https://github.com/Atlas-OS/Atlas" icon="tabler:brand-github" label="GitHub" />
@@ -101,60 +97,57 @@ const isDocumentationActive = isOnDocsPage && !hasActiveDocsSubItem;
         <SocialIconLink href="https://x.com/atlasos" icon="tabler:brand-x" label="X (Twitter)" />
       </div>
 
-      {
-        isOnDocsPage ? (
-          <IconButton
-            id="sidebar-toggle-button"
-            icon="tabler:menu-2"
-            label="Toggle sidebar"
-            controls="sidebar"
-            expanded={false}
-            class="lg:hidden"
-          />
-        ) : (
-          <IconButton
-            id="mobile-menu-button"
-            icon="tabler:menu-2"
-            label="Toggle mobile menu"
-            controls="mobile-menu"
-            expanded={false}
-            class="relative md:hidden"
-          />
-        )
-      }
+      {isOnDocsPage ? (
+        <IconButton
+          id="sidebar-toggle-button"
+          icon="tabler:menu-2"
+          label="Toggle sidebar"
+          controls="sidebar"
+          expanded={false}
+          class="lg:hidden"
+        />
+      ) : (
+        <IconButton
+          id="mobile-menu-button"
+          icon="tabler:menu-2"
+          label="Toggle mobile menu"
+          controls="mobile-menu"
+          expanded={false}
+          class="relative md:hidden"
+        />
+      )}
     </div>
   </div>
 
-  {
-    !isOnDocsPage && (
-      <div id="mobile-menu" class="mobile-menu md:hidden" hidden inert>
-        <div id="mobile-menu-content" class="mobile-menu-content space-y-1 px-4 py-3 backdrop-blur-xl">
-          {mainNavItems.map((item) => {
-            const itemIsActive =
-              item.href === '/docs/' ? isDocumentationActive : !item.isExternal && isActive(item.href, currentPath);
+  {!isOnDocsPage && (
+    <div id="mobile-menu" class="mobile-menu md:hidden" hidden inert>
+      <div id="mobile-menu-content" class="mobile-menu-content space-y-1 px-4 py-3 backdrop-blur-xl">
+        {mainNavItems.map((item) => {
+          const itemIsActive =
+            item.href === '/docs/' ? isDocumentationActive : !item.isExternal && isActive(item.href, currentPath);
 
-            return (
-              <a
-                href={item.href}
-                data-astro-prefetch={!item.isExternal && item.href.startsWith('/') ? 'hover' : undefined}
-                target={item.isExternal ? '_blank' : undefined}
-                rel={item.isExternal ? 'noopener noreferrer' : undefined}
-                class={`block rounded-md px-4 py-2.5 text-sm font-medium text-white transition-colors duration-200 ${
-                  itemIsActive ? 'bg-white/5 text-primary' : 'hover:bg-white/5'
-                }`}
-              >
-                {item.label}
-              </a>
-            );
-          })}
-        </div>
+          return (
+            <a
+              href={item.href}
+              data-astro-prefetch={!item.isExternal && item.href.startsWith('/') ? 'hover' : undefined}
+              target={item.isExternal ? '_blank' : undefined}
+              rel={item.isExternal ? 'noopener noreferrer' : undefined}
+              class={`block rounded-md px-4 py-2.5 text-sm font-medium text-white transition-colors duration-200 ${
+                itemIsActive ? 'bg-white/5 text-primary' : 'hover:bg-white/5'
+              }`}
+            >
+              {item.label}
+            </a>
+          );
+        })}
       </div>
-    )
-  }
+    </div>
+  )}
 </header>
 
 <script>
-  import { initNavbar } from '@/utils/ui';
+  import { initNavbar } from '@/utils/navbar';
+  import { onPageLoad } from '@/utils/page-lifecycle';
 
-  document.addEventListener('astro:page-load', initNavbar);
+  onPageLoad(initNavbar);
 </script>

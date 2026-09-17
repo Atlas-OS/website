@@ -1,193 +1,133 @@
-function initSlideshow(): void {
-  const container = document.getElementById('player-slideshow-container') as HTMLElement | null;
-  const slideshow = document.getElementById('player-slideshow') as HTMLElement | null;
-  const dotsContainer = document.getElementById('slideshow-dots') as HTMLElement | null;
+import { prefersReducedMotion } from './page-lifecycle';
+
+const SLIDE_DURATION_MS = 5000;
+const MIN_SWIPE_DISTANCE = 50;
+
+const SLIDE_ACTIVE = 'opacity-100';
+const SLIDE_INACTIVE = 'opacity-0';
+const DOT_ACTIVE = 'bg-white';
+const DOT_INACTIVE = 'bg-white/30';
+
+/**
+ * Auto-advancing testimonial slideshow with dot navigation and touch swipe support.
+ * Pauses while hovered and honours reduced-motion preferences by never auto-advancing.
+ */
+export function initSlideshow(signal: AbortSignal): void {
+  const container = document.getElementById('player-slideshow-container');
+  const slideshow = document.getElementById('player-slideshow');
+  const dotsContainer = document.getElementById('slideshow-dots');
   if (!container || !slideshow || !dotsContainer) return;
 
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const slides = [...slideshow.querySelectorAll<HTMLElement>('.player-slide')];
+  if (slides.length === 0) return;
 
-  const config: {
-    slideDuration: number;
-    activeClasses: { slide: string; dot: string };
-    inactiveClasses: { slide: string; dot: string };
-  } = {
-    slideDuration: 5000,
-    activeClasses: {
-      slide: 'opacity-100',
-      dot: 'bg-white',
-    },
-    inactiveClasses: {
-      slide: 'opacity-0',
-      dot: 'bg-white/30',
-    },
-  };
+  const autoplay = !prefersReducedMotion();
+  let current = 0;
+  let timer: number | undefined;
+  let touchStart: { x: number; y: number } | null = null;
 
-  const state: {
-    slides: HTMLElement[];
-    dots: HTMLElement[];
-    currentIndex: number;
-    interval: number;
-    touchStartX: number;
-    touchStartY: number;
-    isDragging: boolean;
-    minSwipeDistance: number;
-  } = {
-    slides: [...slideshow.querySelectorAll<HTMLElement>('.player-slide')],
-    dots: [] as HTMLElement[],
-    currentIndex: 0,
-    interval: 0,
-    touchStartX: 0,
-    touchStartY: 0,
-    isDragging: false,
-    minSwipeDistance: 50,
-  };
-
-  state.slides.forEach((_, index) => {
-    const dot = createDot(index);
-    dotsContainer.appendChild(dot);
-    const indicator = dot.querySelector<HTMLElement>('.line-indicator');
-    if (indicator) {
-      state.dots.push(indicator);
-    }
-  });
-
-  setSlide(0);
-  startInterval();
-
-  container.addEventListener('mouseenter', () => clearInterval(state.interval));
-  container.addEventListener('mouseleave', startInterval);
-
-  function handleTouchStart(e: TouchEvent): void {
-    if (e.touches.length !== 1) return;
-    const touch = e.touches[0];
-    if (!touch) return;
-    state.touchStartX = touch.clientX;
-    state.touchStartY = touch.clientY;
-    state.isDragging = true;
-    clearInterval(state.interval);
-  }
-
-  function handleTouchMove(e: TouchEvent): void {
-    if (!state.isDragging || e.touches.length !== 1) return;
-    const touch = e.touches[0];
-    if (!touch) return;
-    const deltaX = Math.abs(touch.clientX - state.touchStartX);
-    const deltaY = Math.abs(touch.clientY - state.touchStartY);
-    if (deltaX > deltaY && deltaX > 10) {
-      e.preventDefault();
-    }
-  }
-
-  function handleTouchEnd(e: TouchEvent): void {
-    if (!state.isDragging) return;
-    state.isDragging = false;
-
-    if (e.changedTouches.length !== 1) {
-      startInterval();
-      return;
-    }
-
-    const touch = e.changedTouches[0];
-    if (!touch) {
-      startInterval();
-      return;
-    }
-    const touchEndX = touch.clientX;
-    const touchEndY = touch.clientY;
-
-    const deltaX = touchEndX - state.touchStartX;
-    const deltaY = touchEndY - state.touchStartY;
-    const absDeltaX = Math.abs(deltaX);
-    const absDeltaY = Math.abs(deltaY);
-
-    if (absDeltaX > absDeltaY && absDeltaX > state.minSwipeDistance) {
-      if (deltaX < 0) {
-        nextSlide();
-      } else {
-        const prevIndex =
-          state.currentIndex === 0 ? state.slides.length - 1 : state.currentIndex - 1;
-        setSlide(prevIndex);
-      }
-      resetInterval();
-    } else {
-      startInterval();
-    }
-  }
-
-  container.addEventListener('touchstart', handleTouchStart, { passive: true });
-  container.addEventListener('touchmove', handleTouchMove, { passive: false });
-  container.addEventListener('touchend', handleTouchEnd, { passive: true });
-
-  function createDot(index: number): HTMLButtonElement {
+  const dots = slides.map((_, index) => {
     const button = document.createElement('button');
-    button.classList.add('nav-dot-button', 'relative', 'p-1.5', 'cursor-pointer');
+    button.type = 'button';
+    button.className = 'nav-dot-button relative cursor-pointer p-1.5';
     button.setAttribute('aria-label', `Go to slide ${index + 1}`);
 
     const indicator = document.createElement('span');
-    indicator.classList.add(
-      'line-indicator',
-      'block',
-      'h-0.5',
-      'w-6',
-      config.inactiveClasses.dot,
-      'transition-colors',
-      'duration-300',
-      'pointer-events-none',
-    );
+    indicator.className = `line-indicator pointer-events-none block h-0.5 w-6 transition-colors duration-300 ${DOT_INACTIVE}`;
     indicator.setAttribute('aria-hidden', 'true');
-    button.appendChild(indicator);
+    button.append(indicator);
 
-    button.addEventListener('click', () => {
-      setSlide(index);
-      resetInterval();
+    button.addEventListener(
+      'click',
+      () => {
+        show(index);
+        restart();
+      },
+      { signal },
+    );
+
+    return indicator;
+  });
+
+  dotsContainer.replaceChildren(...dots.map(dot => dot.parentElement!));
+
+  function show(index: number): void {
+    current = (index + slides.length) % slides.length;
+    slides.forEach((slide, i) => {
+      const isActive = i === current;
+      slide.classList.toggle(SLIDE_ACTIVE, isActive);
+      slide.classList.toggle(SLIDE_INACTIVE, !isActive);
+      slide.style.zIndex = isActive ? '10' : '0';
+      dots[i]?.classList.toggle(DOT_ACTIVE, isActive);
+      dots[i]?.classList.toggle(DOT_INACTIVE, !isActive);
     });
+  }
 
-    button.addEventListener('keydown', (e: KeyboardEvent) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        setSlide(index);
-        resetInterval();
+  function stop(): void {
+    window.clearInterval(timer);
+    timer = undefined;
+  }
+
+  function start(): void {
+    if (!autoplay) return;
+    stop();
+    timer = window.setInterval(() => show(current + 1), SLIDE_DURATION_MS);
+  }
+
+  function restart(): void {
+    stop();
+    start();
+  }
+
+  container.addEventListener('mouseenter', stop, { signal });
+  container.addEventListener('mouseleave', start, { signal });
+
+  container.addEventListener(
+    'touchstart',
+    event => {
+      const touch = event.touches[0];
+      if (event.touches.length !== 1 || !touch) return;
+      touchStart = { x: touch.clientX, y: touch.clientY };
+      stop();
+    },
+    { passive: true, signal },
+  );
+
+  container.addEventListener(
+    'touchmove',
+    event => {
+      const touch = event.touches[0];
+      if (!touchStart || !touch) return;
+      const deltaX = Math.abs(touch.clientX - touchStart.x);
+      const deltaY = Math.abs(touch.clientY - touchStart.y);
+      if (deltaX > deltaY && deltaX > 10) event.preventDefault();
+    },
+    { passive: false, signal },
+  );
+
+  container.addEventListener(
+    'touchend',
+    event => {
+      const touch = event.changedTouches[0];
+      const origin = touchStart;
+      touchStart = null;
+      if (!origin || !touch) {
+        start();
+        return;
       }
-    });
 
-    return button;
-  }
-
-  function setSlide(index: number): void {
-    state.slides.forEach((slide, i) => {
-      const slideEl = slide as HTMLElement;
-      const isActive = i === index;
-      slideEl.classList.toggle(config.activeClasses.slide, isActive);
-      slideEl.classList.toggle(config.inactiveClasses.slide, !isActive);
-      slideEl.style.zIndex = isActive ? '10' : '0';
-
-      const dot = state.dots[i];
-      if (dot) {
-        dot.classList.toggle(config.activeClasses.dot, isActive);
-        dot.classList.toggle(config.inactiveClasses.dot, !isActive);
+      const deltaX = touch.clientX - origin.x;
+      const deltaY = touch.clientY - origin.y;
+      if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > MIN_SWIPE_DISTANCE) {
+        show(deltaX < 0 ? current + 1 : current - 1);
       }
-    });
+      start();
+    },
+    { passive: true, signal },
+  );
 
-    state.currentIndex = index;
-  }
+  signal.addEventListener('abort', stop, { once: true });
 
-  function nextSlide(): void {
-    setSlide((state.currentIndex + 1) % state.slides.length);
-  }
-
-  function startInterval(): void {
-    if (prefersReducedMotion) {
-      return;
-    }
-
-    if (state.interval) clearInterval(state.interval);
-    state.interval = window.setInterval(nextSlide, config.slideDuration);
-  }
-
-  function resetInterval(): void {
-    clearInterval(state.interval);
-    startInterval();
-  }
+  show(0);
+  start();
 }
-
-initSlideshow();

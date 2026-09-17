@@ -1,11 +1,8 @@
 ---
+type Columns = 1 | 2 | 3 | 4;
+
 interface Props {
-  columns?: {
-    sm?: 1 | 2 | 3 | 4;
-    md?: 1 | 2 | 3 | 4;
-    lg?: 1 | 2 | 3 | 4;
-    xl?: 1 | 2 | 3 | 4;
-  };
+  columns?: Partial<Record<'sm' | 'md' | 'lg' | 'xl', Columns>>;
   gap?: '2' | '4' | '6' | '8';
   spacing?: boolean;
   class?: string;
@@ -13,55 +10,28 @@ interface Props {
 
 const { columns = { md: 1 }, gap = '4', spacing = false, class: className = '' } = Astro.props;
 
-const gapClasses = {
-  2: 'gap-2',
-  4: 'gap-4',
-  6: 'gap-6',
-  8: 'gap-8',
-};
+// Spelled out in full so Tailwind can see every class it needs to generate.
+const columnClasses = {
+  sm: { 1: 'sm:grid-cols-1', 2: 'sm:grid-cols-2', 3: 'sm:grid-cols-3', 4: 'sm:grid-cols-4' },
+  md: { 1: 'md:grid-cols-1', 2: 'md:grid-cols-2', 3: 'md:grid-cols-3', 4: 'md:grid-cols-4' },
+  lg: { 1: 'lg:grid-cols-1', 2: 'lg:grid-cols-2', 3: 'lg:grid-cols-3', 4: 'lg:grid-cols-4' },
+  xl: { 1: 'xl:grid-cols-1', 2: 'xl:grid-cols-2', 3: 'xl:grid-cols-3', 4: 'xl:grid-cols-4' },
+} as const;
 
-const smColMap: Record<number, string> = {
-  1: 'sm:grid-cols-1',
-  2: 'sm:grid-cols-2',
-  3: 'sm:grid-cols-3',
-  4: 'sm:grid-cols-4',
-};
-
-const mdColMap: Record<number, string> = {
-  1: 'md:grid-cols-1',
-  2: 'md:grid-cols-2',
-  3: 'md:grid-cols-3',
-  4: 'md:grid-cols-4',
-};
-
-const lgColMap: Record<number, string> = {
-  1: 'lg:grid-cols-1',
-  2: 'lg:grid-cols-2',
-  3: 'lg:grid-cols-3',
-  4: 'lg:grid-cols-4',
-};
-
-const xlColMap: Record<number, string> = {
-  1: 'xl:grid-cols-1',
-  2: 'xl:grid-cols-2',
-  3: 'xl:grid-cols-3',
-  4: 'xl:grid-cols-4',
-};
-
-const gridCols = [
-  columns.sm && smColMap[columns.sm],
-  columns.md && mdColMap[columns.md],
-  columns.lg && lgColMap[columns.lg],
-  columns.xl && xlColMap[columns.xl],
-]
-  .filter(Boolean)
-  .join(' ');
-
-const classes = ['not-prose grid grid-cols-1', gapClasses[gap], gridCols, spacing && 'my-6', className]
-  .filter(Boolean)
-  .join(' ');
+const gapClasses = { '2': 'gap-2', '4': 'gap-4', '6': 'gap-6', '8': 'gap-8' } as const;
 ---
 
-<div class={classes}>
+<div
+  class:list={[
+    'not-prose grid grid-cols-1',
+    gapClasses[gap],
+    columns.sm && columnClasses.sm[columns.sm],
+    columns.md && columnClasses.md[columns.md],
+    columns.lg && columnClasses.lg[columns.lg],
+    columns.xl && columnClasses.xl[columns.xl],
+    spacing && 'my-6',
+    className,
+  ]}
+>
   <slot />
 </div>

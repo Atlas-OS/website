@@ -16,9 +16,10 @@ import { Icon } from 'astro-icon/components';
   const KAPA_SCRIPT_URL = 'https://widget.kapa.ai/kapa-widget.bundle.js';
 
   type KapaCommand = 'open' | 'render' | 'unmount';
-  type KapaApi = ((command: KapaCommand, options?: unknown) => void) & {
-    q?: IArguments[];
-    c?: (args: IArguments) => void;
+  type KapaArgs = [command: KapaCommand, options?: unknown];
+  type KapaApi = ((...args: KapaArgs) => void) & {
+    q?: KapaArgs[];
+    c?: (args: KapaArgs) => void;
   };
 
   declare global {
@@ -30,12 +31,11 @@ import { Icon } from 'astro-icon/components';
 
   let kapaScriptPromise: Promise<void> | null = null;
 
+  /** Queue calls made before the widget script loads; the script drains `q` once it initializes. */
   function preinitializeKapa(): KapaApi {
     if (window.Kapa) return window.Kapa;
 
-    const queue = function () {
-      queue.c?.(arguments);
-    } as KapaApi;
+    const queue: KapaApi = (...args) => queue.c?.(args);
     queue.q = [];
     queue.c = (args) => queue.q?.push(args);
     window.Kapa = queue;

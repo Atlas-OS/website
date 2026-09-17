@@ -1,15 +1,15 @@
 ---
-import { SITE_URL } from '@/constants';
-import BaseLayout from '@/layouts/BaseLayout.astro';
-import Navbar from '@/components/layout/Navbar.astro';
-import Sidebar from '@/components/layout/Sidebar.astro';
-import TableOfContents from '@/components/docs/TableOfContents.astro';
+import SEO from '@/components/core/SEO.astro';
 import Breadcrumbs from '@/components/docs/Breadcrumbs.astro';
 import PageNav from '@/components/docs/PageNav.astro';
-import SEO from '@/components/core/SEO.astro';
+import TableOfContents from '@/components/docs/TableOfContents.astro';
+import Navbar from '@/components/layout/Navbar.astro';
+import Sidebar from '@/components/layout/Sidebar.astro';
 import Spotlight from '@/components/ui/Spotlight.astro';
-import { getPublishedDocs } from '@/utils/docs-content';
-import { getPrevNextPages } from '@/utils/navigation';
+import { SITE_URL } from '@/constants';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getDocsPagination, normalizeDocsPath } from '@/utils/docs';
+import type { MarkdownHeading } from 'astro';
 import '@/styles/prose.css';
 
 interface Props {
@@ -17,8 +17,7 @@ interface Props {
   description?: string;
   metaDescription?: string;
   currentSlug: string;
-  headings?: Array<{ depth: number; slug: string; text: string }>;
-  image?: string;
+  headings?: MarkdownHeading[];
   ogImage?: string;
   type?: 'website' | 'article';
   showPageNav?: boolean;
@@ -30,85 +29,84 @@ const {
   metaDescription,
   currentSlug,
   headings = [],
-  image,
   ogImage,
   type,
   showPageNav = true,
 } = Astro.props;
 
-const hasTableOfContents = headings.length > 0;
-
-const allDocs = await getPublishedDocs();
-const { prev, next } = getPrevNextPages(allDocs, currentSlug);
+const currentPath = normalizeDocsPath(currentSlug);
+const hasTableOfContents = headings.some((heading) => heading.depth === 2 || heading.depth === 3);
+const { prev, next } = showPageNav ? await getDocsPagination(currentPath) : { prev: null, next: null };
 ---
 
-<BaseLayout currentPath={currentSlug}>
+<BaseLayout currentPath={currentPath}>
   <Fragment slot="head">
     <SEO
       title={title}
       description={description}
       metaDescription={metaDescription}
-      image={ogImage || image}
-      canonicalURL={new URL(currentSlug, Astro.site || SITE_URL).href}
+      image={ogImage}
+      canonicalURL={new URL(currentPath, Astro.site ?? SITE_URL).href}
       type={type}
     />
   </Fragment>
 
   <Fragment slot="body">
-    <a href="#main-content" class="skip-link" data-pagefind-ignore>Skip to main content</a>
+    <a href="#main-content" class="skip-link" data-pagefind-ignore>
+      Skip to main content
+    </a>
     <div class="fixed inset-0 -z-10 h-full w-full" aria-hidden="true">
-      <div
-        class="absolute h-full w-full bg-[linear-gradient(rgba(255,255,255,0.012)_1px,transparent_1px),linear-gradient(to_right,rgba(255,255,255,0.012)_1px,transparent_1px)] mask-[linear-gradient(to_bottom,rgba(0,0,0,0.6),transparent_70%)] bg-size-[24px_24px]"
-      >
-      </div>
+      <div class="absolute h-full w-full bg-[linear-gradient(rgba(255,255,255,0.012)_1px,transparent_1px),linear-gradient(to_right,rgba(255,255,255,0.012)_1px,transparent_1px)] mask-[linear-gradient(to_bottom,rgba(0,0,0,0.6),transparent_70%)] bg-size-[24px_24px]"></div>
     </div>
-    <Navbar currentPath={currentSlug} isDocsPage={true} />
-    <div
-      class="docs-shell relative z-10"
-      style="--docs-header-height: 3.5rem; --docs-sidebar-width: 18rem; --docs-toc-width: 18rem; --docs-toc-inset: clamp(1.5rem, calc((100vw - 96rem) / 2), 7rem);"
-    >
-      <Sidebar currentSlug={currentSlug} />
+    <Navbar currentPath={currentPath} isDocsPage={true} />
+    <div class="docs-shell relative z-10">
+      <Sidebar currentSlug={currentPath} />
       <main
-        class={`docs-main scroll-pt-24 docs-main--with-sidebar ${hasTableOfContents ? 'docs-main--with-toc' : ''}`}
+        class:list={['docs-main scroll-pt-24 docs-main--with-sidebar', hasTableOfContents && 'docs-main--with-toc']}
         id="main-content"
         tabindex="-1"
-        style="overflow-anchor: none; scroll-behavior: smooth;"
       >
         <div class="docs-main-inner">
           <article class="docs-article">
-            <Breadcrumbs currentSlug={currentSlug} />
+            <Breadcrumbs currentSlug={currentPath} />
             <div class="docs-content prose max-w-none md:prose-lg" data-pagefind-body>
               <slot />
             </div>
-            {showPageNav && <PageNav prev={prev || undefined} next={next || undefined} />}
+            {showPageNav && <PageNav prev={prev} next={next} />}
           </article>
         </div>
       </main>
       <TableOfContents headings={headings} />
     </div>
-    <script>
-      import { initCopyCodeButtons } from '@/utils/copy-code';
-      import { initScrollAnimations } from '@/utils/scroll-animations';
-
-      function init() {
-        initScrollAnimations();
-        initCopyCodeButtons();
-      }
-
-      document.addEventListener('astro:page-load', init);
-    </script>
     <Spotlight />
   </Fragment>
 </BaseLayout>
 
+<script>
+  import { enhanceProseCodeBlocks } from '@/utils/clipboard';
+  import { onPageLoad } from '@/utils/page-lifecycle';
+  import { initScrollAnimations } from '@/utils/scroll-animations';
+
+  onPageLoad((signal) => {
+    initScrollAnimations(signal);
+    enhanceProseCodeBlocks(document, signal);
+  });
+</script>
+
 <style>
   .docs-shell {
+    --docs-header-height: 3.5rem;
+    --docs-sidebar-width: 18rem;
+    --docs-toc-width: 18rem;
+    --docs-toc-inset: clamp(1.5rem, calc((100vw - 96rem) / 2), 7rem);
     min-height: calc(100vh - var(--docs-header-height));
   }
 
   .docs-main {
     min-height: calc(100vh - var(--docs-header-height));
     overflow-x: clip;
+    overflow-anchor: none;
+    scroll-behavior: smooth;
     padding: clamp(2rem, 4vw, 3rem) clamp(1rem, 2.5vw, 2rem) clamp(2rem, 4vw, 3rem);
   }
 

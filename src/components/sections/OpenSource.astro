@@ -10,9 +10,7 @@ const links = {
 };
 ---
 
-<section
-  class="relative z-10 mx-auto mt-32 mb-32 flex max-w-7xl flex-col items-end px-4 lg:flex-row lg:justify-between"
->
+<section class="relative z-10 mx-auto mt-32 mb-32 flex max-w-7xl flex-col items-end px-4 lg:flex-row lg:justify-between">
   <div class="github-wrapper relative hidden h-[330px] w-[587px] lg:block" data-animate>
     <Picture
       src={GitHub}
@@ -54,8 +52,10 @@ const links = {
             <p class="text-white">Starred</p>
             <span
               id="star-amount-badge"
-              class="ml-8 min-w-[50px] rounded-full bg-secondary/80 px-3 py-2 text-center text-sm tabular-nums">--</span
+              class="ml-8 min-w-[50px] rounded-full bg-secondary/80 px-3 py-2 text-center text-sm tabular-nums"
             >
+              --
+            </span>
           </div>
           <div class="flex items-center">
             <div class="ml-2 h-full w-px bg-white/10"></div>
@@ -96,16 +96,19 @@ const links = {
           />
         </div>
         <p class="text-white">
-          <span id="star-amount-tag" class="mr-1 font-semibold text-yellow-400 tabular-nums">--</span><span
-            class="text-white/70"
-          >
+          <span id="star-amount-tag" class="mr-1 font-semibold text-yellow-400 tabular-nums">
+            --
+          </span>
+          <span class="text-white/70">
             stargazers on
             <a
               href={links.github}
               target="_blank"
               rel="noopener noreferrer"
-              class="font-semibold text-primary hover:underline">GitHub</a
+              class="font-semibold text-primary hover:underline"
             >
+              GitHub
+            </a>
           </span>
         </p>
       </div>

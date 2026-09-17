@@ -214,13 +214,40 @@
   border: none;
 }
 
-/* Code block wrapper for copy button */
+/* Copy button injected into Markdown code blocks (see utils/clipboard.ts) */
 .prose-code-block {
   position: relative;
 }
 
 .prose-code-block .copy-code-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  width: 2.5rem;
+  height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--docs-radius-md);
   color: var(--docs-text-muted);
+  opacity: 0.6;
+  transition:
+    background-color 150ms var(--motion-ease-out),
+    opacity 150ms var(--motion-ease-out),
+    scale 150ms var(--motion-ease-out);
+}
+
+.prose-code-block:hover .copy-code-btn,
+.prose-code-block .copy-code-btn:focus-visible {
+  opacity: 1;
+}
+
+.prose-code-block .copy-code-btn:hover {
+  background-color: rgb(255 255 255 / 0.1);
+}
+
+.prose-code-block .copy-code-btn:active {
+  scale: 0.96;
 }
 
 :where(.prose) > blockquote:not(.not-prose):not(.not-prose *),

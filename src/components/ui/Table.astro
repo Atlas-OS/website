@@ -14,16 +14,11 @@ const { headers, caption, class: className = '' } = Astro.props;
       {caption && <caption class="sr-only">{caption}</caption>}
       <thead>
         <tr>
-          {
-            headers.map((header) => (
-              <th
-                scope="col"
-                class="border border-white/[0.08] bg-white/5 px-4 py-3 text-left font-semibold text-white"
-              >
-                {header}
-              </th>
-            ))
-          }
+          {headers.map((header) => (
+            <th scope="col" class="border border-white/[0.08] bg-white/5 px-4 py-3 text-left font-semibold text-white">
+              {header}
+            </th>
+          ))}
         </tr>
       </thead>
       <tbody>

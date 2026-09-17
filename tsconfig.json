@@ -1,23 +1,21 @@
 {
   "extends": "astro/tsconfigs/strict",
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist", "node_modules"],
+  "exclude": [
+    "dist",
+    "node_modules",
+    ".wrangler",
+    ".wrangler-dry-run",
+    "src/worker.ts",
+    "worker-configuration.d.ts"
+  ],
   "compilerOptions": {
     "paths": {
-      "@/*": ["./src/*"],
-      "@/components/*": ["./src/components/*"],
-      "@/assets/*": ["./src/assets/*"],
-      "@/layouts/*": ["./src/layouts/*"],
-      "@/pages/*": ["./src/pages/*"],
-      "@/styles/*": ["./src/styles/*"],
-      "@/utils/*": ["./src/utils/*"],
-      "@/types/*": ["./src/types/*"]
+      "@/*": ["./src/*"]
     },
-    "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedIndexedAccess": true,
-    "forceConsistentCasingInFileNames": true
+    "noUncheckedIndexedAccess": true
   }
 }

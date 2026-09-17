@@ -24,10 +24,10 @@ const isExternal = href.startsWith('http://') || href.startsWith('https://');
     <Icon name={icon} class="h-6 w-6 text-primary transition-transform" aria-hidden="true" />
   </div>
   <div class="min-w-0 flex-1">
-    <p class="text-base font-semibold text-white">
-      {title}
+    <p class="text-base font-semibold text-white">{title}</p>
+    <p class="mt-2 text-sm" style="color: var(--docs-text-muted);">
+      {description}
     </p>
-    <p class="mt-2 text-sm" style="color: var(--docs-text-muted);">{description}</p>
   </div>
   <Icon
     name={isExternal ? 'tabler:arrow-up-right' : 'tabler:arrow-right'}

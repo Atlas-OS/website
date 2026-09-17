@@ -22,28 +22,22 @@ const { image, downloadButtons, description, credit, class: className = '' } = A
 ---
 
 <div class={`not-prose my-6 ${className}`}>
-  {
-    description && (
-      <Text as="p" class="mb-4 text-sm text-white/60">
-        {description}
-      </Text>
-    )
-  }
-  {
-    credit && (
-      <Text as="p" class="mb-4 text-xs text-white/50">
-        {credit}
-      </Text>
-    )
-  }
+  {description && (
+    <Text as="p" class="mb-4 text-sm text-white/60">
+      {description}
+    </Text>
+  )}
+  {credit && (
+    <Text as="p" class="mb-4 text-xs text-white/50">
+      {credit}
+    </Text>
+  )}
   <Image src={image.src} alt={image.alt} class="w-full rounded-lg" loading="lazy" outlined />
   <div class="mt-4 grid grid-cols-2 gap-2 md:grid-cols-4">
-    {
-      downloadButtons.map((button) => (
-        <Button href={button.href} external={button.external} variant="secondary" size="sm" fw>
-          {button.label}
-        </Button>
-      ))
-    }
+    {downloadButtons.map((button) => (
+      <Button href={button.href} external={button.external} variant="secondary" size="sm" fw>
+        {button.label}
+      </Button>
+    ))}
   </div>
 </div>

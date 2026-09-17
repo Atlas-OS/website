@@ -1,14 +1,6 @@
-export const SECTION_PRIORITIES: Record<string, number> = {
-  install: 1,
-  upgrade: 2,
-  'essential-setup': 3,
-  'atlas-configuration': 4,
-  faq: 5,
-  contributing: 6,
-  branding: 7,
-};
-
 export const SITE_URL = 'https://atlasos.net' as const;
+
+export const SITE_NAME = 'AtlasOS' as const;
 
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/defaultimg.png` as const;
 
@@ -29,3 +21,9 @@ export const ATLAS_GITHUB_LATEST_RELEASE_URL =
   'https://github.com/Atlas-OS/Atlas/releases/latest' as const;
 
 export const CONTACT_EMAIL = 'contact@atlasos.net' as const;
+
+export const SOCIAL_LINKS = {
+  github: 'https://github.com/Atlas-OS/Atlas',
+  discord: 'https://discord.com/invite/atlasos',
+  x: 'https://x.com/atlasos',
+} as const;

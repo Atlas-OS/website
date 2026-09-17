@@ -2,9 +2,12 @@
 node_modules
 bun.lock
 
-# Build outputs
+# Build outputs and generated files
 dist
 .astro
+.wrangler
+.wrangler-dry-run
+worker-configuration.d.ts
 
 # Content files - Prettier doesn't handle MDX frontmatter well
 src/content/**/*.mdx

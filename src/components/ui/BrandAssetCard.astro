@@ -32,24 +32,20 @@ const { image, title, buttons = [], singleButton, class: className = '' } = Astr
   <Image src={image.src} alt={image.alt} class={image.class || 'w-32 h-32'} loading="lazy" />
   <div class="w-full">
     <Heading class="mb-2 font-semibold">{title}</Heading>
-    {
-      singleButton && (
-        <Button href={singleButton.href} external={singleButton.external} variant="secondary" size="sm">
-          {singleButton.label}
-        </Button>
-      )
-    }
-    {
-      buttons.length > 0 && (
-        <div class="flex flex-col gap-2">
-          {buttons.map((button) => (
-            <Button href={button.href} external={button.external} variant="secondary" size="sm" fw>
-              {button.label}
-            </Button>
-          ))}
-        </div>
-      )
-    }
+    {singleButton && (
+      <Button href={singleButton.href} external={singleButton.external} variant="secondary" size="sm">
+        {singleButton.label}
+      </Button>
+    )}
+    {buttons.length > 0 && (
+      <div class="flex flex-col gap-2">
+        {buttons.map((button) => (
+          <Button href={button.href} external={button.external} variant="secondary" size="sm" fw>
+            {button.label}
+          </Button>
+        ))}
+      </div>
+    )}
     <slot />
   </div>
 </div>

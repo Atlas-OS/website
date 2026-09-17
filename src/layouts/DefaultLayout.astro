@@ -1,8 +1,8 @@
 ---
-import { DEFAULT_OG_IMAGE, SITE_URL } from '@/constants';
 import SEO from '@/components/core/SEO.astro';
 import Footer from '@/components/layout/Footer.astro';
 import Navbar from '@/components/layout/Navbar.astro';
+import { DEFAULT_OG_IMAGE, SITE_URL } from '@/constants';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 
 interface Props {
@@ -10,39 +10,33 @@ interface Props {
   description?: string;
 }
 
-const { title, description } = Astro.props;
-const currentPath = Astro.url.pathname;
+const {
+  title = 'AtlasOS | Optimized Windows for enthusiasts',
+  description = 'AtlasOS is an optimized Windows experience for enthusiasts and gamers, with stronger performance, better privacy, and cleaner defaults.',
+} = Astro.props;
 
-const pageTitle = title || 'AtlasOS | Optimized Windows for enthusiasts';
-const pageDescription =
-  description ||
-  'AtlasOS is an optimized Windows experience for enthusiasts and gamers, with stronger performance, better privacy, and cleaner defaults.';
+const currentPath = Astro.url.pathname;
 ---
 
 <BaseLayout currentPath={currentPath}>
   <Fragment slot="head">
     <SEO
-      title={pageTitle}
-      description={pageDescription}
+      title={title}
+      description={description}
       image={DEFAULT_OG_IMAGE}
-      canonicalURL={new URL(currentPath, Astro.site || SITE_URL).href}
+      canonicalURL={new URL(currentPath, Astro.site ?? SITE_URL).href}
       type="website"
-    />
-
-    <meta
-      name="keywords"
-      content="AtlasOS, Windows optimization, gaming performance, privacy-focused OS, Windows debloat, gaming Windows, performance optimization"
+      softwareApp={currentPath === '/'}
     />
     <meta name="author" content="AtlasOS Community" />
-    <meta name="robots" content="index, follow" />
-    <meta name="language" content="English" />
-    <meta name="color-scheme" content="dark" />
     <meta name="format-detection" content="telephone=no" />
   </Fragment>
 
   <Fragment slot="body">
     <header>
-      <a href="#main-content" class="sr-only focus:not-sr-only">Skip to main content</a>
+      <a href="#main-content" class="sr-only focus:not-sr-only">
+        Skip to main content
+      </a>
       <Navbar currentPath={currentPath} isDocsPage={false} />
     </header>
     <main id="main-content">

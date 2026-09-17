@@ -1,30 +1,20 @@
-import { getSlugFromEntry, getSectionFromSlug } from '@/utils/navigation';
-import { getPublishedDocs } from '@/utils/docs-content';
+import { docsEntryPath, docsSectionKey, getDocsEntries } from '@/utils/docs';
 import type { APIRoute } from 'astro';
 
+/** Machine-readable index of every published docs page, consumed by external tooling. */
 export const GET: APIRoute = async () => {
-  const docs = await getPublishedDocs();
+  const entries = (await getDocsEntries())
+    .map(entry => {
+      const slug = docsEntryPath(entry);
+      return {
+        title: entry.data.title,
+        description: entry.data.description ?? '',
+        section: docsSectionKey(slug) ?? '',
+        slug,
+        tags: entry.data.tags ?? [],
+      };
+    })
+    .sort((a, b) => a.section.localeCompare(b.section) || a.title.localeCompare(b.title));
 
-  const entries = docs.map(entry => {
-    const slug = getSlugFromEntry(entry);
-    const section = getSectionFromSlug(slug) ?? '';
-
-    return {
-      title: entry.data.title,
-      description: entry.data.description ?? '',
-      section,
-      slug,
-      tags: entry.data.tags ?? [],
-    };
-  });
-
-  // Sort by section then title for consistent ordering
-  entries.sort((a, b) => a.section.localeCompare(b.section) || a.title.localeCompare(b.title));
-
-  return new Response(JSON.stringify({ entries }), {
-    headers: {
-      'Content-Type': 'application/json',
-      'Cache-Control': 'public, max-age=3600',
-    },
-  });
+  return Response.json({ entries }, { headers: { 'Cache-Control': 'public, max-age=3600' } });
 };

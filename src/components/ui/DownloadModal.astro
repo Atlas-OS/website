@@ -1,6 +1,6 @@
 ---
-import { Icon } from 'astro-icon/components';
 import Button from '@/components/ui/Button.astro';
+import { Icon } from 'astro-icon/components';
 
 interface Props {
   links: {
@@ -17,21 +17,20 @@ const { links } = Astro.props;
   aria-labelledby="download-modal-title"
   class="m-auto max-h-screen w-full max-w-screen border-none bg-transparent p-4 backdrop:bg-black/50 backdrop:backdrop-blur-md"
 >
-  <div
-    class="relative mx-auto flex w-full max-w-xl flex-col overflow-hidden rounded-2xl border border-white/[0.07] bg-zinc-950 shadow-2xl shadow-black/60"
-  >
+  <div class="relative mx-auto flex w-full max-w-xl flex-col overflow-hidden rounded-2xl border border-white/[0.07] bg-zinc-950 shadow-2xl shadow-black/60">
     <div class="flex items-center justify-between border-b border-white/[0.06] px-5 py-4">
       <div class="flex items-center gap-3">
-        <div
-          class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/15 ring-1 ring-primary/20 ring-inset"
-        >
+        <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/15 ring-1 ring-primary/20 ring-inset">
           <Icon name="tabler:download" class="text-primary" size={14} />
         </div>
-        <h2 id="download-modal-title" class="text-sm font-semibold tracking-tight text-white">Installing AtlasOS</h2>
+        <h2 id="download-modal-title" class="text-sm font-semibold tracking-tight text-white">
+          Installing AtlasOS
+        </h2>
       </div>
       <button
+        type="button"
         class="flex size-10 cursor-pointer items-center justify-center rounded-lg text-white/40 transition-[background-color,color,scale] duration-200 hover:bg-white/[0.06] hover:text-white/80 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none active:scale-[0.96]"
-        id="modal-close"
+        data-modal-close
         aria-label="Close"
       >
         <Icon name="tabler:x" size={14} />
@@ -39,8 +38,8 @@ const { links } = Astro.props;
     </div>
 
     <div class="p-5">
-      <div id="modal-views-wrapper" class="modal-views-wrapper relative">
-        <div id="docs-view" class="modal-view modal-view-active flex flex-col gap-5" data-view="docs">
+      <div class="modal-views-wrapper relative" data-modal-views>
+        <div class="modal-view modal-view-active flex flex-col gap-5" data-view="docs">
           <p class="text-sm leading-relaxed text-white/55">
             To get started, follow our installation guide. We've made it as straightforward as possible with all the
             steps to get you up and running.
@@ -54,9 +53,7 @@ const { links } = Astro.props;
               class="group flex flex-col gap-3 rounded-xl bg-white/[0.025] p-4 shadow-[var(--shadow-surface)] transition-[background-color,box-shadow,scale] duration-200 hover:bg-primary/[0.06] hover:shadow-[0_0_0_1px_rgba(40,148,243,0.25)] active:scale-[0.96]"
             >
               <div class="flex items-start justify-between">
-                <div
-                  class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 ring-1 ring-primary/15 ring-inset"
-                >
+                <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 ring-1 ring-primary/15 ring-inset">
                   <Icon name="tabler:book" class="text-primary/80" size={16} />
                 </div>
                 <Icon
@@ -76,9 +73,7 @@ const { links } = Astro.props;
               class="group flex flex-col gap-3 rounded-xl bg-white/[0.025] p-4 shadow-[var(--shadow-surface)] transition-[background-color,box-shadow,scale] duration-200 hover:bg-white/[0.04] hover:shadow-[var(--shadow-surface-hover)] active:scale-[0.96]"
             >
               <div class="flex items-start justify-between">
-                <div
-                  class="flex h-8 w-8 items-center justify-center rounded-lg bg-white/[0.06] ring-1 ring-white/[0.07] ring-inset"
-                >
+                <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-white/[0.06] ring-1 ring-white/[0.07] ring-inset">
                   <Icon name="tabler:help-circle" class="text-white/50" size={16} />
                 </div>
                 <Icon
@@ -96,7 +91,8 @@ const { links } = Astro.props;
 
           <div class="border-t border-white/[0.05] pt-3">
             <button
-              id="show-downloads"
+              type="button"
+              data-show-view="downloads"
               class="group inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm text-white/40 transition-colors duration-200 hover:text-white/70 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none"
             >
               <span>I'm following the guide, show me the downloads</span>
@@ -108,12 +104,12 @@ const { links } = Astro.props;
           </div>
         </div>
 
-        <div id="downloads-view" class="modal-view modal-view-exit flex flex-col gap-5" data-view="downloads">
+        <div class="modal-view modal-view-exit flex flex-col gap-5" data-view="downloads">
           <div class="flex gap-3 rounded-xl border border-amber-500/15 bg-amber-500/[0.06] px-4 py-3">
             <Icon name="tabler:alert-triangle" class="mt-0.5 shrink-0 text-amber-400/80" size={15} />
             <p class="text-sm leading-relaxed text-white/60">
-              <strong class="font-medium text-white/85">Only download when the guide tells you to.</strong>
-              {' '}If you haven't started the guide yet, please read it first.
+              <strong class="font-medium text-white/85">Only download when the guide tells you to.</strong> If you
+              haven't started the guide yet, please read it first.
             </p>
           </div>
 
@@ -123,10 +119,7 @@ const { links } = Astro.props;
           >
             <div class="relative flex shrink-0 items-center">
               <input type="checkbox" id="confirm-guide" class="peer sr-only" />
-              <div
-                class="h-4 w-4 rounded border border-white/20 bg-white/5 transition-colors peer-checked:border-primary peer-checked:bg-primary peer-focus:ring-2 peer-focus:ring-primary/50 peer-focus:ring-offset-1 peer-focus:ring-offset-zinc-950"
-              >
-              </div>
+              <div class="h-4 w-4 rounded border border-white/20 bg-white/5 transition-colors peer-checked:border-primary peer-checked:bg-primary peer-focus:ring-2 peer-focus:ring-primary/50 peer-focus:ring-offset-1 peer-focus:ring-offset-zinc-950"></div>
               <Icon
                 name="tabler:check"
                 class="pointer-events-none absolute top-0 left-0 h-4 w-4 text-zinc-950 opacity-0 transition-opacity peer-checked:opacity-100"
@@ -138,13 +131,17 @@ const { links } = Astro.props;
                 href={links.install}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="download-modal-guide-link text-primary/80 underline-offset-2 hover:text-primary hover:underline"
-                >installation guide</a
-              >.
+                class="text-primary/80 underline-offset-2 hover:text-primary hover:underline"
+              >
+                installation guide
+              </a>
+              .
             </p>
           </label>
 
-          <p id="download-count" class="text-center text-xs text-white/30">Fetching download count...</p>
+          <p data-download-count class="text-center text-xs text-white/30">
+            Fetching download count...
+          </p>
 
           <div class="flex flex-col gap-2">
             <Button
@@ -173,7 +170,8 @@ const { links } = Astro.props;
 
           <div class="border-t border-white/[0.05] pt-1">
             <button
-              id="show-docs"
+              type="button"
+              data-show-view="docs"
               class="group inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm text-white/40 transition-colors duration-200 hover:text-white/70 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none"
             >
               <Icon
@@ -191,253 +189,180 @@ const { links } = Astro.props;
 
 <script>
   import { ATLAS_API_URL, ATLAS_GITHUB_LATEST_RELEASE_API_URL, ATLAS_GITHUB_LATEST_RELEASE_URL } from '@/constants';
+  import { onPageLoad } from '@/utils/page-lifecycle';
 
-  interface GitHubReleaseAsset {
-    name?: string;
-    browser_download_url?: string;
-  }
+  type View = 'docs' | 'downloads';
 
   interface GitHubRelease {
     html_url?: string;
-    assets?: GitHubReleaseAsset[];
+    assets?: Array<{ name?: string; browser_download_url?: string }>;
   }
 
-  class DownloadModal {
-    private modal: HTMLDialogElement;
-    private views: { docs: HTMLElement; downloads: HTMLElement };
-    private buttons: {
-      close: HTMLButtonElement;
-      showDownloads: HTMLButtonElement;
-      showDocs: HTMLButtonElement;
-      playbook: HTMLButtonElement;
-      wizard: HTMLButtonElement;
-      confirmGuide: HTMLInputElement;
+  async function fetchDownloadCount(): Promise<number | null> {
+    try {
+      const response = await fetch(ATLAS_API_URL);
+      if (!response.ok) return null;
+      const data = (await response.json()) as Array<{ version?: string; count?: number }>;
+      return data.find((item) => item.version === 'atlas')?.count ?? null;
+    } catch {
+      return null;
+    }
+  }
+
+  async function fetchLatestPlaybookUrl(): Promise<string> {
+    const response = await fetch(ATLAS_GITHUB_LATEST_RELEASE_API_URL);
+    if (!response.ok) throw new Error(`Release API request failed with status ${response.status}`);
+
+    const release = (await response.json()) as GitHubRelease;
+    const asset = release.assets?.find((item) => /AtlasPlaybook.*\.zip$/i.test(item.name ?? ''));
+    return asset?.browser_download_url ?? release.html_url ?? ATLAS_GITHUB_LATEST_RELEASE_URL;
+  }
+
+  function incrementDownloadCount(): void {
+    fetch(`${ATLAS_API_URL}atlas/increment`, { method: 'POST' }).catch((error: unknown) => {
+      console.warn('Failed to increment Atlas download count.', error);
+    });
+  }
+
+  function initDownloadModal(signal: AbortSignal): void {
+    const modal = document.getElementById('download-modal');
+    if (!(modal instanceof HTMLDialogElement)) return;
+
+    const views = {
+      docs: modal.querySelector<HTMLElement>('[data-view="docs"]'),
+      downloads: modal.querySelector<HTMLElement>('[data-view="downloads"]'),
     };
-    private downloadCountElement: HTMLElement;
-    private viewsWrapper: HTMLElement;
-    private currentView: 'docs' | 'downloads';
+    const wrapper = modal.querySelector<HTMLElement>('[data-modal-views]');
+    const confirmGuide = modal.querySelector<HTMLInputElement>('#confirm-guide');
+    const playbookButton = modal.querySelector<HTMLButtonElement>('#playbook-dl-btn');
+    const wizardButton = modal.querySelector<HTMLAnchorElement>('#wizard-dl-btn');
+    const downloadCount = modal.querySelector<HTMLElement>('[data-download-count]');
+    if (!views.docs || !views.downloads || !wrapper || !confirmGuide || !playbookButton || !wizardButton) return;
 
-    constructor() {
-      this.modal = this.getElement<HTMLDialogElement>('download-modal');
-      this.views = {
-        docs: this.getElement<HTMLElement>('docs-view'),
-        downloads: this.getElement<HTMLElement>('downloads-view'),
-      };
-      this.buttons = {
-        close: this.getElement<HTMLButtonElement>('modal-close'),
-        showDownloads: this.getElement<HTMLButtonElement>('show-downloads'),
-        showDocs: this.getElement<HTMLButtonElement>('show-docs'),
-        playbook: this.getElement<HTMLButtonElement>('playbook-dl-btn'),
-        wizard: this.getElement<HTMLButtonElement>('wizard-dl-btn'),
-        confirmGuide: this.getElement<HTMLInputElement>('confirm-guide'),
-      };
-      this.downloadCountElement = this.getElement<HTMLElement>('download-count');
-      this.viewsWrapper = this.getElement<HTMLElement>('modal-views-wrapper');
-      this.currentView = 'docs';
+    let currentView: View = 'docs';
 
-      this.setupEventListeners();
-      this.initializeViews();
-    }
+    const syncHeight = () => {
+      wrapper.style.height = `${views[currentView]!.scrollHeight}px`;
+    };
 
-    private getElement<T extends HTMLElement>(id: string): T {
-      const el = document.getElementById(id);
-      if (!el) throw new Error(`Element with ID '${id}' not found.`);
-      return el as T;
-    }
+    const setDownloadsEnabled = (enabled: boolean) => {
+      playbookButton.disabled = !enabled;
+      wizardButton.classList.toggle('disabled-link', !enabled);
+      wizardButton.setAttribute('aria-disabled', String(!enabled));
+    };
 
-    private setupEventListeners(): void {
-      document.addEventListener('showModal', () => {
-        this.modal.showModal();
-        document.body.classList.add('overflow-hidden');
-        this.syncWrapperHeight();
-        this.updateDownloadCount();
-      });
+    const showView = (view: View) => {
+      if (view === currentView) return;
+      const entering = views[view]!;
+      const leaving = views[currentView]!;
+      currentView = view;
 
-      this.buttons.close.addEventListener('click', () => this.closeModal());
+      syncHeight();
+      leaving.classList.remove('modal-view-active', 'modal-view-enter');
+      leaving.classList.add('modal-view-exit');
+      entering.classList.remove('modal-view-exit');
+      entering.classList.add('modal-view-enter');
 
-      this.modal.addEventListener('click', (e: MouseEvent) => {
-        if (e.target === this.modal) this.closeModal();
-      });
-
-      this.buttons.showDownloads.addEventListener('click', () => this.switchView('downloads'));
-      this.buttons.showDocs.addEventListener('click', () => this.switchView('docs'));
-      this.buttons.confirmGuide.addEventListener('change', () => this.updateConfirmState());
-      this.buttons.playbook.addEventListener('click', () => {
-        void this.handleDownload();
-      });
-
-      const guideLinks = this.modal.querySelectorAll('.download-modal-guide-link');
-      guideLinks.forEach((link) => {
-        link.addEventListener('click', (event) => {
-          event.stopPropagation();
-        });
-      });
-
-      window.addEventListener('resize', () => this.syncWrapperHeight());
-
-      this.modal.addEventListener('close', () => {
-        document.body.classList.remove('overflow-hidden');
-        this.initializeViews();
-      });
-    }
-
-    private closeModal(): void {
-      this.modal.close();
-    }
-
-    private initializeViews(): void {
-      this.setViewActive('docs');
-      this.setViewInactive('downloads');
-      this.currentView = 'docs';
-      this.buttons.confirmGuide.checked = false;
-      this.toggleDownloadButtons(false);
-    }
-
-    private setViewActive(view: 'docs' | 'downloads'): void {
-      const el = this.views[view];
-      el.classList.remove('modal-view-exit', 'modal-view-enter');
-      el.classList.add('modal-view-active');
-    }
-
-    private setViewInactive(view: 'docs' | 'downloads'): void {
-      const el = this.views[view];
-      el.classList.remove('modal-view-active', 'modal-view-enter');
-      el.classList.add('modal-view-exit');
-    }
-
-    private switchView(viewName: 'docs' | 'downloads'): void {
-      if (this.currentView === viewName) return;
-
-      const viewToShow = this.views[viewName];
-      const viewToHide = this.views[this.currentView];
-
-      this.syncWrapperHeight();
-
-      viewToHide.classList.remove('modal-view-active', 'modal-view-enter');
-      viewToHide.classList.add('modal-view-exit');
-
-      viewToShow.classList.remove('modal-view-exit');
-      viewToShow.classList.add('modal-view-enter');
-
-      this.currentView = viewName;
       requestAnimationFrame(() => {
-        viewToShow.classList.remove('modal-view-enter');
-        viewToShow.classList.add('modal-view-active');
-        this.syncWrapperHeight();
+        entering.classList.remove('modal-view-enter');
+        entering.classList.add('modal-view-active');
+        syncHeight();
       });
-      this.buttons.confirmGuide.checked = false;
-      this.toggleDownloadButtons(false);
 
-      if (viewName === 'downloads') {
-        this.updateDownloadCount();
-      }
-    }
+      confirmGuide.checked = false;
+      setDownloadsEnabled(false);
+      if (view === 'downloads') void updateDownloadCount();
+    };
 
-    private updateConfirmState(): void {
-      this.toggleDownloadButtons(this.buttons.confirmGuide.checked);
-    }
+    const resetViews = () => {
+      views.docs!.classList.remove('modal-view-exit', 'modal-view-enter');
+      views.docs!.classList.add('modal-view-active');
+      views.downloads!.classList.remove('modal-view-active', 'modal-view-enter');
+      views.downloads!.classList.add('modal-view-exit');
+      currentView = 'docs';
+      confirmGuide.checked = false;
+      setDownloadsEnabled(false);
+    };
 
-    private toggleDownloadButtons(enabled: boolean): void {
-      this.buttons.playbook.disabled = !enabled;
-      this.buttons.wizard.classList.toggle('disabled-link', !enabled);
-      this.buttons.wizard.setAttribute('aria-disabled', String(!enabled));
-      this.buttons.wizard.style.pointerEvents = enabled ? 'auto' : 'none';
-    }
+    const updateDownloadCount = async () => {
+      if (!downloadCount) return;
+      downloadCount.textContent = 'Loading...';
+      const count = await fetchDownloadCount();
+      downloadCount.textContent =
+        count === null
+          ? 'Join the millions of Atlas users!'
+          : `Atlas has been downloaded ${count.toLocaleString('en-US')} times.`;
+      if (currentView === 'downloads') syncHeight();
+    };
 
-    private async updateDownloadCount(): Promise<void> {
-      this.downloadCountElement.textContent = 'Loading...';
-      if (this.currentView === 'downloads') this.syncWrapperHeight();
-      try {
-        const count = await this.fetchDownloadCount();
-        this.downloadCountElement.textContent =
-          count != null
-            ? `Atlas has been downloaded ${count.toLocaleString('en-US')} times.`
-            : 'Join the millions of Atlas users!';
-      } catch {
-        this.downloadCountElement.textContent = 'Could not load download count.';
-      }
-
-      if (this.currentView === 'downloads') this.syncWrapperHeight();
-    }
-
-    private syncWrapperHeight(): void {
-      const activeView = this.views[this.currentView];
-      this.viewsWrapper.style.height = `${activeView.scrollHeight}px`;
-    }
-
-    private async fetchDownloadCount(): Promise<number | null> {
-      try {
-        const response = await fetch(ATLAS_API_URL);
-        if (!response.ok) throw new Error(`API request failed with status ${response.status}`);
-        const data = (await response.json()) as Array<{ version?: string; count?: number }>;
-        const atlasDownload = data.find((item) => item?.version === 'atlas');
-        return atlasDownload?.count ?? null;
-      } catch {
-        return null;
-      }
-    }
-
-    private async incrementDownloadCount(): Promise<void> {
-      const incrementUrl = `${ATLAS_API_URL}atlas/increment`;
-      try {
-        const response = await fetch(incrementUrl, { method: 'POST' });
-        if (!response.ok) throw new Error(`Increment request failed with status ${response.status}`);
-      } catch (error) {
-        console.warn('Failed to increment Atlas download count.', error);
-      }
-    }
-
-    private async fetchLatestPlaybookUrl(): Promise<string> {
-      const response = await fetch(ATLAS_GITHUB_LATEST_RELEASE_API_URL);
-      if (!response.ok) throw new Error(`Release API request failed with status ${response.status}`);
-
-      const release = (await response.json()) as GitHubRelease;
-      const playbookAsset = release.assets?.find((asset) => /AtlasPlaybook.*\.zip$/i.test(asset.name ?? ''));
-      return playbookAsset?.browser_download_url ?? release.html_url ?? ATLAS_GITHUB_LATEST_RELEASE_URL;
-    }
-
-    private async handleDownload(): Promise<void> {
-      if (this.buttons.playbook.disabled) return;
-
-      const originalContent = Array.from(this.buttons.playbook.childNodes).map((node) => node.cloneNode(true));
-
-      this.buttons.playbook.textContent = 'Preparing download...';
-      this.buttons.playbook.disabled = true;
+    const handlePlaybookDownload = async () => {
+      if (playbookButton.disabled) return;
+      const originalContent = [...playbookButton.childNodes].map((node) => node.cloneNode(true));
+      playbookButton.textContent = 'Preparing download...';
+      playbookButton.disabled = true;
 
       try {
-        const downloadUrl = await this.fetchLatestPlaybookUrl();
-        const a = document.createElement('a');
-        a.href = downloadUrl;
-        if (/\.zip($|\?)/i.test(downloadUrl)) {
-          a.download = '';
-        }
-        a.click();
+        const url = await fetchLatestPlaybookUrl();
+        const anchor = document.createElement('a');
+        anchor.href = url;
+        if (/\.zip($|\?)/i.test(url)) anchor.download = '';
+        anchor.click();
       } catch (error) {
         console.warn('Failed to resolve latest Atlas Playbook download.', error);
         window.open(ATLAS_GITHUB_LATEST_RELEASE_URL, '_blank', 'noopener,noreferrer');
       }
 
-      this.incrementDownloadCount()
-        .catch(() => {})
-        .finally(() => {
-          setTimeout(() => {
-            if (document.body.contains(this.buttons.playbook)) {
-              this.buttons.playbook.replaceChildren(...originalContent.map((node) => node.cloneNode(true)));
-              this.buttons.playbook.disabled = !this.buttons.confirmGuide.checked;
-            }
-          }, 1000);
-        });
+      incrementDownloadCount();
+      window.setTimeout(() => {
+        if (!playbookButton.isConnected) return;
+        playbookButton.replaceChildren(...originalContent);
+        playbookButton.disabled = !confirmGuide.checked;
+      }, 1000);
+    };
+
+    const open = () => {
+      modal.showModal();
+      document.body.classList.add('overflow-hidden');
+      syncHeight();
+      void updateDownloadCount();
+    };
+
+    for (const trigger of document.querySelectorAll<HTMLElement>('[data-download-modal-open]')) {
+      trigger.addEventListener('click', open, { signal });
     }
+
+    modal.addEventListener('click', (event) => event.target === modal && modal.close(), { signal });
+    modal.addEventListener(
+      'close',
+      () => {
+        document.body.classList.remove('overflow-hidden');
+        resetViews();
+      },
+      { signal }
+    );
+    modal.querySelector('[data-modal-close]')?.addEventListener('click', () => modal.close(), { signal });
+
+    for (const button of modal.querySelectorAll<HTMLElement>('[data-show-view]')) {
+      button.addEventListener('click', () => showView(button.dataset.showView as View), { signal });
+    }
+
+    confirmGuide.addEventListener('change', () => setDownloadsEnabled(confirmGuide.checked), { signal });
+    playbookButton.addEventListener('click', () => void handlePlaybookDownload(), { signal });
+    window.addEventListener('resize', syncHeight, { signal });
+
+    signal.addEventListener(
+      'abort',
+      () => {
+        if (modal.open) modal.close();
+        document.body.classList.remove('overflow-hidden');
+      },
+      { once: true }
+    );
+
+    resetViews();
   }
 
-  function init(): void {
-    const modal = document.getElementById('download-modal');
-    if (!modal || modal.dataset.initialized) return;
-    modal.dataset.initialized = 'true';
-    new DownloadModal();
-  }
-
-  document.addEventListener('astro:page-load', init);
+  onPageLoad(initDownloadModal);
 </script>
 
 <style>
@@ -455,12 +380,12 @@ const { links } = Astro.props;
   dialog[open] {
     display: grid;
     place-items: center;
-    animation: show 250ms var(--motion-ease-spring, cubic-bezier(0.32, 0.72, 0, 1));
+    animation: show 250ms var(--motion-ease-spring);
   }
 
   .modal-views-wrapper {
     contain: layout style;
-    transition: height var(--motion-duration-normal, 250ms) var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1));
+    transition: height var(--motion-duration-normal) var(--motion-ease-out);
   }
 
   .modal-view {
@@ -469,9 +394,9 @@ const { links } = Astro.props;
     left: 0;
     right: 0;
     transition:
-      opacity var(--motion-duration-normal, 250ms) var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1)),
-      transform var(--motion-duration-normal, 250ms) var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1)),
-      filter var(--motion-duration-normal, 250ms) var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1));
+      opacity var(--motion-duration-normal) var(--motion-ease-out),
+      transform var(--motion-duration-normal) var(--motion-ease-out),
+      filter var(--motion-duration-normal) var(--motion-ease-out);
   }
 
   .modal-view-enter {

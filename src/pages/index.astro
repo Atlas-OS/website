@@ -1,6 +1,6 @@
 ---
-import SectionSeparator from '@/components/sections/common/SectionSeparator.astro';
 import Benchmarks from '@/components/sections/Benchmarks.astro';
+import SectionSeparator from '@/components/sections/common/SectionSeparator.astro';
 import EcleanNote from '@/components/sections/EcleanNote.astro';
 import FAQ from '@/components/sections/FAQ.astro';
 import Features from '@/components/sections/Features.astro';
@@ -30,18 +30,16 @@ const sections = [
 
 <DefaultLayout>
   <div class="homepage-motion">
-    {
-      sections.map((Section, index) => (
-        <>
-          <Section />
-          {index < sections.length - 1 && (
-            <div data-animate>
-              <SectionSeparator />
-            </div>
-          )}
-        </>
-      ))
-    }
+    {sections.map((Section, index) => (
+      <>
+        <Section />
+        {index < sections.length - 1 && (
+          <div data-animate>
+            <SectionSeparator />
+          </div>
+        )}
+      </>
+    ))}
   </div>
 </DefaultLayout>
 
@@ -57,7 +55,8 @@ const sections = [
 </style>
 
 <script>
+  import { onPageLoad } from '@/utils/page-lifecycle';
   import { initScrollAnimations } from '@/utils/scroll-animations';
 
-  document.addEventListener('astro:page-load', initScrollAnimations);
+  onPageLoad(initScrollAnimations);
 </script>

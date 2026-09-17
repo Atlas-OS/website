@@ -1,6 +1,6 @@
 # AtlasOS Website
 
-This repository contains the source code for [atlasos.net](https://atlasos.net), the official website for AtlasOS—an optimized Windows modification for gaming and performance. The site uses Astro 6, Tailwind CSS, and Bun.
+This repository contains the source code for [atlasos.net](https://atlasos.net), the official website for AtlasOS, an optimized Windows modification for gaming and performance. The site uses Astro 7, Tailwind CSS 4, and Bun, and deploys to Cloudflare Workers.
 
 ---
 
@@ -9,7 +9,9 @@ This repository contains the source code for [atlasos.net](https://atlasos.net),
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Available Scripts](#available-scripts)
+- [Deployment](#deployment)
 - [Configuration](#configuration)
+- [Project Structure](#project-structure)
 - [License](#license)
 
 ---
@@ -17,7 +19,7 @@ This repository contains the source code for [atlasos.net](https://atlasos.net),
 ## Prerequisites
 
 - Bun ≥ 1.3.0
-- Node.js ≥ 22.12.0
+- Node.js ≥ 22.22.3
 
 ## Installation
 
@@ -25,23 +27,26 @@ This repository contains the source code for [atlasos.net](https://atlasos.net),
 bun install
 ```
 
+Installing also runs `wrangler types`, which generates `worker-configuration.d.ts` (git-ignored) from `wrangler.jsonc` so the Worker's bindings are typed.
+
 ## Available Scripts
 
-| Command                                                     | Description                                             |
-| ----------------------------------------------------------- | ------------------------------------------------------- |
-| `bun dev`                                                   | Start the development server                            |
-| `bun run build`                                             | Build for production with Astro + Jampack               |
-| `bun run build:raw`                                         | Build for production without Jampack optimization       |
-| `bun run preview`                                           | Preview the production build locally                    |
-| `bun format`                                                | Format code with Prettier                               |
-| `bun run lint`                                              | Lint code with ESLint                                   |
-| `bun run check`                                             | Run Astro type checking                                 |
-| `bun run search:index`                                      | Build the site and Pagefind search index                |
-| `bunx wrangler deploy --dry-run --outdir .wrangler-dry-run` | Validate the Cloudflare Worker bundle without deploying |
+| Command                  | Description                                                       |
+| ------------------------ | ----------------------------------------------------------------- |
+| `bun dev`                | Start the development server                                      |
+| `bun run build`          | Build the site and the Pagefind search index                      |
+| `bun run preview`        | Preview the production build locally                              |
+| `bun run check`          | Regenerate Worker types, run `astro check`, type-check the Worker |
+| `bun run lint`           | Lint with ESLint                                                  |
+| `bun format`             | Format with Prettier                                              |
+| `bun run format:check`   | Verify formatting without writing                                 |
+| `bun run types`          | Regenerate `worker-configuration.d.ts` from `wrangler.jsonc`      |
+| `bun run deploy:dry-run` | Validate the Cloudflare Worker bundle without deploying           |
+| `bun run deploy`         | Build and deploy to Cloudflare Workers                            |
 
 ## Deployment
 
-The site deploys as a static Astro build served by Cloudflare Workers static assets. The Worker only runs for `/api/*` routes, including the Microsoft ISO helper.
+The site deploys as a static Astro build served by Cloudflare Workers static assets. The Worker only runs for `/api/*` routes, which power the Windows ISO downloader in the docs.
 
 Required Cloudflare setup:
 
@@ -50,41 +55,41 @@ Required Cloudflare setup:
 - `BROWSER` Browser Rendering binding in `wrangler.jsonc`
 - `MS_ISO_LINKS` KV namespace binding in `wrangler.jsonc`
 
-The deploy workflow runs install, lint, Astro check, production build, Wrangler dry-run validation, then `wrangler deploy`.
+The deploy workflow runs install, lint, check, build, a Wrangler dry run, then `wrangler deploy`.
 
 ## Configuration
 
-| File                    | Purpose                                               |
-| ----------------------- | ----------------------------------------------------- |
-| `astro.config.mjs`      | Astro settings, site URL, and Pagefind indexing       |
-| `jampack.config.js`     | Jampack post-build optimization settings              |
-| `wrangler.jsonc`        | Cloudflare Workers deployment config                  |
-| `src/styles/global.css` | Tailwind theme and global styles                      |
-| `eslint.config.js`      | ESLint rules for Astro and TypeScript                 |
-| `.editorconfig`         | Editor settings for consistent formatting             |
-| `.gitignore`            | Excludes build output and local development artifacts |
+| File                    | Purpose                                              |
+| ----------------------- | ---------------------------------------------------- |
+| `astro.config.ts`       | Astro settings, site URL, redirects, fonts, Pagefind |
+| `wrangler.jsonc`        | Cloudflare Workers deployment config and bindings    |
+| `tsconfig.json`         | TypeScript config for the site                       |
+| `tsconfig.worker.json`  | TypeScript config for the Cloudflare Worker          |
+| `src/styles/global.css` | Tailwind theme, design tokens, and global styles     |
+| `eslint.config.js`      | ESLint rules for Astro and TypeScript                |
+| `.prettierrc`           | Prettier settings and plugins                        |
 
 ## Project Structure
+
+### Content
+
+Documentation lives in `src/content/docs/` as MDX. The folder structure defines the URL and the sidebar: `install/iso.mdx` becomes `/docs/install/iso/`, and every folder needs an `index.mdx`. Frontmatter (`title`, `description`, `order`, `sidebar`) is validated by `src/content.config.ts` and drives ordering, labels, and badges.
 
 ### Components
 
 Components live in `src/components/` and follow a purpose-based organization:
 
-| Directory   | Contents                                                |
-| ----------- | ------------------------------------------------------- |
-| `ui/`       | Reusable primitives (Button, Card, Link)                |
-| `layout/`   | Layout elements (Navbar, Footer, Sidebar)               |
-| `sections/` | Homepage sections                                       |
-| `docs/`     | Documentation components (Breadcrumbs, TableOfContents) |
-| `core/`     | Core functionality (SEO, LanguageSwitcher)              |
+| Directory   | Contents                                               |
+| ----------- | ------------------------------------------------------ |
+| `ui/`       | Reusable primitives (Button, Tabs, Spotlight, Video)   |
+| `layout/`   | Layout elements (Navbar, Footer, Sidebar)              |
+| `sections/` | Homepage sections                                      |
+| `docs/`     | Documentation components (Callout, CodeBlock, PageNav) |
+| `core/`     | Core functionality (SEO)                               |
 
 ### Utilities
 
-Utilities in `src/utils/` include docs content helpers, navigation helpers, UI initializers, and browser interaction scripts.
-
-### Constants
-
-Site constants live in `src/constants.ts`, organized by domain.
+`src/utils/` contains the docs navigation model (`docs.ts`), client-side behaviour bound through `page-lifecycle.ts` so it survives View Transitions, and the Cloudflare Worker entry point is `src/worker.ts`.
 
 ## License
 

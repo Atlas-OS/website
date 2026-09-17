@@ -27,7 +27,9 @@ const externalAttrs = external ? { target: '_blank', rel: 'noopener noreferrer' 
     <span>{label}</span>
   </div>
   <span class="mb-2 block text-lg font-semibold transition-colors duration-200 group-hover:text-white">{title}</span>
-  <p class="text-sm" style="color: var(--docs-text-secondary);">{description}</p>
+  <p class="text-sm" style="color: var(--docs-text-secondary);">
+    {description}
+  </p>
 </a>
 
 <style is:global>

@@ -33,13 +33,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6.2.0
         with:
-          node-version: '22'
+          node-version: '24'
 
       - name: Cache dependencies
         uses: actions/cache@v5.0.3
         with:
           path: ~/.bun/install/cache
-          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock', 'bun.lockb') }}
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
           restore-keys: bun-${{ runner.os }}-
 
       - name: Install dependencies
@@ -55,7 +55,7 @@ jobs:
         run: bun run build
 
       - name: Validate Cloudflare Worker bundle
-        run: bunx wrangler deploy --dry-run --outdir .wrangler-dry-run
+        run: bun run deploy:dry-run
 
       - name: Deploy to Cloudflare Workers
         id: deploy

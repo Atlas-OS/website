@@ -39,14 +39,16 @@
   --color-secondary: oklch(0.12 0.0421 264.82);
 }
 
-/* Motion design tokens */
 :root {
+  /* Motion design tokens */
   --motion-duration-fast: 180ms;
   --motion-duration-normal: 250ms;
   --motion-duration-slow: 400ms;
   --motion-ease-out: cubic-bezier(0.33, 1, 0.68, 1);
   --motion-ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
   --motion-ease-precise: cubic-bezier(0.2, 0, 0, 1);
+
+  /* Surfaces */
   --nav-bg-translucent: oklch(0.12 0.0421 264.82 / 0.6);
   --nav-menu-bg: oklch(0.12 0.0421 264.82 / 0.9);
   --docs-panel-bg: oklch(0.1 0.04 265);
@@ -61,40 +63,36 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 0 0 1px rgba(255, 255, 255, 0.16),
     0 6px 20px rgba(0, 0, 0, 0.18);
   --image-outline: 1px solid rgba(255, 255, 255, 0.1);
-}
 
-/* Prose spacing scale */
-:root {
-  --prose-tight: 0.25rem; /* 4px - within lists */
-  --prose-normal: 0.5rem; /* 8px - list items */
-  --prose-relaxed: 1rem; /* 16px - between blocks */
-  --prose-section: 1.75rem; /* 28px - section breaks */
-}
+  /* Prose spacing scale */
+  --prose-tight: 0.25rem;
+  --prose-normal: 0.5rem;
+  --prose-relaxed: 1rem;
+  --prose-section: 1.75rem;
 
-/* Docs surface tokens - minimalist, consistent */
-:root {
+  /* Docs surface tokens */
   --docs-surface-bg: rgb(255 255 255 / 0.04);
   --docs-surface-border: rgb(255 255 255 / 0.06);
-  --docs-radius-sm: 0.375rem; /* 6px - inline elements */
-  --docs-radius-md: 0.5rem; /* 8px - cards, panels */
-  --docs-radius-lg: 0.625rem; /* 10px - callouts, large blocks */
+  --docs-radius-sm: 0.375rem;
+  --docs-radius-md: 0.5rem;
+  --docs-radius-lg: 0.625rem;
   --docs-text-muted: rgb(255 255 255 / 0.55);
   --docs-text-secondary: rgb(255 255 255 / 0.75);
   --docs-text-primary: rgb(255 255 255 / 0.92);
-}
-
-body {
-  background: linear-gradient(to bottom right, var(--bg-primary), var(--bg-secondary));
-  background-attachment: fixed;
-  color: white;
-  position: relative;
-  min-height: 100vh;
 }
 
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
+}
+
+body {
+  position: relative;
+  min-height: 100vh;
+  color: white;
+  background: linear-gradient(to bottom right, var(--bg-primary), var(--bg-secondary));
+  background-attachment: fixed;
 }
 
 h1,
@@ -129,95 +127,6 @@ button {
   }
 }
 
-.media-outline,
-.prose img:not(.not-prose *),
-.prose video:not(.not-prose *) {
-  outline: var(--image-outline);
-  outline-offset: -1px;
-}
-
-.media-outline {
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.22);
-}
-
-.tabular-nums,
-[data-tabular-nums] {
-  font-variant-numeric: tabular-nums;
-}
-.not-prose {
-  contain: layout style;
-  isolation: isolate;
-}
-
-.prose > .not-prose {
-  contain: layout style;
-  isolation: isolate;
-}
-
-@layer components {
-  [data-component] {
-    contain: layout style;
-  }
-}
-
-@layer utilities {
-  .bg-gradient-radial {
-    background-image: radial-gradient(var(--tw-gradient-stops));
-  }
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slide-up {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slide-down {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -1000px 0;
-  }
-  100% {
-    background-position: 1000px 0;
-  }
-}
-
-.animate-fade-in {
-  animation: fade-in var(--motion-duration-normal) var(--motion-ease-out);
-}
-
-.animate-slide-up {
-  animation: slide-up var(--motion-duration-slow) var(--motion-ease-out);
-}
-
-.animate-slide-down {
-  animation: slide-down var(--motion-duration-slow) var(--motion-ease-out);
-}
-
 *:focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
@@ -230,14 +139,30 @@ main,
   z-index: 1;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+.media-outline,
+.prose img:not(.not-prose *),
+.prose video:not(.not-prose *) {
+  outline: var(--image-outline);
+  outline-offset: -1px;
+}
+
+.media-outline {
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.22);
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.not-prose,
+.prose > .not-prose {
+  contain: layout style;
+  isolation: isolate;
+}
+
+@layer components {
+  [data-component] {
+    contain: layout style;
   }
 }
 
@@ -245,12 +170,12 @@ main,
   position: absolute;
   top: -40px;
   left: 0;
+  z-index: 100;
+  padding: 8px 16px;
   background: var(--color-primary);
   color: white;
-  padding: 8px 16px;
   text-decoration: none;
   border-radius: 0 0 4px 0;
-  z-index: 100;
   transition: top var(--motion-duration-normal) var(--motion-ease-out);
 }
 
@@ -258,7 +183,30 @@ main,
   top: 0;
 }
 
-html.motion-ready [data-animate] {
+/* Copy buttons: icon swaps to a check mark while `data-copied="true"` (see utils/clipboard.ts) */
+.copy-code-btn,
+.code-block-copy {
+  .copy-code-check {
+    display: none;
+  }
+
+  &[data-copied='true'] {
+    .copy-code-icon {
+      display: none;
+    }
+
+    .copy-code-check {
+      display: block;
+    }
+  }
+}
+
+/*
+ * Scroll reveal. `<html data-motion>` is set by an inline script in BaseLayout only when the
+ * user has not requested reduced motion, so content is never hidden without JavaScript.
+ * Stagger comes from `--animate-delay`, set by utils/scroll-animations.ts.
+ */
+html[data-motion] [data-animate] {
   opacity: 0;
   transform: translateY(var(--motion-reveal-distance, 20px))
     scale(var(--motion-reveal-scale-start, 1));
@@ -271,51 +219,23 @@ html.motion-ready [data-animate] {
       var(--motion-reveal-ease, var(--motion-ease-out)),
     filter var(--motion-reveal-duration, var(--motion-duration-normal))
       var(--motion-reveal-ease, var(--motion-ease-out));
+  transition-delay: calc(var(--motion-reveal-step, 100ms) * var(--animate-delay, 0));
 }
 
-html.motion-ready [data-animate].animate-in {
+html[data-motion] [data-animate].animate-in {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
   filter: blur(0);
   will-change: auto;
 }
 
-[data-animate-delay='1'] {
-  transition-delay: calc(var(--motion-reveal-step, 100ms) * 1);
-}
-
-[data-animate-delay='2'] {
-  transition-delay: calc(var(--motion-reveal-step, 100ms) * 2);
-}
-
-[data-animate-delay='3'] {
-  transition-delay: calc(var(--motion-reveal-step, 100ms) * 3);
-}
-
-[data-animate-delay='4'] {
-  transition-delay: calc(var(--motion-reveal-step, 100ms) * 4);
-}
-
-[data-animate-delay='5'] {
-  transition-delay: calc(var(--motion-reveal-step, 100ms) * 5);
-}
-
-[data-animate-delay='6'] {
-  transition-delay: calc(var(--motion-reveal-step, 100ms) * 6);
-}
-
-[data-animate-delay='7'] {
-  transition-delay: calc(var(--motion-reveal-step, 100ms) * 7);
-}
-
-[data-animate-delay='8'] {
-  transition-delay: calc(var(--motion-reveal-step, 100ms) * 8);
-}
-
-[data-animate-delay='9'] {
-  transition-delay: calc(var(--motion-reveal-step, 100ms) * 9);
-}
-
-[data-animate-delay='10'] {
-  transition-delay: calc(var(--motion-reveal-step, 100ms) * 10);
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

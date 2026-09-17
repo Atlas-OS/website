@@ -3,143 +3,61 @@ import { close, createIndex, type PagefindServiceConfig } from 'pagefind';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-interface PagefindIntegrationOptions extends PagefindServiceConfig {
+export interface PagefindIntegrationOptions extends PagefindServiceConfig {
+  /** Glob (relative to the build output) of the HTML files to index. */
   includeGlob?: string;
+  /** Directory inside the build output that receives the index and the search bundle. */
   outputSubdir?: string;
-  failOnError?: boolean;
 }
 
-interface ResolvedPagefindIntegrationOptions extends PagefindIntegrationOptions {
-  includeGlob: string;
-  outputSubdir: string;
-  failOnError: boolean;
-  forceLanguage: string;
-  keepIndexUrl: boolean;
-  writePlayground: boolean;
-}
-
-const defaultOptions: Pick<
-  ResolvedPagefindIntegrationOptions,
-  | 'includeGlob'
-  | 'outputSubdir'
-  | 'failOnError'
-  | 'forceLanguage'
-  | 'keepIndexUrl'
-  | 'writePlayground'
-> = {
-  includeGlob: '**/*.{html}',
-  outputSubdir: 'pagefind',
-  forceLanguage: 'en',
-  keepIndexUrl: false,
-  writePlayground: false,
-  failOnError: true,
-};
-
-function formatErrors(prefix: string, errors: string[]): string {
-  return [prefix, ...errors.map(error => `- ${error}`)].join('\n');
-}
-
-function resolveOptions(options: PagefindIntegrationOptions): ResolvedPagefindIntegrationOptions {
-  return {
-    ...defaultOptions,
-    ...options,
-  };
-}
-
-function createPagefindConfig(config: ResolvedPagefindIntegrationOptions): PagefindServiceConfig {
-  const pagefindConfig: PagefindServiceConfig = {
-    forceLanguage: config.forceLanguage,
-    keepIndexUrl: config.keepIndexUrl,
-    writePlayground: config.writePlayground,
+/**
+ * Build the Pagefind search index once Astro has written the static site.
+ * Any error reported by Pagefind fails the build; a broken search is not an acceptable deploy.
+ */
+export default function pagefind({
+  includeGlob = '**/*.html',
+  outputSubdir = 'pagefind',
+  ...serviceConfig
+}: PagefindIntegrationOptions = {}): AstroIntegration {
+  const config: PagefindServiceConfig = {
+    forceLanguage: 'en',
+    keepIndexUrl: false,
+    writePlayground: false,
+    ...serviceConfig,
   };
 
-  if (config.rootSelector) pagefindConfig.rootSelector = config.rootSelector;
-  if (config.excludeSelectors?.length) pagefindConfig.excludeSelectors = config.excludeSelectors;
-  if (config.includeCharacters !== undefined)
-    pagefindConfig.includeCharacters = config.includeCharacters;
-  if (config.verbose !== undefined) pagefindConfig.verbose = config.verbose;
-  if (config.logfile) pagefindConfig.logfile = config.logfile;
-
-  return pagefindConfig;
-}
-
-function handleErrors(
-  logger: { warn: (message: string) => void },
-  config: ResolvedPagefindIntegrationOptions,
-  prefix: string,
-  errors: string[],
-): void {
-  if (errors.length === 0) return;
-
-  const message = formatErrors(prefix, errors);
-  if (config.failOnError) {
-    throw new Error(message);
-  }
-  logger.warn(message);
-}
-
-export default function pagefindIntegration(
-  options: PagefindIntegrationOptions = {},
-): AstroIntegration {
-  const config = resolveOptions(options);
+  const assertNoErrors = (step: string, errors: string[]) => {
+    if (errors.length > 0) {
+      throw new Error(`Pagefind ${step} failed:\n${errors.map(error => `- ${error}`).join('\n')}`);
+    }
+  };
 
   return {
-    name: 'pagefind-integration',
+    name: 'pagefind',
     hooks: {
       'astro:build:done': async ({ dir, logger }) => {
         const outputDir = fileURLToPath(dir);
-        const outputPath = path.join(outputDir, config.outputSubdir);
-        let primaryError: unknown;
-        let pendingError: Error | undefined;
-
-        logger.info('Building Pagefind search index...');
+        logger.info('Building search index…');
 
         try {
-          const { index, errors: createErrors } = await createIndex(createPagefindConfig(config));
+          const { index, errors } = await createIndex(config);
+          assertNoErrors('initialization', errors);
+          if (!index) throw new Error('Pagefind did not create an index.');
 
-          handleErrors(logger, config, 'Pagefind initialization returned errors:', createErrors);
-          if (!index) throw new Error('Pagefind index was not created.');
+          const indexed = await index.addDirectory({ path: outputDir, glob: includeGlob });
+          assertNoErrors('indexing', indexed.errors);
 
-          const indexingResult = await index.addDirectory({
-            path: outputDir,
-            glob: config.includeGlob,
+          const written = await index.writeFiles({
+            outputPath: path.join(outputDir, outputSubdir),
           });
+          assertNoErrors('write', written.errors);
 
-          handleErrors(logger, config, 'Pagefind indexing returned errors:', indexingResult.errors);
-
-          const writeResult = await index.writeFiles({ outputPath });
-
-          handleErrors(logger, config, 'Pagefind write step returned errors:', writeResult.errors);
-
-          logger.info(
-            `Pagefind indexed ${indexingResult.page_count} page(s) to /${config.outputSubdir}/.`,
-          );
-        } catch (error) {
-          primaryError = error;
-          const message = error instanceof Error ? error.message : String(error);
-          if (config.failOnError) {
-            pendingError = new Error(`Pagefind integration failed: ${message}`, {
-              cause: error,
-            });
-          } else {
-            logger.warn(`Pagefind integration warning: ${message}`);
-          }
+          logger.info(`Indexed ${indexed.page_count} page(s) to /${outputSubdir}/.`);
         } finally {
-          try {
-            await close();
-          } catch (error) {
-            const message = error instanceof Error ? error.message : String(error);
-            if (primaryError || !config.failOnError) {
-              logger.warn(`Pagefind close warning: ${message}`);
-            } else {
-              pendingError = new Error(`Pagefind integration failed while closing: ${message}`, {
-                cause: error,
-              });
-            }
-          }
+          await close().catch((error: unknown) => {
+            logger.warn(`Could not shut down Pagefind cleanly: ${String(error)}`);
+          });
         }
-
-        if (pendingError) throw pendingError;
       },
     },
   };

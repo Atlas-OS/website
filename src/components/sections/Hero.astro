@@ -18,10 +18,7 @@ const links = {
 
 <section class="relative overflow-visible px-4 pt-14 md:pt-22" data-home-hero>
   <div class="absolute inset-0 -z-10 w-full" style="height: 100%;">
-    <div
-      class="absolute h-full w-full bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px)] mask-[linear-gradient(to_bottom,rgba(0,0,0,0.7),transparent_70%)] bg-size-[24px_24px]"
-    >
-    </div>
+    <div class="absolute h-full w-full bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px)] mask-[linear-gradient(to_bottom,rgba(0,0,0,0.7),transparent_70%)] bg-size-[24px_24px]"></div>
   </div>
 
   <div class="stars pointer-events-none absolute inset-0 z-[-5] translate-y-[-30%] overflow-hidden">
@@ -55,14 +52,15 @@ const links = {
         data-animate-delay="2"
       >
         <Icon name="tabler:users" class="mr-2 h-4 w-4 text-primary" />
-        <span class="text-sm text-white"
-          >Over <span id="hero-download-count" class="font-semibold text-primary tabular-nums">Loading...</span> people using
-          AtlasOS</span
-        >
+        <span class="text-sm text-white">
+          Over{' '}
+          <span id="hero-download-count" class="font-semibold text-primary tabular-nums">
+            Loading...
+          </span>{' '}
+          people using AtlasOS
+        </span>
       </div>
-      <h1
-        class="mb-6 bg-linear-to-b from-white to-blue-200 bg-clip-text text-4xl font-semibold tracking-tight text-transparent md:text-7xl"
-      >
+      <h1 class="mb-6 bg-linear-to-b from-white to-blue-200 bg-clip-text text-4xl font-semibold tracking-tight text-transparent md:text-7xl">
         Optimized Windows. <br /> Designed for enthusiasts.
       </h1>
       <p class="mx-auto mb-10 max-w-2xl leading-relaxed text-white/70">
@@ -70,12 +68,20 @@ const links = {
         enthusiasts, gamers, and privacy-conscious individuals.
       </p>
       <p class="mb-4 text-sm text-white/70" data-animate data-animate-delay="7">
-        The latest version is <span id="atlas-release-label" class="font-semibold text-white"
-          >{ATLAS_RELEASE_LABEL}</span
-        >
+        The latest version is{' '}
+        <span id="atlas-release-label" class="font-semibold text-white">
+          {ATLAS_RELEASE_LABEL}
+        </span>
       </p>
       <div class="flex flex-wrap items-center justify-center gap-4" data-animate data-animate-delay="8">
-        <Button variant="primary" size="lg" icon="tabler:chevron-right" iconPosition="after" id="get-started-btn">
+        <Button
+          variant="primary"
+          size="lg"
+          icon="tabler:chevron-right"
+          iconPosition="after"
+          id="get-started-btn"
+          data-download-modal-open
+        >
           Get started
         </Button>
         <Button
@@ -92,10 +98,7 @@ const links = {
   </div>
 
   <div class="relative mx-auto mb-16 max-w-7xl px-4">
-    <div
-      class="pointer-events-none absolute inset-x-0 -top-1/3 -z-10 -mx-40 hidden h-[500px] animate-pulse rounded-full bg-primary/10 blur-3xl md:block"
-    >
-    </div>
+    <div class="pointer-events-none absolute inset-x-0 -top-1/3 -z-10 -mx-40 hidden h-[500px] animate-pulse rounded-full bg-primary/10 blur-3xl md:block"></div>
 
     <div class="wallpaper-container relative z-10 hidden rounded-t-lg md:block">
       <div class="relative overflow-hidden rounded-t-lg">
@@ -137,14 +140,8 @@ const links = {
     </div>
   </div>
 
-  <div
-    class="absolute top-40 left-0 -z-20 hidden h-96 w-96 rounded-full bg-primary/20 opacity-30 blur-[120px] md:block"
-  >
-  </div>
-  <div
-    class="absolute top-60 right-0 -z-20 hidden h-96 w-96 rounded-full bg-primary/10 opacity-30 blur-[120px] md:block"
-  >
-  </div>
+  <div class="absolute top-40 left-0 -z-20 hidden h-96 w-96 rounded-full bg-primary/20 opacity-30 blur-[120px] md:block"></div>
+  <div class="absolute top-60 right-0 -z-20 hidden h-96 w-96 rounded-full bg-primary/10 opacity-30 blur-[120px] md:block"></div>
 
   <div
     class="mx-auto flex max-w-4xl flex-wrap items-center justify-center gap-x-8 gap-y-12 opacity-60 lg:gap-x-24"
@@ -436,204 +433,148 @@ const links = {
 
 <script>
   import { ATLAS_API_URL, ATLAS_GITHUB_LATEST_RELEASE_API_URL } from '@/constants';
+  import { isLocalhost, onPageLoad, prefersReducedMotion } from '@/utils/page-lifecycle';
 
-  async function updateHeroReleaseLabel(): Promise<void> {
-    const releaseElement = document.getElementById('atlas-release-label');
-    if (!releaseElement) {
-      return;
-    }
+  const FALLBACK_DOWNLOAD_COUNT = '2,000,000';
+  const RUNNER_CYCLE_MS = 12000;
+
+  async function updateReleaseLabel(signal: AbortSignal): Promise<void> {
+    const element = document.getElementById('atlas-release-label');
+    if (!element) return;
 
     try {
-      const response = await fetch(ATLAS_GITHUB_LATEST_RELEASE_API_URL);
-      if (!response.ok) {
-        throw new Error(`Release API request failed with status ${response.status}`);
-      }
+      const response = await fetch(ATLAS_GITHUB_LATEST_RELEASE_API_URL, { signal });
+      if (!response.ok) return;
       const release = (await response.json()) as { tag_name?: string; name?: string };
       const version = release.name || release.tag_name;
-      if (version) {
-        releaseElement.textContent = version.startsWith('Atlas') ? version : `Atlas v${version}`;
-      }
+      if (version) element.textContent = version.startsWith('Atlas') ? version : `Atlas v${version}`;
     } catch {
       // Keep the static fallback rendered from constants.
     }
   }
 
-  async function updateHeroDownloadCount(): Promise<void> {
-    const countElement = document.getElementById('hero-download-count');
-    if (!countElement) {
-      return;
-    }
+  async function updateDownloadCount(signal: AbortSignal): Promise<void> {
+    const element = document.getElementById('hero-download-count');
+    if (!element) return;
 
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      countElement.textContent = '2,000,000';
+    if (isLocalhost()) {
+      element.textContent = FALLBACK_DOWNLOAD_COUNT;
       return;
     }
 
     try {
-      const response = await fetch(ATLAS_API_URL);
-      if (!response.ok) {
-        throw new Error(`API request failed with status ${response.status}`);
-      }
+      const response = await fetch(ATLAS_API_URL, { signal });
+      if (!response.ok) throw new Error(`API request failed with status ${response.status}`);
       const data = (await response.json()) as Array<{ version: string; count: number }>;
-      const atlasDownload = data.find((item: { version: string; count: number }) => item.version === 'atlas');
-      const count = atlasDownload?.count;
-
-      if (count !== undefined && count !== null) {
-        countElement.textContent = Number(count).toLocaleString();
-      } else {
-        countElement.textContent = 'N/A';
-      }
+      const count = data.find((item) => item.version === 'atlas')?.count;
+      element.textContent = count == null ? 'N/A' : count.toLocaleString('en-US');
     } catch {
-      countElement.textContent = '2,000,000';
+      if (!signal.aborted) element.textContent = FALLBACK_DOWNLOAD_COUNT;
     }
   }
 
-  function setupGetStartedButton(): void {
-    const getStartedBtn = document.getElementById('get-started-btn');
-    const downloadModal = document.getElementById('download-modal') as HTMLDialogElement;
-
-    if (getStartedBtn && downloadModal && !getStartedBtn.hasAttribute('data-download-bound')) {
-      getStartedBtn.addEventListener('click', () => {
-        document.dispatchEvent(new CustomEvent('showModal'));
-      });
-      getStartedBtn.setAttribute('data-download-bound', 'true');
-    }
-  }
-
-  function createWallpaperRunnerPath(width: number, height: number, cornerRadius: number, inset: number): string {
+  /** Rounded "U" path hugging the top edge of the wallpaper, drawn with the given inset and corner radius. */
+  function runnerPath(width: number, height: number, cornerRadius: number, inset: number): string {
     const left = inset;
     const top = inset;
     const right = Math.max(left + 1, width - inset);
     const bottom = Math.max(top + 1, height - inset);
-    const safeCornerRadius = Math.max(2, Math.min(cornerRadius, (right - left) / 2, bottom - top - 2));
+    const radius = Math.max(2, Math.min(cornerRadius, (right - left) / 2, bottom - top - 2));
 
     return [
       `M ${left} ${bottom}`,
-      `L ${left} ${top + safeCornerRadius}`,
-      `Q ${left} ${top} ${left + safeCornerRadius} ${top}`,
-      `L ${right - safeCornerRadius} ${top}`,
-      `Q ${right} ${top} ${right} ${top + safeCornerRadius}`,
+      `L ${left} ${top + radius}`,
+      `Q ${left} ${top} ${left + radius} ${top}`,
+      `L ${right - radius} ${top}`,
+      `Q ${right} ${top} ${right} ${top + radius}`,
       `L ${right} ${bottom}`,
     ].join(' ');
   }
 
-  function setupWallpaperAnimation(): void {
-    const container = document.querySelector('[data-home-hero] .wallpaper-container') as
-      | (HTMLElement & {
-          __refreshWallpaperAnimation?: () => void;
-          __wallpaperAnimationRaf?: number;
-          __wallpaperAnimations?: Animation[];
-          __wallpaperResizeObserver?: ResizeObserver;
-        })
-      | null;
-    const animationLayer = container?.querySelector<HTMLElement>('.wallpaper-animation');
-    const animationSvg = animationLayer?.querySelector<SVGSVGElement>('.wallpaper-animation-svg');
-    const track = animationLayer?.querySelector<SVGPathElement>('.wallpaper-animation-track');
-    const runners = animationLayer?.querySelectorAll<SVGPathElement>('.wallpaper-animation-line');
+  /** Animated light runners tracing the wallpaper frame; re-measured whenever the frame resizes. */
+  function setupWallpaperAnimation(signal: AbortSignal): void {
+    const layer = document.querySelector<HTMLElement>('[data-home-hero] .wallpaper-animation');
+    const svg = layer?.querySelector<SVGSVGElement>('.wallpaper-animation-svg');
+    const track = layer?.querySelector<SVGPathElement>('.wallpaper-animation-track');
+    const runners = [...(layer?.querySelectorAll<SVGPathElement>('.wallpaper-animation-line') ?? [])];
+    if (!layer || !svg || runners.length === 0) return;
 
-    if (!container || !animationLayer || !animationSvg || !runners || runners.length === 0) {
-      return;
-    }
+    let animations: Animation[] = [];
+    let frame = 0;
 
-    const runAnimation = () => {
-      const width = Math.round(animationSvg.clientWidth);
-      const height = Math.round(animationSvg.clientHeight);
+    const draw = () => {
+      const width = Math.round(svg.clientWidth);
+      const height = Math.round(svg.clientHeight);
+      if (width <= 0 || height <= 0) return;
 
-      if (width <= 0 || height <= 0) {
-        return;
-      }
-
-      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const runnerLength = Math.round(Math.max(130, Math.min(width * 0.19, height * 0.72, 260)));
-      const layerStyles = window.getComputedStyle(animationLayer);
-      const sampleRunner = runners[0]!;
-      const runnerStyles = window.getComputedStyle(sampleRunner);
-      const strokeWidth = Math.max(1, parseFloat(runnerStyles.strokeWidth) || 1.5);
+      const layerStyles = getComputedStyle(layer);
+      const strokeWidth = Math.max(1, parseFloat(getComputedStyle(runners[0]!).strokeWidth) || 1.5);
       const strokeInset = Math.max(0.5, strokeWidth / 2);
-      const paddingLeft = parseFloat(layerStyles.paddingLeft) || 0;
-      const paddingRight = parseFloat(layerStyles.paddingRight) || 0;
-      const rawTopLeftRadius = parseFloat(layerStyles.borderTopLeftRadius) || 8;
-      const rawTopRightRadius = parseFloat(layerStyles.borderTopRightRadius) || 8;
-      const baseCornerRadius = Math.max(
+      const padding = Math.max(parseFloat(layerStyles.paddingLeft) || 0, parseFloat(layerStyles.paddingRight) || 0);
+      const cornerRadius = Math.max(
         2,
-        Math.min(rawTopLeftRadius, rawTopRightRadius) - Math.max(paddingLeft, paddingRight) - strokeInset
+        Math.min(parseFloat(layerStyles.borderTopLeftRadius) || 8, parseFloat(layerStyles.borderTopRightRadius) || 8) -
+          padding -
+          strokeInset
       );
-      const enhancedCornerRadius = baseCornerRadius * 1.45;
-      const pathData = createWallpaperRunnerPath(width, height, enhancedCornerRadius, strokeInset);
+      const path = runnerPath(width, height, cornerRadius * 1.45, strokeInset);
 
-      animationSvg.setAttribute('viewBox', `0 0 ${width} ${height}`);
-      if (track) {
-        track.setAttribute('d', pathData);
-      }
-      runners.forEach((runner) => {
-        runner.setAttribute('d', pathData);
-      });
+      svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+      track?.setAttribute('d', path);
+      for (const runner of runners) runner.setAttribute('d', path);
 
-      const pathLength = runners[0]?.getTotalLength() || 0;
-      if (pathLength <= 0) {
-        return;
-      }
+      const pathLength = runners[0]?.getTotalLength() ?? 0;
+      if (pathLength <= 0) return;
 
+      const runnerLength = Math.round(Math.max(130, Math.min(width * 0.19, height * 0.72, 260)));
       const gapLength = Math.max(pathLength - runnerLength, 1);
 
-      container.__wallpaperAnimations?.forEach((animation) => animation.cancel());
-      container.__wallpaperAnimations = [];
+      for (const animation of animations) animation.cancel();
+      animations = [];
 
-      if (reducedMotion) {
-        runners.forEach((runner, index) => {
-          runner.style.strokeDasharray = `${runnerLength} ${gapLength}`;
-          runner.style.strokeDashoffset = String(-(pathLength * (index / runners.length)));
-        });
-        return;
-      }
-
-      const animations: Animation[] = [];
       runners.forEach((runner, index) => {
         const startOffset = -(pathLength * (index / runners.length));
         runner.style.strokeDasharray = `${runnerLength} ${gapLength}`;
-        runner.style.strokeDashoffset = `${startOffset}`;
+        runner.style.strokeDashoffset = String(startOffset);
 
-        const animation = runner.animate(
-          [{ strokeDashoffset: `${startOffset}` }, { strokeDashoffset: `${startOffset - pathLength}` }],
-          {
-            duration: 12000,
-            easing: 'linear',
-            iterations: Infinity,
-            fill: 'both',
-          }
+        if (prefersReducedMotion()) return;
+        animations.push(
+          runner.animate(
+            [{ strokeDashoffset: `${startOffset}` }, { strokeDashoffset: `${startOffset - pathLength}` }],
+            {
+              duration: RUNNER_CYCLE_MS,
+              easing: 'linear',
+              iterations: Infinity,
+              fill: 'both',
+            }
+          )
         );
-        animations.push(animation);
-      });
-
-      container.__wallpaperAnimations = animations;
-    };
-
-    const scheduleAnimation = () => {
-      if (container.__wallpaperAnimationRaf) {
-        cancelAnimationFrame(container.__wallpaperAnimationRaf);
-      }
-
-      container.__wallpaperAnimationRaf = requestAnimationFrame(() => {
-        container.__wallpaperAnimationRaf = undefined;
-        runAnimation();
       });
     };
 
-    if (!container.__refreshWallpaperAnimation) {
-      container.__refreshWallpaperAnimation = scheduleAnimation;
-      container.__wallpaperResizeObserver = new ResizeObserver(scheduleAnimation);
-      container.__wallpaperResizeObserver.observe(animationLayer);
-    }
+    const schedule = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(draw);
+    };
 
-    container.__refreshWallpaperAnimation();
+    const observer = new ResizeObserver(schedule);
+    observer.observe(layer);
+    schedule();
+
+    signal.addEventListener(
+      'abort',
+      () => {
+        observer.disconnect();
+        cancelAnimationFrame(frame);
+        for (const animation of animations) animation.cancel();
+      },
+      { once: true }
+    );
   }
 
-  function initHero(): void {
-    updateHeroReleaseLabel();
-    updateHeroDownloadCount();
-    setupGetStartedButton();
-    setupWallpaperAnimation();
-  }
-
-  document.addEventListener('astro:page-load', initHero);
+  onPageLoad((signal) => {
+    void updateReleaseLabel(signal);
+    void updateDownloadCount(signal);
+    setupWallpaperAnimation(signal);
+  });
 </script>

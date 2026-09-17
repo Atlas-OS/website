@@ -1,5 +1,5 @@
 ---
-import { DEFAULT_META_DESCRIPTION, SITE_URL } from '@/constants';
+import { DEFAULT_META_DESCRIPTION, SITE_NAME, SITE_URL, SOCIAL_LINKS } from '@/constants';
 
 interface Props {
   title: string;
@@ -8,170 +8,87 @@ interface Props {
   image?: string;
   canonicalURL?: string;
   type?: 'website' | 'article';
-  publishedTime?: string;
-  modifiedTime?: string;
-  author?: string;
-  tags?: string[];
-  faqItems?: Array<{ question: string; answer: string }>;
+  /** Emit a SoftwareApplication entity; only meaningful on the homepage. */
   softwareApp?: boolean;
 }
 
-const {
-  title,
-  description,
-  metaDescription,
-  image,
-  canonicalURL,
-  type = 'website',
-  publishedTime,
-  modifiedTime,
-  author,
-  tags = [],
-  faqItems = [],
-  softwareApp = false,
-} = Astro.props;
+const { title, description, metaDescription, image, canonicalURL, type = 'website', softwareApp = false } = Astro.props;
 
-const site = Astro.site || SITE_URL;
-const siteBase = (typeof site === 'string' ? site : site.href).replace(/\/$/, '');
-const fullTitle = title.includes('|') ? title : `${title} | AtlasOS`;
-const pageURL = canonicalURL || new URL(Astro.url.pathname, site).href;
-const ogImage = image || `${siteBase}/defaultimg.png`;
-const finalMetaDescription = metaDescription || description || DEFAULT_META_DESCRIPTION;
+const site = Astro.site ?? new URL(SITE_URL);
+const siteBase = site.href.replace(/\/$/, '');
+const fullTitle = title.includes('|') ? title : `${title} | ${SITE_NAME}`;
+const pageURL = canonicalURL ?? new URL(Astro.url.pathname, site).href;
+const ogImage = image ?? `${siteBase}/defaultimg.png`;
+const finalDescription = metaDescription ?? description ?? DEFAULT_META_DESCRIPTION;
 
-const organizationSchema = {
-  '@type': 'Organization',
-  name: 'AtlasOS',
-  url: site,
-  logo: {
-    '@type': 'ImageObject',
-    url: `${siteBase}/favicon.svg`,
+// One JSON-LD graph per page; entities reference each other by `@id` instead of being repeated.
+const organizationId = `${siteBase}/#organization`;
+const websiteId = `${siteBase}/#website`;
+
+const graph: Array<Record<string, unknown>> = [
+  {
+    '@type': 'Organization',
+    '@id': organizationId,
+    name: SITE_NAME,
+    url: siteBase,
+    logo: { '@type': 'ImageObject', url: `${siteBase}/favicon.svg` },
+    sameAs: Object.values(SOCIAL_LINKS),
   },
-  sameAs: ['https://github.com/Atlas-OS/Atlas', 'https://discord.com/invite/atlasos', 'https://x.com/atlasos'],
-};
+  {
+    '@type': 'WebSite',
+    '@id': websiteId,
+    name: SITE_NAME,
+    url: siteBase,
+    publisher: { '@id': organizationId },
+  },
+  {
+    '@type': type === 'article' ? 'TechArticle' : 'WebPage',
+    '@id': pageURL,
+    url: pageURL,
+    name: title,
+    headline: title,
+    description: finalDescription,
+    image: ogImage,
+    isPartOf: { '@id': websiteId },
+    publisher: { '@id': organizationId },
+  },
+];
 
-const softwareApplicationSchema = softwareApp
-  ? {
-      '@context': 'https://schema.org',
-      '@type': 'SoftwareApplication',
-      name: 'AtlasOS',
-      applicationCategory: 'UtilitiesApplication',
-      operatingSystem: 'Windows',
-      offers: {
-        '@type': 'Offer',
-        price: '0',
-        priceCurrency: 'USD',
-      },
-      publisher: organizationSchema,
-      url: site,
-      description: finalMetaDescription,
-    }
-  : null;
+if (softwareApp) {
+  graph.push({
+    '@type': 'SoftwareApplication',
+    name: SITE_NAME,
+    applicationCategory: 'UtilitiesApplication',
+    operatingSystem: 'Windows',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    publisher: { '@id': organizationId },
+    url: siteBase,
+    description: finalDescription,
+  });
+}
 
-const faqPageSchema =
-  faqItems.length > 0
-    ? {
-        '@context': 'https://schema.org',
-        '@type': 'FAQPage',
-        mainEntity: faqItems.map((item) => ({
-          '@type': 'Question',
-          name: item.question,
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: item.answer,
-          },
-        })),
-      }
-    : null;
-
-const articleSchema =
-  type === 'article' && publishedTime
-    ? {
-        '@context': 'https://schema.org',
-        '@type': 'TechArticle',
-        headline: title,
-        description: finalMetaDescription,
-        url: pageURL,
-        datePublished: publishedTime,
-        dateModified: modifiedTime || publishedTime,
-        author: author
-          ? {
-              '@type': 'Organization',
-              name: author,
-            }
-          : organizationSchema,
-        publisher: organizationSchema,
-        keywords: tags.join(', '),
-        image: ogImage,
-      }
-    : null;
-
-const structuredData = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: 'AtlasOS',
-  description: finalMetaDescription,
-  url: siteBase,
-  publisher: organizationSchema,
-};
+const structuredData = { '@context': 'https://schema.org', '@graph': graph };
 ---
 
 <title>{fullTitle}</title>
-<meta name="description" content={finalMetaDescription} />
-
+<meta name="description" content={finalDescription} />
 <link rel="canonical" href={pageURL} />
 
 <meta property="og:type" content={type} />
 <meta property="og:url" content={pageURL} />
 <meta property="og:title" content={title} />
-<meta property="og:description" content={finalMetaDescription} />
+<meta property="og:description" content={finalDescription} />
 <meta property="og:image" content={ogImage} />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content={finalMetaDescription} />
-<meta property="og:site_name" content="AtlasOS" />
-<meta property="og:locale" content="en-US" />
-
-{
-  type === 'article' && (
-    <>
-      {publishedTime && <meta property="article:published_time" content={publishedTime} />}
-      {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
-      {author && <meta property="article:author" content={author} />}
-      {tags.length > 0 && tags.map((tag) => <meta property="article:tag" content={tag} />)}
-    </>
-  )
-}
+<meta property="og:image:alt" content={finalDescription} />
+<meta property="og:site_name" content={SITE_NAME} />
+<meta property="og:locale" content="en_US" />
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:site" content="@atlasos" />
-<meta name="twitter:creator" content="@atlasos" />
-<meta name="twitter:url" content={pageURL} />
 <meta name="twitter:title" content={title} />
-<meta name="twitter:description" content={finalMetaDescription} />
+<meta name="twitter:description" content={finalDescription} />
 <meta name="twitter:image" content={ogImage} />
 
-<script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)} />
-
-{faqPageSchema && <script type="application/ld+json" is:inline set:html={JSON.stringify(faqPageSchema)} />}
-
-{
-  softwareApplicationSchema && (
-    <script type="application/ld+json" is:inline set:html={JSON.stringify(softwareApplicationSchema)} />
-  )
-}
-
-{articleSchema && <script type="application/ld+json" is:inline set:html={JSON.stringify(articleSchema)} />}
-
-<script
-  type="application/ld+json"
-  is:inline
-  set:html={JSON.stringify({
-    '@context': 'https://schema.org',
-    '@type': 'WebPage',
-    name: title,
-    description: finalMetaDescription,
-    url: pageURL,
-    publisher: organizationSchema,
-  })}
-/>
-<meta name="theme-color" content="#1990fe" />
+<script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)}></script>

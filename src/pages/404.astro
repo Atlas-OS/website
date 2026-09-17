@@ -12,20 +12,18 @@ const currentPath = '/404/';
     <title>Page Not Found | AtlasOS</title>
     <meta name="description" content="The page you're looking for doesn't exist." />
     <meta name="robots" content="noindex, nofollow" />
-    <meta name="theme-color" content="#1990fe" />
-    <meta name="color-scheme" content="dark" />
   </Fragment>
   <Fragment slot="body">
     <div class="flex min-h-dvh flex-col">
       <header>
-        <a href="#main-content" class="sr-only focus:not-sr-only">Skip to main content</a>
+        <a href="#main-content" class="sr-only focus:not-sr-only">
+          Skip to main content
+        </a>
         <Navbar currentPath={currentPath} isDocsPage={false} />
       </header>
-      <main id="main-content" class="flex flex-1" role="main">
+      <main id="main-content" class="flex flex-1">
         <div class="flex flex-1 flex-col items-center justify-center px-4 py-16 text-center">
-          <h1
-            class="mb-4 bg-linear-to-b from-white to-blue-200 bg-clip-text text-4xl font-semibold tracking-tight text-transparent md:text-6xl"
-          >
+          <h1 class="mb-4 bg-linear-to-b from-white to-blue-200 bg-clip-text text-4xl font-semibold tracking-tight text-transparent md:text-6xl">
             404
           </h1>
           <p class="mx-auto mb-10 max-w-md leading-relaxed text-white/70">
@@ -42,9 +40,7 @@ const currentPath = '/404/';
           </div>
         </div>
       </main>
-      <div class="w-full">
-        <Footer />
-      </div>
+      <Footer />
     </div>
   </Fragment>
 </BaseLayout>

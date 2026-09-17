@@ -1,34 +1,37 @@
 ---
-import '@/styles/global.css';
+import KapaWidget from '@/components/ui/KapaWidget.astro';
 import { Font } from 'astro:assets';
 import { ClientRouter } from 'astro:transitions';
-import KapaWidget from '@/components/ui/KapaWidget.astro';
+import '@/styles/global.css';
 
 interface Props {
   currentPath?: string;
 }
 
 const isHomePage = Astro.props.currentPath === '/';
-const sansPreloads = [{ weight: 400, style: 'normal', subset: 'latin' }];
-const displayPreloads = [{ weight: 600, style: 'normal', subset: 'latin' }];
 ---
 
 <!doctype html>
 <html lang="en-US" transition:name="root" transition:animate="none">
   <head>
     <meta charset="UTF-8" />
-    <ClientRouter fallback="swap" />
-    <Font cssVariable="--font-sans-source" preload={sansPreloads} />
-    <Font cssVariable="--font-display-source" preload={displayPreloads} />
-    <Font cssVariable="--font-mono-source" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <ClientRouter fallback="swap" />
+    <Font cssVariable="--font-sans-source" preload={[{ weight: 400, style: 'normal', subset: 'latin' }]} />
+    <Font cssVariable="--font-display-source" preload={[{ weight: 600, style: 'normal', subset: 'latin' }]} />
+    <Font cssVariable="--font-mono-source" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#1990fe" />
 
+    <!-- Reveal animations only hide content once JavaScript has committed to running them. -->
+    <script is:inline data-astro-rerun>
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.dataset.motion = '';
+    </script>
     <!-- Only warm the API connection on the route that needs it during initial rendering. -->
     {isHomePage && <link rel="preconnect" href="https://api.atlasos.net" crossorigin />}
     <link rel="dns-prefetch" href="https://pla.atlasos.net" />
 
-    <!-- Favicons -->
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="shortcut icon" href="/favicon.ico" />
@@ -36,29 +39,33 @@ const displayPreloads = [{ weight: 600, style: 'normal', subset: 'latin' }];
     <meta name="apple-mobile-web-app-title" content="AtlasOS" />
     <link rel="manifest" href="/site.webmanifest" />
 
-    <!-- SEO slot (DefaultLayout and DocsLayout provide SEO) -->
     <slot name="head" />
   </head>
   <body class="overflow-x-hidden">
     <slot name="body" />
     <slot />
     <KapaWidget />
-    <!-- Partytown -->
-    <script is:inline type="text/partytown" src="https://pla.atlasos.net/js/script.js" data-domain="atlasos.net"
+    <script
+      is:inline
+      type="text/partytown"
+      src="https://pla.atlasos.net/js/script.js"
+      data-domain="atlasos.net"
     ></script>
   </body>
 </html>
 
 <style>
-  html {
+  html,
+  body {
     margin: 0;
     width: 100%;
+  }
+
+  html {
     height: 100%;
   }
 
   body {
-    margin: 0;
-    width: 100%;
     min-height: 100%;
   }
 </style>

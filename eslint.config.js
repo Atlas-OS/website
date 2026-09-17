@@ -1,42 +1,20 @@
 import js from '@eslint/js';
-import tseslint from 'typescript-eslint';
+import prettier from 'eslint-config-prettier';
 import astro from 'eslint-plugin-astro';
-import * as astroParser from 'astro-eslint-parser';
-import prettierConfig from 'eslint-config-prettier';
+import { defineConfig, globalIgnores } from 'eslint/config';
+import tseslint from 'typescript-eslint';
 
-export default [
+export default defineConfig([
+  globalIgnores([
+    'dist/',
+    '.astro/',
+    '.wrangler/',
+    '.wrangler-dry-run/',
+    'node_modules/',
+    'worker-configuration.d.ts',
+  ]),
   js.configs.recommended,
-  ...tseslint.configs.recommended,
-  ...astro.configs['flat/recommended'],
-
-  {
-    files: ['**/*.astro'],
-    languageOptions: {
-      globals: {
-        Astro: 'readonly',
-        Fragment: 'readonly',
-      },
-      parser: astroParser,
-      parserOptions: {
-        parser: tseslint.parser,
-        extraFileExtensions: ['.astro'],
-      },
-    },
-    processor: astro.processors.astro,
-  },
-
-  {
-    files: ['src/**/*.ts'],
-    languageOptions: {
-      parser: tseslint.parser,
-      parserOptions: {
-        project: './tsconfig.json',
-      },
-    },
-  },
-
-  prettierConfig,
-  {
-    ignores: ['dist/', '.astro/', '.wrangler/', '.wrangler-dry-run/', 'node_modules/'],
-  },
-];
+  tseslint.configs.recommended,
+  astro.configs['flat/recommended'],
+  prettier,
+]);

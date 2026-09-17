@@ -14,8 +14,6 @@ interface Props {
 
 const { includeAmeBeta = false } = Astro.props;
 
-const msdlId = `msdl-${Math.random().toString(36).substring(2, 9)}`;
-
 const tabItems = [
   { label: 'ISO Downloader (Recommended)', value: 'iso-downloader' },
   { label: 'Microsoft website', value: 'microsoft-site' },
@@ -25,29 +23,27 @@ const tabItems = [
 ---
 
 <Callout type="tip" title="Which version?">
-  {
-    includeAmeBeta ? (
-      <>
-        For AMD and Intel CPUs, download the x86_64 (x64) version. For Qualcomm Snapdragon or other supported ARM SoCs,
-        download the ARM64 version.{' '}
-        <a
-          href="https://www.tenforums.com/tutorials/132836-check-what-processor-cpu-windows-pc.html#option1"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Check your CPU architecture
-        </a>
-        .
-      </>
-    ) : (
-      <>Download x64 for an Intel or AMD CPU. Download ARM64 for a Qualcomm Snapdragon or another supported ARM CPU.</>
-    )
-  }
+  {includeAmeBeta ? (
+    <>
+      For AMD and Intel CPUs, download the x86_64 (x64) version. For Qualcomm Snapdragon or other supported ARM SoCs,
+      download the ARM64 version.{' '}
+      <a
+        href="https://www.tenforums.com/tutorials/132836-check-what-processor-cpu-windows-pc.html#option1"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Check your CPU architecture
+      </a>
+      .
+    </>
+  ) : (
+    <>Download x64 for an Intel or AMD CPU. Download ARM64 for a Qualcomm Snapdragon or another supported ARM CPU.</>
+  )}
 </Callout>
 
 <Tabs items={tabItems} defaultTab="iso-downloader">
   <TabPanel value="iso-downloader" default>
-    <div class="msdl-widget not-prose" data-msdl-root={msdlId}>
+    <div class="msdl-widget not-prose" data-msdl-root>
       <!-- Step: idle — architecture selection -->
       <div data-msdl-step="idle">
         <p class="mb-3 text-xs font-medium tracking-widest text-white/60 uppercase">Architecture</p>
@@ -88,13 +84,16 @@ const tabItems = [
         <Details summary="Which should I download?">
           <p>Intel/AMD CPUs use x64. ARM (Snapdragon) systems use ARM64.</p>
           <p class="mb-0">
-            To check your system: open <strong>Settings → System → About</strong> and look at <strong
-              >System type</strong
-            >. See <a
+            To check your system: open <strong>Settings → System → About</strong> and look at{' '}
+            <strong>System type</strong>. See{' '}
+            <a
               href="https://www.tenforums.com/tutorials/132836-check-what-processor-cpu-windows-pc.html#option1"
               target="_blank"
-              rel="noopener noreferrer">how to check your CPU architecture</a
-            > for more detail.
+              rel="noopener noreferrer"
+            >
+              how to check your CPU architecture
+            </a>{' '}
+            for more detail.
           </p>
         </Details>
       </div>
@@ -120,7 +119,9 @@ const tabItems = [
             <Icon name="tabler:arrow-left" class="h-3.5 w-3.5" aria-hidden="true" />
             Back
           </button>
-          <span class="text-white/35" aria-hidden="true">/</span>
+          <span class="text-white/35" aria-hidden="true">
+            /
+          </span>
           <span class="text-xs font-medium text-white/65" data-msdl-arch-label></span>
         </div>
         <div class="space-y-3">
@@ -132,7 +133,9 @@ const tabItems = [
               aria-haspopup="listbox"
               aria-expanded="false"
             >
-              <span data-msdl-select-value class="text-white/60">Choose a language&hellip;</span>
+              <span data-msdl-select-value class="text-white/60">
+                Choose a language&hellip;
+              </span>
               <svg
                 data-msdl-select-chevron
                 class="h-3.5 w-3.5 shrink-0 text-white/55 transition-transform duration-200"
@@ -152,9 +155,8 @@ const tabItems = [
           </div>
 
           <p class="text-xs text-white/60">
-            Match your Windows display language — check <strong class="font-medium text-white/80"
-              >Settings &rarr; Time &amp; language</strong
-            >.
+            Match your Windows display language — check{' '}
+            <strong class="font-medium text-white/80">Settings &rarr; Time &amp; language</strong>.
           </p>
           <button
             type="button"
@@ -183,10 +185,7 @@ const tabItems = [
         <div class="flex flex-col items-center py-6 text-center">
           <div class="iso-success-rings relative mb-4 flex h-14 w-14 items-center justify-center">
             <div class="iso-success-ring-outer absolute inset-0 rounded-full border border-green-500/[0.12]"></div>
-            <div
-              class="iso-success-ring-inner absolute inset-2 rounded-full border border-green-500/20 bg-green-500/[0.04]"
-            >
-            </div>
+            <div class="iso-success-ring-inner absolute inset-2 rounded-full border border-green-500/20 bg-green-500/[0.04]"></div>
             <Icon name="tabler:check" class="relative z-10 h-5 w-5 text-green-400" aria-hidden="true" />
           </div>
           <p class="mb-1 text-sm font-semibold text-white/90">Download started</p>
@@ -242,79 +241,97 @@ const tabItems = [
   <TabPanel value="microsoft-site">
     <ol>
       <li>
-        Visit <a href="https://www.microsoft.com/software-download/windows11" target="_blank" rel="noopener noreferrer"
-          >Microsoft's Windows 11 download page</a
-        >
+        Visit{' '}
+        <a href="https://www.microsoft.com/software-download/windows11" target="_blank" rel="noopener noreferrer">
+          Microsoft's Windows 11 download page
+        </a>
       </li>
-      <li>Choose <strong>Download Windows 11 Disk Image (ISO) for x64 devices</strong> (or ARM64 for ARM systems)</li>
-      <li>Select <strong>Windows 11 (multi-edition ISO)</strong><IconArrow /><strong>Confirm</strong></li>
-      <li>Choose your language<IconArrow /><strong>Confirm</strong></li>
-      <li>Click <strong>64-bit Download</strong> (or <strong>ARM64 Download</strong> for ARM) to begin</li>
+      <li>
+        Choose <strong>Download Windows 11 Disk Image (ISO) for x64 devices</strong> (or ARM64 for ARM systems)
+      </li>
+      <li>
+        Select <strong>Windows 11 (multi-edition ISO)</strong>
+        <IconArrow />
+        <strong>Confirm</strong>
+      </li>
+      <li>
+        Choose your language
+        <IconArrow />
+        <strong>Confirm</strong>
+      </li>
+      <li>
+        Click <strong>64-bit Download</strong> (or <strong>ARM64 Download</strong> for ARM) to begin
+      </li>
     </ol>
   </TabPanel>
 
   <TabPanel value="media-creation-tool">
     <ol>
       <li>
-        Download the <a href="https://go.microsoft.com/fwlink/?linkid=2156295" target="_blank" rel="noopener noreferrer"
-          >Windows 11 Media Creation Tool</a
-        >, then open it
+        Download the{' '}
+        <a href="https://go.microsoft.com/fwlink/?linkid=2156295" target="_blank" rel="noopener noreferrer">
+          Windows 11 Media Creation Tool
+        </a>
+        , then open it
       </li>
-      <li>Click <strong>Accept</strong> to agree to the license terms</li>
       <li>
-        Select <strong>Create installation media (USB flash drive, DVD, or ISO file) for another PC</strong>, click <strong
-          >Next</strong
-        >, and choose your language and <strong>Windows 11</strong>
+        Click <strong>Accept</strong> to agree to the license terms
       </li>
-      <li>Choose the <strong>ISO file</strong> option, then choose the download location</li>
-      <li>After the download completes, click <strong>Finish</strong></li>
+      <li>
+        Select <strong>Create installation media (USB flash drive, DVD, or ISO file) for another PC</strong>, click{' '}
+        <strong>Next</strong>, and choose your language and <strong>Windows 11</strong>
+      </li>
+      <li>
+        Choose the <strong>ISO file</strong> option, then choose the download location
+      </li>
+      <li>
+        After the download completes, click <strong>Finish</strong>
+      </li>
     </ol>
   </TabPanel>
 
-  {
-    includeAmeBeta && (
-      <TabPanel value="ame-beta">
-        <ol>
-          <li>
-            Go to{' '}
-            <a href="https://atlasos.net" target="_blank" rel="noopener noreferrer">
-              atlasos.net
-            </a>
-            , click <strong>Get started</strong>, then <strong>Already following the guide?</strong>
-          </li>
-          <li>
-            Download <strong>Atlas Playbook</strong> and <strong>AME Beta</strong>, then extract both to your desktop
-          </li>
-          <li>
-            Open <CodeInline text="AME Beta.exe" /> from the AME Beta folder
-          </li>
-          <li>
-            If SmartScreen warns, see <a href="/docs/faq/ame/#ame-beta-deleted-or-closed-suddenly">AME Beta deleted</a>.
-            Click <strong>More info</strong> and <strong>Run anyway</strong>
-          </li>
-          <li>
-            Click <strong>Updates</strong> at the top and ensure AME Beta is up to date
-          </li>
-          <li>
-            Click{' '}
-            <>
-              <strong>More Options</strong>
-              <IconArrow />
-              <strong>Download ISO</strong>
-              <IconArrow />
-            </>
-            Select{' '}
-            <>
-              <strong>Windows 11</strong>
-              <IconArrow />
-              <strong>OK</strong>
-            </>
-          </li>
-        </ol>
-        <p class="mt-4">This downloads the latest Windows 11 ISO.</p>
-      </TabPanel>
-    )
-  }
+  {includeAmeBeta && (
+    <TabPanel value="ame-beta">
+      <ol>
+        <li>
+          Go to{' '}
+          <a href="https://atlasos.net" target="_blank" rel="noopener noreferrer">
+            atlasos.net
+          </a>
+          , click <strong>Get started</strong>, then <strong>Already following the guide?</strong>
+        </li>
+        <li>
+          Download <strong>Atlas Playbook</strong> and <strong>AME Beta</strong>, then extract both to your desktop
+        </li>
+        <li>
+          Open <CodeInline text="AME Beta.exe" /> from the AME Beta folder
+        </li>
+        <li>
+          If SmartScreen warns, see <a href="/docs/faq/ame/#ame-beta-deleted-or-closed-suddenly">AME Beta deleted</a>.
+          Click <strong>More info</strong> and <strong>Run anyway</strong>
+        </li>
+        <li>
+          Click <strong>Updates</strong> at the top and ensure AME Beta is up to date
+        </li>
+        <li>
+          Click{' '}
+          <>
+            <strong>More Options</strong>
+            <IconArrow />
+            <strong>Download ISO</strong>
+            <IconArrow />
+          </>
+          Select{' '}
+          <>
+            <strong>Windows 11</strong>
+            <IconArrow />
+            <strong>OK</strong>
+          </>
+        </li>
+      </ol>
+      <p class="mt-4">This downloads the latest Windows 11 ISO.</p>
+    </TabPanel>
+  )}
 </Tabs>
 
 <style>
@@ -893,13 +910,10 @@ const tabItems = [
     });
   }
 
-  function initAllMsdlWidgets() {
-    document.querySelectorAll('[data-msdl-root]:not([data-msdl-initialized])').forEach((el) => {
-      const root = el as HTMLElement;
-      root.setAttribute('data-msdl-initialized', 'true');
+  document.addEventListener('astro:page-load', () => {
+    for (const root of document.querySelectorAll<HTMLElement>('[data-msdl-root]:not([data-msdl-initialized])')) {
+      root.dataset.msdlInitialized = 'true';
       initMsdlWidget(root);
-    });
-  }
-
-  document.addEventListener('astro:page-load', initAllMsdlWidgets);
+    }
+  });
 </script>

@@ -21,29 +21,20 @@
       "files": ["*.{js,jsx,ts,tsx}"],
       "options": {
         "parser": "typescript",
-        "semi": true,
-        "tabWidth": 2,
-        "printWidth": 100,
-        "singleQuote": true,
         "trailingComma": "all",
-        "bracketSpacing": true,
-        "arrowParens": "avoid",
-        "endOfLine": "auto"
+        "arrowParens": "avoid"
       }
     },
     {
       "files": ["*.{json,jsonc,json5}"],
       "options": {
-        "parser": "json",
-        "tabWidth": 2
+        "parser": "json"
       }
     },
     {
       "files": ["*.{yml,yaml}"],
       "options": {
-        "parser": "yaml",
-        "tabWidth": 2,
-        "singleQuote": true
+        "parser": "yaml"
       }
     },
     {
@@ -58,12 +49,6 @@
       "options": {
         "parser": "markdown",
         "proseWrap": "preserve"
-      }
-    },
-    {
-      "files": ["*.svelte"],
-      "options": {
-        "parser": "svelte"
       }
     },
     {

@@ -62,35 +62,33 @@ const features = [
     </p>
   </div>
   <div class="grid grid-cols-1 gap-0 md:grid-cols-2">
-    {
-      features.map((feature, index) => {
-        const isFirstTwo = index < 2;
-        const isLastTwo = index >= features.length - 2;
-        const baseClasses =
-          "relative pr-8 md:pr-16 md:odd:pr-16 md:odd:before:absolute md:odd:before:top-[20%] md:odd:before:right-0 md:odd:before:bottom-[20%] md:odd:before:w-px md:odd:before:bg-linear-to-b md:odd:before:from-transparent md:odd:before:via-white/10 md:odd:before:to-transparent md:odd:before:content-[''] md:even:pl-16";
-        const paddingClass = isFirstTwo ? 'pb-10' : 'py-10';
-        const afterClasses = isLastTwo
-          ? ''
-          : "after:absolute after:right-0 after:bottom-0 after:left-0 after:h-px after:bg-linear-to-r after:from-transparent after:via-white/10 after:to-transparent after:content-[''] md:last:after:hidden";
+    {features.map((feature, index) => {
+      const isFirstTwo = index < 2;
+      const isLastTwo = index >= features.length - 2;
+      const baseClasses =
+        "relative pr-8 md:pr-16 md:odd:pr-16 md:odd:before:absolute md:odd:before:top-[20%] md:odd:before:right-0 md:odd:before:bottom-[20%] md:odd:before:w-px md:odd:before:bg-linear-to-b md:odd:before:from-transparent md:odd:before:via-white/10 md:odd:before:to-transparent md:odd:before:content-[''] md:even:pl-16";
+      const paddingClass = isFirstTwo ? 'pb-10' : 'py-10';
+      const afterClasses = isLastTwo
+        ? ''
+        : "after:absolute after:right-0 after:bottom-0 after:left-0 after:h-px after:bg-linear-to-r after:from-transparent after:via-white/10 after:to-transparent after:content-[''] md:last:after:hidden";
 
-        return (
-          <div
-            class={`${baseClasses} ${paddingClass} ${afterClasses}`}
-            data-animate
-            data-animate-delay={String((index % 6) + 1)}
-          >
-            <div class="flex items-start">
-              <div class="mt-0.5 mr-6 flex h-9 w-9 min-w-9 items-center justify-center rounded bg-white/5">
-                <Icon name={feature.icon} class="h-5 w-5 text-white/80" />
-              </div>
-              <div>
-                <h3 class="mb-3 text-xl font-semibold text-white">{feature.title}</h3>
-                <p class="leading-relaxed text-white/70">{feature.description}</p>
-              </div>
+      return (
+        <div
+          class={`${baseClasses} ${paddingClass} ${afterClasses}`}
+          data-animate
+          data-animate-delay={String((index % 6) + 1)}
+        >
+          <div class="flex items-start">
+            <div class="mt-0.5 mr-6 flex h-9 w-9 min-w-9 items-center justify-center rounded bg-white/5">
+              <Icon name={feature.icon} class="h-5 w-5 text-white/80" />
+            </div>
+            <div>
+              <h3 class="mb-3 text-xl font-semibold text-white">{feature.title}</h3>
+              <p class="leading-relaxed text-white/70">{feature.description}</p>
             </div>
           </div>
-        );
-      })
-    }
+        </div>
+      );
+    })}
   </div>
 </section>

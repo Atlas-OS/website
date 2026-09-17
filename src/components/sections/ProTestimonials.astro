@@ -46,12 +46,11 @@ import { Image } from 'astro:assets';
 
     <div class="order-2 overflow-hidden md:order-2" data-animate data-animate-delay="2">
       <p class="mb-4 text-xs text-white/50">
-        Are you a pro who uses Atlas or wants to get started? <a
-          href="mailto:contact@atlasos.net"
-          class="text-primary-300 font-semibold hover:underline"
-        >
-          Get in touch</a
-        >.
+        Are you a pro who uses Atlas or wants to get started?{' '}
+        <a href="mailto:contact@atlasos.net" class="text-primary-300 font-semibold hover:underline">
+          Get in touch
+        </a>
+        .
       </p>
       <div id="player-slideshow-container" class="relative">
         <div id="player-slideshow" class="relative h-80 w-full overflow-hidden rounded-lg">
@@ -186,4 +185,9 @@ import { Image } from 'astro:assets';
   </div>
 </section>
 
-<script src="../../utils/slideshow.ts"></script>
+<script>
+  import { onPageLoad } from '@/utils/page-lifecycle';
+  import { initSlideshow } from '@/utils/slideshow';
+
+  onPageLoad(initSlideshow);
+</script>

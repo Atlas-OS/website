@@ -44,17 +44,15 @@ const classes = [spacing && 'my-6', rounded && 'rounded-lg', 'media-outline', cl
   preload={preload}
   data-video-player
 >
-  {
-    tracks.map((track) => (
-      <track
-        src={track.src}
-        kind={track.kind || 'captions'}
-        srclang={track.srclang}
-        label={track.label}
-        default={track.default}
-      />
-    ))
-  }
+  {tracks.map((track) => (
+    <track
+      src={track.src}
+      kind={track.kind || 'captions'}
+      srclang={track.srclang}
+      label={track.label}
+      default={track.default}
+    />
+  ))}
 </video>
 
 <script>
