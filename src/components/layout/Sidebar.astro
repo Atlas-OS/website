@@ -150,9 +150,9 @@ const listId = (href: string) => `sidebar-list-${href.replace(/[^a-z0-9]+/gi, '-
                                   href={item.href}
                                   data-astro-prefetch="viewport"
                                   aria-current={isCurrent(item.href) ? 'page' : undefined}
-                                  class="sidebar-link flex-1 rounded-md px-2 py-1.5 text-sm"
+                                  class="sidebar-link flex flex-1 items-center rounded-md px-2 py-1.5 text-sm"
                                 >
-                                  <span class="flex items-center justify-between gap-2">
+                                  <span class="flex w-full items-center justify-between gap-2">
                                     <span class="truncate">{item.title}</span>
                                     {item.badge && <span class="sidebar-badge sidebar-badge-sm">{item.badge}</span>}
                                   </span>
@@ -185,9 +185,9 @@ const listId = (href: string) => `sidebar-list-${href.replace(/[^a-z0-9]+/gi, '-
                                           href={child.href}
                                           data-astro-prefetch="viewport"
                                           aria-current={isCurrent(child.href) ? 'page' : undefined}
-                                          class="sidebar-link sidebar-link-nested block rounded-md px-2 py-1.5 text-sm"
+                                          class="sidebar-link sidebar-link-nested flex items-center rounded-md px-2 py-1.5 text-sm"
                                         >
-                                          <span class="flex items-center justify-between gap-2">
+                                          <span class="flex w-full items-center justify-between gap-2">
                                             <span class="truncate">{child.title}</span>
                                             {child.badge && (
                                               <span class="sidebar-badge sidebar-badge-sm">{child.badge}</span>
