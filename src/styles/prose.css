@@ -305,6 +305,43 @@
   color: var(--docs-text-primary);
 }
 
+/* Compact comparison columns fit the article instead of forcing a wider table. */
+.browser-comparison {
+  container-type: inline-size;
+}
+
+.browser-comparison.table-wrapper .table-container .docs-table {
+  table-layout: fixed;
+  min-width: 100%;
+}
+
+.browser-comparison .docs-table :is(th, td) {
+  padding: 1rem 0.5rem;
+  text-align: center;
+  vertical-align: middle;
+  overflow-wrap: anywhere;
+}
+
+.browser-comparison .docs-table :is(th, td):first-child {
+  width: 25%;
+  padding-inline-start: 1rem;
+  text-align: start;
+}
+
+@container (max-width: 560px) {
+  .browser-comparison .docs-table {
+    font-size: 0.75rem;
+  }
+
+  .browser-comparison .docs-table :is(th, td) {
+    padding: 0.75rem 0.25rem;
+  }
+
+  .browser-comparison .docs-table :is(th, td):first-child {
+    padding-inline-start: 0.5rem;
+  }
+}
+
 .docs-table tbody tr:last-child td,
 :where(.prose) tbody tr:last-child td {
   border-bottom: 0;
