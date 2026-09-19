@@ -36,9 +36,10 @@
   --color-primary: oklch(0.65 0.1907 252.91);
   /* Lighter blue for text on dark surfaces: links, active tabs, inline code. */
   --color-link: oklch(0.78 0.14 252.91);
-  --bg-primary: oklch(0.12 0.0421 264.82);
-  --bg-secondary: oklch(0.1 0.045 270);
-  --color-secondary: oklch(0.12 0.0421 264.82);
+  /* Shared cool charcoal canvas keeps the website and docs visually connected. */
+  --bg-primary: oklch(0.17 0.014 265);
+  --bg-secondary: oklch(0.15 0.012 265);
+  --color-secondary: oklch(0.19 0.014 265);
 }
 
 :root {
@@ -51,8 +52,10 @@
   --motion-ease-precise: cubic-bezier(0.2, 0, 0, 1);
 
   /* Surfaces */
-  --nav-bg-translucent: oklch(0.12 0.0421 264.82 / 0.6);
-  --nav-menu-bg: oklch(0.12 0.0421 264.82 / 0.9);
+  --home-ambient-glow: oklch(0.5 0.07 253 / 0.12);
+  --modal-surface: oklch(0.21 0.012 265);
+  --nav-bg-translucent: oklch(0.17 0.014 265 / 0.85);
+  --nav-menu-bg: oklch(0.19 0.014 265 / 0.97);
   --docs-panel-bg: oklch(0.1 0.04 265);
   --code-block-bg: oklch(0.11 0.04 265);
   --shadow-surface:
@@ -133,6 +136,11 @@ button {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
   border-radius: 4px;
+}
+
+:is(#download-modal, #spotlight-modal) :is(a, button):focus-visible {
+  outline: none;
+  background-color: rgb(255 255 255 / 0.09);
 }
 
 main,

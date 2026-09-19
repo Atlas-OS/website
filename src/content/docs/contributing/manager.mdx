@@ -1,0 +1,32 @@
+---
+title: "Contributing to Atlas Manager"
+metaDescription: "Contribute to Atlas Manager development, interface copy, accessibility, and translations. Find source, build instructions, and review guidance."
+description: Improve the app and its translations.
+order: 42
+sidebar:
+  label: "Manager and translations"
+---
+
+Atlas Manager lives in the [Atlas repository's app directory](https://github.com/Atlas-OS/Atlas/tree/main/app). It is a Rust application built with GPUI. Read the [contribution guide](/docs/contributing/) first, then choose the part you want to improve.
+
+## App development
+
+Use the [Manager README](https://github.com/Atlas-OS/Atlas/blob/main/app/README.md) for build prerequisites, the pinned toolchain, local runs, and required checks. Keep those instructions as the source of truth rather than copying an old build command from an issue.
+
+The app handles preparation, choices, progress, and recovery. The playbook's PowerShell modules apply changes to Windows. If your change alters installation behavior, read the [playbook architecture](/docs/contributing/playbook/) as well.
+
+Keep a pull request focused. Explain the user-visible problem, the resulting behavior, and how you checked it. For interface changes, include relevant screenshots and test keyboard navigation, focus, scrolling, and long translated text. For installation changes, follow the [testing guide](/docs/contributing/testing/) and record the Windows build and package tested.
+
+## Interface copy and translations
+
+Manager uses Fluent catalogs under `app/i18n`. The English source catalog is `en-GB`; `en-US` supplies regional differences. Start with:
+
+- [Language implementation and checks](https://github.com/Atlas-OS/Atlas/blob/main/app/docs/i18n.md): catalog structure, fallback behavior, and validation.
+- [Translation guidance](https://github.com/Atlas-OS/Atlas/blob/main/app/docs/translating.md): locale conventions and Windows terminology to verify.
+- [Writing guidance](https://github.com/Atlas-OS/Atlas/blob/main/app/docs/writing.md): shared wording and interface conventions.
+
+Preserve message identifiers, variables, and Fluent syntax. Translate the meaning, including distinctions such as restarting Windows versus reopening Manager, and temporarily disabling protection versus removing Defender.
+
+Check the wording against Windows in the target language and review it in the app. Look for clipped buttons, awkward line breaks, plural forms, and unclear error recovery. Automated catalog checks cannot establish translation quality; preview translations need native-speaker review.
+
+In your pull request, name the locale, list the screens reviewed, and note any terminology you could not verify. If you find a translation problem without a code change, [report it](/docs/contributing/reporting/) with the language, screen, current wording, and suggested correction.

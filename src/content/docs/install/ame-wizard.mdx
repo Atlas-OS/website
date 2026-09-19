@@ -1,0 +1,56 @@
+---
+title: "Install with AME Wizard"
+metaDescription: "Use AME Wizard as an alternative to Atlas Manager to apply the Atlas 0.6 playbook."
+description: Apply the Atlas playbook with AME Wizard.
+order: 6
+sidebar:
+  label: "AME Wizard (alternative)"
+---
+
+import Callout from '@/components/docs/Callout.astro';
+
+AME Wizard remains an alternative way to install Atlas. It applies the same Atlas 0.6 playbook through its own interface. [Atlas Manager](/docs/install/playbook/) is the recommended route because it guides Windows and Store update preparation as part of setup.
+
+AME Wizard may be labelled **AME Beta** in its downloads and interface.
+
+## 1. Prepare Windows
+
+Meet the same [installation requirements](/docs/install/requirements/): start with fresh **Windows 11 25H2 (build 26200)**, or an [eligible Atlas upgrade](/docs/upgrade/requirements/).
+
+Before opening the playbook:
+
+1. Connect to the internet and plug in your PC.
+2. Open **Settings → Windows Update** and install the recommended updates for the supported Windows release.
+3. Restart if requested, then check again for remaining updates.
+4. Open **Microsoft Store**, check for updates, and let Microsoft Store and all installed Store apps finish updating.
+5. Recheck after any restart. Resolve failed updates before continuing.
+
+You do not need optional preview updates or a newer Windows feature release. A different installer does not bypass Atlas's Windows compatibility or preparation requirements.
+
+## 2. Download the two files
+
+- Download the **Atlas 0.6 playbook** from the [Atlas release page](https://github.com/Atlas-OS/Atlas/releases). If it comes in a release ZIP, extract that ZIP to find the `.apbx` file.
+- Download **AME Wizard / AME Beta** from [Ameliorated](https://amelabs.net/) and extract its download if needed.
+
+Keep the `.apbx` file intact. AME Wizard opens the package for you.
+
+## 3. Apply the playbook
+
+1. Open AME Wizard and allow administrator access. Install any available Wizard update before applying Atlas.
+2. Drag the Atlas `.apbx` file into the window, or use its playbook selection control.
+3. Confirm the Atlas version and follow the requirement checks.
+4. Review the Atlas options and follow Wizard's Windows Security instructions when prompted.
+5. Start installation, keep the PC powered on, and let it finish. Restart when instructed.
+
+For details of Wizard's interface, see [Ameliorated's playbook guide](https://docs.amelabs.net/using-wizard/running-playbook.html).
+
+<Callout type="info" title="Already using Atlas?">
+  Check [Before upgrading](/docs/upgrade/requirements/) first. Use the upgrade action offered for
+  your installed version. Reapplying a package is not a substitute for an eligible upgrade path.
+</Callout>
+
+## After installation
+
+Follow [First setup](/docs/install/setup/). You can use Atlas Manager to view your installed version even if you installed through AME Wizard.
+
+If Wizard fails, keep its logs and use the [AME Wizard FAQ](/docs/faq/ame/). Do not run Manager and Wizard installations at the same time.

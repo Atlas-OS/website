@@ -60,12 +60,11 @@ const isDocumentationActive = isOnDocsPage && !hasActiveDocsSubItem;
             alt="AtlasOS"
             width={100}
             height={32}
-            class="relative z-10 block h-6 w-auto"
+            class="relative z-10 block h-5 w-auto"
             loading="eager"
             decoding="sync"
             fetchpriority="high"
           />
-          <div class="absolute -inset-2 -z-10 rounded-full bg-primary/10 opacity-70 blur-lg transition-[background-color,opacity] duration-300 group-hover:bg-primary/20"></div>
         </div>
       </a>
 
@@ -91,7 +90,7 @@ const isDocumentationActive = isOnDocsPage && !hasActiveDocsSubItem;
         </>
       )}
 
-      <div class="hidden items-center gap-2 sm:flex">
+      <div class="nav-social-links hidden items-center gap-2 sm:flex">
         <SocialIconLink href="https://github.com/Atlas-OS/Atlas" icon="tabler:brand-github" label="GitHub" />
         <SocialIconLink href="https://discord.com/invite/atlasos" icon="tabler:brand-discord" label="Discord" />
         <SocialIconLink href="https://x.com/atlasos" icon="tabler:brand-x" label="X (Twitter)" />

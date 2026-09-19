@@ -1,86 +1,51 @@
 ---
 title: "Reverting Atlas"
-metaDescription: Uninstall AtlasOS and return to stock Windows. Step-by-step reinstall guide.
-description: Uninstall Atlas and return to stock Windows.
+metaDescription: "Remove Atlas with a clean Windows installation using Microsoft media. Prepare backups, drivers, and the correct installation drive."
+description: Remove Atlas and return to standard Windows.
 order: 33
 ---
 
 import Callout from '@/components/docs/Callout.astro';
-import WindowsSetupTabs from '@/components/docs/install/WindowsSetupTabs.astro';
-import Video from '@/components/ui/Video.astro';
 
-You must reinstall Windows to remove Atlas. Do not use "Reset this PC"; it cannot reliably reverse Atlas changes.
+To remove Atlas, perform a **clean Windows installation using unmodified Microsoft media**. Reset this PC, an in-place repair, and deleting Atlas Manager are not supported ways to undo all Atlas changes.
 
-## Before uninstalling
-
-Support covers the latest Atlas release. If you use the latest release, try these resources before you reinstall:
-
-- Search this documentation
-- Ask in the [Atlas Discord server](https://discord.com/invite/atlasos)
-- [Atlas GitHub Discussions](https://github.com/Atlas-OS/Atlas/discussions)
-
-### Still having problems?
-
-Report reproducible problems on [Atlas GitHub Issues](https://github.com/Atlas-OS/Atlas/issues). Share general feedback in GitHub Discussions or Discord.
-
-<Callout type="tip" title="Looking to reinstall Atlas?">
-  Follow the [Atlas installation guide](/docs/install/requirements/) instead. This page is for
-  reverting Atlas.
+<Callout type="warning" title="Use Microsoft media">
+  An ISO or USB prepared by Atlas Manager includes Atlas setup. Use Microsoft's Windows media
+  for this process, otherwise Atlas setup can start again after Windows is installed.
 </Callout>
 
-## 1. Download a Windows ISO
+If you want to keep Atlas and resolve a problem, start with [troubleshooting](/docs/faq/installation/) or [report an issue](/docs/contributing/reporting/). To reinstall Atlas instead, follow the [installation guide](/docs/install/).
 
-You need a clean Windows 11 ISO to reinstall. Choose your desired Windows version.
+## 1. Prepare your backup
 
-<Callout type="tip" title="Which version?">
-  For AMD and Intel CPUs, download the x86_64 (x64) version. For Qualcomm Snapdragon or other
-  supported ARM SoCs, download the ARM64 version. [Check your CPU architecture](https://www.tenforums.com/tutorials/132836-check-what-processor-cpu-windows-pc.html#option1).
+Copy personal files, game saves, application settings, and any recovery keys you need to storage outside the installation drive. Open a few backed-up files to check them. A restore point is not a substitute for this backup.
+
+Note your Windows edition and activation status in **Settings → System → Activation**. Reinstall the edition covered by your license. Keep access to any accounts and application licenses needed afterwards.
+
+Download a network driver for your exact PC or motherboard from its manufacturer's support page and save it separately. Choose the package matching your Windows architecture; you do not need every listed driver version. See [network drivers](/docs/essential-setup/drivers/network/).
+
+## 2. Create Windows installation media
+
+Use [Microsoft's installation-media guide](https://support.microsoft.com/en-us/windows/deployment/install-upgrade/create-installation-media-for-windows) and official downloads. Check **Settings → System → About → System type** to select the correct architecture.
+
+Use an empty USB drive that meets the tool's requirements. Creating installation media erases that USB, so keep your backup on another drive.
+
+## 3. Start a clean installation
+
+Boot from the USB and follow the **clean installation** section of [Microsoft's reinstall guide](https://support.microsoft.com/en-us/windows/deployment/install-upgrade/reinstall-windows-with-the-installation-media).
+
+<Callout type="danger" title="Check the destination drive">
+  Deleting partitions erases their contents. Identify the Windows destination by its size and
+  disk details before deleting anything. Do not assume a disk number identifies the correct drive.
+  If you cannot identify it confidently, stop before changing partitions.
 </Callout>
 
-**Official Microsoft Sources**
+Disconnect backup storage before starting installation. Where practical, disconnect other drives to reduce the chance of selecting the wrong one. Follow your device manufacturer's instructions for opening its boot menu.
 
-1. Visit [Microsoft's Windows 11 download page](https://www.microsoft.com/en-us/software-download/windows11)
-2. Choose the appropriate ISO in the dropdown:
-   - For Intel/AMD CPUs: **Windows 11 (multi-edition ISO for x64 devices)**
-   - For ARM systems: **Windows 11 (multi-edition ISO for ARM64 devices)**
-3. Click **Confirm**, select your desired language, then **Confirm** again
-4. Click **64-bit Download** (or **ARM64 Download** for ARM) to begin your download
+## 4. Complete Windows setup
 
-**Windows Media Creation Tool**
+Follow the account, network, and privacy prompts on screen. The sequence can vary by Windows edition and release; use the prompts supplied by your installation media.
 
-1. Download the [Windows 11 Media Creation Tool](https://go.microsoft.com/fwlink/?linkid=2156295), then open it
-2. Click **Accept** to agree to the Microsoft license terms
-3. Select **Create installation media (USB flash drive, DVD, or ISO file) for another PC**, click **Next**, and choose:
-   - **Language:** Your desired language
-   - **Edition:** Windows 11
-4. Choose the **ISO file** option, then choose the download location
-5. After the ISO has completed downloading, click **Finish**
+At the desktop, check activation, install Windows updates and needed drivers, then restore your files and applications. See [Microsoft's driver-update instructions](https://support.microsoft.com/en-us/windows/hardware/drivers/automatically-get-recommended-and-updated-hardware-drivers).
 
-## 2. Network drivers
-
-By default, Windows may not have your computer's network drivers. After reinstalling, your computer could have no internet connection.
-
-Either:
-
-- Download your network drivers beforehand and store them on external storage, or
-- Have the ability to download and transfer network drivers from another device later
-
-**Where do I get my network drivers?**
-
-Search for your device or motherboard's official support page. If you can't find it, search online for your network device's name in Device Manager. If multiple driver versions are available, download them all.
-
-## 3. Reinstall Windows
-
-Back up valuable data to an external drive or cloud storage before continuing.
-
-<WindowsSetupTabs variant="reverting" />
-
-## 4. Initial setup (OOBE)
-
-Follow the Windows 11 out-of-box experience (OOBE) on screen.
-
-<Video src="/assets/videos/win11-OOBE.mp4" muted spacing={true} rounded={true} />
-
-## 5. Continue with setup
-
-You should now be at the regular Windows desktop and back on stock Windows.
+Your PC now runs standard Windows. You do not need to reinstall Atlas Manager or apply a playbook.

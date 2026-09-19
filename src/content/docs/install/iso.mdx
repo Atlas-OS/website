@@ -1,59 +1,91 @@
 ---
-title: "ISO injection"
-metaDescription: "AtlasOS ISO injection: download Windows ISO, inject Playbook, reinstall with Atlas pre-configured."
-description: ISO injection for experienced users.
+title: "Create an Atlas ISO"
+metaDescription: "Create a Windows 11 25H2 ISO and installation USB with Atlas Manager's beta media tools."
+description: Prepare Windows installation media with Atlas Manager.
 order: 5
+sidebar:
+  label: "ISO and USB (Beta)"
 ---
 
 import Callout from '@/components/docs/Callout.astro';
-import CodeInline from '@/components/docs/CodeInline.astro';
-import IconArrow from '@/components/ui/IconArrow.astro';
-import WindowsIsoDownload from '@/components/docs/install/WindowsIsoDownload.astro';
-import WindowsSetupTabs from '@/components/docs/install/WindowsSetupTabs.astro';
+import Figure from '@/components/docs/Figure.astro';
 
-Inject the Atlas Playbook into a Windows ISO to create preconfigured installation media. Use this experimental method only if you are comfortable reinstalling and troubleshooting Windows.
+Atlas Manager can create a Windows ISO containing Manager, the Atlas playbook, and your setup preferences. Use it for a fresh installation on this PC or another one.
 
-<Callout type="danger" title="Experimental">
-  ISO injection is available in current Atlas 0.5.x Playbooks, but it is still experimental.
-  Previous Atlas versions may not support it. Report any bugs on our [Issue Tracker](https://github.com/Atlas-OS/Atlas/issues).
+<Callout type="warning" title="Beta">
+  ISO creation and USB writing are beta features. Test the ISO in a virtual machine before using
+  it on a PC, and back up your files before reinstalling Windows.
 </Callout>
 
-<Callout type="warning" title="Support">
-  We only offer support for Atlas Playbook on the latest, non-beta Windows 11. For older or
-  unsupported versions, follow our [installation guide](/docs/install/requirements/) to get the
-  latest release.
+Atlas is applied **after Windows setup and sign-in**. The destination PC still needs internet access, Windows and Store updates, administrator approval, and the Windows Security checks. Creating the ISO does not install Atlas on the PC making it.
+
+## 1. Choose your files
+
+Open Atlas Manager and choose **Create an Atlas ISO**. Allow administrator access, then select:
+
+- An **unmodified Windows 11 25H2 x64 ISO** from [Microsoft's Windows download page](https://www.microsoft.com/software-download/windows11), containing a supported edition. Check the version offered before downloading; a newer feature release is not automatically compatible with Atlas 0.6.
+- The **Atlas 0.6 playbook** (`.apbx`).
+- A **new output filename** on a local NTFS or ReFS drive with enough free space.
+
+Choose **Check files**. Manager checks the Windows release, available editions, and working space. Home, LTSC, 24H2, and Insider images are not supported. Media with existing custom setup files is also rejected.
+
+Your original ISO is kept. If the output filename already exists, choose another name.
+
+## 2. Set Windows and Atlas preferences
+
+Choose whether the ISO is for **This PC** or **A different PC**, then enter the local account name to create. Windows will ask you to set that account's password after reinstalling.
+
+For this PC, you can include its Wi-Fi and Ethernet drivers. Choose installed drivers, or check Windows Update for matching drivers first. This does not save your Wi-Fi password. For another PC, have that device's network drivers available separately.
+
+Choose how the destination PC should get drivers, then select an Atlas setup mode:
+
+| Mode | What happens on the destination PC |
+| --- | --- |
+| **Choose Atlas settings after sign-in** | Manager opens after sign-in so you can prepare Windows and choose your settings. |
+| **Choose Atlas settings now** | Your choices are saved in the ISO. After sign-in, finish update preparation and apply Atlas with those choices. |
+| **Finish setup before the desktop** | Saved choices are used in a full-screen setup window after sign-in, before you start using the normal desktop. Update and security checks still require your attention. |
+
+The before-desktop mode is not unattended installation. When no operation is running, **Continue in Windows** lets you return to Windows if needed.
+
+<a href="/assets/images/manager/iso-preferences.png" target="_blank" rel="noopener noreferrer" aria-label="Open the ISO preferences screenshot at full size">
+<Figure
+  src="/assets/images/manager/iso-preferences.png"
+  alt="Atlas Manager's ISO preferences, scrolled to show the driver choices and all three Atlas setup modes."
+  caption="Scroll down to choose when to configure and apply Atlas. Select the image to enlarge."
+  width={902}
+  height={681}
+/>
+</a>
+
+## 3. Review and create
+
+Choose **Review ISO**. Check the source files, included editions, account name, target PC, and driver settings. Then choose **Create ISO**.
+
+Keep Manager open while it copies files, adds Atlas, creates the ISO, and verifies the result. Wait for **Your ISO is ready** before using it.
+
+## 4. Create an installation USB
+
+Choose **Create installation USB** from the completed ISO screen. To use an ISO you already have, choose **Create a USB from an existing ISO** in Manager's media flow.
+
+1. Connect a USB drive and refresh the list.
+2. Select it, then choose **Review USB**.
+3. Check the drive's model, capacity, volumes, and serial number.
+4. Back up anything on that drive, acknowledge the erasure, then choose **Erase and create USB**.
+5. Keep the drive connected until Manager confirms **Your USB is ready**. Choose **Eject USB** before unplugging it.
+
+<Callout type="danger" title="The selected USB drive will be erased">
+  Writing the USB permanently removes all of its files and partitions. This beta writer creates
+  media for UEFI x64 PCs, using up to 32 GB of the drive. Any remaining capacity is left unallocated.
 </Callout>
 
-## Step 1: Download Windows ISO
+## 5. Install Windows and finish Atlas setup
 
-Download the Windows ISO that matches your CPU architecture.
+Boot the destination PC from the USB using its UEFI boot menu. Install a supported Windows edition that matches your licence. Carefully check the destination drive before changing partitions.
 
-<WindowsIsoDownload includeAmeBeta={true} />
+After Windows setup, follow the password and sign-in prompts for your local account. Connect to the internet when Manager opens. If no network adapter is available, install the network driver you saved earlier.
 
-## Step 2: Inject the playbook
+Complete Manager's update preparation and Windows Security checks, then apply Atlas. Use **Restart and continue** whenever preparation requests it, and **Continue updates** after signing back in. Restart after Atlas installation finishes, then follow [First setup](/docs/install/setup/).
 
-1. Go to [atlasos.net](https://atlasos.net), click **Get started**, then **Already following the guide?**
-2. Download **Atlas Playbook** and **AME Beta**, then extract both to your desktop
-3. Open <CodeInline text="AME Beta.exe" />. If SmartScreen warns, see [AME Beta deleted](/docs/faq/ame/#ame-beta-deleted-or-closed-suddenly). Click **More info** and **Run anyway**
-4. Click **Updates** and confirm AME Beta is up to date
-5. Drag your downloaded ISO into AME Beta, then drag <CodeInline text="Atlas Playbook.apbx" /> from your desktop
-6. Select the Windows 11 ISO from the left, click **Select a playbook to modify**, confirm AtlasOS is selected, then **OK**
-7. Click **Next** and configure options as you would for a normal playbook install. Keep **Include additional network drivers** selected when prompted
-8. When asked for username and password, enter them and click **Next** (leave password empty if you prefer none)
-9. Wait for the injection to finish
+## If media creation or setup fails
 
-## Step 3: Reinstall Windows
-
-Back up all important data to external or cloud storage before you reinstall Windows.
-
-<WindowsSetupTabs variant="iso" />
-
-## Step 4: Post-install
-
-**Complete Windows setup:** Follow AME's on-screen setup instructions. Connect to the internet when prompted, then wait for the new-user script to finish.
-
-**Remove Windows.old:** If Windows Setup kept your previous installation, recover any files you need from <CodeInline text="Windows.old" />, then remove the folder:
-
-1. Open **Windows Settings**<IconArrow />**System**<IconArrow />**Storage**
-2. Click **Temporary files** and wait for the scan
-3. Select **Previous version of Windows**, then click **Remove files**
+Use **Export diagnostics** on the ISO, USB, or installation page before retrying. An interrupted USB is not ready to use; create it again. See [installation troubleshooting](/docs/faq/installation/#what-if-installation-fails) for reporting steps.

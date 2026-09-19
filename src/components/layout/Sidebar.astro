@@ -65,7 +65,7 @@ const listId = (href: string) => `sidebar-list-${href.replace(/[^a-z0-9]+/gi, '-
                 href={home.href}
                 data-astro-prefetch="viewport"
                 aria-current={isCurrent(home.href) ? 'page' : undefined}
-                class="sidebar-primary-link mb-3 flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-sm font-semibold"
+                class="sidebar-primary-link flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-sm font-semibold"
               >
                 <span class="flex min-w-0 items-center gap-2">
                   <Icon
@@ -82,7 +82,9 @@ const listId = (href: string) => `sidebar-list-${href.replace(/[^a-z0-9]+/gi, '-
 
             {regularSections.map((section) => {
               const hasItems = section.items.length > 0;
-              const isOpen = true; // Sections start open so the whole map is visible; users can collapse them.
+              const openOnHome = section.href === '/docs/install/';
+              const isOpen =
+                isCurrent(section.href) || containsCurrent(section.items) || (currentPath === DOCS_ROOT && openOnHome);
               const sectionListId = listId(section.href);
 
               return (
@@ -90,7 +92,8 @@ const listId = (href: string) => `sidebar-list-${href.replace(/[^a-z0-9]+/gi, '-
                   class:list={['sidebar-section', hasItems && !isOpen && 'is-collapsed']}
                   data-sidebar-group={hasItems ? '' : undefined}
                   data-sidebar-key={section.href}
-                  data-sidebar-default="open"
+                  data-sidebar-default="closed"
+                  data-sidebar-open-on-home={openOnHome ? '' : undefined}
                 >
                   <div class="group flex items-center gap-1 rounded-md transition-colors duration-200 hover:bg-white/5">
                     <a

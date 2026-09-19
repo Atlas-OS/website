@@ -1,51 +1,49 @@
 ---
-title: "Installation requirements"
-metaDescription: "AtlasOS installation requirements: Windows 11, CPU architecture, edition support, backup."
-description: Installation requirements for AtlasOS.
+title: "Before you install"
+metaDescription: "Prepare for Atlas 0.6: Windows 11 25H2, a fresh installation, backups, internet access, and power."
+description: Check compatibility and prepare your PC for Atlas.
 order: 3
 sidebar:
   label: "Requirements"
 ---
 
 import Callout from '@/components/docs/Callout.astro';
-import QuickLinkCard from '@/components/docs/QuickLinkCard.astro';
-import QuickLinksGrid from '@/components/docs/QuickLinksGrid.astro';
 
-Check every requirement before you install Atlas.
+Check these requirements before changing your Windows installation.
 
-## System requirements
+## Windows compatibility
 
-- **Back up all important data** to a safe location:
-  - Cloud storage (Google Drive, Microsoft OneDrive, Dropbox)
-  - External storage (NAS, portable drive, USB drive)
+- **Windows 11 25H2, build 26200**, from an official public release. Windows 10, 24H2, and Insider builds are outside this release's supported installation path.
+- Use **Pro, Pro for Workstations, or Enterprise**. Home and LTSC are not supported.
+- Use a PC that meets Windows 11's hardware requirements. The Atlas Manager media guide uses **x64 Windows** and a **UEFI** PC; do not use that media for an ARM device.
+- Keep a valid licence for the edition you install. Atlas does not activate Windows or provide a Windows licence.
 
-- Meet the **[Windows 11 system requirements](https://www.microsoft.com/windows/windows-11-specifications#table1)**
+Press **Win + R**, enter `winver`, and check the version and build. You can check your edition in **Settings → System → About**.
 
-- **64-bit CPU (x64) or ARM CPU (ARM64):** Use x64 Windows ISO for Intel/AMD CPUs, or ARM64 Windows ISO for ARM systems ([check your system architecture](https://support.microsoft.com/en-us/windows/which-version-of-windows-operating-system-am-i-running-628bec99-476a-2c13-5296-9dd081cdd808))
+## Start with fresh Windows
 
-- **Windows edition:** Pro, Pro for Workstations, or Enterprise (Atlas doesn't support Home)
+A first Atlas installation requires a fresh Windows installation from unmodified Microsoft media. Install Atlas before restoring your apps and customisations. A repair installation that keeps your existing apps and settings is not a fresh start.
 
-- **Windows troubleshooting experience:** Do not bypass Windows 11 requirements; unsupported hardware can cause update and game issues
+If you already use Atlas, read [Before upgrading](/docs/upgrade/requirements/). Eligible Atlas upgrades do not require a Windows reinstall, but must meet the Windows build requirement separately.
 
-<Callout type="danger" title="Back up your data first">
-  Atlas installs by reinstalling Windows. Your current setup will be replaced. Removing Atlas
-  requires [reinstalling Windows](/docs/faq/reverting/). Back up important files before you start.
+<Callout type="danger" title="Back up before reinstalling">
+  Reinstalling Windows can erase your files, apps, and settings. Copy important files to separate
+  storage and check that you can open the backup. Save any drive-encryption recovery keys and
+  network drivers you may need. Removing Atlas later also requires reinstalling Windows.
 </Callout>
 
-## Choose your installation method
+## Have these ready
 
-<QuickLinksGrid columns={{ md: 2 }}>
-  <QuickLinkCard
-    href="/docs/install/playbook/"
-    icon="tabler:book"
-    title="Playbook Method"
-    description="Install from Windows without a USB drive. Recommended for most systems."
-  />
+- **An administrator account** on a PC you own and can modify.
+- **Unmetered internet access**, through Wi-Fi or Ethernet, for update preparation and downloads. Save your manufacturer's network driver before reinstalling in case Windows cannot connect.
+- **A power supply**. Keep laptops plugged in through updates and installation.
+- **Enough free storage** for Windows updates and the installation files. ISO creation also needs working space on a local NTFS or ReFS drive; Manager checks the selected location.
+- **A USB drive**, if you are reinstalling from USB. Creating installation media erases that USB drive.
 
-  <QuickLinkCard
-    href="/docs/install/iso/"
-    icon="tabler:disc"
-    title="ISO Injection"
-    description="Inject Atlas into a Windows ISO. Experimental and intended for experienced users."
-  />
-</QuickLinksGrid>
+## Let Manager prepare Windows
+
+Atlas Manager checks for incompatible antivirus software, pending restarts, and Windows compatibility. Its preparation step installs recommended Windows updates and updates Microsoft Store and installed Store apps. Resolve any reported problem before continuing.
+
+Leave antivirus protection on while preparing Windows. Manager explains which switches to turn off when you reach the Windows Security step.
+
+Continue with [Install with Atlas Manager](/docs/install/playbook/), or choose the [AME Wizard alternative](/docs/install/ame-wizard/).

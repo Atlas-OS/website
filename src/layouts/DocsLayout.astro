@@ -23,6 +23,7 @@ interface Props {
   ogImage?: string;
   type?: 'website' | 'article';
   showPageNav?: boolean;
+  landing?: boolean;
 }
 
 const {
@@ -34,6 +35,7 @@ const {
   ogImage,
   type,
   showPageNav = true,
+  landing = false,
 } = Astro.props;
 
 const currentPath = normalizeDocsPath(currentSlug);
@@ -62,11 +64,8 @@ const { prev, next } = showPageNav ? await getDocsPagination(currentPath) : { pr
     <a href="#main-content" class="skip-link" data-pagefind-ignore>
       Skip to main content
     </a>
-    <div class="fixed inset-0 -z-10 h-full w-full" aria-hidden="true">
-      <div class="absolute h-full w-full bg-[linear-gradient(rgba(255,255,255,0.012)_1px,transparent_1px),linear-gradient(to_right,rgba(255,255,255,0.012)_1px,transparent_1px)] mask-[linear-gradient(to_bottom,rgba(0,0,0,0.6),transparent_70%)] bg-size-[24px_24px]"></div>
-    </div>
     <Navbar currentPath={currentPath} isDocsPage={true} />
-    <div class="docs-shell relative z-10">
+    <div class:list={['docs-shell relative z-10', { 'docs-shell--landing': landing }]}>
       <Sidebar currentSlug={currentPath} />
       <main class="docs-main docs-main--with-sidebar scroll-pt-24" id="main-content" tabindex="-1">
         <div class="docs-main-inner">
@@ -75,14 +74,14 @@ const { prev, next } = showPageNav ? await getDocsPagination(currentPath) : { pr
             <header class="docs-header">
               <h1 class="docs-title">{title}</h1>
             </header>
-            <TableOfContents headings={headings} variant="inline" />
+            {!landing && <TableOfContents headings={headings} variant="inline" />}
             <div class="docs-content prose max-w-none md:prose-lg">
               <slot />
             </div>
             {editUrl && markdownUrl && <PageActions editUrl={editUrl} markdownUrl={markdownUrl} />}
             {showPageNav && <PageNav prev={prev} next={next} />}
           </article>
-          <TableOfContents headings={headings} variant="sidebar" />
+          {!landing && <TableOfContents headings={headings} variant="sidebar" />}
         </div>
       </main>
     </div>
@@ -142,9 +141,9 @@ const { prev, next } = showPageNav ? await getDocsPagination(currentPath) : { pr
   .docs-title {
     margin: 0;
     font-family: var(--font-display);
-    font-size: clamp(2rem, 1.5rem + 1.5vw, 2.5rem);
-    font-weight: 700;
-    line-height: 1.1;
+    font-size: clamp(2rem, 1.5rem + 1vw, 2.25rem);
+    font-weight: 600;
+    line-height: 1.15;
     letter-spacing: -0.02em;
     color: white;
     text-wrap: balance;
@@ -176,5 +175,13 @@ const { prev, next } = showPageNav ? await getDocsPagination(currentPath) : { pr
     .docs-article {
       padding-inline: 0;
     }
+  }
+
+  .docs-shell--landing .docs-main-inner {
+    grid-template-columns: minmax(0, 56rem);
+  }
+
+  .docs-shell--landing .docs-header {
+    margin-bottom: 1rem;
   }
 </style>

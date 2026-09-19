@@ -10,26 +10,28 @@ import Callout from '@/components/docs/Callout.astro';
 import CodeInline from '@/components/docs/CodeInline.astro';
 import IconArrow from '@/components/ui/IconArrow.astro';
 
-Personalize your Windows interface with these optional tweaks: File Explorer, context menus, lock screen, and more.
+Personalize File Explorer, context menus, and the lock screen. These are optional preferences, not extra steps needed to finish installing Atlas.
+
+The defaults below describe a fresh Atlas 0.6 installation. Upgrades can preserve recognized choices, and a `(default)` filename does not tell you which setting is currently active. See [configuration basics](/docs/atlas-configuration/settings/#before-you-start).
 
 Open <CodeInline text="4. Interface Tweaks" /> in the Atlas folder on your Desktop. Delivery Optimization is under <CodeInline text="3. General Configuration" />. If the Atlas folder is missing, follow{' '}<AtlasFolderRestoreLink />.
 
 <Callout type="info" title="Restart required">
-  Most tweaks require a restart to take effect. These are cosmetic and functional preferences, but
-  shell and File Explorer tweaks can still affect day-to-day behavior.
+  Follow the script's prompts. Some changes need Explorer to restart or require you to sign out;
+  a full PC restart is not always necessary. Save your work first.
 </Callout>
 
 ## Delivery optimization
 
 **When to use:** Enable if you want faster Windows Updates by sharing data with other Windows devices on your local network.
 
-Delivery Optimization speeds up Windows Updates by sharing update data with other Windows machines on your local network. AtlasOS disables it by default to reduce background network usage.
+Delivery Optimization can download update content from other PCs. Atlas's disable preset turns off peer-to-peer sharing; Windows can still download updates from Microsoft. See Microsoft's [download-mode reference](https://learn.microsoft.com/en-us/windows/win32/delivery_optimization/downloadmode).
 
 To enable Delivery Optimization, run the <CodeInline text="Enable Delivery Optimization.cmd" /> script in <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="Delivery Optimization" /> and restart.
 
 <Callout type="info">
-  Delivery Optimization only shares data with devices on your local network, not the internet. It
-  can significantly speed up updates if you have multiple Windows devices.
+  The enable script removes Atlas's download-mode policy. Review Delivery Optimization in Windows
+  Update's advanced options afterwards to choose whether sharing is allowed and with which PCs.
 </Callout>
 
 ## File Explorer customization
@@ -77,7 +79,7 @@ To enable, run the <CodeInline text="Enable Removable Drives in Sidebar.cmd" /> 
 
 AtlasOS enables the lock screen by default. Disable it to go directly to the sign-in screen.
 
-To disable the lock screen, run the <CodeInline text="Hide Lock Screen.ps1" /> script in <CodeInline text="Lock Screen" /> and restart.
+To hide it, run <CodeInline text="Hide Lock Screen.cmd" /> in <CodeInline text="Lock Screen" />. To restore it, run <CodeInline text="Show Lock Screen (default).cmd" />.
 
 <Callout type="info">
   Disabling the lock screen skips the background image and time display, going directly to sign-in.
@@ -126,9 +128,9 @@ To change to classic style, run the <CodeInline text="Classic.cmd" /> script in 
 
 ## Shortcut text
 
-**When to use:** Enable if you want to see text labels on Start menu shortcut icons.
+**When to use:** Enable if you want Windows to add " - Shortcut" to the names of newly created shortcuts.
 
-AtlasOS disables shortcut text labels by default. Enable this to show text under Start menu shortcut icons.
+Atlas removes this suffix by default. This setting does not hide icon labels or rename existing shortcuts.
 
 To enable shortcut text, run the <CodeInline text="Restore Shortcut Text.cmd" /> script in <CodeInline text="Shortcut Text" /> and restart.
 
@@ -152,11 +154,11 @@ AtlasOS uses the classic context menu by default for faster access to options. S
 
 ## Explorer Patcher
 
-**When to use:** Install if you want to restore UI elements from previous Windows versions (like Windows 10 Start menu on Windows 11).
+**When to use:** Explore if you want additional shell customization beyond the Atlas folder's settings.
 
-Explorer Patcher is a tool that patches File Explorer and other Windows components to restore UI elements from previous Windows versions. This allows you to use Windows 10's Start menu on Windows 11, for example.
+ExplorerPatcher is a third-party Windows shell customization tool. Its supported features depend on the Windows build and tool version.
 
-The Atlas folder includes a shortcut to Explorer Patcher for easy access. Learn more about [Explorer Patcher](https://github.com/valinet/ExplorerPatcher) and its features.
+The Atlas folder includes a website shortcut under **4. Interface Tweaks → Start Menu**. Check [ExplorerPatcher's compatibility notes and releases](https://github.com/valinet/ExplorerPatcher) before installing it on Windows 11 25H2.
 
 <Callout type="info">
   Explorer Patcher is a third-party tool that requires installation. It's included as a convenient

@@ -1,148 +1,97 @@
 ---
-title: "Playbook installation method"
-metaDescription: "AtlasOS Playbook installation: download Windows ISO, reinstall Windows, update, install with AME Beta."
-description: Playbook installation method.
+title: "Install with Atlas Manager"
+metaDescription: "Install Atlas 0.6 with Atlas Manager: prepare Windows, choose settings, complete security checks, and restart."
+description: The recommended way to install Atlas.
 order: 4
 sidebar:
-  label: "Playbook method"
+  label: "Atlas Manager"
 ---
 
 import Callout from '@/components/docs/Callout.astro';
-import Video from '@/components/ui/Video.astro';
-import WindowsIsoDownload from '@/components/docs/install/WindowsIsoDownload.astro';
-import WindowsSetupTabs from '@/components/docs/install/WindowsSetupTabs.astro';
-import Tabs from '@/components/ui/Tabs.astro';
-import TabPanel from '@/components/ui/TabPanel.astro';
-import CodeInline from '@/components/docs/CodeInline.astro';
-import IconArrow from '@/components/ui/IconArrow.astro';
-import IconInline from '@/components/ui/IconInline.astro';
+import Figure from '@/components/docs/Figure.astro';
 
-Complete these steps in order. Reinstalling Windows, applying updates, and installing Atlas takes about 30–45 minutes. Atlas itself takes about 15 minutes. Before you start, check [whether Atlas fits your needs](/docs/faq/installation/#who-is-atlas-designed-for).
+Atlas Manager guides you through installing Atlas on Windows. Read the [requirements](/docs/install/requirements/) first. If you already have Atlas installed, use the [upgrade guide](/docs/upgrade/) instead.
 
-## Step 1: Download Windows ISO
+Prefer AME Wizard? Follow [Install with AME Wizard](/docs/install/ame-wizard/).
 
-You need a clean Windows 11 ISO to reinstall Windows.
+## 1. Prepare a fresh Windows installation
 
-<WindowsIsoDownload />
+Back up your files and save your network drivers. Install **Windows 11 25H2 (build 26200)** from unmodified Microsoft media, using an edition you have a licence for.
 
-## Step 2: Prepare network drivers (recommended)
+Follow Microsoft's [clean installation instructions](https://support.microsoft.com/en-US/Windows/Deployment/Install-Upgrade/reinstall-windows-with-the-installation-media). Check the target drive carefully before deleting partitions. Complete Windows setup and sign in before opening Atlas Manager.
 
-Download network drivers now so you can reconnect if Windows does not install them.
+You can also [create an Atlas ISO with Manager](/docs/install/iso/). That route includes Manager and the playbook in your installation media, then opens setup on the destination PC.
 
-1. Search for your motherboard or device model followed by "network driver"
-2. Download the latest driver from the manufacturer's support site
-3. Save the installer to a USB drive or other external storage
-
-<Callout type="info" title="Can't find drivers?">
-  Check your manufacturer's support page or search Device Manager for your
-  network adapter name.
+<Callout type="info" title="Already on fresh Windows 25H2?">
+  If you have just installed a supported copy of Windows, continue below. You do not need to
+  reinstall it again. Restore your apps and personal settings after Atlas finishes.
 </Callout>
 
-## Step 3: Reinstall Windows
+## 2. Open Atlas Manager
 
-Choose how to reinstall Windows.
+Download **Atlas Manager** from the [Atlas release page](https://github.com/Atlas-OS/Atlas/releases) and open `AtlasManager.exe`. Allow administrator access when prompted, then choose **Install Atlas**.
 
-<WindowsSetupTabs variant="playbook" />
+In **Get ready**, Manager checks your PC and prepares the installation files. If needed, choose **Download latest version**. To use a package you already downloaded, choose **Open playbook file** and select the release's `.apbx` file. You do not need to extract the playbook or install AME Wizard.
 
-## Step 4: Initial Windows setup
+Check that Manager shows the version you intend to install. Resolve any failed PC checks, then choose **Check again**.
 
-<Video src="/assets/videos/win11-OOBE.mp4" muted spacing={true} rounded={true} />
+## 3. Update Windows and Store apps
 
-1. Select language and keyboard layout
-2. Press <CodeInline text="Shift + F10" /><IconArrow />Command Prompt opens
-3. Type: <CodeInline text="start ms-cxh:localonly" /><IconArrow />Press <CodeInline text="Enter" />
-4. Create account:
-   - Enter username, password, security questions
-   - In **Privacy** section: Turn off all options<IconArrow />**Accept**
+Choose how drivers should be installed:
 
-## Step 5: Choose driver method
+- **Get drivers through Windows Update** lets Windows find drivers for your hardware.
+- **Install drivers myself** blocks driver downloads from Windows Update. You will need to install the drivers yourself. Drivers already installed remain in place.
 
-<Tabs items={[
-  { label: 'Windows Update (Recommended)', value: 'windows-update' },
-  { label: 'Manual Installation (Advanced)', value: 'manual' }
-]} defaultTab="windows-update">
-  <TabPanel value="windows-update" default>
-    Choose this option for the simplest setup.
+Choose **Check and install updates**. Manager installs recommended Windows updates, updates Microsoft Store, and finishes updates for installed Store apps. Save your work first: Store apps may close during this step.
 
-    - Connect to internet
-    - Windows installs drivers automatically
-    - Proceed to Step 6
+Preparation excludes optional preview updates and Windows feature upgrades. It will not move an unsupported Windows installation to 25H2 for you.
 
-  </TabPanel>
+If a restart is needed, choose **Restart and continue**. After signing back into the same account, Manager restores your choices. Choose **Continue updates** and let it check again. Repeat until preparation completes.
 
-  <TabPanel value="manual">
-    Choose this option to control each driver version yourself.
-
-    - **Settings**<IconArrow />**Windows Update**<IconArrow />**Pause updates** (1 week)
-    - Connect to internet
-    - Proceed to Step 6
-    - Install drivers manually later ([see Drivers Guide](/docs/essential-setup/drivers/))
-
-  </TabPanel>
-</Tabs>
-
-## Step 6: Update Windows and Microsoft Store apps
-
-Update Windows and Microsoft Store apps before installing Atlas.
-
-1. **Update Windows:**
-   - **Settings**<IconArrow />**Windows Update**
-   - Install all updates (including optional updates)
-   - If paused, click **Resume Updates**
-   - Restart your computer if prompted
-
-2. **After restart (if applicable):**
-   - Check **Windows Update** again and install any remaining updates
-   - Repeat until no more updates are available
-
-3. **Update Microsoft Store apps:**
-   - Open **Microsoft Store**
-   - Click **Library** (or search for "Updates")
-   - Click **Get updates** to update all apps
-   - Wait for all updates to complete
-
-4. **After restart (if applicable):**
-   - Open **Microsoft Store** again
-   - Check for updates again to confirm everything is current
-
-<Callout type="info" title="Important">
-  Install every Windows and Microsoft Store update before you continue. After each restart, check
-  both services again.
+<Callout type="tip" title="Manager did not reopen?">
+  Open Atlas Manager manually and continue setup. If updates failed, resolve the error shown
+  before retrying. See [installation troubleshooting](/docs/faq/installation/#what-if-windows-update-fails).
 </Callout>
 
-## Step 7: Install AtlasOS
+## 4. Choose your Atlas settings
 
-1. **If using Manual Driver Installation:**
-   - Run <CodeInline text="Disable Automatic Driver Installation.reg" /> from the extracted Atlas release zip on your desktop
-   - Restart your computer
+Review each choice, including Microsoft Defender, CPU mitigations, automatic Windows updates, optional apps, and power settings. Read the explanation beside each option before changing it.
 
-2. **Download AtlasOS:**
-   - Open Edge<IconArrow />Go to [atlasos.net](https://atlasos.net)
-   - Click **Get started**<IconArrow />**Already following the guide?**
-   - Download **Atlas Playbook** and **AME Beta**
+These choices define how Windows behaves after installation. The [configuration guide](/docs/atlas-configuration/) explains the controls available afterwards.
 
-3. **Extract files:**
-   - Extract both to desktop
+<a href="/assets/images/manager/defender-choice.png" target="_blank" rel="noopener noreferrer" aria-label="Open the Defender choice screenshot at full size">
+<Figure
+  src="/assets/images/manager/defender-choice.png"
+  alt="Atlas Manager's Your choices step, with Keep Microsoft Defender selected and its explanation visible."
+  caption="Choose protection for after installation; the temporary security step comes next. Select the image to enlarge."
+  width={902}
+  height={681}
+/>
+</a>
 
-4. **Install AtlasOS:**
-   - Open <CodeInline text="AME Beta.exe" />
-   - If SmartScreen blocks the app, select **More info**<IconArrow />**Run anyway**
-   - Click **Updates**<IconArrow />Update AME Beta if available
-   - Drag <CodeInline text="Atlas Playbook.apbx" /> into AME Beta
-   - Follow on-screen instructions
+## 5. Complete the Windows Security step
 
-<Callout type="warning" title="AME Beta deleted?">
-  Follow the [AME Beta troubleshooting steps](/docs/faq/ame/#ame-beta-deleted-or-closed-suddenly).
-</Callout>
+When Manager asks, open **Windows Security → Virus & threat protection → Manage settings**. Turn off the switches it lists, starting with **Tamper Protection**:
 
-## Installation complete <IconInline name="tabler:confetti" size="md" />
+1. Tamper Protection
+2. Real-time protection
+3. Cloud-delivered protection
+4. Automatic sample submission
 
-Your system will restart automatically.
+Return to Manager and wait for the checks to update. If a switch cannot be read, check it yourself before confirming. If Defender was removed by an earlier Atlas installation, follow Manager's instructions for that state.
 
-### Next steps
+This temporary installation step is separate from your choice to keep or remove Defender after installation. If you abandon setup, turn the protections back on.
 
-Follow the [First Setup guide](/docs/install/setup/):
+## 6. Install and restart
 
-- Install drivers
-- Configure Atlas settings
-- Optimize hardware
+Review your choices and start installation. Keep your PC on, plugged in, and connected. Manager checks readiness again before applying changes.
+
+When installation succeeds, Manager starts a restart countdown. Use **Restart now**, or **Restart later** if you need to save work first. Restarting completes setup.
+
+After signing in, confirm Manager shows Atlas as installed, then follow [First setup](/docs/install/setup/).
+
+## If installation does not finish
+
+Read the reported error and export diagnostics before retrying or deleting anything. Some changes may already have been applied. Reopen Manager to recover an interrupted session and follow its instructions; do not start a second installer alongside it.
+
+See [installation troubleshooting](/docs/faq/installation/#what-if-installation-fails) for recovery and reporting steps.

@@ -38,7 +38,9 @@ Defender protects against many threats (ransomware, spyware). Some users disable
 
 If you use another trusted antivirus, you do not need to disable Defender manually.
 
-Atlas lets you fully toggle Defender at a component level. Run <CodeInline text="Toggle Defender.cmd" /> in the <CodeInline text="Defender" /> folder to enable or disable it. The folder also contains tweaks for Defender and Windows Security.
+Atlas 0.6 offers **Keep Microsoft Defender** or **Remove Microsoft Defender** during installation. This choice is separate from temporarily switching off Windows Security protections when the installer asks.
+
+To change the component-level choice afterwards, run <CodeInline text="Toggle Defender.cmd" /> in the <CodeInline text="Defender" /> folder and choose **Enable Windows Defender** or **Disable Windows Defender**. The enable option reverses Atlas's Defender package change. Follow the restart prompt, then open Windows Security and review the protection switches; restoring the component is not the same as confirming that every protection is on.
 
 ## Core isolation
 
@@ -48,7 +50,7 @@ Core isolation can have a [significant performance cost](https://www.tomshardwar
 
 For Windows 11 users, Core isolation features are typically enabled by default, as long as your CPU supports Windows 11.
 
-The <CodeInline text="Core Isolation (VBS)" /> folder contains <CodeInline text="Current Configuration.cmd" /> to check which Core isolation features are available and configured, plus shortcuts to Core isolation settings. AME Beta also has a prompt to disable Core isolation.
+The <CodeInline text="Core Isolation (VBS)" /> folder contains <CodeInline text="Current Configuration.cmd" /> to check which Core isolation features are available and configured, plus shortcuts to Core isolation settings. Atlas setup also offers a choice to disable VBS; review its consequences before selecting it.
 
 ### Core isolation features
 

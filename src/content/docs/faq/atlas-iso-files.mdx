@@ -1,24 +1,20 @@
 ---
 title: "Where is the Atlas ISO file?"
-metaDescription: "Atlas doesn't distribute a modified ISO. How Atlas works with AME Beta and where to get Windows ISOs."
-description: Atlas ISO file explained.
+metaDescription: "Atlas Manager can create your own Atlas installation ISO from unmodified Microsoft Windows media."
+description: How to get Windows media and create an Atlas ISO.
 order: 31
 ---
 
-import Callout from '@/components/docs/Callout.astro';
+Atlas does not distribute premodified Windows ISO files. Get unmodified Windows media from Microsoft, then use one of these routes:
 
-**Atlas does not distribute modified Windows ISO files.**
+- **[Install with Atlas Manager](/docs/install/playbook/):** Install fresh Windows first, then let Manager prepare and apply Atlas.
+- **[Create an Atlas ISO](/docs/install/iso/):** Use Manager's beta media tools to include the app, playbook, and optional saved settings in your own ISO.
+- **[Install with AME Wizard](/docs/install/ame-wizard/):** Apply the Atlas playbook through the alternative installer.
 
-Microsoft restricts redistribution of Windows downloads. Modified third-party ISOs also create a security risk because you cannot easily verify every change they contain.
+## Is Atlas already installed inside a Manager-created ISO?
 
-<Callout type="info" title="Microsoft policy">
-"For software downloads, unless expressly permitted in the accompanying License Terms or End-User License Agreement (EULA), Microsoft does not allow redistribution. You may link to the download page, but not directly to the download, from your product or website." - [Microsoft Permissions](https://www.microsoft.com/en-us/legal/intellectualproperty/copyright/permissions)
-</Callout>
+The ISO contains the setup files. Atlas is applied on the destination PC after Windows setup and sign-in, so Manager can check Windows and Store updates for the account using it. Internet access and security checks are still required, including in the before-desktop setup mode.
 
-## Install Atlas without a modified ISO
+## Which Windows ISO should I use?
 
-Use [AME Beta](https://ameliorated.io/) to apply the Atlas Playbook to a stock Windows ISO or a live Windows installation. Start with the [installation requirements](/docs/install/requirements/).
-
-## What does the ISO downloader do?
-
-The ISO downloader helps you obtain an **unmodified** Windows ISO from Microsoft. Follow the [Playbook download steps](/docs/install/playbook/#step-1-download-windows-iso) or [ISO injection download steps](/docs/install/iso/#step-1-download-windows-iso).
+For Atlas Manager's ISO creation, use an unmodified **Windows 11 25H2 x64 ISO** containing a supported edition. Manager checks the release and included editions before building. See the [media guide](/docs/install/iso/#1-choose-your-files) for the full requirements.

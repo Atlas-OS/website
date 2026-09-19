@@ -1,0 +1,52 @@
+---
+title: "What changed in Atlas 0.6?"
+metaDescription: "Coming from Atlas 0.5? Learn how Atlas Manager, AME Wizard, ISO creation, and settings migration work in Atlas 0.6."
+description: Find your way around Atlas 0.6.
+order: 1
+sidebar:
+  label: "What's new in 0.6"
+---
+
+Atlas 0.6 introduces **Atlas Manager** as the recommended way to install Atlas and check your installed version. If you have used a previous release, start here before choosing an installation or upgrade route.
+
+## A guided installation in Atlas Manager
+
+Manager takes you through **Get ready**, **Your choices**, **Windows Security**, and **Install**. It checks requirements, obtains the playbook, prepares Windows and Microsoft Store updates, and helps you resolve problems before applying Atlas.
+
+When preparation needs a restart, use Manager's restart action and continue from the same Windows account. Follow [Install with Atlas Manager](/docs/install/playbook/) for the complete walkthrough.
+
+## AME Wizard remains an option
+
+The Atlas playbook is still distributed as an `.apbx` package. Atlas Manager and AME Wizard apply the same Atlas installation workflow through different interfaces. Choosing AME Wizard does not mean installing a separate edition of Atlas.
+
+Use the [AME Wizard guide](/docs/install/ame-wizard/) if you prefer that route. You still need to meet the same Windows requirements and complete update preparation.
+
+## Check Windows as well as your Atlas version
+
+Atlas 0.6 requires **Windows 11 25H2 (build 26200)**. The playbook declares **Atlas 0.4.1, 0.5.0, and 0.5.1** as upgrade sources, but that list does not make an older Windows build eligible or establish that every upgrade combination has been validated.
+
+Read [Before upgrading](/docs/upgrade/requirements/) before changing Windows or applying the new release. If your current setup is outside the supported route, use a fresh installation rather than bypassing the checks.
+
+## Review the settings that carry over
+
+An eligible upgrade is designed to keep your files and apps, along with existing Start and taskbar layouts. Atlas replaces its configuration files and reapplies recognized recorded toggle choices using the new definitions.
+
+Older installations may not have recorded every choice. Custom registry edits and settings that cannot be identified reliably are not guaranteed to carry over. Back up first, review your installation choices, and check important settings afterwards, including under other Windows accounts.
+
+## Understand the Defender choice
+
+Temporarily turning off Windows Security protection for installation is separate from choosing **Keep Microsoft Defender** or **Remove Microsoft Defender** for the finished system. Read the choice before continuing and review protection after installation. See [security settings](/docs/atlas-configuration/security/#defender).
+
+## Build your own installation media
+
+Manager's **Create an Atlas ISO (Beta)** prepares supported Windows media with Atlas setup included. You can choose Atlas settings after sign-in, save them in advance, or finish setup before the desktop opens.
+
+In every mode, Atlas is applied after Windows setup and sign-in. The destination PC still needs internet access, updates, and the required security checks. See [Create an Atlas ISO](/docs/install/iso/).
+
+## Find settings and help afterwards
+
+- **Atlas Manager:** installed version, release checks, installation history, and diagnostic export.
+- **Atlas folder:** Windows features, security controls, and interface tweaks. Start with [configuration basics](/docs/atlas-configuration/).
+- **Atlas Toolbox:** an optional, separately released utility; see the [Toolbox guide](/docs/toolbox/).
+
+Finish with [First setup](/docs/install/setup/) to review drivers and protection and check Atlas health. If something fails, [export diagnostics](/docs/faq/installation/#what-if-installation-fails) before deleting installation data or retrying blindly.

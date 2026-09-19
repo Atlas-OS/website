@@ -8,16 +8,14 @@ interface Props {
 const { headers, caption, class: className = '' } = Astro.props;
 ---
 
-<div class={`not-prose table-wrapper mb-6 ${className}`}>
-  <div class="table-container overflow-x-auto">
-    <table class="w-full border-collapse text-base">
+<div class={`not-prose table-wrapper my-6 ${className}`}>
+  <div class="table-container docs-surface overflow-x-auto">
+    <table class="docs-table w-full">
       {caption && <caption class="sr-only">{caption}</caption>}
       <thead>
         <tr>
           {headers.map((header) => (
-            <th scope="col" class="border border-white/[0.08] bg-white/5 px-4 py-3 text-left font-semibold text-white">
-              {header}
-            </th>
+            <th scope="col">{header}</th>
           ))}
         </tr>
       </thead>

@@ -1,84 +1,44 @@
 ---
-title: "Upgrade process"
-metaDescription: "AtlasOS upgrade steps: download assets, launch AME Beta, upgrade, re-apply configuration. Troubleshooting."
-description: Upgrade AtlasOS step by step.
+title: "Upgrade instructions"
+metaDescription: "Upgrade Atlas with Atlas Manager or AME Wizard, then verify your version and configuration."
+description: Apply Atlas 0.6 to an eligible installation.
 order: 9
 ---
 
-import Callout from '@/components/docs/Callout.astro';
-import CodeInline from '@/components/docs/CodeInline.astro';
-import CommunityLink from '@/components/docs/CommunityLink.astro';
-import Grid from '@/components/ui/Grid.astro';
-import IconArrow from '@/components/ui/IconArrow.astro';
+Read [Before upgrading](/docs/upgrade/requirements/) and back up before starting. These steps apply only when both your Atlas version and Windows build are eligible.
 
-Complete these steps in order.
+## Upgrade with Atlas Manager
 
-## Step 1: Download assets
+1. Open Atlas Manager and allow administrator access when prompted.
+2. Check the installed version on Home. Choose **Check again** if the release check has not completed.
+3. Read the release notes, then choose **Update to Atlas 0.6.0** when offered.
+4. In **Get ready**, prepare the target playbook and resolve the PC checks. You can use **Open playbook file** for a release package you already downloaded.
+5. Review the driver choice and complete Windows and Store update preparation. Use **Restart and continue**, then **Continue updates** after sign-in, if requested.
+6. Review the Atlas options and complete the Windows Security step when Manager asks.
+7. Start the upgrade and keep your PC powered on. After it succeeds, restart to complete setup.
 
-1. Visit [atlasos.net](https://atlasos.net)
-2. Click **Get started**<IconArrow />**Already following the guide?**
-3. Download the newest **Atlas Playbook** and **AME Beta**
+The preparation and security steps are explained in [Install with Atlas Manager](/docs/install/playbook/#3-update-windows-and-store-apps).
 
-## Step 2: Launch AME Beta
+## Upgrade with AME Wizard
 
-1. Extract both downloads to your desktop
-2. Run <CodeInline text="AME Beta.exe" />
-3. If SmartScreen blocks the app, select **More info**<IconArrow />**Run anyway**
-4. Click **Updates**<IconArrow />Update AME Beta if available
+Download the target Atlas playbook and AME Wizard, then follow the [AME Wizard guide](/docs/install/ame-wizard/). Load the new `.apbx` file and use the upgrade action offered for your installed version.
 
-## Step 3: Upgrade AtlasOS
+If no upgrade is offered, check eligibility and the selected package. Do not use **Run again** to force an unsupported upgrade, and do not run two installers together.
 
-1. Drag the downloaded <CodeInline text="Atlas Playbook.apbx" /> file into AME Beta
-2. When prompted, select **Upgrade** rather than **Run again**
-3. Wait while AME Beta checks your installation and applies the changes for the new version
-4. Follow on-screen instructions and wait until the process completes
-5. Your PC will reboot automatically
+## Check the result
 
-<Callout type="info" title="How It Works">
-  AME Beta compares your installation with the new Playbook and applies only the required changes.
-  It does not reinstall Windows.
-</Callout>
+After restarting:
 
-## After upgrade
+1. Open Atlas Manager and confirm it shows the new installed version.
+2. Open `C:\Windows\AtlasDesktop` and review the settings you rely on.
+3. Run **9. Troubleshooting → Check Atlas Health.cmd** in the Atlas folder. It reports installed state and settings that differ from recorded choices without changing them.
+4. Check Windows Security, Windows Update, Microsoft Store, and your everyday apps.
+5. Sign into other accounts you use and check their settings too.
 
-### Check Atlas folder configuration
+See [Atlas configuration](/docs/atlas-configuration/) for the available controls. If you chose manual drivers, check those as well.
 
-After a supported 0.5.x upgrade, your apps, files, and most Atlas configuration should remain in place. Open the Atlas folder and confirm the settings you care about are still set as expected:
+## If the upgrade fails
 
-1. Open the Atlas folder at <CodeInline text="C:\Windows\AtlasDesktop" />
-2. Review your settings from the numbered sections (see [Atlas Configuration](/docs/atlas-configuration/))
+Use **Export diagnostics** before retrying. Reopen Manager to recover the saved session and follow the reported error. Keep the original playbook available; a retry may need the same package and choices.
 
-<Callout type="tip">
-  The current Playbook advertises AtlasOS v0.5.0 as its direct upgrade source. Older versions may
-  require a fresh install or an archived upgrade path.
-</Callout>
-
-## Troubleshooting
-
-### AME Beta doesn't show upgrade option
-
-- Confirm you're on AtlasOS v0.5.0 using the [version check guide](/docs/faq/general/#checking-your-atlasos-version)
-- Use the latest AME Beta
-- Confirm that the Playbook supports upgrades from your installed Atlas version
-
-### Older Atlas versions
-
-AtlasOS v0.4.1 and earlier are not direct upgrade sources for the current Playbook. Follow the [Installation guide](/docs/install/) for a clean reinstall unless an archived upgrade path is published for your exact version.
-
-## Need help?
-
-<Grid columns={{ md: 2 }} gap="4" spacing>
-  <CommunityLink
-    href="https://discord.com/invite/atlasos"
-    icon="tabler:brand-discord"
-    title="Discord Community"
-    description="Get support from the community"
-  />
-
-  <CommunityLink
-    href="https://github.com/Atlas-OS/Atlas/discussions"
-    icon="tabler:brand-github"
-    title="GitHub Discussions"
-    description="Ask questions and share ideas"
-  />
-</Grid>
+If the installed version cannot be read, or the installer cannot confirm its result, use [installation troubleshooting](/docs/faq/installation/#what-if-installation-fails) before starting another attempt.

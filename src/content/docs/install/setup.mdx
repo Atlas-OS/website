@@ -1,69 +1,36 @@
 ---
 title: "First setup"
-metaDescription: "AtlasOS post-install setup: drivers, hardware optimization, Atlas configuration, tweaks."
-description: Complete AtlasOS setup after installation.
-order: 6
+metaDescription: "After installing Atlas 0.6, confirm setup, check protection and drivers, and find the Atlas configuration tools."
+description: Finish setting up your PC after Atlas installation.
+order: 7
 ---
 
-import Callout from '@/components/docs/Callout.astro';
-import CommunityLink from '@/components/docs/CommunityLink.astro';
-import Grid from '@/components/ui/Grid.astro';
-import IconInline from '@/components/ui/IconInline.astro';
-import QuickLinkCard from '@/components/docs/QuickLinkCard.astro';
-import QuickLinksGrid from '@/components/docs/QuickLinksGrid.astro';
+Restart and sign in to finish installing Atlas. Open Atlas Manager and confirm it shows your installed version before restoring apps and personal settings.
 
-After the restart, install drivers before you change Atlas settings or apply optional tweaks.
+## Check protection and updates
 
-## Complete essential setup
+Open Windows Security and check that your protection settings match the choices you made during installation. If you chose to keep Defender, check that its protections are back on. If you stopped or abandoned installation, restore the protections you temporarily disabled.
 
-Follow the Essential Setup guide to install drivers and, if you choose, optimize your hardware.
+Review your Windows Update choice too. If you disabled automatic updates, make time to check for and install updates yourself. See [Security settings](/docs/atlas-configuration/security/) and [automatic updates](/docs/atlas-configuration/settings/#automatic-updates).
 
-<QuickLinksGrid columns={{ md: 1 }} marginY="6">
-  <QuickLinkCard
-    href="/docs/essential-setup/"
-    icon="tabler:device-desktop"
-    label="Next Step"
-    title="Essential Setup Guide"
-    description="Install drivers and optimize hardware"
-  />
-</QuickLinksGrid>
+## Check your drivers
 
-## After essential setup
+If you chose Windows Update drivers, check that your display, network, audio, and other devices work. If you chose manual drivers, install the appropriate drivers from your device or component manufacturer.
 
-After you install drivers:
+Follow the [driver guide](/docs/essential-setup/drivers/) for the order and details. Hardware tuning is optional; you do not need to overclock or change firmware settings to finish Atlas setup.
 
-- **[Configure Atlas settings](/docs/atlas-configuration/):** Customize Windows features and system preferences
-- **[Explore optional tweaks](/docs/atlas-configuration/tweaks/):** Personalize your interface and experience
+## Find the Atlas controls
 
-<Callout type="tip">
-  Install drivers first. Apply hardware optimizations before you change Atlas settings or optional
-  interface tweaks.
-</Callout>
+Use **Atlas Manager** to view the installed version, check for Atlas releases, and export diagnostics.
 
-## Setup complete <IconInline name="tabler:check" size="md" />
+Use the **Atlas folder** on your Desktop or Start menu to change Windows features and Atlas settings. The folder lives at `C:\Windows\AtlasDesktop`. Start with the [configuration overview](/docs/atlas-configuration/) and change only the settings you need.
 
-AtlasOS is ready after you install your drivers and configure the settings you need.
+## Check installation health
 
-### What's next?
+In the Atlas folder, open **9. Troubleshooting → Check Atlas Health.cmd**. This read-only check reports installation details and differences between recorded choices and current settings. A reported difference may reflect a change you made yourself; check the output before attempting a repair.
 
-- **[Configure Atlas](/docs/atlas-configuration/)** to change system features and preferences
-- **[Read the upgrade guide](/docs/upgrade/)** before you install a future Atlas release
-- **[Troubleshoot a problem](/docs/faq/)** in the FAQ
+## Continue setting up
 
-### Need help?
-
-<Grid columns={{ md: 2 }} gap="4" spacing>
-  <CommunityLink
-    href="https://discord.com/invite/atlasos"
-    icon="tabler:brand-discord"
-    title="Discord Community"
-    description="Get support from the community"
-  />
-
-  <CommunityLink
-    href="https://github.com/Atlas-OS/Atlas/discussions"
-    icon="tabler:brand-github"
-    title="GitHub Discussions"
-    description="Ask questions and share ideas"
-  />
-</Grid>
+- [Essential setup](/docs/essential-setup/): drivers, software, and optional hardware configuration.
+- [Upgrade Atlas](/docs/upgrade/): requirements for moving to a newer release.
+- [Installation troubleshooting](/docs/faq/installation/): recovery and diagnostics if something went wrong.

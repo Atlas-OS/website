@@ -16,7 +16,7 @@ const sectionLabels = Object.fromEntries(
 
 <div
   id="spotlight-modal"
-  class="pointer-events-none fixed top-[20%] left-1/2 z-[101] flex w-[90vw] max-w-xl flex-col overflow-hidden rounded-2xl border border-white/[0.07] bg-[var(--bg-primary)] opacity-0 shadow-2xl shadow-black/50"
+  class="pointer-events-none fixed top-[20%] left-1/2 z-[101] flex w-[90vw] max-w-xl flex-col overflow-hidden rounded-2xl border border-white/[0.12] bg-[var(--modal-surface)] opacity-0 shadow-2xl shadow-black/50"
   role="dialog"
   aria-modal="true"
   aria-labelledby="spotlight-title"
@@ -72,7 +72,7 @@ const sectionLabels = Object.fromEntries(
       <button
         type="button"
         id="spotlight-clear-search"
-        class="mt-4 inline-flex min-h-10 items-center justify-center rounded-md bg-white/[0.05] px-3 text-sm font-medium text-white/70 transition-[background-color,color,scale] duration-150 hover:bg-white/[0.08] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary active:scale-[0.96]"
+        class="mt-4 inline-flex min-h-10 items-center justify-center rounded-md bg-white/[0.05] px-3 text-sm font-medium text-white/70 transition-[background-color,color,scale] duration-150 hover:bg-white/[0.08] hover:text-white focus-visible:outline-none active:scale-[0.96]"
       >
         Clear search
       </button>
@@ -249,13 +249,11 @@ const sectionLabels = Object.fromEntries(
     font-weight: 500;
   }
 
-  /* The dialog frame carries the focus state so the field does not draw a second ring inside it. */
+  /* Keep the input caret without adding a ring or underline to the dialog. */
   #spotlight-input:focus-visible {
     outline: none;
-  }
-
-  #spotlight-modal:has(#spotlight-input:focus-visible) {
-    border-color: color-mix(in oklch, var(--color-primary) 55%, transparent);
+    border-radius: 0;
+    box-shadow: none;
   }
 
   .spotlight-group {

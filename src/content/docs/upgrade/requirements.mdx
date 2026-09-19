@@ -1,48 +1,45 @@
 ---
 title: "Before upgrading"
-metaDescription: "AtlasOS upgrade requirements: version check, required files, what is preserved, limitations."
-description: Requirements before upgrading AtlasOS.
+metaDescription: "Atlas 0.6 upgrade eligibility, Windows 25H2 requirements, preserved settings, and migration limits."
+description: Check your Atlas version and Windows build before upgrading.
 order: 8
 ---
 
 import Callout from '@/components/docs/Callout.astro';
-import CodeInline from '@/components/docs/CodeInline.astro';
-import IconArrow from '@/components/ui/IconArrow.astro';
 
-Check every requirement before you upgrade Atlas.
+Back up important files before upgrading. Then check both your installed Atlas version and your Windows build.
 
 ## Version requirements
 
-- Your system must currently run **AtlasOS v0.5.0**
-- **v0.4.1 and older** systems are not direct upgrade sources for the current Playbook
-- If an archived upgrade path is not published for your exact version, perform a [fresh install](/docs/install/)
+| Check | Requirement for Atlas 0.6 |
+| --- | --- |
+| Installed Atlas version | 0.4.1, 0.5.0, or 0.5.1 |
+| Windows version | Windows 11 25H2, build 26200, on a supported edition |
+| Preparation | Windows and Store updates complete, with required restarts finished |
 
-<Callout type="info" title="Check your version">
-  [Check your AtlasOS version](/docs/faq/general/#checking-your-atlasos-version) before you continue.
+Open Atlas Manager to check the installed Atlas version. Press **Win + R** and run `winver` to check Windows. If Manager cannot read the installation state, resolve that error before attempting an upgrade.
+
+<Callout type="warning" title="Still on Windows 24H2?">
+  Atlas 0.6 cannot upgrade Atlas on that Windows build. Manager's update preparation does not
+  perform Windows feature upgrades. The 24H2-to-25H2 transition for an existing Atlas installation
+  needs a validated release-specific path; do not assume the Atlas version list approves it.
+  Use the [fresh installation guide](/docs/install/) if no supported transition is documented for your setup.
 </Callout>
 
-## Required files
+Other Atlas versions are not declared direct upgrade sources. Check the release notes for your exact version or start with a fresh Windows installation.
 
-- The latest **AME Beta** executable
-- The **new Atlas Playbook** (<CodeInline text=".apbx" />) for the version you want to upgrade to
+## What carries over
 
-## Backup important data
+The upgrade keeps your files and applications in place and preserves existing Start and taskbar layouts, file associations, and original service backups.
 
-<Callout type="warning" title="Back up your data">
-  Back up important data before you upgrade.
-</Callout>
+Recorded Atlas configuration choices are reapplied with the new definitions. On older releases, Atlas adopts a previous choice only when the existing settings identify it clearly. Custom changes made outside the Atlas controls may not be preserved.
 
-## What gets preserved
+The Atlas folder and modules are replaced, and current installation options and applicable tweaks are applied. Save any personal files you added to the Atlas folder elsewhere before upgrading.
 
-- All user files and apps
-- Most AtlasOS tweaks and settings
+## PCs with more than one account
 
-## Known limitations
+Existing accounts receive a settings migration at their next sign-in. Some protected user policies in other accounts may retain their older values. Sign into each account you use after upgrading and check its settings; the installing account's success does not verify every profile.
 
-**Upgrading from 0.5.0<IconArrow />newer 0.5.x releases:**
+## Ready to continue?
 
-The current Playbook is designed to preserve user files, applications, and most Atlas folder configuration during supported 0.5.x upgrades.
-
-**Older versions:**
-
-AtlasOS v0.4.1 and earlier may need a fresh install or a specific archived upgrade path. Do not assume AME Beta will show an upgrade option unless the Playbook supports your installed version.
+Download Atlas Manager and read the target release notes on the [Atlas release page](https://github.com/Atlas-OS/Atlas/releases), then follow the [upgrade instructions](/docs/upgrade/upgrade/). You can also use AME Wizard with the target release's `.apbx` package.

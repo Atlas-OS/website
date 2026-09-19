@@ -1,6 +1,6 @@
 ---
 title: "Web Browsers"
-metaDescription: "AtlasOS browsers: Edge, Brave, LibreWolf, Firefox, Chrome. Privacy, open source, features."
+metaDescription: "AtlasOS browsers: Edge, Brave, Helium, LibreWolf, Firefox, Chrome. Privacy, open source, features."
 description: Recommended web browsers.
 order: 3
 ---
@@ -15,52 +15,58 @@ During Atlas installation, you can remove Edge and install another browser. Comp
 
 ## Comparison
 
-<Table headers={['Feature', 'Edge', 'Brave', 'LibreWolf', 'Firefox', 'Chrome']}>
+<Table class="[&_th:first-child]:min-w-44" headers={['Feature', 'Edge', 'Brave', 'Helium', 'LibreWolf', 'Firefox', 'Chrome']}>
   <TableRow>
     <TableCell>Stronger privacy defaults</TableCell>
-    <TableCell><Icon name="tabler:x" class="inline h-4 w-4" /></TableCell>
-    <TableCell><Icon name="tabler:check" class="inline h-4 w-4" /></TableCell>
-    <TableCell><Icon name="tabler:check" class="inline h-4 w-4" /></TableCell>
-    <TableCell><Icon name="tabler:check" class="inline h-4 w-4" /></TableCell>
-    <TableCell><Icon name="tabler:x" class="inline h-4 w-4" /></TableCell>
+    <TableCell><span class="inline-flex text-red-300" role="img" aria-label="No"><Icon name="tabler:x" class="h-4 w-4" aria-hidden="true" /></span></TableCell>
+    <TableCell><span class="inline-flex text-emerald-300" role="img" aria-label="Yes"><Icon name="tabler:check" class="h-4 w-4" aria-hidden="true" /></span></TableCell>
+    <TableCell><span class="inline-flex text-emerald-300" role="img" aria-label="Yes"><Icon name="tabler:check" class="h-4 w-4" aria-hidden="true" /></span></TableCell>
+    <TableCell><span class="inline-flex text-emerald-300" role="img" aria-label="Yes"><Icon name="tabler:check" class="h-4 w-4" aria-hidden="true" /></span></TableCell>
+    <TableCell><span class="inline-flex text-emerald-300" role="img" aria-label="Yes"><Icon name="tabler:check" class="h-4 w-4" aria-hidden="true" /></span></TableCell>
+    <TableCell><span class="inline-flex text-red-300" role="img" aria-label="No"><Icon name="tabler:x" class="h-4 w-4" aria-hidden="true" /></span></TableCell>
   </TableRow>
   <TableRow>
     <TableCell>Open source</TableCell>
-    <TableCell><Icon name="tabler:x" class="inline h-4 w-4" /></TableCell>
-    <TableCell><Icon name="tabler:check" class="inline h-4 w-4" /></TableCell>
-    <TableCell><Icon name="tabler:check" class="inline h-4 w-4" /></TableCell>
-    <TableCell><Icon name="tabler:check" class="inline h-4 w-4" /></TableCell>
-    <TableCell><Icon name="tabler:x" class="inline h-4 w-4" /></TableCell>
+    <TableCell><span class="inline-flex text-red-300" role="img" aria-label="No"><Icon name="tabler:x" class="h-4 w-4" aria-hidden="true" /></span></TableCell>
+    <TableCell><span class="inline-flex text-emerald-300" role="img" aria-label="Yes"><Icon name="tabler:check" class="h-4 w-4" aria-hidden="true" /></span></TableCell>
+    <TableCell><span class="inline-flex text-emerald-300" role="img" aria-label="Yes"><Icon name="tabler:check" class="h-4 w-4" aria-hidden="true" /></span></TableCell>
+    <TableCell><span class="inline-flex text-emerald-300" role="img" aria-label="Yes"><Icon name="tabler:check" class="h-4 w-4" aria-hidden="true" /></span></TableCell>
+    <TableCell><span class="inline-flex text-emerald-300" role="img" aria-label="Yes"><Icon name="tabler:check" class="h-4 w-4" aria-hidden="true" /></span></TableCell>
+    <TableCell><span class="inline-flex text-red-300" role="img" aria-label="No"><Icon name="tabler:x" class="h-4 w-4" aria-hidden="true" /></span></TableCell>
   </TableRow>
   <TableRow>
     <TableCell>Easy to use</TableCell>
-    <TableCell><Icon name="tabler:check" class="inline h-4 w-4" /></TableCell>
-    <TableCell><Icon name="tabler:check" class="inline h-4 w-4" /></TableCell>
-    <TableCell><Icon name="tabler:alert-triangle" class="inline h-4 w-4" /></TableCell>
-    <TableCell><Icon name="tabler:check" class="inline h-4 w-4" /></TableCell>
-    <TableCell><Icon name="tabler:check" class="inline h-4 w-4" /></TableCell>
+    <TableCell><span class="inline-flex text-emerald-300" role="img" aria-label="Yes"><Icon name="tabler:check" class="h-4 w-4" aria-hidden="true" /></span></TableCell>
+    <TableCell><span class="inline-flex text-emerald-300" role="img" aria-label="Yes"><Icon name="tabler:check" class="h-4 w-4" aria-hidden="true" /></span></TableCell>
+    <TableCell><span class="inline-flex text-amber-300" role="img" aria-label="Some features unavailable; see notes"><Icon name="tabler:alert-triangle" class="h-4 w-4" aria-hidden="true" /></span></TableCell>
+    <TableCell><span class="inline-flex text-amber-300" role="img" aria-label="May require configuration"><Icon name="tabler:alert-triangle" class="h-4 w-4" aria-hidden="true" /></span></TableCell>
+    <TableCell><span class="inline-flex text-emerald-300" role="img" aria-label="Yes"><Icon name="tabler:check" class="h-4 w-4" aria-hidden="true" /></span></TableCell>
+    <TableCell><span class="inline-flex text-emerald-300" role="img" aria-label="Yes"><Icon name="tabler:check" class="h-4 w-4" aria-hidden="true" /></span></TableCell>
   </TableRow>
   <TableRow>
     <TableCell>Anti-tracking by default</TableCell>
-    <TableCell><Icon name="tabler:x" class="inline h-4 w-4" /></TableCell>
-    <TableCell><Icon name="tabler:check" class="inline h-4 w-4" /></TableCell>
-    <TableCell><Icon name="tabler:check" class="inline h-4 w-4" /></TableCell>
-    <TableCell><Icon name="tabler:x" class="inline h-4 w-4" /></TableCell>
-    <TableCell><Icon name="tabler:x" class="inline h-4 w-4" /></TableCell>
+    <TableCell><span class="inline-flex text-red-300" role="img" aria-label="No"><Icon name="tabler:x" class="h-4 w-4" aria-hidden="true" /></span></TableCell>
+    <TableCell><span class="inline-flex text-emerald-300" role="img" aria-label="Yes"><Icon name="tabler:check" class="h-4 w-4" aria-hidden="true" /></span></TableCell>
+    <TableCell><span class="inline-flex text-emerald-300" role="img" aria-label="Yes"><Icon name="tabler:check" class="h-4 w-4" aria-hidden="true" /></span></TableCell>
+    <TableCell><span class="inline-flex text-emerald-300" role="img" aria-label="Yes"><Icon name="tabler:check" class="h-4 w-4" aria-hidden="true" /></span></TableCell>
+    <TableCell><span class="inline-flex text-red-300" role="img" aria-label="No"><Icon name="tabler:x" class="h-4 w-4" aria-hidden="true" /></span></TableCell>
+    <TableCell><span class="inline-flex text-red-300" role="img" aria-label="No"><Icon name="tabler:x" class="h-4 w-4" aria-hidden="true" /></span></TableCell>
   </TableRow>
   <TableRow>
     <TableCell>Ad-blocking by default</TableCell>
-    <TableCell><Icon name="tabler:x" class="inline h-4 w-4" /></TableCell>
-    <TableCell><Icon name="tabler:check" class="inline h-4 w-4" /></TableCell>
-    <TableCell><Icon name="tabler:check" class="inline h-4 w-4" /></TableCell>
-    <TableCell><Icon name="tabler:x" class="inline h-4 w-4" /></TableCell>
-    <TableCell><Icon name="tabler:x" class="inline h-4 w-4" /></TableCell>
+    <TableCell><span class="inline-flex text-red-300" role="img" aria-label="No"><Icon name="tabler:x" class="h-4 w-4" aria-hidden="true" /></span></TableCell>
+    <TableCell><span class="inline-flex text-emerald-300" role="img" aria-label="Yes"><Icon name="tabler:check" class="h-4 w-4" aria-hidden="true" /></span></TableCell>
+    <TableCell><span class="inline-flex text-emerald-300" role="img" aria-label="Yes"><Icon name="tabler:check" class="h-4 w-4" aria-hidden="true" /></span></TableCell>
+    <TableCell><span class="inline-flex text-emerald-300" role="img" aria-label="Yes"><Icon name="tabler:check" class="h-4 w-4" aria-hidden="true" /></span></TableCell>
+    <TableCell><span class="inline-flex text-red-300" role="img" aria-label="No"><Icon name="tabler:x" class="h-4 w-4" aria-hidden="true" /></span></TableCell>
+    <TableCell><span class="inline-flex text-red-300" role="img" aria-label="No"><Icon name="tabler:x" class="h-4 w-4" aria-hidden="true" /></span></TableCell>
   </TableRow>
 </Table>
 
 **Notes:**
 
 - [Chrome](https://tosdr.org/en/service/217) and [Edge](https://tosdr.org/en/service/244) collect significant telemetry and user data.
+- [Helium](https://helium.computer/) is an open-source Chromium browser with ad and tracker blocking enabled by default. It is currently in beta and does not include browser sync, a built-in password manager, or Widevine DRM support for some streaming services.
 - LibreWolf's privacy protections may require turning off protections for specific websites.
 - See [privacytests.org](https://privacytests.org/) for tracking prevention comparisons.
 

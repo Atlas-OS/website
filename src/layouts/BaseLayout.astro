@@ -9,6 +9,7 @@ interface Props {
 }
 
 const isHomePage = Astro.props.currentPath === '/';
+const isDocsPage = Astro.props.currentPath?.startsWith('/docs/') ?? false;
 ---
 
 <!doctype html>
@@ -41,7 +42,7 @@ const isHomePage = Astro.props.currentPath === '/';
 
     <slot name="head" />
   </head>
-  <body class="overflow-x-hidden">
+  <body class:list={['overflow-x-hidden', { 'docs-page': isDocsPage }]}>
     <slot name="body" />
     <slot />
     <KapaWidget />

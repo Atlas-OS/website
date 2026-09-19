@@ -8,75 +8,26 @@ order: 29
 import Callout from '@/components/docs/Callout.astro';
 import CodeInline from '@/components/docs/CodeInline.astro';
 import IconArrow from '@/components/ui/IconArrow.astro';
-import Table from '@/components/ui/Table.astro';
-import TableRow from '@/components/ui/TableRow.astro';
-import TableCell from '@/components/ui/TableCell.astro';
-import { Icon } from 'astro-icon/components';
 
 Find answers about AtlasOS features, updates, compatibility, and security.
 
 ## Keeping AtlasOS updated
 
-Keep your AtlasOS installation current for the latest features, security updates, and compatibility. Update options depend on your version.
+Use Atlas Manager to view your installed version, check for releases, and read the release notes. For Atlas 0.6, both the source Atlas version and the Windows build determine upgrade eligibility.
 
-<Table headers={['Version', 'Upgrade path', 'Support status', 'Notes']}>
-  <TableRow>
-    <TableCell>Current v0.5.x release</TableCell>
-    <TableCell>
-      <Icon name="tabler:check" class="inline h-4 w-4" /> Stay current with supported Playbooks
-    </TableCell>
-    <TableCell>
-      <Icon name="tabler:check" class="inline h-4 w-4" /> Supported
-    </TableCell>
-    <TableCell>
-      <Icon name="tabler:check" class="inline h-4 w-4" /> Recommended version
-    </TableCell>
-  </TableRow>
-  <TableRow>
-    <TableCell>v0.5.0</TableCell>
-    <TableCell>
-      <Icon name="tabler:check" class="inline h-4 w-4" /> Direct upgrade source for the current Playbook
-    </TableCell>
-    <TableCell>
-      <Icon name="tabler:check" class="inline h-4 w-4" /> Supported for upgrade
-    </TableCell>
-    <TableCell>
-      <Icon name="tabler:check" class="inline h-4 w-4" /> Use the latest AME Beta
-    </TableCell>
-  </TableRow>
-  <TableRow>
-    <TableCell>v0.4.1 (W11 24H2)</TableCell>
-    <TableCell>
-      <Icon name="tabler:x" class="inline h-4 w-4" /> Not a direct source for the current Playbook
-    </TableCell>
-    <TableCell>
-      <Icon name="tabler:x" class="inline h-4 w-4" /> Legacy
-    </TableCell>
-    <TableCell>
-      <Icon name="tabler:alert-triangle" class="inline h-4 w-4" /> Use an archived path if published, otherwise reinstall
-    </TableCell>
-  </TableRow>
-  <TableRow>
-    <TableCell>v0.4.0 and earlier</TableCell>
-    <TableCell>
-      <Icon name="tabler:x" class="inline h-4 w-4" /> Fresh install required
-    </TableCell>
-    <TableCell>
-      <Icon name="tabler:x" class="inline h-4 w-4" /> Unsupported
-    </TableCell>
-    <TableCell>
-      <Icon name="tabler:x" class="inline h-4 w-4" /> Reinstall Windows and install the latest Atlas release
-    </TableCell>
-  </TableRow>
-</Table>
+| Installed version | Route to Atlas 0.6 |
+| --- | --- |
+| Atlas 0.4.1, 0.5.0, or 0.5.1 | Declared upgrade source, also requiring Windows 11 25H2 (build 26200). |
+| Atlas 0.4.0 or earlier | Fresh installation required. |
+| Atlas 0.6 | Check Manager for later releases and their requirements. |
+
+See [Before upgrading](/docs/upgrade/requirements/) before changing Windows or applying a new Atlas package. AME Wizard remains an alternative installer.
 
 ## Checking your AtlasOS version
 
-Windows Settings does not show the Atlas version. Use these checks:
+Open **Atlas Manager**. Home shows the installed version and installation history when available, including installations made through AME Wizard.
 
-1. **Check the Playbook file:** If you kept the <CodeInline text=".apbx" /> file used for installation, read the version in its filename, such as <CodeInline text="Atlas Playbook 0.5.x" />
-2. **Compare the installation date:** Find the Atlas release published immediately before your installation date on the [releases page](https://github.com/Atlas-OS/Atlas/releases)
-3. **Check the Atlas folder:** Open <CodeInline text="C:\Windows\AtlasDesktop" /> and look for a version reference in its scripts
+A downloaded playbook's filename tells you which package you have, not which version completed installation. If Manager cannot read your installed state, [export diagnostics](/docs/faq/installation/#what-if-installation-fails) and resolve the error before upgrading.
 
 ## Performance
 
@@ -142,13 +93,13 @@ Windows 11 requires **Trusted Platform Module (TPM) 2.0**. If Windows Setup repo
 
 Atlas lets you configure Windows Defender, [mitigations](/docs/atlas-configuration/security/#mitigations), and automatic Windows updates. Review each tradeoff in the [security documentation](/docs/atlas-configuration/security/) before changing a default.
 
-**Compared with unmodified Windows:** Modifying Windows changes its tested security baseline. Review the [Atlas source](https://github.com/Atlas-OS/Atlas) and AME Beta's [open-source backend](https://github.com/Ameliorated-LLC/trusted-uninstaller-cli) before you install.
+**Compared with unmodified Windows:** Modifying Windows changes its tested security baseline. Review the [Atlas source](https://github.com/Atlas-OS/Atlas) and the installation choices before you install.
 
-**Legacy versions (v0.4.1 and earlier):** Not direct upgrade sources for the current Playbook. [Reinstall Windows and install Atlas](/docs/install/requirements/) unless a specific archived upgrade path is published for your exact version. Newer versions add Windows Update, Defender, UAC by default, Core isolation, and improved transparency.
+**Older Atlas versions:** Check the [upgrade requirements](/docs/upgrade/requirements/). Atlas 0.4.1 is a declared source for 0.6, but Windows 24H2 is not an eligible destination build.
 
 ## Resetting Atlas
 
-The Windows "Reset this PC" feature **doesn't work** with Atlas. Atlas makes deep changes that Reset cannot handle—it will likely fail or leave your system broken.
+Use unmodified Microsoft installation media to start fresh or remove Atlas. Do not rely on **Reset this PC** to reverse Atlas modifications.
 
 **To start fresh with Atlas:** Follow the [Installation Guide](/docs/install/requirements/) (clean install).
 
@@ -158,13 +109,17 @@ The Windows "Reset this PC" feature **doesn't work** with Atlas. Atlas makes dee
 
 ### Roblox not launching
 
-1. **Change time and date:** **Settings**<IconArrow />Date & time - turn off "Set time automatically", add one day to the date, then re-enable automatic time after a day.
-2. **Enable TPM and Secure Boot** in BIOS.
-3. **Enable UAC:** **Control Panel**<IconArrow />Change User Account Control settings - set to Level 1, 2, or 3. If UAC was disabled (Level 0), reinstall Roblox after enabling it.
+Restart your PC and try again. If Roblox still fails, note the exact error and follow [Roblox's desktop troubleshooting guide](https://en.help.roblox.com/hc/en-us/articles/203312870-General-Desktop-Roblox-Issues), including its firewall and reinstall steps. Keep your computer's date and time accurate; moving the date forward is not part of this guide.
 
 ### FIFA and EAFC not launching
 
-FIFA and EAFC require Windows Defender to be enabled. Open the Atlas folder, go to <CodeInline text="7. Security" /><IconArrow /><CodeInline text="Defender" />, and run <CodeInline text="Toggle Defender.cmd" />.
+Use the exact error message to find the matching steps in [EA's Javelin anticheat guide](https://help.ea.com/en/articles/platforms/pc-ea-anticheat/). Requirements vary by game; if the error asks for Secure Boot, follow [EA's Secure Boot guidance](https://help.ea.com/en/articles/technical-issues/secure-boot/).
+
+Avoid changing several security settings at once. Atlas 0.6's **Remove Microsoft Defender** installation choice is different from temporarily switching protection off in Windows Security. To restore Defender through Atlas's component toggle, follow [security configuration](/docs/atlas-configuration/security/#defender), restart, and check protection in Windows Security.
+
+### Still having trouble?
+
+Include the game version, launcher, exact error, Windows build, Atlas version, and relevant installation choices when [asking for help](/docs/contributing/reporting/). Mention whether the issue started after a game, driver, Windows, or Atlas update.
 
 ## AtlasOS and eclean
 

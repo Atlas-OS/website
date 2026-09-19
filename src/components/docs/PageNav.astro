@@ -9,33 +9,26 @@ interface Props {
 
 const { prev, next } = Astro.props;
 
-const cardClass =
-  'page-nav-card docs-surface group relative flex items-center gap-4 overflow-hidden p-6 transition-[background-color,box-shadow,opacity,scale,transform] duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black active:scale-[0.96]';
+const cardClass = 'page-nav-card docs-surface group flex items-start gap-3 p-5';
 ---
 
 {(prev || next) && (
   <nav class="page-nav not-prose mt-14" aria-label="Pagination" data-component="page-nav" data-pagefind-ignore>
-    <div class:list={['grid gap-4', prev && next ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1']}>
+    <div class:list={['grid gap-4', 'grid-cols-1 md:grid-cols-2']}>
       {prev && (
         <a href={prev.href} rel="prev" data-astro-prefetch="hover" class={cardClass}>
-          <div class="page-nav-icon relative z-10 flex h-12 w-12 shrink-0 items-center justify-center">
+          <div class="docs-link-icon mt-1">
             <Icon
               name="tabler:arrow-left"
-              class="h-5 w-5 text-white/70 transition-colors duration-200 group-hover:text-primary"
+              class="h-4 w-4 text-[var(--docs-text-muted)] group-hover:text-[var(--docs-text-primary)]"
               aria-hidden="true"
             />
           </div>
-          <div class="relative z-10 min-w-0 flex-1">
-            <div class="mb-1.5 text-xs font-medium tracking-wider text-white/70 transition-colors duration-200 group-hover:text-primary/80">
-              Previous
-            </div>
-            <p class="mb-1 text-lg font-semibold text-white transition-colors duration-300 group-hover:text-primary">
-              {prev.title}
-            </p>
+          <div class="min-w-0 flex-1">
+            <div class="mb-1 text-xs font-medium text-[var(--docs-text-muted)]">Previous</div>
+            <p class="mb-1 text-base font-semibold text-[var(--docs-text-primary)]">{prev.title}</p>
             {prev.description && (
-              <p class="line-clamp-2 text-sm text-white/70 transition-colors duration-300 group-hover:text-white/80">
-                {prev.description}
-              </p>
+              <p class="text-sm leading-relaxed text-[var(--docs-text-secondary)]">{prev.description}</p>
             )}
           </div>
         </a>
@@ -43,23 +36,17 @@ const cardClass =
 
       {next && (
         <a href={next.href} rel="next" data-astro-prefetch="hover" class:list={[cardClass, 'md:col-start-2']}>
-          <div class="relative z-10 min-w-0 flex-1 text-end">
-            <div class="mb-1.5 text-xs font-medium tracking-wider text-white/70 transition-colors duration-200 group-hover:text-primary/80">
-              Next
-            </div>
-            <p class="mb-1 text-lg font-semibold text-white transition-colors duration-300 group-hover:text-primary">
-              {next.title}
-            </p>
+          <div class="min-w-0 flex-1 text-end">
+            <div class="mb-1 text-xs font-medium text-[var(--docs-text-muted)]">Next</div>
+            <p class="mb-1 text-base font-semibold text-[var(--docs-text-primary)]">{next.title}</p>
             {next.description && (
-              <p class="line-clamp-2 text-sm text-white/70 transition-colors duration-300 group-hover:text-white/80">
-                {next.description}
-              </p>
+              <p class="text-sm leading-relaxed text-[var(--docs-text-secondary)]">{next.description}</p>
             )}
           </div>
-          <div class="page-nav-icon relative z-10 flex h-12 w-12 shrink-0 items-center justify-center">
+          <div class="docs-link-icon mt-1">
             <Icon
               name="tabler:arrow-right"
-              class="h-5 w-5 text-white/70 transition-colors duration-200 group-hover:text-primary"
+              class="h-4 w-4 text-[var(--docs-text-muted)] group-hover:text-[var(--docs-text-primary)]"
               aria-hidden="true"
             />
           </div>
@@ -77,19 +64,5 @@ const cardClass =
 
   .prose + .page-nav {
     margin-top: 4.5rem;
-  }
-
-  .page-nav-icon {
-    border-radius: var(--docs-radius-md);
-    background: rgb(255 255 255 / 0.018);
-    box-shadow: 0 0 0 1px rgb(255 255 255 / 0.04);
-    transition:
-      background-color var(--motion-duration-slow) var(--motion-ease-out),
-      box-shadow var(--motion-duration-slow) var(--motion-ease-out);
-  }
-
-  .page-nav-card:hover .page-nav-icon {
-    background: rgb(40 148 243 / 0.08);
-    box-shadow: 0 0 0 1px rgb(40 148 243 / 0.2);
   }
 </style>

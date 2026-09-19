@@ -17,15 +17,15 @@ const isExternal = href.startsWith('http://') || href.startsWith('https://');
   href={href}
   target={isExternal ? '_blank' : undefined}
   rel={isExternal ? 'noopener noreferrer' : undefined}
-  class="community-link community-link-animated docs-surface not-prose group flex items-start gap-3 p-5 transition-[background-color,box-shadow,scale] duration-200 active:scale-[0.96]"
+  class="community-link docs-surface not-prose group flex items-start gap-3 p-5"
   data-component="community-link"
 >
-  <div class="community-link-icon-wrapper flex-shrink-0">
-    <Icon name={icon} class="h-6 w-6 text-primary transition-transform" aria-hidden="true" />
+  <div class="docs-link-icon">
+    <Icon name={icon} class="h-5 w-5" aria-hidden="true" />
   </div>
   <div class="min-w-0 flex-1">
-    <p class="text-base font-semibold text-white">{title}</p>
-    <p class="mt-2 text-sm" style="color: var(--docs-text-muted);">
+    <p class="text-base font-semibold text-[var(--docs-text-primary)]">{title}</p>
+    <p class="mt-1 text-sm" style="color: var(--docs-text-secondary);">
       {description}
     </p>
   </div>
@@ -35,33 +35,3 @@ const isExternal = href.startsWith('http://') || href.startsWith('https://');
     aria-hidden="true"
   />
 </a>
-
-<style is:global>
-  .community-link-animated {
-    animation: community-link-fade-in 0.4s ease-out;
-  }
-
-  @keyframes community-link-fade-in {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .community-link-icon-wrapper {
-    animation: community-link-icon-fade-in 0.6s ease-out;
-  }
-
-  @keyframes community-link-icon-fade-in {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-</style>

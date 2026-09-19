@@ -186,21 +186,10 @@
   color: rgb(255 255 255 / 0.95);
 }
 
-:where(.prose) > code:not(.not-prose):not(.not-prose *),
-:where(.prose) code:not(.not-prose):not(.not-prose *) {
-  @apply px-1.5 py-0.5 text-sm;
-  font-family: var(--font-mono);
-  background-color: rgb(255 255 255 / 0.06);
-  border: 1px solid rgb(255 255 255 / 0.06);
-  border-radius: var(--docs-radius-sm);
-  color: var(--color-link);
-  font-size: 0.9em;
-}
-
 :where(.prose) > pre:not(.not-prose):not(.not-prose *),
 :where(.prose) pre:not(.not-prose):not(.not-prose *) {
-  @apply my-6 overflow-x-auto p-5;
-  border: 1px solid rgb(255 255 255 / 0.06);
+  @apply my-6 overflow-x-auto p-5 pr-16;
+  border: 1px solid var(--docs-surface-border);
   border-radius: var(--docs-radius-md);
   background-color: var(--code-block-bg) !important;
   line-height: 1.7;
@@ -277,39 +266,57 @@
   border-top-width: 1px;
 }
 
-:where(.prose) > table:not(.not-prose):not(.not-prose *),
+.docs-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: var(--docs-text-secondary);
+}
+
+/* Quiet row separators keep dense reference tables readable. */
 :where(.prose) table:not(.not-prose):not(.not-prose *) {
-  @apply my-5 w-full border-collapse;
+  margin-block: 1.5rem;
+  width: 100%;
   display: block;
   max-width: 100%;
   overflow-x: auto;
-  scrollbar-gutter: stable;
-  font-size: 1rem;
+  border: 1px solid var(--docs-surface-border);
+  border-radius: var(--docs-radius-md);
+  border-spacing: 0;
+  border-collapse: separate;
+  background: var(--docs-surface-bg);
+  font-size: 0.875rem;
+  line-height: 1.65;
 }
 
-:where(.prose) th:not(.not-prose):not(.not-prose *) {
-  @apply border px-5 py-4 font-semibold;
+.docs-table :is(th, td),
+:where(.prose) :is(th, td):not(.not-prose):not(.not-prose *) {
+  padding: 1rem 1.25rem;
   text-align: start;
-  border-color: rgb(255 255 255 / 0.06);
-  background-color: rgb(255 255 255 / 0.05);
-  color: white;
+  vertical-align: top;
+  border-bottom: 1px solid var(--docs-surface-border);
 }
 
-:where(.prose) td:not(.not-prose):not(.not-prose *) {
-  @apply border px-5 py-4;
-  border-color: rgb(255 255 255 / 0.06);
+.docs-table th,
+:where(.prose) th:not(.not-prose):not(.not-prose *) {
+  font-weight: 600;
+  background: rgb(255 255 255 / 0.025);
+  color: var(--docs-text-primary);
 }
 
-/* Screenshots get a two-ring frame (hairline plus a soft brand halo) so every image sits the same way. */
-:where(.prose) > img:not(.not-prose):not(.not-prose *),
+.docs-table tbody tr:last-child td,
+:where(.prose) tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* Screenshots use the same quiet frame as the rest of the documentation. */
 :where(.prose) img:not(.not-prose):not(.not-prose *) {
-  @apply my-6 rounded-lg;
+  margin-block: 1.5rem;
   max-width: 100%;
   height: auto;
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.1),
-    0 0 0 4px color-mix(in oklch, var(--color-primary) 10%, transparent),
-    0 24px 60px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--docs-surface-border);
+  border-radius: var(--docs-radius-md);
 }
 
 :where(.prose) > *:first-child:not(.not-prose):not(.not-prose *):not(h1) {

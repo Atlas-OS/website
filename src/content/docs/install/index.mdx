@@ -1,95 +1,38 @@
 ---
-title: "Installation guide"
-metaDescription: "Step-by-step guide to installing AtlasOS: requirements, methods, and instructions."
-description: Install AtlasOS on your system.
+title: "Install Atlas"
+metaDescription: "Install Atlas 0.6 with Atlas Manager, create Windows installation media, or use AME Wizard."
+description: Choose how to install Atlas 0.6.
 order: 2
-sidebar:
-  label: "Install Atlas"
 ---
 
-import Callout from '@/components/docs/Callout.astro';
-import CommunityLink from '@/components/docs/CommunityLink.astro';
 import QuickLinkCard from '@/components/docs/QuickLinkCard.astro';
 import QuickLinksGrid from '@/components/docs/QuickLinksGrid.astro';
-import FeatureList from '@/components/ui/FeatureList.astro';
-import SectionDivider from '@/components/ui/SectionDivider.astro';
-import Grid from '@/components/ui/Grid.astro';
 
-Install Atlas in 30–45 minutes.
+**Atlas Manager is the recommended way to install Atlas.** Built specifically for Atlas, it brings compatibility checks, update preparation, installation choices, and progress into one guided experience. AME Wizard remains available if you prefer it; both apply the same Atlas playbook.
 
-## Quick links
+Used Atlas before? See [What changed in Atlas 0.6?](/docs/upgrade/whats-new/) for a quick introduction to the new setup experience.
 
-<QuickLinksGrid columns={{ md: 3 }}>
-  <QuickLinkCard
-    href="/docs/install/requirements/"
-    icon="tabler:checklist"
-    label="Step 1"
-    title="Requirements"
-    description="Verify system requirements"
-  />
+Atlas 0.6 requires **Windows 11 25H2 (build 26200)**. For a first installation, start with a fresh copy of Windows. If you already use Atlas, check the [upgrade requirements](/docs/upgrade/requirements/) before reinstalling.
 
-  <QuickLinkCard
-    href="/docs/install/playbook/"
-    icon="tabler:book"
-    label="Step 2"
-    title="Playbook Method"
-    description="Recommended installation method"
-  />
+## Choose your route
 
-  <QuickLinkCard
-    href="/docs/install/setup/"
-    icon="tabler:settings"
-    label="Step 3"
-    title="First Setup"
-    description="Complete your installation"
-  />
+<QuickLinksGrid columns={{ md: 2 }}>
+  <QuickLinkCard href="/docs/install/requirements/" icon="tabler:checklist" title="Before you install" description="Check Windows compatibility and prepare your backup." />
+  <QuickLinkCard href="/docs/install/playbook/" icon="tabler:device-desktop" title="Install with Atlas Manager" description="Recommended: prepare your PC and install Atlas from Windows." />
+  <QuickLinkCard href="/docs/install/iso/" icon="tabler:disc" title="Create an Atlas ISO (Beta)" description="Prepare installation media for this PC or another one." />
+  <QuickLinkCard href="/docs/install/ame-wizard/" icon="tabler:book" title="Install with AME Wizard" description="Use the Atlas playbook with AME Wizard if you prefer." />
 </QuickLinksGrid>
 
-## Before you start
+## What you are installing
 
-- A Windows 11 license for Pro, Pro for Workstations, or Enterprise
-- A 64-bit x64 or ARM64 CPU and the matching Windows ISO
-- A backup of all important data
-- A USB drive if you plan to install from USB
+**Atlas Manager** is the app that guides setup and shows your Atlas version. The **Atlas playbook** is the `.apbx` package containing the changes Atlas applies to Windows. Manager downloads or opens this package for you. AME Wizard can apply the same package through its own interface.
 
-<Callout type="info" title="Note">
-  Atlas does not support Windows Home. Change your product key to upgrade Windows to Pro before
-  installing Atlas.
-</Callout>
+Creating an Atlas ISO prepares Windows installation media. Atlas is applied on the destination PC after Windows setup and sign-in, with update and security checks still required.
 
-## Installation methods
+## After installation
 
-<FeatureList
-  items={[
-    {
-      icon: 'tabler:book',
-      title: 'Playbook Method (Recommended)',
-      description: 'Install from Windows without a USB drive. Use this method for most systems.',
-      href: '/docs/install/playbook/',
-    },
-    {
-      icon: 'tabler:disc',
-      title: 'ISO Injection',
-      description: 'Inject Atlas into a Windows ISO before installation. For experienced users.',
-      href: '/docs/install/iso/',
-    },
-  ]}
-/>
+Follow [First setup](/docs/install/setup/) to check drivers, review protection settings, and find the Atlas configuration tools.
 
-<SectionDivider id="community-resources">
-  <Grid columns={{ md: 2 }} gap="4" spacing>
-    <CommunityLink
-      href="https://discord.com/invite/atlasos"
-      icon="tabler:brand-discord"
-      title="Discord Community"
-      description="Get help and chat with other users"
-    />
+## Community resources
 
-    <CommunityLink
-      href="https://github.com/Atlas-OS/Atlas/discussions"
-      icon="tabler:brand-github"
-      title="GitHub Discussions"
-      description="Ask questions and report issues"
-    />
-  </Grid>
-</SectionDivider>
+Ask setup questions in [GitHub Discussions](https://github.com/Atlas-OS/Atlas/discussions) or the [Atlas Discord community](https://discord.com/invite/atlasos). For an installation failure, [export diagnostics](/docs/contributing/reporting/) before asking for help.

@@ -54,10 +54,12 @@
 }
 
 .sidebar-primary-link {
+  min-height: 2.25rem;
   color: rgba(255, 255, 255, 0.85);
 }
 
 .sidebar-link {
+  min-height: 2.25rem;
   color: rgba(255, 255, 255, 0.7);
 }
 
@@ -173,6 +175,7 @@
 }
 
 .is-collapsed > .sidebar-collapsible > * {
+  margin-block: 0;
   visibility: hidden;
   transition: visibility 0s var(--motion-duration-normal);
 }

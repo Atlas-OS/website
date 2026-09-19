@@ -12,23 +12,23 @@ import QuickLinkCard from '@/components/docs/QuickLinkCard.astro';
 import QuickLinksGrid from '@/components/docs/QuickLinksGrid.astro';
 import Grid from '@/components/ui/Grid.astro';
 
-AtlasOS modifies Windows to improve privacy, usability, and performance without removing your control over the system.
+AtlasOS configures Windows to reduce background activity and distractions, with controls for privacy, performance, and system features. These guides cover **Atlas 0.6**, installed through **Atlas Manager** or the **AME Wizard** alternative.
 
 ## Quick links
 
-<QuickLinksGrid columns={{ md: 2, lg: 3 }}>
+Returning from an earlier release? Start with [What changed in Atlas 0.6?](/docs/upgrade/whats-new/).
+
+<QuickLinksGrid columns={{ md: 2 }}>
     <QuickLinkCard
     href="/docs/install/"
     icon="tabler:rocket"
-    label="Get Started"
     title="Install Atlas"
-    description="Requirements, methods, and setup"
+    description="Prepare Windows and install with Atlas Manager"
   />
 
   <QuickLinkCard
     href="/docs/upgrade/"
     icon="tabler:arrow-up"
-    label="Update"
     title="Upgrade Atlas"
     description="Upgrade to a newer AtlasOS version"
   />
@@ -36,23 +36,20 @@ AtlasOS modifies Windows to improve privacy, usability, and performance without 
   <QuickLinkCard
     href="/docs/essential-setup/"
     icon="tabler:cpu"
-    label="Hardware"
-    title="Essential Setup"
+    title="Essential setup"
     description="Install drivers and optimize your hardware"
   />
 
   <QuickLinkCard
     href="/docs/atlas-configuration/"
     icon="tabler:settings"
-    label="Configure"
-    title="Atlas Configuration"
+    title="Atlas configuration"
     description="Customize settings, tweaks, and optimizations"
   />
 
   <QuickLinkCard
     href="/docs/faq/"
     icon="tabler:help-circle"
-    label="Support"
     title="FAQ"
     description="Common questions and troubleshooting"
   />
@@ -60,7 +57,6 @@ AtlasOS modifies Windows to improve privacy, usability, and performance without 
   <QuickLinkCard
     href="/docs/contributing/"
     icon="tabler:code"
-    label="Contribute"
     title="Contributing"
     description="Contribute to AtlasOS"
   />
@@ -102,7 +98,7 @@ AtlasOS (also called Atlas) removes unnecessary services, reduces telemetry, and
   />
 
   <CommunityLink
-    href="https://github.com/Atlas-OS/Atlas/tree/main/src"
+    href="https://github.com/Atlas-OS/Atlas/tree/main/playbook"
     icon="tabler:code"
     title="Source Code"
     description="See what Atlas does under the hood"

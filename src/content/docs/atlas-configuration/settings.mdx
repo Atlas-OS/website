@@ -26,11 +26,9 @@ If the Atlas folder is missing, follow{' '}<AtlasFolderRestoreLink />.
 
 ## Before you start
 
-These settings control Windows features that Atlas modifies by default. Before changing:
+These instructions describe Atlas 0.6. Your current settings also depend on your installation choices and changes made afterwards. A filename containing `(default)` identifies a supplied preset; it does not prove that preset is active on your PC.
 
-- Understand what each feature does
-- Have a reason to change the default
-- Atlas defaults are optimized for performance and responsiveness
+Change one setting at a time, follow the script's restart or sign-out prompt, and check the result before changing anything else. During an upgrade, Atlas reapplies recognized recorded choices; it cannot recover every custom registry edit. See [what carries over](/docs/upgrade/requirements/).
 
 For more configuration options, check:
 
@@ -40,9 +38,9 @@ For more configuration options, check:
 
 ## Background apps
 
-**When to use:** Enable if you need apps to run in the background (e.g., Sea of Thieves requires this).
+**When to use:** Enable if an app needs background access to work correctly.
 
-By default, AtlasOS disables background apps to improve system responsiveness and reduce resource usage. Some games and applications require background apps to function properly.
+Atlas restricts background access for Windows apps on a fresh installation. This setting does not stop every desktop application or startup program from running in the background.
 
 To enable background apps, run the <CodeInline text="Enable Background Apps.cmd" /> script in <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="Background Apps" /> and restart your system.
 
@@ -73,7 +71,7 @@ To switch methods:
 2. Run the appropriate script or registry file for your desired method
 3. Restart your system
 
-**Automatic:** Windows Update handles all driver installations automatically.
+**Automatic:** Windows Update installs available drivers. Some devices still need a manufacturer package; see the [drivers guide](/docs/essential-setup/drivers/).
 **Manual:** You install drivers yourself for full control over versions.
 
 <span id="automatic-updates"></span>
@@ -86,7 +84,7 @@ During installation, you choose how Atlas handles automatic Windows updates. To 
 
 - <CodeInline text="Disable Automatic Updates (default).cmd" /> restores the Atlas default.
 - <CodeInline text="Enable Automatic Updates.cmd" /> lets Windows install updates automatically.
-- <CodeInline text="Pause Updates" /> and <CodeInline text="Update Notifications" /> folders provide related controls.
+- The separate <CodeInline text="Pause Updates" /> and <CodeInline text="Update Notifications" /> folders under <CodeInline text="3. General Configuration" /> provide related controls.
 
 ## FSO and Game Bar
 
@@ -116,14 +114,14 @@ If you prefer fullscreen exclusive mode (better for some games with frame limiti
 
 ## HAGS (Hardware-Accelerated GPU Scheduling)
 
-**When to use:** Test if you want to improve GPU performance, but results vary by system.
+**When to use:** Check this setting when an application requires it, or compare its effect on your own games.
 
-HAGS is a Windows feature that can improve performance in GPU-intensive tasks by allowing the GPU to manage its memory more efficiently. However, it doesn't always produce positive results on every system.
+HAGS moves some GPU scheduling work to the GPU. Availability depends on your hardware and driver, and enabling it does not guarantee higher performance.
 
 To test HAGS:
 
-1. Check if your GPU supports it (NVIDIA 10-series or newer, AMD RX 5000 series or newer)
-2. Enable it in Windows Settings<IconArrow />**System**<IconArrow />**Display**<IconArrow />**Graphics settings**
+1. Install the appropriate graphics driver
+2. Open Windows Settings<IconArrow />**System**<IconArrow />**Display**<IconArrow />**Graphics** and look for the hardware-accelerated GPU scheduling option under the default graphics settings
 3. Restart your system
 4. Test your applications to see if performance improves
 
@@ -134,9 +132,9 @@ To test HAGS:
 
 ## Lanman workstation (SMB)
 
-**When to use:** Disable only if you don't need file sharing and don't use software that requires SMB (like AMD Ryzen Master).
+**When to use:** Keep enabled if you access network shares, mapped drives, or network printers.
 
-SMB (Server Message Block) enables file sharing over a network. It's also required by some software like AMD Ryzen Master. AtlasOS enables it by default.
+Lanman Workstation provides SMB client support for connecting to other computers' shares. This is separate from sharing folders from your own PC. Disabling it can break those connections and software that depends on them.
 
 To disable SMB, run the <CodeInline text="Disable Lanman Workstation.cmd" /> script in <CodeInline text="6. Advanced Configuration" /><IconArrow /><CodeInline text="Services" /><IconArrow /><CodeInline text="Lanman Workstation (SMB)" /> and restart.
 
@@ -144,7 +142,7 @@ To disable SMB, run the <CodeInline text="Disable Lanman Workstation.cmd" /> scr
 
 **When to use:** Disable if you don't need to see or share with other computers on your network.
 
-Network Discovery allows your computer to find and be found by other devices on your local network. AtlasOS enables it by default.
+Network discovery lets computers find one another on a local network. Its services, Windows network profile, firewall rules, and File Explorer visibility are separate controls. Enabling the services alone does not configure all of them.
 
 ### Disable network discovery
 
@@ -152,14 +150,15 @@ To disable network discovery, run the <CodeInline text="Disable Network Discover
 
 ### Enable file sharing
 
-AtlasOS disables file sharing by default. To share files with other Windows devices on your network:
+Atlas disables file sharing on a fresh installation. To share files with other Windows devices on your network:
 
 1. Run the <CodeInline text="Enable File Sharing.cmd" /> script in <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="File Sharing" />
-2. Restart your system
+2. Review the prompts for switching active networks to **Private**, enabling sharing rules, and restoring the sharing context menu. Only use Private for networks you trust.
+3. Restart when prompted, then choose the specific folders and users to share with in Windows. Enabling sharing support does not share every folder automatically.
 
 ### Network navigation pane
 
-Control whether the "Network" section appears in File Explorer. To enable it, run the <CodeInline text="User Network Navigation Pane choice.cmd" /> script in <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="File Sharing" /><IconArrow /><CodeInline text="Network Navigation Pane" /> and restart.
+Control whether **Network** appears in File Explorer with <CodeInline text="Enable Network Navigation Pane.cmd" /> or <CodeInline text="Disable Network Navigation Pane (default).cmd" /> in <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="File Sharing" /><IconArrow /><CodeInline text="Network Navigation Pane" />. Showing this item does not itself enable sharing.
 
 ## Power settings
 
@@ -167,24 +166,15 @@ Control power-related behavior that affects performance, responsiveness, and pow
 
 ### CPU idle
 
-**When to use:** Disable only if you need maximum responsiveness and have adequate cooling. Not recommended for laptops or systems left running unattended.
+Keep CPU idle enabled for normal use, especially on laptops. Disabling it prevents processor idle power saving and can increase heat and power consumption; a performance benefit is not guaranteed.
 
-Disabling CPU idle prevents the CPU from entering power-saving states, which reduces jitter and improves responsiveness by keeping the CPU at C-State 0. However, this increases power consumption and heat.
-
-**Warning:** Only disable CPU idle if:
-
-- You have adequate cooling
-- You don't leave your PC running unattended for long periods
-- You're not using a laptop
-- You're comfortable managing power consumption
-
-To disable CPU idle, use the appropriate script in <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="CPU Idle" />.
+The <CodeInline text="CPU Idle" /> folder under <CodeInline text="3. General Configuration" /> contains <CodeInline text="Disable Idle.cmd" /> and <CodeInline text="Enable Idle (default).cmd" />. Atlas rejects disabling idle on systems with Hyper-Threading or SMT enabled.
 
 ### Hibernation
 
 **When to use:** Enable if you want your system to save its state to disk when shutting down (useful for quick resume).
 
-Hibernation saves the current session to disk and restores it when you start Windows again. AtlasOS disables it by default because it can cause stability problems.
+Hibernation saves your session to disk so you can resume it later. Atlas 0.6 disables it when you select **Disable Hibernation** during installation. Leaving that choice unchecked does not force hibernation on if it was already disabled.
 
 To enable hibernation, run the <CodeInline text="Enable Hibernation.cmd" /> script in <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="Hibernation" />.
 
@@ -192,17 +182,15 @@ To enable hibernation, run the <CodeInline text="Enable Hibernation.cmd" /> scri
 
 **When to use:** Adjust based on your priority, performance vs. power efficiency.
 
-Control your system's power-saving behavior. These settings affect both the power scheme and related system behavior, impacting performance.
+The **Maximum Performance (Disable Power Saving)** installation choice applies Atlas's power policy. Keeping power saving uses the Balanced plan during installation. Consider battery life, heat, and your workload before changing this choice.
 
 To modify power saving settings, use the scripts in <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="Power-saving" />.
 
 ### Timer resolution
 
-**When to use:** Increase if you use multimedia applications or frame rate limiters that benefit from precise timing.
+Atlas leaves its forced timer-resolution task disabled by default. Enable it only to investigate a specific timing problem and compare the result in the affected application; it can increase power consumption.
 
-Increasing timer resolution improves precision for applications requiring consistent pacing, such as multimedia apps and frame rate limiters. This comes at the cost of increased power consumption.
-
-Adjust timer resolution using the scripts in <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="Timer Resolution" />. Test to see if your applications benefit.
+Use <CodeInline text="Enable timer resolution.cmd" /> or <CodeInline text="Disable timer resolution (default).cmd" /> in <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="Timer Resolution" />.
 
 ## Printing
 
@@ -243,7 +231,7 @@ Learn more about [Open-Shell](https://github.com/Open-Shell/Open-Shell-Menu) and
 
 **When to use:** Disable only if you don't need the ability to restore your system to a previous state and want to save disk space.
 
-System Restore creates snapshots that let you return Windows to an earlier state. Atlas enables it by default, and the snapshots use disk space.
+System Restore uses restore points to roll back some system changes. The Atlas enable script turns on protection for the Windows volume; it does not create a restore point or enable protection on other drives. Check protection and available restore points in Windows before relying on it.
 
 To disable System Restore, run the <CodeInline text="Disable System Restore.cmd" /> script in <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="System Restore" /> and restart.
 
@@ -256,6 +244,6 @@ To disable System Restore, run the <CodeInline text="Disable System Restore.cmd"
 
 **When to use:** Enable if you prefer Windows' visual animations and effects over maximum performance.
 
-Windows includes visual effects like animated menus, tooltips, and window transitions. These enhance appearance but can slightly reduce performance. AtlasOS disables them by default for better performance.
+Windows includes animated menus, tooltips, and window transitions. Atlas applies a reduced set of effects on a fresh installation. Choose the appearance you prefer; turning off every effect is not required.
 
 To restore Windows visual effects, run the <CodeInline text="Default Windows Visual Effects.cmd" /> script in <CodeInline text="4. Interface Tweaks" /><IconArrow /><CodeInline text="Visual Effects (Animations)" />.

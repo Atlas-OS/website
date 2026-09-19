@@ -4,7 +4,7 @@ import { Icon } from 'astro-icon/components';
 interface Props {
   href: string;
   icon: string;
-  label: string;
+  label?: string;
   title: string;
   description: string;
   external?: boolean;
@@ -15,18 +15,22 @@ const { href, icon, label, title, description, external = false } = Astro.props;
 const externalAttrs = external ? { target: '_blank', rel: 'noopener noreferrer' } : {};
 ---
 
-<a
-  href={href}
-  {...externalAttrs}
-  class="quick-link-card docs-surface not-prose group relative p-5 transition-[background-color,box-shadow,scale] duration-200 active:scale-[0.96]"
->
-  <div class="mb-2 flex items-center gap-3 text-sm" style="color: var(--docs-text-muted);">
-    <div class="quick-link-icon-wrapper">
-      <Icon name={icon} class="h-4 w-4" aria-hidden="true" />
+<a href={href} {...externalAttrs} class="quick-link-card docs-surface not-prose group relative block p-5">
+  <div
+    class="mb-3 flex items-center gap-3 text-sm"
+    style="color: var(--quick-link-icon-color, var(--docs-text-muted));"
+  >
+    <div class="docs-link-icon">
+      <Icon name={icon} class="h-5 w-5" aria-hidden="true" />
     </div>
-    <span>{label}</span>
+    {label && <span>{label}</span>}
+    <Icon
+      name={external ? 'tabler:arrow-up-right' : 'tabler:arrow-right'}
+      class="ml-auto h-4 w-4 shrink-0 text-white/45 transition-colors group-hover:text-white/75"
+      aria-hidden="true"
+    />
   </div>
-  <span class="mb-2 block text-lg font-semibold transition-colors duration-200 group-hover:text-white">{title}</span>
+  <span class="mb-1 block text-base font-semibold text-[var(--docs-text-primary)]">{title}</span>
   <p class="text-sm" style="color: var(--docs-text-secondary);">
     {description}
   </p>

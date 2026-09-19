@@ -1,50 +1,22 @@
 ---
-title: "Upgrade guide"
-metaDescription: "Upgrade AtlasOS to a newer version: requirements, assets, and step-by-step instructions."
-description: Upgrade AtlasOS to a newer version.
+title: "Upgrade Atlas"
+metaDescription: "Upgrade to Atlas 0.6 with Atlas Manager or AME Wizard. Check your Atlas version and Windows build first."
+description: Move an eligible Atlas installation to Atlas 0.6.
 order: 7
-sidebar:
-  label: "Upgrade Atlas"
 ---
 
-import Callout from '@/components/docs/Callout.astro';
 import QuickLinkCard from '@/components/docs/QuickLinkCard.astro';
 import QuickLinksGrid from '@/components/docs/QuickLinksGrid.astro';
-import CodeInline from '@/components/docs/CodeInline.astro';
 
-Upgrade a supported Atlas installation without reinstalling Windows. The upgrade keeps your files, apps, and most Atlas settings.
+Atlas Manager can upgrade an eligible Atlas installation without reinstalling Windows. AME Wizard remains an alternative for applying the new playbook.
 
-<Callout type="tip" title="Quick Summary">
-  The current Atlas Playbook supports in-place upgrades from **AtlasOS v0.5.0**. Older Atlas versions
-  are not advertised by the current Playbook as direct upgrade sources.
-</Callout>
+Coming from an earlier release? Read [What changed in Atlas 0.6?](/docs/upgrade/whats-new/) for the new installation flow, settings migration, and ISO options.
 
-## Requirements
-
-- Your system currently runs **AtlasOS v0.5.0**
-- **v0.4.1 and older** systems should follow the [fresh installation guide](/docs/install/) unless a specific archived upgrade path is published for that version
-- You have the latest **AME Beta** executable
-- You have the **new Atlas Playbook** (<CodeInline text=".apbx" /> or release zip) for the version you want to upgrade to
-
-<Callout type="warning" title="Version Check">
-  [Check your AtlasOS version](/docs/faq/general/#checking-your-atlasos-version) before you download
-  the new Playbook.
-</Callout>
-
-## Quick start
+Atlas 0.6 declares **0.4.1, 0.5.0, and 0.5.1** as upgrade sources. Your PC must also run **Windows 11 25H2 (build 26200)**. Having a listed Atlas version does not make an older Windows build eligible.
 
 <QuickLinksGrid columns={{ md: 2 }}>
-  <QuickLinkCard
-    href="/docs/upgrade/requirements/"
-    icon="tabler:checklist"
-    title="Before Upgrading"
-    description="Verify you meet all requirements"
-  />
-
-  <QuickLinkCard
-    href="/docs/upgrade/upgrade/"
-    icon="tabler:arrow-up"
-    title="Upgrade Process"
-    description="Step-by-step upgrade instructions"
-  />
+  <QuickLinkCard href="/docs/upgrade/requirements/" icon="tabler:checklist" title="Before upgrading" description="Check eligibility, back up, and understand what carries over." />
+  <QuickLinkCard href="/docs/upgrade/upgrade/" icon="tabler:arrow-up" title="Upgrade instructions" description="Update through Manager or the AME Wizard alternative." />
 </QuickLinksGrid>
+
+The upgrade is designed to keep files and apps in place. Atlas configuration is reapplied using the new release's definitions, so review your choices and important settings afterwards.

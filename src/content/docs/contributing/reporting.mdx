@@ -1,38 +1,49 @@
 ---
-title: "How to report issues"
-metaDescription: "Report AtlasOS issues: AME Beta logs, what to include, where to report."
-description: How to report issues when testing AtlasOS.
+title: "Report issues"
+metaDescription: "Report Atlas Manager and playbook problems with diagnostic exports, reproduction steps, and version details."
+description: Collect useful evidence for an Atlas bug report.
 order: 45
 sidebar:
   label: "Report issues"
 ---
 
-import Callout from '@/components/docs/Callout.astro';
-import CodeInline from '@/components/docs/CodeInline.astro';
+Record what happened before retrying, clearing app data, or reinstalling Windows. Include the installation method: Atlas Manager, Manager-created media, or AME Wizard.
 
-Use this guide to report a problem found [during testing](/docs/contributing/testing/).
+## Export Atlas diagnostics
 
-## AME Beta logs
+In Atlas Manager, choose **Export diagnostics** in Settings or on the installation, ISO, or USB page. Use **Show diagnostic ZIP** to locate the archive.
 
-Before you report a problem, open <CodeInline text="C:\ProgramData\AME\Logs" /> and review:
+If the app cannot open, run this from its folder:
 
-- The <CodeInline text="Output.txt" /> from the latest Playbook
-  - Check for errors or logical issues in the scripts
-- The <CodeInline text="Log.yml" />
-  - Check if there are any errors from AME Beta
+```powershell
+.\AtlasManager.exe --export-diagnostics
+```
 
-Attach all logs to the report, even if you find the apparent error. The logs can contain your Windows username, so review them before posting.
+The default export location is `%LOCALAPPDATA%\AtlasOS\App\Diagnostics`. Export as the affected Windows account; another user's profile is not collected automatically.
+
+The archive includes app and playbook logs, preparation and media diagnostics, saved session details, and an installation report where available. Missing evidence is listed in its manifest. Original local logs are unchanged.
+
+Nothing is uploaded automatically. Exports redact common personal identifiers and credentials, but can retain hardware details, app names, error text, and parts of paths. Review the archive before sharing it.
+
+## AME Wizard logs
+
+For a Wizard installation, also collect the relevant `Output.txt` and `Log.yml` under `C:\ProgramData\AME\Logs`. These raw logs may contain personal information; review them before posting.
+
+If Manager is available, export diagnostics too. Wizard's own log and Atlas's installation evidence can explain different parts of the failure.
+
+## What to include
+
+- Atlas version, Manager or Wizard version, and Windows version/build.
+- The exact release or candidate you tested; include artifact hashes if supplied.
+- What you were doing, what you expected, and what happened instead.
+- The error message, approximate time and time zone, and whether the problem repeats.
+- Steps to reproduce, including relevant setup choices, driver mode, and other Windows accounts.
+- The diagnostic ZIP and relevant screenshots or Wizard logs.
+
+For a suspected Atlas regression, check whether the same issue occurs on unmodified Windows in the same environment. Do not discard the failed installation's evidence to do this.
 
 ## Where to report
 
-### Latest release
+Open an [Atlas GitHub issue](https://github.com/Atlas-OS/Atlas/issues) and complete the issue template. For release candidates, use the reporting channel named in the candidate's release notes.
 
-Open an [Atlas GitHub issue](https://github.com/Atlas-OS/Atlas/issues) and complete the issue template.
-
-### GitHub branch
-
-Report to the <CodeInline text="📘 ┃ playbook" /> channel in [Discord's 'Development' category](https://discord.com/invite/atlasos), or to [Atlas GitHub Issues](https://github.com/Atlas-OS/Atlas/issues). Follow the issue template.
-
-### Discord preview
-
-Report to the designated <CodeInline text="🧪 ┃ issue-reporting" /> forum channel under the 'Development' category.
+For setup questions, use [GitHub Discussions](https://github.com/Atlas-OS/Atlas/discussions) or the [Atlas Discord community](https://discord.com/invite/atlasos).

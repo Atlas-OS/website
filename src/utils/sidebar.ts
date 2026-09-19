@@ -162,8 +162,10 @@ function syncActiveLink(sidebar: HTMLElement, activePath = window.location.pathn
   for (const group of sidebar.querySelectorAll<HTMLElement>('[data-sidebar-group]')) {
     const containsPage = group.querySelector('a[aria-current="page"]') !== null;
     const key = group.dataset.sidebarKey ?? '';
-    // Sections default open, nested groups default closed; a remembered choice wins unless the page is inside.
-    const defaultOpen = group.dataset.sidebarDefault === 'open';
+    // A remembered choice wins over the default unless the current page is inside.
+    const defaultOpen =
+      group.dataset.sidebarDefault === 'open' ||
+      (currentPath === '/docs' && group.hasAttribute('data-sidebar-open-on-home'));
     setGroupOpen(group, containsPage || (remembered[key] ?? defaultOpen));
   }
 }
@@ -218,7 +220,7 @@ export function initSidebar(): void {
   const elements = getElements();
   if (!elements || elements.sidebar.dataset.initialized === 'true') return;
 
-  const { sidebar, toggleButton, closeButton, backdrop, scrollContainer } = elements;
+  const { sidebar, closeButton, backdrop, scrollContainer } = elements;
   sidebar.dataset.initialized = 'true';
 
   const controller = new AbortController();
@@ -229,11 +231,21 @@ export function initSidebar(): void {
   setupGroups(sidebar, signal);
   setupScrollbarReveal(scrollContainer, signal);
 
-  toggleButton.addEventListener(
-    'click',
-    () => setOpen(elements, !sidebar.classList.contains('open')),
-    { signal },
-  );
+  const boundToggleButtons = new WeakSet<HTMLElement>();
+  const bindToggleButton = () => {
+    // The sidebar persists across navigation; the header and its toggle do not.
+    const currentElements = getElements();
+    if (!currentElements) return;
+    Object.assign(elements, currentElements);
+    if (boundToggleButtons.has(elements.toggleButton)) return;
+    boundToggleButtons.add(elements.toggleButton);
+    elements.toggleButton.addEventListener(
+      'click',
+      () => setOpen(elements, !sidebar.classList.contains('open')),
+      { signal },
+    );
+  };
+  bindToggleButton();
   closeButton?.addEventListener('click', () => setOpen(elements, false), { signal });
   backdrop?.addEventListener('click', () => setOpen(elements, false), { signal });
   sidebar.addEventListener('keydown', event => trapFocus(sidebar, event), { signal });
@@ -274,6 +286,7 @@ export function initSidebar(): void {
         controller.abort();
         return;
       }
+      bindToggleButton();
       syncActiveLink(sidebar);
       if (scrollContainer && pendingScrollTop !== null)
         scrollContainer.scrollTop = pendingScrollTop;

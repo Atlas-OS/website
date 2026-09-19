@@ -9,15 +9,14 @@ interface Props {
 const { type = 'info', title } = Astro.props;
 
 const variants = {
-  info: { icon: 'tabler:info-circle', accent: 'border-l-primary/50', color: 'text-link', title: 'Info' },
-  tip: { icon: 'tabler:bulb', accent: 'border-l-primary/50', color: 'text-link', title: 'Tip' },
+  info: { icon: 'tabler:info-circle', color: 'text-link', title: 'Info' },
+  tip: { icon: 'tabler:bulb', color: 'text-link', title: 'Tip' },
   warning: {
     icon: 'tabler:alert-triangle',
-    accent: 'border-l-yellow-500/50',
-    color: 'text-yellow-500',
+    color: 'text-amber-300',
     title: 'Warning',
   },
-  danger: { icon: 'tabler:alert-circle', accent: 'border-l-red-500/50', color: 'text-red-500', title: 'Important' },
+  danger: { icon: 'tabler:alert-circle', color: 'text-red-300', title: 'Important' },
 } as const;
 
 const variant = variants[type];
@@ -25,18 +24,15 @@ const displayTitle = title ?? variant.title;
 ---
 
 <div
-  class:list={[
-    'callout not-prose my-6 rounded-r-[var(--docs-radius-lg)] border border-l-[3px] border-[var(--docs-surface-border)] bg-[var(--docs-surface-bg)] p-5',
-    variant.accent,
-  ]}
+  class="callout not-prose my-6 rounded-[var(--docs-radius-md)] border border-[var(--docs-surface-border)] bg-[var(--docs-surface-bg)] p-5"
   data-component="callout"
   data-type={type}
 >
   <div class="flex items-start gap-3">
     <Icon name={variant.icon} class:list={['mt-0.5 h-5 w-5 shrink-0', variant.color]} aria-hidden="true" />
     <div class="min-w-0 flex-1">
-      <p class:list={['mb-2 text-sm font-semibold', variant.color]}>{displayTitle}</p>
-      <div class="callout-content text-sm leading-relaxed text-white/90">
+      <p class:list={['mb-1 text-sm font-semibold', variant.color]}>{displayTitle}</p>
+      <div class="callout-content text-sm leading-relaxed text-[var(--docs-text-secondary)]">
         <slot />
       </div>
     </div>
@@ -44,30 +40,11 @@ const displayTitle = title ?? variant.title;
 </div>
 
 <style is:global>
-  @media (prefers-reduced-motion: no-preference) {
-    .callout {
-      animation: callout-fade-in var(--motion-duration-normal) var(--motion-ease-out);
-    }
-  }
-
-  @keyframes callout-fade-in {
-    from {
-      opacity: 0;
-      transform: translateY(8px);
-      filter: blur(4px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-      filter: blur(0);
-    }
-  }
-
   .callout-content p {
     margin: 0 0 0.5rem;
-    color: rgb(255 255 255 / 0.9);
+    color: var(--docs-text-secondary);
     font-size: 0.875rem;
-    line-height: 1.5;
+    line-height: 1.6;
   }
 
   .callout-content p:last-child {
@@ -103,7 +80,7 @@ const displayTitle = title ?? variant.title;
 
   .callout-content li {
     margin-bottom: 0.25rem;
-    color: rgb(255 255 255 / 0.9);
+    color: var(--docs-text-secondary);
   }
 
   .callout-content ul li {
@@ -119,14 +96,5 @@ const displayTitle = title ?? variant.title;
     height: 0.35em;
     background: var(--color-primary);
     border-radius: 2px;
-  }
-
-  .callout-content code {
-    background-color: var(--docs-surface-bg);
-    border: 1px solid var(--docs-surface-border);
-    color: var(--color-link);
-    padding: 0.125rem 0.375rem;
-    border-radius: var(--docs-radius-sm);
-    font-size: 0.875em;
   }
 </style>

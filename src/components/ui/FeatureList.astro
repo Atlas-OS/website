@@ -22,7 +22,7 @@ function isExternalUrl(url: string): boolean {
 }
 ---
 
-<div class={`not-prose space-y-6 my-6 ${className}`}>
+<div class={`feature-list not-prose space-y-6 my-6 ${className}`}>
   {items.map((item) => {
     const isExternal = item.href && (item.external || isExternalUrl(item.href));
     const linkAttrs = isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {};

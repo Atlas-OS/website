@@ -1,71 +1,52 @@
 ---
-title: "AME Beta FAQ"
-metaDescription: "AME Beta FAQ: flagged by Defender, installation failures, upgrades."
-description: AME Beta questions and troubleshooting.
+title: "AME Wizard FAQ"
+metaDescription: "Use AME Wizard with Atlas 0.6: compatibility, security warnings, installation failures, and logs."
+description: Questions about the alternative Atlas installer.
 order: 30
 ---
 
-import Callout from '@/components/docs/Callout.astro';
-import CodeInline from '@/components/docs/CodeInline.astro';
+## What is AME Wizard?
 
-Common questions about AME Beta and troubleshooting installation issues.
-
-## What is AME Beta?
-
-AME Beta is the tool used to install and upgrade AtlasOS. It applies the Atlas Playbook to your Windows installation.
+AME Wizard, also labelled AME Beta, applies playbook packages to Windows. You can use it as an [alternative installer](/docs/install/ame-wizard/) for Atlas 0.6. [Atlas Manager](/docs/install/playbook/) is the recommended setup app and does not require Wizard.
 
 ## AME Beta deleted or closed suddenly
 
-If AME Beta suddenly closes or gets deleted, especially when a new version is released:
+Check Windows Security's protection history to see what blocked or removed the file. Confirm that you downloaded Wizard from [Ameliorated](https://amelabs.net/). A detection alone does not establish whether a file is safe; do not add broad exclusions or assume every warning is a false positive.
 
-1. Add AME Beta as an exclusion in Windows Security
-2. Or temporarily disable Real-time protection in Windows Security
-
-<Callout type="info">
-  This is a false positive from Windows Defender. AME Beta is safe to use.
-</Callout>
+Follow the publisher's guidance for the exact detection. If you cannot resolve it, use Atlas Manager or ask for help with the detection details.
 
 ## Why is AME Beta being flagged?
 
-AME Beta may be flagged by Defender because it modifies system files. Expected for a tool that applies system optimizations.
+Tools that apply system changes can trigger security detections. Check the file's source and the reported detection before deciding what to do. The [Ameliorated documentation](https://docs.amelabs.net/using-wizard/running-playbook.html) covers Wizard's installation requirements.
 
 ## Installation issues
 
 ### AME Beta won't open
 
-- Run as administrator
-- Check Windows Security exclusions
-- Temporarily disable antivirus if needed
+Check the error, confirm the download is complete, and allow administrator access when requested. If antivirus blocked it, check protection history as described above.
 
 ### Upgrade option not available
 
-- Confirm you're on a version supported by the Playbook you are applying. The current Playbook declares AtlasOS v0.5.0 as its direct upgrade source.
-- Confirm you're using the latest AME Beta version
-- Check that you're using the correct Playbook file
+Atlas 0.6 declares upgrades from 0.4.1, 0.5.0, and 0.5.1, separately requiring Windows 11 25H2 (build 26200). Confirm both versions and the selected package against [Before upgrading](/docs/upgrade/requirements/). Use an up-to-date Wizard. Reapplying a package does not bypass these requirements.
 
 ### Installation fails
 
-- Check that you have enough disk space
-- Confirm Windows is activated
-- Run AME Beta as administrator
-- Check for conflicting software
+Read Wizard's error and keep the logs before retrying. Confirm that Windows and Store updates are complete, required restarts have finished, and no other installer is running. If the failure occurred while applying changes, the installation may be incomplete.
 
 ### "This Windows build is not supported"
 
-You likely haven't followed the installation guide to reinstall Windows. Follow the [Installation Guide](/docs/install/requirements/) to get a supported Windows version.
+Run `winver` to check the build. Atlas 0.6 requires 25H2, build 26200. Installing every update offered for an older Windows release does not necessarily move it to that build. Follow the [requirements](/docs/install/requirements/).
 
 ### "Cannot disable Defender" or "Cannot open Windows Defender settings"
 
-You likely haven't followed the installation documentation to reinstall Windows. Atlas requires a full Windows reinstall. Don't use "Reset this PC". Follow the [Installation Guide](/docs/install/requirements/).
+Check the Windows Security state and the reported error. A policy, missing component, or previous modification may need attention. Do not repeatedly bypass the check. Save the logs and report the problem if the guided steps cannot resolve it.
 
 ### "Reticulating Splines" or "Action taking a long time"
 
-These messages appear when there is no status change for 5–15 minutes. Usually this is due to a slow connection or computer. If stuck for a long time:
+A progress message that has not changed does not prove installation has stopped. Open **Show logs** and inspect the latest output. Keep the PC powered on while an operation is running; do not end a servicing process in Task Manager to force progress.
 
-1. Confirm you're on a fresh, fully updated Windows install (follow the [Installation Guide](/docs/install/requirements/))
-2. Turn off any overclocks
-3. Use the latest Atlas Playbook
-4. Try restarting and re-applying the Playbook
-5. Click **Show logs**, open **Output.txt**, and identify the stalled process. End it in Task Manager, then apply the Playbook again
+If the operation fails or appears stuck, save the logs and [report the issue](/docs/contributing/reporting/). Include the last visible stage, elapsed time, and whether the log continues to change.
 
-If unresolved, ask for help on [Discord](https://discord.com/invite/atlasos) or [GitHub Discussions](https://github.com/Atlas-OS/Atlas/discussions), and include your <CodeInline text="Output.txt" /> log.
+## Which logs should I share?
+
+Wizard logs are under `C:\ProgramData\AME\Logs`. Include the relevant `Output.txt` and `Log.yml`, after reviewing them for personal information. If Atlas Manager is available, also use **Export diagnostics** to collect Atlas installation evidence.

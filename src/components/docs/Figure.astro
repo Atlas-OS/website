@@ -16,7 +16,7 @@ interface Props {
 }
 
 const { src, alt, caption, width, height, loading = 'lazy', class: className = '' } = Astro.props;
-const imageClass = 'block h-auto w-full rounded-[calc(var(--docs-radius-lg)-3px)]';
+const imageClass = 'block h-auto w-full rounded-[calc(var(--docs-radius-md)-1px)]';
 ---
 
 <figure class:list={['docs-figure not-prose my-6', className]} data-component="figure">
@@ -31,17 +31,11 @@ const imageClass = 'block h-auto w-full rounded-[calc(var(--docs-radius-lg)-3px)
 </figure>
 
 <style>
-  /* Gradient hairline frame: brand blue fading to a neutral edge, sitting on the surface shadow. */
   .docs-figure-frame {
-    padding: 3px;
-    border-radius: var(--docs-radius-lg);
-    background: linear-gradient(
-      135deg,
-      color-mix(in oklch, var(--color-primary) 45%, transparent),
-      rgba(255, 255, 255, 0.08) 45%,
-      color-mix(in oklch, var(--color-primary) 25%, transparent)
-    );
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+    overflow: hidden;
+    border: 1px solid var(--docs-surface-border);
+    border-radius: var(--docs-radius-md);
+    background: var(--docs-surface-bg);
   }
 
   .docs-figure-frame :global(img) {

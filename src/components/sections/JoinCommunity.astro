@@ -22,7 +22,12 @@ import Button from '@/components/ui/Button.astro';
       Follow us
     </Button>
   </div>
-  <div class="absolute left-1/2 -z-20 h-[4rem] w-full max-w-7xl -translate-x-1/2 opacity-50">
-    <div class="h-full w-full rounded-full bg-primary opacity-70 blur-[200px]"></div>
-  </div>
+  <div class="community-glow pointer-events-none absolute -inset-y-16 inset-x-0 -z-10" aria-hidden="true"></div>
 </section>
+
+<style>
+  .community-glow {
+    /* Keep the entire fade inside the layer so none of its edges clip the glow. */
+    background: radial-gradient(ellipse 48% 48% at 50% 50%, var(--home-ambient-glow), transparent 100%);
+  }
+</style>

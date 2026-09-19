@@ -1,6 +1,6 @@
 ---
 title: "Drivers guide"
-metaDescription: "Install AtlasOS drivers: graphics, chipset, network, audio, Bluetooth. Order and guides."
+metaDescription: "Choose Windows Update or manual driver installation, identify your hardware, and find the right manufacturer drivers."
 description: Install drivers for AtlasOS.
 order: 1
 sidebar:
@@ -14,19 +14,36 @@ import QuickLinksGrid from '@/components/docs/QuickLinksGrid.astro';
 import CodeInline from '@/components/docs/CodeInline.astro';
 import IconArrow from '@/components/ui/IconArrow.astro';
 
-Install the drivers that match your hardware. Follow this guide if you selected manual driver installation during setup.
+Atlas Manager offers automatic driver installation through Windows Update during preparation. Start there unless you need a specific manufacturer driver or prefer to manage drivers yourself. This guide also helps if a device is missing or does not work after installation.
 
-## Benefits of manual installation
+## When to install drivers manually
 
-Manual installation gives you:
+Use the device manufacturer's package when:
 
-- **Full control** over driver versions
-- **Potentially lower** system resource usage
-- **Fewer** potentially unwanted applications
+- Windows Update has not found a working driver.
+- A laptop or prebuilt PC needs model-specific features.
+- You need a particular driver version to resolve a documented problem.
+
+Manual installation does not automatically improve performance or reduce resource usage. Install the packages your hardware needs and review any optional companion software.
+
+## Find the right package
+
+1. Identify your exact PC or motherboard model. For an individual device, open **Device Manager**, then its **Properties → Details → Hardware Ids** if the name is unclear.
+2. Use the manufacturer's official support page. For laptops and prebuilt PCs, start with the PC manufacturer's model page.
+3. Match the package to your device and Windows architecture. Choose a supported Windows 11 driver and follow its installation instructions.
+4. Restart when requested, then test the device before installing another version.
+
+Avoid bulk driver-updater utilities and downloading every version listed for a device. If you have no internet connection, transfer the correct network driver from another PC; see [network drivers](/docs/essential-setup/drivers/network/).
 
 ## Switch to automatic installation
 
 Open <CodeInline text="C:\Windows\AtlasDesktop" /><IconArrow /><CodeInline text="2. Drivers" /><IconArrow /><CodeInline text="Drivers from Windows Update" /> and run <CodeInline text="Enable Drivers from Windows Update.reg" />. Restart afterward so Windows can apply the driver policy.
+
+Then open **Settings → Windows Update** and check for updates. Review **Advanced options → Optional updates** for additional drivers if needed. To return to manual control, use <CodeInline text="Disable Drivers from Windows Update.reg" /> in the same folder. This changes future update behavior; it does not uninstall existing drivers.
+
+See [Microsoft's driver-update guidance](https://support.microsoft.com/en-us/windows/hardware/drivers/automatically-get-recommended-and-updated-hardware-drivers) for the current Windows steps.
+
+If the Atlas folder is missing, follow <AtlasFolderRestoreLink />.
 
 ## Which drivers do I need?
 
@@ -44,8 +61,8 @@ Install only the drivers for hardware in your system:
 </Callout>
 
 <Callout type="tip">
-  Install drivers in this order: graphics → network → audio → chipset → other devices.
-  This restores display and internet support first.
+  Restore network access first if you are offline. Otherwise, follow the PC or motherboard
+  manufacturer's installation order and restart instructions; there is no single order for every PC.
 </Callout>
 
 ## Driver installation guides
@@ -76,7 +93,7 @@ Install only the drivers for hardware in your system:
     href="/docs/essential-setup/drivers/chipset/"
     icon="tabler:cpu"
     title="Chipset Drivers"
-    description="Install chipset drivers for better performance"
+    description="Find the chipset package for your platform"
   />
 
   <QuickLinkCard

@@ -23,8 +23,6 @@ const marginClasses = { '6': 'my-6', '8': 'my-8' } as const;
     gapClasses[gap],
     marginClasses[marginY],
   ]}
-  data-animate
-  data-animate-stagger
 >
   <slot />
 </div>
@@ -38,34 +36,5 @@ const marginClasses = { '6': 'my-6', '8': 'my-8' } as const;
     margin-top: 3.25rem;
     padding-top: 0;
     border-top: none;
-  }
-
-  /* The grid itself never animates; its cards reveal one after another. */
-  html[data-motion] .quick-links-grid[data-animate] {
-    opacity: 1;
-    transform: none;
-    filter: none;
-    transition: none;
-    will-change: auto;
-  }
-
-  html[data-motion] .quick-links-grid[data-animate] > * {
-    opacity: 0;
-    transform: translateY(var(--motion-reveal-distance, 20px)) scale(var(--motion-reveal-scale-start, 1));
-    filter: blur(var(--motion-reveal-blur, 4px));
-    transition:
-      opacity var(--motion-reveal-duration, var(--motion-duration-normal))
-        var(--motion-reveal-ease, var(--motion-ease-out)),
-      transform var(--motion-reveal-duration, var(--motion-duration-normal))
-        var(--motion-reveal-ease, var(--motion-ease-out)),
-      filter var(--motion-reveal-duration, var(--motion-duration-normal))
-        var(--motion-reveal-ease, var(--motion-ease-out));
-    transition-delay: calc(var(--motion-reveal-step, 100ms) * var(--animate-delay, 0));
-  }
-
-  html[data-motion] .quick-links-grid[data-animate].animate-in > * {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    filter: blur(0);
   }
 </style>

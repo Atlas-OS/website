@@ -16,7 +16,7 @@ const copyButtonClass =
 
 <div class="code-block docs-surface not-prose group relative my-6 overflow-hidden" data-component="code-block">
   {title && (
-    <div class="code-block-title flex items-center justify-between gap-3 border-b border-[var(--docs-surface-border)] px-4 py-3 text-sm font-medium text-[var(--docs-text-secondary)]">
+    <div class="code-block-title flex items-center justify-between gap-3 border-b border-[var(--docs-surface-border)] px-5 py-2 text-sm font-medium text-[var(--docs-text-secondary)]">
       <span>{title}</span>
       <button type="button" class={copyButtonClass} aria-label="Copy code">
         <Icon name="tabler:copy" class="copy-code-icon h-4 w-4" aria-hidden="true" />
@@ -25,7 +25,12 @@ const copyButtonClass =
     </div>
   )}
   <div class="relative">
-    <pre class="code-block-pre m-0 overflow-x-auto p-4 font-mono text-sm leading-relaxed whitespace-pre text-[var(--docs-text-primary)]"><code>{code}</code></pre>
+    <pre
+      class:list={[
+        !title && 'pr-16',
+        'code-block-pre m-0 overflow-x-auto p-5 font-mono text-sm leading-relaxed whitespace-pre text-[var(--docs-text-primary)]',
+      ]}
+    ><code>{code}</code></pre>
     {!title && (
       <button type="button" class:list={[copyButtonClass, 'absolute top-2 right-2']} aria-label="Copy code">
         <Icon name="tabler:copy" class="copy-code-icon h-4 w-4" aria-hidden="true" />
