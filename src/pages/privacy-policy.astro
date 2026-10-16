@@ -1,0 +1,240 @@
+---
+import DefaultLayout from '@/layouts/DefaultLayout.astro';
+
+// main has no shared constants module; native-docs imports this from @/constants.
+const CONTACT_EMAIL = 'contact@atlasos.net';
+
+const lastUpdated = 'October 16, 2026';
+---
+
+<DefaultLayout
+  title="Privacy Policy | AtlasOS"
+  description="AtlasOS privacy policy covering the website, analytics, the download counter, Atlas Manager reports, third-party services, and your rights."
+>
+  <section class="mx-auto mt-16 max-w-4xl px-4 pb-16">
+    <h1 class="mb-2 text-4xl font-semibold tracking-tight text-white md:text-5xl">Privacy Policy</h1>
+    <p class="mb-8 text-sm text-white/50">Last updated: {lastUpdated}</p>
+
+    <div class="space-y-8 leading-relaxed text-white/75">
+      <div>
+        <h2 class="mb-3 text-xl font-semibold text-white">Overview</h2>
+        <p>
+          AtlasOS is an open-source project that modifies Windows to improve performance, privacy, and usability. We
+          keep data collection to a minimum and explain here exactly what we do process. This policy covers the AtlasOS
+          website (<strong class="text-white/90">atlasos.net</strong>), the services it uses, and the AtlasOS software
+          including Atlas Manager. The bot of the AtlasOS Discord server has{' '}
+          <a class="text-primary hover:underline" href="/privacy-policy/discord-bot/">
+            its own privacy policy
+          </a>
+          .
+        </p>
+      </div>
+
+      <div>
+        <h2 class="mb-3 text-xl font-semibold text-white">Website Analytics</h2>
+        <p>
+          We measure website traffic with{' '}
+          <a class="text-primary hover:underline" href="https://plausible.io" target="_blank" rel="noopener noreferrer">
+            Plausible Analytics
+          </a>{' '}
+          Community Edition, which we host ourselves at <strong class="text-white/90">pla.atlasos.net</strong>. It does
+          not use cookies and does not track you across websites. To count unique visitors, Plausible combines your IP
+          address and browser user agent with a random value that changes every 24 hours and keeps only the resulting
+          one-way identifier; your IP address is used to look up your country and is never stored. We see aggregate
+          statistics such as page views, referring sites, browser, operating system, and country. The data stays on our
+          own server and is not shared with Plausible or anyone else.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="mb-3 text-xl font-semibold text-white">Download Counter</h2>
+        <p class="mb-3">
+          When you click a download button, the website tells our download counter at{' '}
+          <strong class="text-white/90">api.atlasos.net</strong> that a download happened. So that each visitor is
+          counted once per version, the counter stores a one-way hash of your IP address combined with the version and a
+          secret key. Your IP address itself is not stored, and the counter keeps no logs of it. The hashes are kept so
+          that repeat downloads are not counted twice.
+        </p>
+        <p>
+          The homepage also shows how many people starred AtlasOS on GitHub and the public GitHub names and avatars of
+          recent stargazers, which our server copies from GitHub's public API.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="mb-3 text-xl font-semibold text-white">AI Documentation Assistant</h2>
+        <p>
+          Our documentation includes an optional AI assistant provided by{' '}
+          <a class="text-primary hover:underline" href="https://kapa.ai" target="_blank" rel="noopener noreferrer">
+            Kapa.ai
+          </a>
+          . It only loads when you open it. Your questions and the conversation are sent to Kapa.ai to generate answers,
+          and Kapa.ai protects the assistant against abuse with Google reCAPTCHA, so Google also receives information
+          about your browser while you use it. See{' '}
+          <a
+            class="text-primary hover:underline"
+            href="https://www.kapa.ai/privacy-policy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Kapa.ai's privacy policy
+          </a>{' '}
+          and{' '}
+          <a
+            class="text-primary hover:underline"
+            href="https://policies.google.com/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Google's privacy policy
+          </a>
+          .
+        </p>
+      </div>
+
+      <div>
+        <h2 class="mb-3 text-xl font-semibold text-white">Windows ISO Downloads</h2>
+        <p>
+          The Windows download tool in our documentation asks our Cloudflare Worker for official download links. The
+          Worker retrieves them from Microsoft and caches the links (and nothing about you) for up to 24 hours. The ISO
+          file itself downloads directly from Microsoft, which receives your IP address under{' '}
+          <a
+            class="text-primary hover:underline"
+            href="https://privacy.microsoft.com/privacystatement"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Microsoft's privacy statement
+          </a>
+          . Cloudflare keeps short-lived technical logs of requests to the Worker for troubleshooting.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="mb-3 text-xl font-semibold text-white">Other Services Your Browser Contacts</h2>
+        <p>
+          Some pages load release information directly from GitHub's API, and download buttons and links lead to GitHub
+          (Atlas releases), Ameliorated (AME Wizard), jsDelivr (brand assets), and Microsoft. When your browser connects
+          to these services, they receive your IP address and process it under their own privacy policies.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="mb-3 text-xl font-semibold text-white">Cookies</h2>
+        <p>
+          This website does not set any cookies of its own, and our analytics work without cookies. Cloudflare may set a
+          strictly necessary security cookie when it checks whether a visitor is a bot, and the AI assistant may store
+          data in your browser while you use it. We do not use advertising or tracking cookies.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="mb-3 text-xl font-semibold text-white">Data We Do Not Collect</h2>
+        <ul class="list-disc space-y-1 pl-6">
+          <li>The website does not ask for your name or email address, and we do not store visitors' IP addresses.</li>
+          <li>We do not use cookies or local storage to track you, and we do not track you across websites.</li>
+          <li>We do not sell, rent, or share any data with third parties for advertising or marketing.</li>
+          <li>We do not build profiles of visitors.</li>
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="mb-3 text-xl font-semibold text-white">AtlasOS Software</h2>
+        <p class="mb-3">
+          AtlasOS runs entirely on your PC and has no telemetry. Atlas Manager connects on its own only to GitHub, to
+          check for and download Atlas releases, and to Microsoft's Windows release information page. It identifies
+          itself to them as Atlas Manager, and they receive your IP address. All source code is publicly available on{' '}
+          <a
+            class="text-primary hover:underline"
+            href="https://github.com/Atlas-OS/Atlas"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub
+          </a>
+          .
+        </p>
+        <p>
+          Nothing is sent to us unless you choose <strong class="text-white/90">Send a report</strong> in Atlas Manager
+          or use the report website at <strong class="text-white/90">reports.atlasos.net</strong>. A report contains
+          your message, any contact details you choose to give, the Atlas Manager version, and any diagnostics you
+          include; you can review the diagnostics before sending. Reports are visible only to the Atlas team. The team
+          may use AI services from other companies to help investigate; these receive your message and diagnostics but
+          never your contact details. Reports, and any copies the team downloads, are deleted after 90 days. The report
+          service's security systems may record connection details, including IP addresses.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="mb-3 text-xl font-semibold text-white">Email</h2>
+        <p>
+          If you email us, we receive your email address and message. Cloudflare Email Routing forwards them to the
+          team, and we use them only to reply to you.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="mb-3 text-xl font-semibold text-white">Hosting &amp; Security</h2>
+        <p>
+          The website is hosted on{' '}
+          <a
+            class="text-primary hover:underline"
+            href="https://www.cloudflare.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Cloudflare
+          </a>
+          . Our analytics, download counter and status page run on a server operated by AtlasOS that is reachable only
+          through Cloudflare, with its data encrypted at rest. Cloudflare processes technical data such as IP addresses
+          to deliver the site and protect it from attacks; see{' '}
+          <a
+            class="text-primary hover:underline"
+            href="https://www.cloudflare.com/privacypolicy/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Cloudflare's privacy policy
+          </a>
+          . All of our sites are served only over HTTPS.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="mb-3 text-xl font-semibold text-white">Your Rights</h2>
+        <p>
+          You can ask us what data we hold about you, or ask us to correct or delete it, by emailing us. Website
+          analytics cannot be linked back to you. For a report you sent, tell us roughly when you sent it and any
+          contact details you gave so we can find it. We respond within 30 days.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="mb-3 text-xl font-semibold text-white">Children's Privacy</h2>
+        <p>
+          This website is not directed at children under the age of 13. We do not knowingly collect any personal
+          information from children.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="mb-3 text-xl font-semibold text-white">Changes to This Policy</h2>
+        <p>
+          We will update this policy when we start processing something new or use data differently. The date at the top
+          always shows the latest version.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="mb-3 text-xl font-semibold text-white">Contact</h2>
+        <p>
+          If you have questions about this privacy policy, contact us at
+          <a class="text-primary hover:underline" href={`mailto:${CONTACT_EMAIL}`}>
+            {CONTACT_EMAIL}
+          </a>
+          .
+        </p>
+      </div>
+    </div>
+  </section>
+</DefaultLayout>
