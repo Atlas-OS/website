@@ -3,7 +3,6 @@ import { CONTACT_EMAIL } from '@/constants';
 import DefaultLayout from '@/layouts/DefaultLayout.astro';
 
 const lastUpdated = 'October 16, 2026';
-const discordInvite = 'https://discord.gg/atlasos';
 
 const linkedData = [
   {
@@ -19,7 +18,7 @@ const linkedData = [
   {
     data: 'Per-moderator action counts (how many bans, kicks, timeouts and so on each moderator issued)',
     why: 'Staff workload and transparency statistics.',
-    kept: 'Until the moderator asks us to delete them; then they are merged into an anonymous total.',
+    kept: 'Until deletion, when merged into a total labelled Deleted, unless retained for moderation (see below).',
   },
   {
     data: 'Invite attribution: which invite code you joined with and who created it; invite codes and how often each was used',
@@ -51,26 +50,38 @@ const linkedData = [
   <section class="mx-auto mt-16 max-w-4xl px-4 pb-16">
     <h1 class="mb-2 text-4xl font-semibold tracking-tight text-white md:text-5xl">Discord Bot Privacy Policy</h1>
     <p class="mb-8 text-sm text-white/50">Last updated: {lastUpdated}</p>
-
     <div class="space-y-8 leading-relaxed text-white/75">
-      <div>
+      <div class="space-y-3">
         <h2 class="mb-3 text-xl font-semibold text-white">Overview</h2>
         <p>
           Atlas is the Discord bot of the{' '}
-          <a class="text-primary hover:underline" href={discordInvite} target="_blank" rel="noopener noreferrer">
+          <a class="text-primary hover:underline" href="https://discord.gg/atlasos">
             AtlasOS Discord server
           </a>
-          . It is operated by the AtlasOS project. This policy explains what Atlas collects, why, where it is kept, for
-          how long, and how to have it corrected or deleted. Atlas only works inside the AtlasOS server; if you are not
-          a member of that server, Atlas does not collect anything about you. For the AtlasOS website, see our{' '}
+          . It is operated by the AtlasOS project ("we", "us"). This policy explains what Atlas collects, why, where it
+          is kept, for how long, and how to have it corrected or deleted. For the AtlasOS website, see our{' '}
           <a class="text-primary hover:underline" href="/privacy-policy/">
             main privacy policy
           </a>
           .
         </p>
+        <p>
+          Atlas's server features only operate inside the AtlasOS server. Atlas also processes direct messages sent to
+          it and may retain records about former members and people involved in moderation.
+        </p>
+        <p>
+          <strong class="text-white/90">Contact:</strong> email{' '}
+          <a class="text-primary hover:underline" href={`mailto:${CONTACT_EMAIL}`}>
+            {CONTACT_EMAIL}
+          </a>{' '}
+          or talk to a support representative in{' '}
+          <a class="text-primary hover:underline" href="https://discord.gg/atlasos">
+            discord.gg/atlasos
+          </a>
+          .
+        </p>
       </div>
-
-      <div>
+      <div class="space-y-3">
         <h2 class="mb-3 text-xl font-semibold text-white">Summary</h2>
         <ul class="list-disc space-y-1 pl-6">
           <li>
@@ -79,21 +90,29 @@ const linkedData = [
             counters.
           </li>
           <li>
-            <strong class="text-white/90">Message content is not stored in Atlas's database.</strong> Atlas reads
-            messages in memory to run its features and then discards them. Copies of deleted and edited messages, and of
-            direct messages sent to Atlas, are posted to private staff channels in Discord.
+            <strong class="text-white/90">Atlas does not keep a database archive of ordinary server messages.</strong>{' '}
+            It caches messages in memory to run its features. Suggestion text, moderation reasons and staff-configured
+            content are stored separately. Selected deleted/edited messages and DMs are copied to restricted Discord log
+            channels (see{' '}
+            <a class="text-primary hover:underline" href="#discord-log-channels">
+              Discord log channels
+            </a>
+            ).
           </li>
           <li>
-            Message content is only sent outside Discord when you choose to use{' '}
-            <strong class="text-white/90">Jarvis</strong> or <strong class="text-white/90">Translate</strong>, which are
-            powered by Groq.
+            When a member invokes <strong class="text-white/90">Jarvis</strong> or{' '}
+            <strong class="text-white/90">Translate</strong>, selected text and relevant context are sent to Groq. This
+            may include messages written by other members. Search links can also contain message text, which is sent to
+            the linked service when someone follows the link.
           </li>
-          <li>We do not sell data, use it for advertising, or use it to train AI models.</li>
+          <li>
+            We do <strong class="text-white/90">not</strong> sell data, use it for advertising, or use it to train AI
+            models.
+          </li>
           <li>You can ask us to see, correct or delete your data at any time.</li>
         </ul>
       </div>
-
-      <div>
+      <div class="space-y-3">
         <h2 class="mb-3 text-xl font-semibold text-white">Data Linked to Your User ID</h2>
         <div class="overflow-x-auto rounded-lg border border-white/10">
           <table class="w-full text-left text-sm">
@@ -116,160 +135,244 @@ const linkedData = [
           </table>
         </div>
       </div>
-
-      <div>
-        <h2 class="mb-3 text-xl font-semibold text-white">Aggregate Statistics</h2>
+      <div class="space-y-3">
+        <h2 class="mb-3 text-xl font-semibold text-white">Aggregate Statistics and Message Links</h2>
         <p>
           Atlas keeps counters that are not linked to any user ID, for example: how many current members have each
           onboarding status or profile badge, members by the year their Discord account was created, messages per
           monitored channel, how often configured keywords are mentioned per channel, new forum posts per tag, AutoMod
-          blocks, server boosts, and the most used emojis and most reacted messages (by message link) of a Wrapped
-          season. These are kept indefinitely.
+          blocks, server boosts, and the most used emojis of a Wrapped season. These counters are kept indefinitely.
+          Atlas also retains individual message IDs and links with reaction counts for Wrapped. These links can lead
+          back to an identifiable author; they are not anonymous totals and are not automatically removed by{' '}
+          <code>/privacy delete</code>.
         </p>
       </div>
-
-      <div>
-        <h2 class="mb-3 text-xl font-semibold text-white">Processed in Memory and Not Stored</h2>
+      <div class="space-y-3">
+        <h2 class="mb-3 text-xl font-semibold text-white">Submitted and Configured Text</h2>
+        <p>
+          Atlas stores suggestion text and moderation reasons, including reasons received from Discord's audit log. It
+          also stores staff-configured auto-responses, custom commands, scheduled messages and settings. These fields
+          may contain names, mentions, quotations or other personal information. Staff-configured content remains until
+          staff change or remove it. A privacy request may require manual review of text referring to you, including
+          text submitted by someone else.
+        </p>
+      </div>
+      <div class="space-y-3">
+        <h2 class="mb-3 text-xl font-semibold text-white">Processing and Temporary Caches</h2>
         <ul class="list-disc space-y-1 pl-6">
           <li>
-            <strong class="text-white/90">Message content</strong> is read in memory to run auto-responses, count
-            configured keywords, award XP, and check attachments and images (file type checks and reading the text in
-            images to block scams). It is not written to Atlas's database. Images are downloaded only for that check and
-            are not kept.
+            <strong class="text-white/90">Ordinary message content</strong> is read in memory to run auto-responses,
+            count configured keywords, and check attachments and images (file type checks and reading the text in images
+            to block scams). Message activity also earns XP. The message cache holds up to 200 messages per channel; an
+            hourly sweep removes messages older than six hours. Images are checked locally with OCR, without an external
+            OCR service, and the downloaded bytes are not archived.
           </li>
           <li>
-            <strong class="text-white/90">Presence</strong> (online status and the devices you are using) is used only
-            to count how many members are online, idle or on do-not-disturb, and to show your platforms in /userinfo
-            when someone runs it. It is not stored.
+            <strong class="text-white/90">Presence</strong> (online status and active platforms) is cached in memory for{' '}
+            <code>/userinfo</code>, the online count in <code>/serverinfo</code>, and aggregate online, idle and
+            do-not-disturb counts. Atlas stores no individual presence history. Aggregate presence counts are retained
+            in Prometheus for up to one year. There is no per-user tracking opt-out.
+          </li>
+          <li>
+            <strong class="text-white/90">Voice states</strong> are used to count occupants of configured voice
+            channels. Aggregate counts are retained in Prometheus for up to one year; Atlas does not record voice audio.
           </li>
           <li>
             <strong class="text-white/90">Usernames, display names and avatars</strong> are shown in replies and logs as
-            Discord provides them; Atlas's database stores user IDs only.
-          </li>
-          <li>
-            <strong class="text-white/90">Ko-fi supporters:</strong> when you support AtlasOS on Ko-fi, Ko-fi notifies
-            Atlas and Atlas posts a thank-you message in the server with the amount and, only if you made your support
-            public on Ko-fi, your Ko-fi name and message. Ko-fi's notification also includes other details, such as your
-            email address; Atlas ignores them. None of this is stored in Atlas's database.
+            Discord provides them; structured user references in the database use IDs. Submitted or configured text may
+            also contain names or other identifiers.
           </li>
         </ul>
       </div>
-
-      <div>
-        <h2 class="mb-3 text-xl font-semibold text-white">Discord Log Channels</h2>
-        <p class="mb-3">
-          To moderate the server, Atlas copies some events into private staff-only channels in Discord: messages that
-          are deleted or edited (including their content and attachments), direct messages you send to Atlas, moderation
-          actions and their reasons, messages removed by the scam-image filter (who posted it, where, and the matched
-          keyword), use of Atlas's commands, level-ups, and a record that a data deletion request was carried out (with
-          the user ID it was for).
-        </p>
+      <div class="space-y-3">
+        <h2 class="mb-3 text-xl font-semibold text-white">Ko-fi Supporters</h2>
         <p>
-          These copies are Discord messages: they are stored by Discord, are visible only to AtlasOS staff, and stay
-          there until staff delete them. They are not part of Atlas's database, so deleting your data with Atlas does
-          not remove them automatically. You can ask us to remove log messages about you; we will do so unless we need
-          them to handle a moderation case.
+          When you support AtlasOS on Ko-fi, Ko-fi notifies Atlas and Atlas posts a thank-you message in the server with
+          the amount and, only if you made your support public on Ko-fi, your Ko-fi name and message. Ko-fi's
+          notification also includes other details, such as your email address; Atlas ignores them. None of this is
+          stored in Atlas's database.
         </p>
       </div>
-
-      <div>
+      <div id="discord-log-channels" class="space-y-3">
+        <h2 class="mb-3 text-xl font-semibold text-white">Discord Log Channels</h2>
+        <p>
+          To moderate the server, Atlas copies some events into{' '}
+          <strong class="text-white/90">restricted log channels in Discord</strong>:
+        </p>
+        <ul class="list-disc space-y-1 pl-6">
+          <li>selected content from deleted or edited messages, with attachment names where available,</li>
+          <li>direct messages you send to Atlas,</li>
+          <li>moderation actions and their reasons,</li>
+          <li>messages removed by the scam-image filter (who posted it, where, and the matched keyword),</li>
+          <li>use of Atlas's commands and level-ups, and</li>
+          <li>a record that a data deletion request was carried out (with the user ID it was for).</li>
+        </ul>
+        <p>
+          Log text is truncated, and earlier content may be unavailable if a message was not cached. DM logs can include
+          image previews. Some bots also share the bot role, which gives them access to the logs channel. These copies
+          are stored by Discord and stay there until staff delete them. They are not part of Atlas's database, so
+          deleting your data with Atlas does not remove them automatically. You can ask us to remove log messages about
+          you; we will do so unless we need them to handle a moderation case.
+        </p>
+        <p>
+          Other features also create Discord copies: starboard posts, Save message bookmarks sent to the requester's
+          DMs, suggestions and decision notices, translations and Jarvis replies. These copies are not removed by{' '}
+          <code>/privacy delete</code>; tell us if you want us to review copies about you.
+        </p>
+      </div>
+      <div class="space-y-3">
         <h2 class="mb-3 text-xl font-semibold text-white">Third Parties</h2>
         <ul class="list-disc space-y-1 pl-6">
           <li>
             <strong class="text-white/90">Discord.</strong> Atlas runs on Discord. Everything you post is also processed
             by Discord under{' '}
-            <a
-              class="text-primary hover:underline"
-              href="https://discord.com/privacy"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a class="text-primary hover:underline" href="https://discord.com/privacy">
               Discord's privacy policy
             </a>
             .
           </li>
           <li>
-            <strong class="text-white/90">Groq.</strong> When you use Jarvis (the AI assistant) or Translate, the
-            message you send to Jarvis or ask Atlas to translate, with the context needed to answer it, is sent to{' '}
-            <a class="text-primary hover:underline" href="https://groq.com" target="_blank" rel="noopener noreferrer">
+            <strong class="text-white/90">Groq.</strong> When a member invokes{' '}
+            <strong class="text-white/90">Jarvis</strong> or <strong class="text-white/90">Translate</strong>, Atlas
+            sends selected text and relevant context to{' '}
+            <a class="text-primary hover:underline" href="https://groq.com">
               Groq
             </a>{' '}
-            to generate the reply. Groq processes it in the United States as our service provider and does not use it to
-            train models. We have Zero Data Retention enabled with Groq, so Groq does not keep it after generating the
-            reply. Nothing is sent to Groq unless someone uses one of these features.
+            over HTTPS to generate the reply. Translate can process another member's message; Jarvis can include up to
+            ten messages from a reply chain. Text may contain mentions, URLs or personal information. We have enabled
+            Zero Data Retention for the Groq organization used by Atlas's inference API key. Under that setting, Groq
+            does not retain inference inputs or outputs for reliability or abuse monitoring. Groq retains usage metadata
+            that does not contain those inputs or outputs. We do not authorize training on Discord content. Processing
+            is subject to{' '}
+            <a class="text-primary hover:underline" href="https://console.groq.com/docs/your-data">
+              Groq's data controls
+            </a>{' '}
+            and{' '}
+            <a class="text-primary hover:underline" href="https://console.groq.com/docs/legal/services-agreement">
+              service terms
+            </a>
+            , including applicable legal obligations. Nothing is sent to Groq unless a member invokes one of these
+            features.
           </li>
-          <li>We do not share data with anyone else, and we never sell it.</li>
+          <li>
+            <strong class="text-white/90">Infrastructure providers.</strong> AtlasOS operates the bot on hosted
+            infrastructure. The hosting provider supplies the underlying server. Cloudflare handles traffic to our
+            public endpoints and authenticated monitoring services through Access and Tunnel, including monitoring
+            results containing Discord IDs.
+          </li>
+          <li>
+            <strong class="text-white/90">Search links.</strong> <code>/lmgtfy</code> and a configured reaction can
+            create a link containing a query or text from a member's message. The bot posts the link in Discord;
+            following it sends that text to letmegooglethat.com and may lead to a search provider.
+          </li>
+          <li>We share data for the features and infrastructure described in this policy, and never sell it.</li>
         </ul>
       </div>
-
-      <div>
+      <div class="space-y-3">
         <h2 class="mb-3 text-xl font-semibold text-white">Metrics</h2>
         <p>
           Atlas exports operational and community metrics (for example member counts, message counts per channel and
-          per-moderator action counts) to a private Prometheus and Grafana instance operated by AtlasOS. Only AtlasOS
-          staff can view them. Some series are labelled with Discord user IDs: moderators' IDs on moderation action
-          counts and invite creators' IDs on invite usage. Metrics are kept for one year. When we delete your data, we
-          also delete the series labelled with your user ID.
+          per-moderator action counts) to a private <strong class="text-white/90">Prometheus</strong> and{' '}
+          <strong class="text-white/90">Grafana</strong> instance operated by AtlasOS. Only AtlasOS staff can view them.
+          Some series are labelled with Discord user IDs: <strong class="text-white/90">moderators' IDs</strong> on
+          moderation action counts and <strong class="text-white/90">invite creators' IDs</strong> on invite usage.
+          Metrics are kept for <strong class="text-white/90">up to one year</strong>. Administrators attempt to delete
+          the series labelled with your user ID and verify the result. Related moderator series are retained when
+          moderation records are kept. Aggregate counts cannot be separated back into individual contributions.
         </p>
       </div>
-
-      <div>
+      <div class="space-y-3">
         <h2 class="mb-3 text-xl font-semibold text-white">Storage &amp; Security</h2>
-        <p class="mb-3">
-          Atlas's database and metrics are stored encrypted at rest on infrastructure operated by AtlasOS. Access is
-          limited to the AtlasOS team members who run the bot. Before each database upgrade Atlas makes a backup copy of
-          its database; the three most recent backups are kept and older ones are deleted automatically, so data you had
-          deleted may remain in a backup until it is replaced.
+        <p>
+          Atlas's database, metrics, persistent application logs and local backups are stored{' '}
+          <strong class="text-white/90">encrypted at rest</strong> on a LUKS2 volume on infrastructure operated by
+          AtlasOS. Administrative access is restricted to the team members who run the services. This encryption
+          protects stored volumes; it does not make a running server inaccessible to its administrators or control
+          storage held by Discord or other providers.
         </p>
         <p>
-          Application logs (errors and operational events) contain Discord IDs but never message content. They are kept
-          for troubleshooting for no longer than 30 days.
+          Before database migrations, Atlas can create a backup in <code>/data/backups</code>; it keeps the three most
+          recent copies. A separate infrastructure dump tool can create copies in <code>/srv/vault/dumps</code> and
+          keeps the ten most recent dump sets. Rotation happens when new copies are created, without a fixed maximum
+          age. Deleted data may remain in these copies until they are removed or replaced. Deleting database rows does
+          not guarantee immediate physical erasure of old database or journal bytes.
+        </p>
+        <p>
+          Application logs are intended to contain operational events, errors and Discord IDs rather than message
+          bodies; exception text can include details supplied by underlying services. They have a configured 30-day
+          retention period, with routine deletion processing afterward. Privacy deletion does not purge these logs, and
+          creates an operational record that the request was carried out.
         </p>
       </div>
-
-      <div>
+      <div class="space-y-3">
         <h2 class="mb-3 text-xl font-semibold text-white">Moderation Records</h2>
         <p>
           If you ask us to delete your data, we delete your moderation cases as well, unless keeping them is necessary
           to protect the server, for example to prevent someone who was banned from returning under a new account or to
-          handle an ongoing report. If we keep moderation records, we tell you which records we kept and why. Where you
-          acted as a moderator, your user ID is replaced with "Deleted" so the cases of other members remain intact.
+          handle an ongoing report. If we keep moderation records, we tell you which records we kept and why. Unless
+          moderation records are retained, your user ID is replaced with <code>Deleted</code> where you acted as a
+          moderator, and your moderator counters are merged into a total labelled <code>Deleted</code>. When moderation
+          records are retained, these identifiers and related metric series are retained too.
         </p>
       </div>
-
-      <div>
+      <div class="space-y-3">
         <h2 class="mb-3 text-xl font-semibold text-white">Your Choices &amp; Rights</h2>
-        <p class="mb-3">
-          You can ask us to see what Atlas stores about you, correct something that is wrong (for example a moderation
-          case reason), delete your data, or stop using your data for a specific purpose. Email{' '}
+        <p>You can ask us to:</p>
+        <ul class="list-disc space-y-1 pl-6">
+          <li>
+            <strong class="text-white/90">see</strong> what Atlas stores about you,
+          </li>
+          <li>
+            <strong class="text-white/90">correct</strong> something that is wrong (for example a moderation case
+            reason),
+          </li>
+          <li>
+            <strong class="text-white/90">delete</strong> your data,
+          </li>
+          <li>
+            <strong class="text-white/90">stop</strong> using your data for a specific purpose.
+          </li>
+        </ul>
+        <p>
+          Contact us at{' '}
           <a class="text-primary hover:underline" href={`mailto:${CONTACT_EMAIL}`}>
             {CONTACT_EMAIL}
           </a>{' '}
-          or talk to a support representative in the{' '}
-          <a class="text-primary hover:underline" href={discordInvite} target="_blank" rel="noopener noreferrer">
-            AtlasOS Discord server
+          or talk to a support representative in{' '}
+          <a class="text-primary hover:underline" href="https://discord.gg/atlasos">
+            discord.gg/atlasos
           </a>
-          . We may ask you to confirm the request from your Discord account so we know it is yours. We respond within 30
-          days.
+          . We may ask you to confirm the request from your Discord account so we know it is yours. We respond{' '}
+          <strong class="text-white/90">within 30 days</strong>.
         </p>
-        <p class="mb-3">
-          When we delete your data, Atlas removes your level, Wrapped counts, invite attribution, starboard entries and
-          suggestions; your user ID is replaced with "Deleted" where you created invites or invited other members; and
-          your metric series are deleted. If you stay in or rejoin the server, Atlas starts collecting the data
-          described above again as you use it.
+        <p>
+          Administrators use <code>/privacy info</code> to see counts of stored database rows and{' '}
+          <code>/privacy delete</code> to remove your level, per-user Wrapped counts, invite attribution, starboard
+          database entries and suggestions, and replace your ID with <code>Deleted</code> where you created invites,
+          invited other members or decided suggestions. Moderation handling follows the exceptions above. The command
+          then attempts to purge matching Prometheus series; administrators check the result and follow up on failures
+          separately.
+        </p>
+        <p>
+          The command does not remove Discord copies, backups, application logs, Wrapped message links or references in
+          arbitrary text. Staff separately review these parts of your request and explain any retained records. There is
+          no automatic per-user exclusion from future collection. If you stay in or rejoin the server, Atlas starts
+          collecting the data described above again as you use it.
         </p>
         <p>
           Leaving the server does not delete your data automatically: your level is kept so it can be restored if you
-          come back. Ask us if you want it deleted. Atlas is part of a Discord server, so it is subject to Discord's
-          minimum age requirements; we do not knowingly collect data about anyone below them.
+          come back. Ask us if you want it deleted.
+        </p>
+        <p>
+          Atlas is part of a Discord server, so it is subject to Discord's minimum age requirements. We do not knowingly
+          collect data about anyone below them.
         </p>
       </div>
-
-      <div>
+      <div class="space-y-3">
         <h2 class="mb-3 text-xl font-semibold text-white">Changes to This Policy</h2>
         <p>
-          We will update this policy when Atlas starts collecting something new or uses data differently. The date at
-          the top always shows the latest version, and significant changes are announced in the AtlasOS Discord server.
+          We will update this policy when Atlas starts collecting something new or uses data differently. The effective
+          date at the top always shows the latest version, and significant changes are announced in the AtlasOS server.
         </p>
       </div>
     </div>
