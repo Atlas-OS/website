@@ -11,7 +11,8 @@ import rehypeExternalLinks from './src/utils/rehype-external-links';
 // Keep older Atlas playbooks, desktop shortcuts, and search results working after the docs restructure.
 const legacyDocsRedirects = {
   '/getting-started/': '/docs/install/',
-  '/getting-started/installation/': '/docs/install/playbook/',
+  '/getting-started/installation/': '/docs/install/manager/',
+  '/docs/install/playbook/': '/docs/install/manager/',
   '/getting-started/post-installation/': '/docs/install/setup/',
   '/getting-started/post-installation/atlas-folder/': '/docs/atlas-configuration/atlas-folder/',
   '/getting-started/post-installation/atlas-folder/configuration/':

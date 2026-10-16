@@ -1,6 +1,6 @@
 ---
 title: "Upgrade instructions"
-metaDescription: "Upgrade Atlas with Atlas Manager or AME Wizard, then verify your version and configuration."
+metaDescription: "Upgrade Atlas with Atlas Manager, then verify your version and configuration."
 description: Apply Atlas 0.6 to an eligible installation.
 order: 9
 ---
@@ -12,18 +12,12 @@ Read [Before upgrading](/docs/upgrade/requirements/) and back up before starting
 1. Open Atlas Manager and allow administrator access when prompted.
 2. Check the installed version on Home. Choose **Check again** if the release check has not completed.
 3. Read the release notes, then choose **Update to Atlas 0.6.0** when offered.
-4. In **Get ready**, prepare the target playbook and resolve the PC checks. You can use **Open playbook file** for a release package you already downloaded.
+4. In **Get ready**, let Manager download Atlas 0.6 and resolve the PC checks. If you already have the Atlas 0.6 package (`.apbx`), you can choose **Open package file** instead.
 5. Review the driver choice and complete Windows and Store update preparation. Use **Restart and continue**, then **Continue updates** after sign-in, if requested.
 6. Review the Atlas options and complete the Windows Security step when Manager asks.
 7. Start the upgrade and keep your PC powered on. After it succeeds, restart to complete setup.
 
-The preparation and security steps are explained in [Install with Atlas Manager](/docs/install/playbook/#3-update-windows-and-store-apps).
-
-## Upgrade with AME Wizard
-
-Download the target Atlas playbook and AME Wizard, then follow the [AME Wizard guide](/docs/install/ame-wizard/). Load the new `.apbx` file and use the upgrade action offered for your installed version.
-
-If no upgrade is offered, check eligibility and the selected package. Do not use **Run again** to force an unsupported upgrade, and do not run two installers together.
+The preparation and security steps are explained in [Install with Atlas Manager](/docs/install/manager/#3-update-windows-and-store-apps).
 
 ## Check the result
 
@@ -39,6 +33,6 @@ See [Atlas configuration](/docs/atlas-configuration/) for the available controls
 
 ## If the upgrade fails
 
-Use **Export diagnostics** before retrying. Reopen Manager to recover the saved session and follow the reported error. Keep the original playbook available; a retry may need the same package and choices.
+Use **Export diagnostics** before retrying. Reopen Manager to recover the saved session and follow the reported error. If you opened a saved Atlas package, keep it available; a retry may need the same package and choices.
 
 If the installed version cannot be read, or the installer cannot confirm its result, use [installation troubleshooting](/docs/faq/installation/#what-if-installation-fails) before starting another attempt.

@@ -55,6 +55,7 @@ const { prev, next } = showPageNav ? await getDocsPagination(currentPath) : { pr
       description={description}
       metaDescription={metaDescription}
       image={ogImage}
+      imageAlt={`${title} — AtlasOS Documentation`}
       canonicalURL={new URL(currentPath, Astro.site ?? SITE_URL).href}
       type={type}
     />

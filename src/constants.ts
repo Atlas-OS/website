@@ -2,7 +2,7 @@ export const SITE_URL = 'https://atlasos.net' as const;
 
 export const SITE_NAME = 'AtlasOS' as const;
 
-export const DEFAULT_OG_IMAGE = `${SITE_URL}/defaultimg.png` as const;
+export const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.png` as const;
 
 export const DEFAULT_META_DESCRIPTION =
   'AtlasOS - An optimized Windows experience with stronger performance, better privacy, and cleaner defaults.' as const;

@@ -1,6 +1,6 @@
 ---
 title: "Install Atlas"
-metaDescription: "Install Atlas 0.6 with Atlas Manager, create Windows installation media, or use AME Wizard."
+metaDescription: "Install Atlas 0.6 with Atlas Manager, or create Windows installation media with Atlas included."
 description: Choose how to install Atlas 0.6.
 order: 2
 ---
@@ -8,7 +8,7 @@ order: 2
 import QuickLinkCard from '@/components/docs/QuickLinkCard.astro';
 import QuickLinksGrid from '@/components/docs/QuickLinksGrid.astro';
 
-**Atlas Manager is the recommended way to install Atlas.** Built specifically for Atlas, it brings compatibility checks, update preparation, installation choices, and progress into one guided experience. AME Wizard remains available if you prefer it; both apply the same Atlas playbook.
+**Atlas Manager is the recommended way to install Atlas.** Built specifically for Atlas, it brings compatibility checks, update preparation, installation choices, and progress into one guided experience.
 
 Used Atlas before? See [What changed in Atlas 0.6?](/docs/upgrade/whats-new/) for a quick introduction to the new setup experience.
 
@@ -18,14 +18,13 @@ Atlas 0.6 requires **Windows 11 25H2 (build 26200)**. For a first installation, 
 
 <QuickLinksGrid columns={{ md: 2 }}>
   <QuickLinkCard href="/docs/install/requirements/" icon="tabler:checklist" title="Before you install" description="Check Windows compatibility and prepare your backup." />
-  <QuickLinkCard href="/docs/install/playbook/" icon="tabler:device-desktop" title="Install with Atlas Manager" description="Recommended: prepare your PC and install Atlas from Windows." />
+  <QuickLinkCard href="/docs/install/manager/" icon="tabler:device-desktop" title="Install with Atlas Manager" description="Recommended: prepare your PC and install Atlas from Windows." />
   <QuickLinkCard href="/docs/install/iso/" icon="tabler:disc" title="Create an Atlas ISO (Beta)" description="Prepare installation media for this PC or another one." />
-  <QuickLinkCard href="/docs/install/ame-wizard/" icon="tabler:book" title="Install with AME Wizard" description="Use the Atlas playbook with AME Wizard if you prefer." />
 </QuickLinksGrid>
 
 ## What you are installing
 
-**Atlas Manager** is the app that guides setup and shows your Atlas version. The **Atlas playbook** is the `.apbx` package containing the changes Atlas applies to Windows. Manager downloads or opens this package for you. AME Wizard can apply the same package through its own interface.
+**Atlas Manager** is the app that installs Atlas and shows your installed version. It downloads the latest Atlas release for you, so Manager is the only thing you need to download.
 
 Creating an Atlas ISO prepares Windows installation media. Atlas is applied on the destination PC after Windows setup and sign-in, with update and security checks still required.
 

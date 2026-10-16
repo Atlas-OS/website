@@ -1,5 +1,5 @@
 ---
-import { DEFAULT_OG_IMAGE } from '@/constants';
+import { SITE_URL } from '@/constants';
 import DocsLayout from '@/layouts/DocsLayout.astro';
 import { DOCS_ROOT, getDocsIndex } from '@/utils/docs';
 import { render } from 'astro:content';
@@ -18,7 +18,7 @@ const { Content, headings } = await render(entry);
   metaDescription={entry.data.metaDescription}
   currentSlug={DOCS_ROOT}
   headings={headings}
-  ogImage={DEFAULT_OG_IMAGE}
+  ogImage={new URL('/docs/og-image.png?v=3', Astro.site ?? SITE_URL).href}
   landing
   showPageNav={false}
 >

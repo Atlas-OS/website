@@ -8,13 +8,7 @@ import PcGuideLogomark from '@/assets/pcguide-logomark.svg';
 import TechSpotLogomark from '@/assets/techspot-logomark.svg';
 import WePCLogomark from '@/assets/wepc-logomark.svg';
 import Button from '@/components/ui/Button.astro';
-import DownloadModal from '@/components/ui/DownloadModal.astro';
-import { ATLAS_RELEASE_LABEL } from '@/constants';
-
-const links = {
-  faq: '/docs/faq/general/',
-  install: '/docs/install/',
-};
+import { ATLAS_GITHUB_LATEST_RELEASE_URL, ATLAS_RELEASE_LABEL } from '@/constants';
 ---
 
 <section class="relative overflow-visible px-4 pt-14 md:pt-22" data-home-hero>
@@ -77,14 +71,14 @@ const links = {
       </p>
       <div class="flex flex-wrap items-center justify-center gap-4" data-animate>
         <Button
+          href={ATLAS_GITHUB_LATEST_RELEASE_URL}
           variant="primary"
           size="lg"
-          icon="tabler:chevron-right"
+          icon="tabler:download"
           iconPosition="after"
-          id="get-started-btn"
-          data-download-modal-open
+          id="manager-download-btn"
         >
-          Get started
+          Download Atlas Manager
         </Button>
         <Button
           href="https://github.com/Atlas-OS/Atlas"
@@ -96,6 +90,15 @@ const links = {
           Star on GitHub
         </Button>
       </div>
+      <p class="mt-4 text-sm text-white/60" data-animate>
+        Atlas works best on a fresh copy of Windows.{' '}
+        <a
+          href="/docs/install/"
+          class="text-[var(--color-link)] underline-offset-2 hover:text-white hover:underline"
+        >
+          Read the installation guide
+        </a>
+      </p>
     </div>
   </div>
 
@@ -105,7 +108,7 @@ const links = {
         <p class="manager-eyebrow">Built for Atlas</p>
         <h2>Meet Atlas Manager.</h2>
       </div>
-      <a href="/docs/install/playbook/" class="manager-guide">
+      <a href="/docs/install/manager/" class="manager-guide">
         A guided install, from start to finish <Icon name="tabler:arrow-up-right" class="h-4 w-4 shrink-0" />
       </a>
     </div>
@@ -133,7 +136,7 @@ const links = {
       </div>
       <a
         class="manager-preview"
-        href="/docs/install/playbook/"
+        href="/docs/install/manager/"
         aria-label="Explore installation with Atlas Manager"
         data-animate
       >
@@ -230,8 +233,6 @@ const links = {
     </a>
   </div>
 </section>
-
-<DownloadModal links={links} />
 
 <style>
   [data-home-hero] {
@@ -494,20 +495,48 @@ const links = {
   import { isLocalhost, onPageLoad } from '@/utils/page-lifecycle';
 
   const FALLBACK_DOWNLOAD_COUNT = '2,000,000';
+  const MANAGER_ASSET = /^AtlasManager[\w.-]*\.exe$/i;
 
-  async function updateReleaseLabel(signal: AbortSignal): Promise<void> {
-    const element = document.getElementById('atlas-release-label');
-    if (!element) return;
+  interface GitHubRelease {
+    tag_name?: string;
+    name?: string;
+    assets?: Array<{ name?: string; browser_download_url?: string }>;
+  }
 
+  async function updateLatestRelease(signal: AbortSignal): Promise<void> {
     try {
       const response = await fetch(ATLAS_GITHUB_LATEST_RELEASE_API_URL, { signal });
       if (!response.ok) return;
-      const release = (await response.json()) as { tag_name?: string; name?: string };
+      const release = (await response.json()) as GitHubRelease;
+
+      const label = document.getElementById('atlas-release-label');
       const version = release.name || release.tag_name;
-      if (version) element.textContent = version.startsWith('Atlas') ? version : `Atlas v${version}`;
+      if (label && version) label.textContent = version.startsWith('Atlas') ? version : `Atlas v${version}`;
+
+      // Without a Manager asset the button keeps linking to the release page.
+      const manager = release.assets?.find((asset) => MANAGER_ASSET.test(asset.name ?? ''));
+      const button = document.getElementById('manager-download-btn');
+      if (manager?.browser_download_url && button instanceof HTMLAnchorElement) {
+        button.href = manager.browser_download_url;
+      }
     } catch {
-      // Keep the static fallback rendered from constants.
+      // Keep the static fallbacks rendered from constants.
     }
+  }
+
+  function countDownloads(signal: AbortSignal): void {
+    const button = document.getElementById('manager-download-btn');
+    if (!button || isLocalhost()) return;
+
+    button.addEventListener(
+      'click',
+      () => {
+        fetch(`${ATLAS_API_URL}atlas/increment`, { method: 'POST', keepalive: true }).catch((error: unknown) => {
+          console.warn('Failed to increment Atlas download count.', error);
+        });
+      },
+      { signal }
+    );
   }
 
   async function updateDownloadCount(signal: AbortSignal): Promise<void> {
@@ -531,7 +560,8 @@ const links = {
   }
 
   onPageLoad((signal) => {
-    void updateReleaseLabel(signal);
+    void updateLatestRelease(signal);
     void updateDownloadCount(signal);
+    countDownloads(signal);
   });
 </script>

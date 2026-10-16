@@ -10,7 +10,7 @@ sidebar:
 import Callout from '@/components/docs/Callout.astro';
 import Figure from '@/components/docs/Figure.astro';
 
-Atlas Manager can create a Windows ISO containing Manager, the Atlas playbook, and your setup preferences. Use it for a fresh installation on this PC or another one.
+Atlas Manager can create a Windows ISO containing Manager, Atlas, and your setup preferences. Use it for a fresh installation on this PC or another one.
 
 <Callout type="warning" title="Beta">
   ISO creation and USB writing are beta features. Test the ISO in a virtual machine before using
@@ -24,7 +24,7 @@ Atlas is applied **after Windows setup and sign-in**. The destination PC still n
 Open Atlas Manager and choose **Create an Atlas ISO**. Allow administrator access, then select:
 
 - An **unmodified Windows 11 25H2 x64 ISO** from [Microsoft's Windows download page](https://www.microsoft.com/software-download/windows11), containing a supported edition. Check the version offered before downloading; a newer feature release is not automatically compatible with Atlas 0.6.
-- The **Atlas 0.6 playbook** (`.apbx`).
+- The **Atlas package**: choose **Download Atlas 0.6.0**, or **Browse** for an Atlas package (`.apbx`) you already have.
 - A **new output filename** on a local NTFS or ReFS drive with enough free space.
 
 Choose **Check files**. Manager checks the Windows release, available editions, and working space. Home, LTSC, 24H2, and Insider images are not supported. Media with existing custom setup files is also rejected.

@@ -5,7 +5,7 @@ description: Installation questions and recovery steps.
 order: 27
 ---
 
-Find answers for Atlas Manager installation. For the alternative installer, use the [AME Wizard FAQ](/docs/faq/ame/).
+Find answers for Atlas Manager installation.
 
 ## What do I need before installing?
 
@@ -17,7 +17,7 @@ Atlas is for people who want to choose how Windows handles background activity, 
 
 ## Do I still need AME Wizard?
 
-No. [Atlas Manager](/docs/install/playbook/) can download and apply the playbook itself. [AME Wizard](/docs/install/ame-wizard/) is available as an alternative.
+No. [Atlas Manager](/docs/install/manager/) downloads and installs Atlas itself. AME Wizard is still supported if you prefer it: see [Install with AME Wizard](/docs/install/ame-wizard/) and the [AME Wizard FAQ](/docs/faq/ame/).
 
 ## Can I install on a virtual machine?
 
@@ -61,7 +61,7 @@ Keep your recovery key available before reinstalling Windows. If Windows Setup s
 
 ## What was removed from Windows?
 
-Atlas changes services, policies, apps, and interface defaults. Some changes depend on your installation choices, such as removing Edge or Snipping Tool. Use the [configuration guide](/docs/atlas-configuration/) to find available controls, and the release's playbook source for the exact changes. Do not assume every removal can be undone individually.
+Atlas changes services, policies, apps, and interface defaults. Some changes depend on your installation choices, such as removing Edge or Snipping Tool. Use the [configuration guide](/docs/atlas-configuration/) to find available controls, and [Atlas's source code](https://github.com/Atlas-OS/Atlas) for the exact changes. Do not assume every removal can be undone individually.
 
 ## Why disconnect internet during Windows installation?
 
@@ -71,7 +71,7 @@ Older guides used disconnection to delay driver downloads. Manager lets you choo
 
 1. Read the failure message. If Atlas had started applying changes, your PC may be partially modified.
 2. Choose **Export diagnostics** in Manager before retrying, clearing app data, or reinstalling Windows.
-3. Resolve the reported cause, then use **Try again** if offered. Keep the same playbook available for recovery.
+3. Resolve the reported cause, then use **Try again** if offered. If you opened a saved Atlas package, keep it available for recovery.
 4. If the app closed, reopen it to recover the session. Do not start AME Wizard alongside an active Manager installation.
 5. If you stop here, restore the Windows Security protections you disabled, if they remain available.
 

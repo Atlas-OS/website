@@ -1,6 +1,6 @@
 ---
 title: "What changed in Atlas 0.6?"
-metaDescription: "Coming from Atlas 0.5? Learn how Atlas Manager, AME Wizard, ISO creation, and settings migration work in Atlas 0.6."
+metaDescription: "Coming from Atlas 0.5? Learn how Atlas Manager, ISO creation, and settings migration work in Atlas 0.6."
 description: Find your way around Atlas 0.6.
 order: 1
 sidebar:
@@ -11,19 +11,13 @@ Atlas 0.6 introduces **Atlas Manager** as the recommended way to install Atlas a
 
 ## A guided installation in Atlas Manager
 
-Manager takes you through **Get ready**, **Your choices**, **Windows Security**, and **Install**. It checks requirements, obtains the playbook, prepares Windows and Microsoft Store updates, and helps you resolve problems before applying Atlas.
+Manager takes you through **Get ready**, **Your choices**, **Windows Security**, and **Install**. It checks requirements, downloads Atlas, prepares Windows and Microsoft Store updates, and helps you resolve problems before applying Atlas.
 
-When preparation needs a restart, use Manager's restart action and continue from the same Windows account. Follow [Install with Atlas Manager](/docs/install/playbook/) for the complete walkthrough.
-
-## AME Wizard remains an option
-
-The Atlas playbook is still distributed as an `.apbx` package. Atlas Manager and AME Wizard apply the same Atlas installation workflow through different interfaces. Choosing AME Wizard does not mean installing a separate edition of Atlas.
-
-Use the [AME Wizard guide](/docs/install/ame-wizard/) if you prefer that route. You still need to meet the same Windows requirements and complete update preparation.
+When preparation needs a restart, use Manager's restart action and continue from the same Windows account. Follow [Install with Atlas Manager](/docs/install/manager/) for the complete walkthrough.
 
 ## Check Windows as well as your Atlas version
 
-Atlas 0.6 requires **Windows 11 25H2 (build 26200)**. The playbook declares **Atlas 0.4.1, 0.5.0, and 0.5.1** as upgrade sources, but that list does not make an older Windows build eligible or establish that every upgrade combination has been validated.
+Atlas 0.6 requires **Windows 11 25H2 (build 26200)**. Atlas 0.6 declares **Atlas 0.4.1, 0.5.0, and 0.5.1** as upgrade sources, but that list does not make an older Windows build eligible or establish that every upgrade combination has been validated.
 
 Read [Before upgrading](/docs/upgrade/requirements/) before changing Windows or applying the new release. If your current setup is outside the supported route, use a fresh installation rather than bypassing the checks.
 

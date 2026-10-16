@@ -12,15 +12,13 @@ import Figure from '@/components/docs/Figure.astro';
 
 Atlas Manager guides you through installing Atlas on Windows. Read the [requirements](/docs/install/requirements/) first. If you already have Atlas installed, use the [upgrade guide](/docs/upgrade/) instead.
 
-Prefer AME Wizard? Follow [Install with AME Wizard](/docs/install/ame-wizard/).
-
 ## 1. Prepare a fresh Windows installation
 
 Back up your files and save your network drivers. Install **Windows 11 25H2 (build 26200)** from unmodified Microsoft media, using an edition you have a licence for.
 
 Follow Microsoft's [clean installation instructions](https://support.microsoft.com/en-US/Windows/Deployment/Install-Upgrade/reinstall-windows-with-the-installation-media). Check the target drive carefully before deleting partitions. Complete Windows setup and sign in before opening Atlas Manager.
 
-You can also [create an Atlas ISO with Manager](/docs/install/iso/). That route includes Manager and the playbook in your installation media, then opens setup on the destination PC.
+You can also [create an Atlas ISO with Manager](/docs/install/iso/). That route puts Manager and Atlas on your installation media, then opens setup on the destination PC.
 
 <Callout type="info" title="Already on fresh Windows 25H2?">
   If you have just installed a supported copy of Windows, continue below. You do not need to
@@ -29,9 +27,9 @@ You can also [create an Atlas ISO with Manager](/docs/install/iso/). That route 
 
 ## 2. Open Atlas Manager
 
-Download **Atlas Manager** from the [Atlas release page](https://github.com/Atlas-OS/Atlas/releases) and open `AtlasManager.exe`. Allow administrator access when prompted, then choose **Install Atlas**.
+Download **Atlas Manager** from the [AtlasOS home page](/) or the [Atlas release page](https://github.com/Atlas-OS/Atlas/releases/latest) and open `AtlasManager.exe`. Allow administrator access when prompted, then choose **Install Atlas**.
 
-In **Get ready**, Manager checks your PC and prepares the installation files. If needed, choose **Download latest version**. To use a package you already downloaded, choose **Open playbook file** and select the release's `.apbx` file. You do not need to extract the playbook or install AME Wizard.
+In **Get ready**, Manager checks your PC and downloads Atlas under **Installation files**. If the download does not start, choose **Download latest version**. If you already have an Atlas package (`.apbx`), you can choose **Open package file** instead.
 
 Check that Manager shows the version you intend to install. Resolve any failed PC checks, then choose **Check again**.
 

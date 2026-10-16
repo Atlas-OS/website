@@ -6,19 +6,29 @@ interface Props {
   description?: string;
   metaDescription?: string;
   image?: string;
+  imageAlt?: string;
   canonicalURL?: string;
   type?: 'website' | 'article';
   /** Emit a SoftwareApplication entity; only meaningful on the homepage. */
   softwareApp?: boolean;
 }
 
-const { title, description, metaDescription, image, canonicalURL, type = 'website', softwareApp = false } = Astro.props;
+const {
+  title,
+  description,
+  metaDescription,
+  image,
+  imageAlt,
+  canonicalURL,
+  type = 'website',
+  softwareApp = false,
+} = Astro.props;
 
 const site = Astro.site ?? new URL(SITE_URL);
 const siteBase = site.href.replace(/\/$/, '');
 const fullTitle = title.includes('|') ? title : `${title} | ${SITE_NAME}`;
 const pageURL = canonicalURL ?? new URL(Astro.url.pathname, site).href;
-const ogImage = image ?? `${siteBase}/defaultimg.png`;
+const ogImage = image ?? `${siteBase}/og-image.png`;
 const finalDescription = metaDescription ?? description ?? DEFAULT_META_DESCRIPTION;
 
 // One JSON-LD graph per page; entities reference each other by `@id` instead of being repeated.
@@ -81,7 +91,7 @@ const structuredData = { '@context': 'https://schema.org', '@graph': graph };
 <meta property="og:image" content={ogImage} />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content={finalDescription} />
+<meta property="og:image:alt" content={imageAlt ?? title} />
 <meta property="og:site_name" content={SITE_NAME} />
 <meta property="og:locale" content="en_US" />
 
@@ -90,5 +100,6 @@ const structuredData = { '@context': 'https://schema.org', '@graph': graph };
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={finalDescription} />
 <meta name="twitter:image" content={ogImage} />
+<meta name="twitter:image:alt" content={imageAlt ?? title} />
 
 <script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)}></script>
