@@ -1,36 +1,67 @@
 ---
 title: "First setup"
-metaDescription: "After installing Atlas 0.6, confirm setup, check protection and drivers, and find the Atlas configuration tools."
-description: Finish setting up your PC after Atlas installation.
+metaDescription: "After installing Atlas, check protection, Windows updates, drivers and Atlas health, and find the Atlas folder."
+description: Finish setting up your PC after installing Atlas.
 order: 7
 ---
 
-Restart and sign in to finish installing Atlas. Open Atlas Manager and confirm it shows your installed version before restoring apps and personal settings.
+Restart and sign in to finish installing Atlas.
+This page covers what to check before you restore your apps and files.
+
+## Read the completion window
+
+After the restart, Atlas Manager opens and says that Atlas is installed.
+It also tells you about anything that needs your attention:
+
+- **Turn your protection back on** lists the Windows Security switches that are still off, if you kept Microsoft Defender.
+  Open Windows Security and turn them back on.
+- **Microsoft Defender was removed** reminds you that your PC has no antivirus until you install another antivirus app.
+- **Some choices didn't take effect** names choices the PC doesn't have as you asked.
+  Choose **Open log file** to see why.
+
+If you kept Microsoft Defender, **You're all set** appears only once every protection switch reads on.
 
 ## Check protection and updates
 
-Open Windows Security and check that your protection settings match the choices you made during installation. If you chose to keep Defender, check that its protections are back on. If you stopped or abandoned installation, restore the protections you temporarily disabled.
+Open Windows Security and check that its settings match the choices you made.
+See [security settings](/docs/atlas-configuration/security/) for each choice.
 
-Review your Windows Update choice too. If you disabled automatic updates, make time to check for and install updates yourself. See [Security settings](/docs/atlas-configuration/security/) and [automatic updates](/docs/atlas-configuration/settings/#automatic-updates).
+If you chose **Install updates myself**, open Windows Update regularly to install updates.
+Update notifications stay on.
+Atlas also turns off automatic updates for Microsoft Store apps, so update them in Microsoft Store under **Library** > **Get updates**.
+See [automatic Windows updates](/docs/atlas-configuration/settings/#automatic-windows-updates).
 
 ## Check your drivers
 
-If you chose Windows Update drivers, check that your display, network, audio, and other devices work. If you chose manual drivers, install the appropriate drivers from your device or component manufacturer.
+If you chose **Get drivers through Windows Update**, check that your display, network, sound and other devices work.
+If you chose **Install drivers myself**, install drivers from your PC, motherboard or device maker.
+Follow the [drivers guide](/docs/essential-setup/drivers/).
 
-Follow the [driver guide](/docs/essential-setup/drivers/) for the order and details. Hardware tuning is optional; you do not need to overclock or change firmware settings to finish Atlas setup.
+Hardware tuning is optional.
+You don't need to change firmware settings to finish setting up Atlas.
 
-## Find the Atlas controls
+## Find the Atlas folder
 
-Use **Atlas Manager** to view the installed version, check for Atlas releases, and export diagnostics.
+The Atlas folder holds the controls for turning Windows features and Atlas settings on or off.
+Open it from the shortcut on your desktop or in the Start menu, or enter `%windir%\AtlasDesktop` in File Explorer's address bar.
+Start with the [configuration overview](/docs/atlas-configuration/) and change only what you need.
 
-Use the **Atlas folder** on your Desktop or Start menu to change Windows features and Atlas settings. The folder lives at `C:\Windows\AtlasDesktop`. Start with the [configuration overview](/docs/atlas-configuration/) and change only the settings you need.
+Atlas Manager shows your installed version, checks for new Atlas releases and lets you [report a problem](/docs/faq/report-a-problem/).
 
-## Check installation health
+## Check Atlas health
 
-In the Atlas folder, open **9. Troubleshooting → Check Atlas Health.cmd**. This read-only check reports installation details and differences between recorded choices and current settings. A reported difference may reflect a change you made yourself; check the output before attempting a repair.
+In the Atlas folder, open `9. Troubleshooting` and run `Check Atlas Health.cmd`.
+It reports what Atlas installed and which of its settings have changed since, without changing anything.
+A difference can be a change you made yourself, so read the report before you repair anything.
+See [Check Atlas health](/docs/atlas-configuration/troubleshooting/#check-atlas-health).
+
+## If other people use this PC
+
+Accounts you create after installing Atlas get Atlas's user settings the first time they sign in.
+Ask each person to sign in and check that everything works for them too.
 
 ## Continue setting up
 
-- [Essential setup](/docs/essential-setup/): drivers, software, and optional hardware configuration.
-- [Upgrade Atlas](/docs/upgrade/): requirements for moving to a newer release.
-- [Installation troubleshooting](/docs/faq/installation/): recovery and diagnostics if something went wrong.
+- [Essential setup](/docs/essential-setup/): drivers, software and optional hardware settings.
+- [Update Atlas](/docs/upgrade/): how Atlas Manager installs newer releases.
+- [Installation FAQ](/docs/faq/installation/): help if something went wrong.

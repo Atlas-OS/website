@@ -5,12 +5,13 @@ description: Keep your installation clean over time.
 order: 4
 ---
 
-import Callout from '@/components/docs/Callout.astro';
 import CodeBlock from '@/components/docs/CodeBlock.astro';
 import CodeInline from '@/components/docs/CodeInline.astro';
 import IconArrow from '@/components/ui/IconArrow.astro';
 
-Atlas transforms Windows once, when you install it. It does not clean or maintain anything afterward. Temporary files, startup apps, and unused software build up on any Windows installation over time. This page covers keeping yours clean.
+This page covers keeping your Atlas installation clean over time.
+Atlas changes Windows when you install it, and apart from scheduled Storage Sense clean-ups it doesn't maintain your PC afterwards.
+Temporary files, startup apps and unused software build up on any Windows installation.
 
 ## Start with the built-in tools
 
@@ -19,10 +20,12 @@ Windows includes basic maintenance tools. Try these before installing anything.
 ### Storage Sense
 
 Storage Sense removes temporary files and empties the Recycle Bin on a schedule.
+Atlas sets it to clean up temporary files every month.
+To change what it cleans and how often:
 
 1. Open **Settings**<IconArrow />**System**<IconArrow />**Storage**
-2. Turn on **Storage Sense**
-3. Click **Storage Sense** to configure what it cleans and how often
+2. Select **Storage Sense**
+3. Choose what it cleans and how often
 
 ### Disk Cleanup
 
@@ -38,7 +41,7 @@ Programs that start with Windows slow down boot and use resources in the backgro
 
 1. Press **Ctrl + Shift + Esc** to open Task Manager
 2. Go to **Startup apps**
-3. Disable anything you do not need at startup
+3. Disable anything you don't need at startup
 
 ### Uninstalling software
 
@@ -48,8 +51,8 @@ Open **Settings**<IconArrow />**Apps**<IconArrow />**Installed apps**. Sort by s
 
 The PC cleaner category has a bad reputation for good reasons. Avoid:
 
-- **Registry cleaners.** They do not deliver measurable speed improvements on modern Windows, and a bad deletion can break software.
-- **Invented problem counts.** A scan that reports hundreds of "errors" on a healthy PC is selling fear, not maintenance.
+- **Registry cleaners.** They don't make modern Windows measurably faster, and a bad deletion can break software.
+- **Invented problem counts.** A scan that reports hundreds of "errors" on a healthy PC is trying to scare you into paying.
 - **Bundled installers.** If a cleaner's installer offers a toolbar, a browser, or a second app, close it.
 
 ## eclean
@@ -63,7 +66,8 @@ eclean is free and built by the team behind AtlasOS. One app covers:
 - Uninstalling software and its leftovers
 - Hardware details and live sensors
 
-Every change is explained before it is applied. Supported changes can be undone.
+Every change is explained before it's applied, and supported changes can be undone.
+You can also install it with the **Install eclean** choice when you install Atlas.
 
 [Download eclean](https://eclean.gg/)
 
@@ -89,7 +93,7 @@ CCleaner is the best-known cleaner. The free version works, but decline the bund
 
 ### Revo Uninstaller
 
-Revo removes software along with the leftover files and registry entries a normal uninstall misses. Useful for stubborn programs.
+Revo removes software along with the leftover files and registry entries a normal uninstall misses. It's useful for stubborn programs.
 
 <CodeBlock title="Install with winget:" code="winget install -e --id RevoUninstaller.RevoUninstaller" />
 
@@ -97,7 +101,7 @@ Revo removes software along with the leftover files and registry entries a norma
 
 ### WizTree
 
-WizTree shows what is using your disk space. It scans in seconds and lists the largest files and folders, so you can decide what to remove.
+WizTree shows what's using your disk space. It scans in seconds and lists the largest files and folders, so you can decide what to remove.
 
 <CodeBlock title="Install with winget:" code="winget install -e --id AntibodySoftware.WizTree" />
 
@@ -114,6 +118,6 @@ Every month or two:
 
 ## Next steps
 
-- **[Software recommendations](/docs/essential-setup/software/):** Browsers, antivirus, media players, and more
-- **[System information tools](/docs/essential-setup/software/system-info/):** Monitor temperatures and hardware
-- **[Configure Atlas](/docs/atlas-configuration/):** Customize your installation
+- **[Software recommendations](/docs/essential-setup/software/):** browsers, antivirus, media players and more
+- **[System information tools](/docs/essential-setup/software/system-info/):** monitor temperatures and hardware
+- **[Configure Atlas](/docs/atlas-configuration/):** customise your installation

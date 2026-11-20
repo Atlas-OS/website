@@ -14,7 +14,10 @@ import QuickLinksGrid from '@/components/docs/QuickLinksGrid.astro';
 import CodeInline from '@/components/docs/CodeInline.astro';
 import IconArrow from '@/components/ui/IconArrow.astro';
 
-Atlas Manager offers automatic driver installation through Windows Update during preparation. Start there unless you need a specific manufacturer driver or prefer to manage drivers yourself. This guide also helps if a device is missing or does not work after installation.
+This guide helps you find and install the right drivers, including when a device is missing or doesn't work after installation.
+On the **Get ready** page, Atlas Manager asks how drivers should be installed.
+**Get drivers through Windows Update** suits most PCs.
+Choose **Install drivers myself** if you need a specific manufacturer driver or prefer to manage drivers yourself.
 
 ## When to install drivers manually
 
@@ -24,7 +27,8 @@ Use the device manufacturer's package when:
 - A laptop or prebuilt PC needs model-specific features.
 - You need a particular driver version to resolve a documented problem.
 
-Manual installation does not automatically improve performance or reduce resource usage. Install the packages your hardware needs and review any optional companion software.
+Installing drivers yourself doesn't automatically improve performance or reduce resource usage.
+Install the packages your hardware needs, and review any optional companion software.
 
 ## Find the right package
 
@@ -33,13 +37,18 @@ Manual installation does not automatically improve performance or reduce resourc
 3. Match the package to your device and Windows architecture. Choose a supported Windows 11 driver and follow its installation instructions.
 4. Restart when requested, then test the device before installing another version.
 
-Avoid bulk driver-updater utilities and downloading every version listed for a device. If you have no internet connection, transfer the correct network driver from another PC; see [network drivers](/docs/essential-setup/drivers/network/).
+Avoid bulk driver-updater utilities, and don't download every version listed for a device.
+If you have no internet connection, copy the correct network driver from another PC. See [network drivers](/docs/essential-setup/drivers/network/).
 
 ## Switch to automatic installation
 
-Open <CodeInline text="C:\Windows\AtlasDesktop" /><IconArrow /><CodeInline text="2. Drivers" /><IconArrow /><CodeInline text="Drivers from Windows Update" /> and run <CodeInline text="Enable Drivers from Windows Update.reg" />. Restart afterward so Windows can apply the driver policy.
+Open <CodeInline text="%windir%\AtlasDesktop" /><IconArrow /><CodeInline text="2. Drivers" /><IconArrow /><CodeInline text="Drivers from Windows Update" /> and run <CodeInline text="Enable Drivers from Windows Update.reg" />.
+Restart afterwards so Windows applies the driver policy.
 
-Then open **Settings → Windows Update** and check for updates. Review **Advanced options → Optional updates** for additional drivers if needed. To return to manual control, use <CodeInline text="Disable Drivers from Windows Update.reg" /> in the same folder. This changes future update behavior; it does not uninstall existing drivers.
+Then open **Settings → Windows Update** and check for updates.
+If you need more drivers, review **Advanced options → Optional updates**.
+To go back to installing drivers yourself, run <CodeInline text="Disable Drivers from Windows Update.reg" /> in the same folder.
+Either file changes how Windows Update handles drivers from then on, and neither uninstalls the drivers you have.
 
 See [Microsoft's driver-update guidance](https://support.microsoft.com/en-us/windows/hardware/drivers/automatically-get-recommended-and-updated-hardware-drivers) for the current Windows steps.
 
@@ -55,13 +64,13 @@ Install only the drivers for hardware in your system:
 - **Bluetooth:** Wireless peripherals (only if you use them)
 - **Chipset:** System stability and performance
 
-<Callout type="warning" title="Multiple Graphics Cards">
-  If you have both integrated and dedicated graphics (e.g., Intel CPU with NVIDIA GPU), install
+<Callout type="warning" title="Multiple graphics cards">
+  If you have both integrated and dedicated graphics, such as an Intel CPU with an NVIDIA GPU, install
   drivers for both so you can switch between GPUs.
 </Callout>
 
 <Callout type="tip">
-  Restore network access first if you are offline. Otherwise, follow the PC or motherboard
+  Restore network access first if you're offline. Otherwise, follow the PC or motherboard
   manufacturer's installation order and restart instructions; there is no single order for every PC.
 </Callout>
 
@@ -71,35 +80,35 @@ Install only the drivers for hardware in your system:
   <QuickLinkCard
     href="/docs/essential-setup/drivers/gpu/"
     icon="tabler:device-desktop"
-    title="Graphics Drivers"
+    title="Graphics drivers"
     description="NVIDIA, AMD, and Intel GPU drivers"
   />
 
   <QuickLinkCard
     href="/docs/essential-setup/drivers/network/"
     icon="tabler:network"
-    title="Network Drivers"
+    title="Network drivers"
     description="Wi-Fi and Ethernet drivers for internet connectivity"
   />
 
   <QuickLinkCard
     href="/docs/essential-setup/drivers/audio/"
     icon="tabler:speakerphone"
-    title="Audio Drivers"
+    title="Audio drivers"
     description="Sound drivers for speakers and headphones"
   />
 
   <QuickLinkCard
     href="/docs/essential-setup/drivers/chipset/"
     icon="tabler:cpu"
-    title="Chipset Drivers"
+    title="Chipset drivers"
     description="Find the chipset package for your platform"
   />
 
   <QuickLinkCard
     href="/docs/essential-setup/drivers/other/"
     icon="tabler:tools"
-    title="Other Drivers"
+    title="Other drivers"
     description="Bluetooth, printer, and other device drivers"
   />
 </QuickLinksGrid>
@@ -108,6 +117,6 @@ Install only the drivers for hardware in your system:
 
 After installing drivers:
 
-- **[Optimize hardware](/docs/essential-setup/hardware/)** (optional) - Enable XMP/DOCP and Resizable BAR for better performance
-- **[Configure Atlas settings](/docs/atlas-configuration/):** Customize your installation
-- **Explore [optional tweaks](/docs/atlas-configuration/tweaks/)** to personalize your experience
+- **[Optimise hardware](/docs/essential-setup/hardware/)** (optional): enable XMP/DOCP and Resizable BAR
+- **[Configure Atlas settings](/docs/atlas-configuration/):** customise your installation
+- **Explore [optional tweaks](/docs/atlas-configuration/tweaks/)** to personalise Windows

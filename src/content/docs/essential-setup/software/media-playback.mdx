@@ -1,5 +1,5 @@
 ---
-title: "Media Playback"
+title: "Media playback"
 metaDescription: "AtlasOS media players: VLC, mpv, Windows Media Player, foobar2000, MusicBee, Dopamine, Elisa."
 description: Recommended media players.
 order: 4
@@ -7,7 +7,8 @@ order: 4
 
 import Callout from '@/components/docs/Callout.astro';
 import CodeBlock from '@/components/docs/CodeBlock.astro';
-import CodeInline from '@/components/docs/CodeInline.astro';
+
+This page lists video and music players that work well on AtlasOS.
 
 ## VLC Media Player
 
@@ -22,7 +23,7 @@ VLC is a simple, well-known media player. It includes the codecs you need for pl
 
 ## mpv
 
-mpv is a minimal player that supports almost all codecs. Advanced features: scripting and customization.
+mpv is a minimal player that supports almost every codec. Advanced users can customise it and extend it with scripts.
 
 [Download mpv](https://mpv.io/installation/)
 
@@ -37,10 +38,10 @@ mpv.net is a fork of mpv with a more user-friendly graphical interface.
 
 ## Windows Media Player
 
-Microsoft has updated Windows Media Player with a modern interface. Atlas may remove bundled media apps during installation, so reinstall Windows Media Player from the Microsoft Store if it is missing.
+Windows Media Player is Microsoft's modern media app. Atlas removes it when you install Atlas, so install it again from the Microsoft Store if you want it.
 
 <Callout type="info" title="Codec support">
-  Unlike mpv or VLC, Windows Media Player does not support all codecs by default. You may need to
+  Unlike mpv or VLC, Windows Media Player doesn't support every codec by default. You may need to
   install the HEVC codec from the Microsoft Store for some video files.
 </Callout>
 
@@ -53,7 +54,7 @@ Microsoft has updated Windows Media Player with a modern interface. Atlas may re
 
 ## foobar2000
 
-foobar2000 plays local and online music. It handles multi-track audio and is user-friendly.
+foobar2000 plays local and online music. It handles multi-track audio and is easy to use.
 
 <CodeBlock
   title="Install with winget:"
@@ -75,7 +76,7 @@ MusicBee is a lightweight alternative to foobar2000 with a more modern feel.
 
 ## Dopamine 2
 
-Dopamine 2 is an audio player for organizing and listening to music. Simple, visually appealing, with many features.
+Dopamine 2 is an audio player for organising and listening to music. It's simple and attractive, with many features.
 
 [Download Dopamine 2](https://github.com/digimezzo/dopamine-windows/releases/latest)
 
@@ -87,5 +88,5 @@ Elisa is a KDE music player with a simple interface and internet radio support.
 
 ## Next steps
 
-- **[Software overview](/docs/essential-setup/software/):** More recommended apps
-- **[Configure Atlas](/docs/atlas-configuration/):** Customize your installation
+- **[Software overview](/docs/essential-setup/software/):** more recommended apps
+- **[Configure Atlas](/docs/atlas-configuration/):** customise your installation

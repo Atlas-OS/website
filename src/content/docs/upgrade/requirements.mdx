@@ -1,45 +1,77 @@
 ---
-title: "Before upgrading"
-metaDescription: "Atlas 0.6 upgrade eligibility, Windows 25H2 requirements, preserved settings, and migration limits."
-description: Check your Atlas version and Windows build before upgrading.
+title: "Before updating"
+metaDescription: "Check whether Atlas Manager can update your Atlas installation, what an update keeps and changes, and what to know on PCs with several accounts."
+description: Check eligibility and what an Atlas update keeps.
 order: 8
 ---
 
 import Callout from '@/components/docs/Callout.astro';
 
-Back up important files before upgrading. Then check both your installed Atlas version and your Windows build.
+This page explains which Atlas installations can update, and what an update keeps and changes.
+Back up important files before you start.
 
-## Version requirements
+## Check your Atlas version
 
-| Check | Requirement for Atlas 0.6 |
-| --- | --- |
-| Installed Atlas version | 0.4.1, 0.5.0, or 0.5.1 |
-| Windows version | Windows 11 25H2, build 26200, on a supported edition |
-| Preparation | Windows and Store updates complete, with required restarts finished |
+Open Atlas Manager.
+Home shows your installed version and, when Atlas Manager has a record of it, your installation history.
 
-Open Atlas Manager to check the installed Atlas version. Press **Win + R** and run `winver` to check Windows. If Manager cannot read the installation state, resolve that error before attempting an upgrade.
+A release can update only from the versions it lists as `UpgradableFrom` in its [`playbook.conf`](https://github.com/Atlas-OS/Atlas/blob/main/playbook/playbook.conf).
+If your version isn't listed, Atlas Manager says it can't update it directly.
+To use the newer release, back up your files and reinstall Windows, then [install Atlas](/docs/install/).
 
-<Callout type="warning" title="Still on Windows 24H2?">
-  Atlas 0.6 cannot upgrade Atlas on that Windows build. Manager's update preparation does not
-  perform Windows feature upgrades. The 24H2-to-25H2 transition for an existing Atlas installation
-  needs a validated release-specific path; do not assume the Atlas version list approves it.
-  Use the [fresh installation guide](/docs/install/) if no supported transition is documented for your setup.
-</Callout>
+If Atlas Manager says it **Couldn't read your Atlas installation details**, choose **Check again**.
+If that doesn't help, [send a report](/docs/faq/report-a-problem/) before you update.
 
-Other Atlas versions are not declared direct upgrade sources. Check the release notes for your exact version or start with a fresh Windows installation.
+## Check your Windows release
 
-## What carries over
+Your Windows release must be one the new Atlas release supports.
+See the [supported releases table](https://github.com/Atlas-OS/Atlas/blob/main/docs/windows-release-policy.md#supported-releases).
 
-The upgrade keeps your files and applications in place and preserves existing Start and taskbar layouts, file associations, and original service backups.
+If your release is older, Atlas Manager moves Windows to a supported release before it updates Atlas.
+It can also recommend a newer release when yours is still supported.
+See [Move Windows to a newer release](/docs/upgrade/windows-release/).
 
-Recorded Atlas configuration choices are reapplied with the new definitions. On older releases, Atlas adopts a previous choice only when the existing settings identify it clearly. Custom changes made outside the Atlas controls may not be preserved.
+Windows 11 Home, LTSC and Server editions can't take Atlas, so Atlas Manager can't update them.
 
-The Atlas folder and modules are replaced, and current installation options and applicable tweaks are applied. Save any personal files you added to the Atlas folder elsewhere before upgrading.
+## What an update keeps
+
+- Your files and apps.
+- Your Start menu and taskbar layouts, file associations and theme.
+- Atlas's backups of your original services.
+- Your Atlas choices, if you choose **Keep my choices**.
+- Settings you changed in the Atlas folder.
+  Atlas puts each recorded choice back after the update, using the new release's definitions.
+
+Atlas can only recognise settings it recorded, or settings that clearly match one of its own choices.
+Changes you made outside Atlas, such as your own registry edits, may not carry over.
+
+## What an update changes
+
+- Atlas replaces the Atlas folder and its modules.
+  Atlas's own logs are kept, but anything else you saved in the Atlas folder is replaced, so move your own files elsewhere first.
+- Atlas applies the new release's settings and fixes.
+- If you choose **Choose again**, Atlas applies each answer as a new installation would.
+  See [Keep my choices or Choose again](/docs/upgrade/upgrade/#3-keep-my-choices-or-choose-again).
+
+An update doesn't repeat the app and component removals of a first installation.
 
 ## PCs with more than one account
 
-Existing accounts receive a settings migration at their next sign-in. Some protected user policies in other accounts may retain their older values. Sign into each account you use after upgrading and check its settings; the installing account's success does not verify every profile.
+Settings for the whole PC, such as services, policies and Windows Update, apply to every account.
+Your own settings apply during the update.
+
+Other existing accounts get their settings the next time each person signs in.
+Some protected policies in those accounts may keep their older values.
+Ask each person to sign in after the update and check their settings.
+
+Atlas Manager updates Microsoft Store apps only for the account that runs it.
+Apps that only another account has stay at their version until that person updates them in Microsoft Store under **Library** > **Get updates**.
+
+<Callout type="info" title="Restarting with other people signed in">
+  Before any restart, Atlas Manager checks whether someone else is signed in.
+  It names them and restarts only if you choose **Restart anyway**, because restarting closes their apps and loses their unsaved work.
+</Callout>
 
 ## Ready to continue?
 
-Download Atlas Manager and read the target release notes on the [Atlas release page](https://github.com/Atlas-OS/Atlas/releases), then follow the [upgrade instructions](/docs/upgrade/upgrade/).
+Read the [release notes](/docs/upgrade/whats-new/) for the release you're updating to, then follow the [update instructions](/docs/upgrade/upgrade/).

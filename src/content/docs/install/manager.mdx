@@ -1,7 +1,7 @@
 ---
 title: "Install with Atlas Manager"
-metaDescription: "Install Atlas 0.6 with Atlas Manager: prepare Windows, choose settings, complete security checks, and restart."
-description: The recommended way to install Atlas.
+metaDescription: "Install Atlas with Atlas Manager: get your PC ready, make your choices, turn off Windows Security's protection switches, install and restart."
+description: Install Atlas step by step with Atlas Manager.
 order: 4
 sidebar:
   label: "Atlas Manager"
@@ -10,86 +10,167 @@ sidebar:
 import Callout from '@/components/docs/Callout.astro';
 import Figure from '@/components/docs/Figure.astro';
 
-Atlas Manager guides you through installing Atlas on Windows. Read the [requirements](/docs/install/requirements/) first. If you already have Atlas installed, use the [upgrade guide](/docs/upgrade/) instead.
+This guide walks you through installing Atlas with Atlas Manager, from a fresh installation of Windows to the first restart.
+Read [Before you install](/docs/install/requirements/) first.
+If Atlas is already installed, follow [Update Atlas](/docs/upgrade/) instead.
 
-## 1. Prepare a fresh Windows installation
+Atlas Manager installs Atlas in four steps: **Get ready**, **Your choices**, **Windows Security** and **Install**.
+Checks and updates come first, so problems are fixed before any protection is turned off.
 
-Back up your files and save your network drivers. Install **Windows 11 25H2 (build 26200)** from unmodified Microsoft media, using an edition you have a licence for.
+## 1. Start from a fresh installation of Windows
 
-Follow Microsoft's [clean installation instructions](https://support.microsoft.com/en-US/Windows/Deployment/Install-Upgrade/reinstall-windows-with-the-installation-media). Check the target drive carefully before deleting partitions. Complete Windows setup and sign in before opening Atlas Manager.
+Back up your files and save the network driver for your PC.
+Then install a supported edition of Windows 11 from Microsoft's installation media, following Microsoft's [clean installation instructions](https://support.microsoft.com/en-us/windows/deployment/install-upgrade/reinstall-windows-with-the-installation-media).
+Check the destination drive carefully before you delete any partitions.
+Finish Windows setup and sign in.
 
-You can also [create an Atlas ISO with Manager](/docs/install/iso/). That route puts Manager and Atlas on your installation media, then opens setup on the destination PC.
-
-<Callout type="info" title="Already on fresh Windows 25H2?">
-  If you have just installed a supported copy of Windows, continue below. You do not need to
-  reinstall it again. Restore your apps and personal settings after Atlas finishes.
-</Callout>
+You can also [create an Atlas ISO](/docs/install/iso/), which reinstalls Windows and opens Atlas Manager after your first sign-in.
 
 ## 2. Open Atlas Manager
 
-Download **Atlas Manager** from the [AtlasOS home page](/) or the [Atlas release page](https://github.com/Atlas-OS/Atlas/releases/latest) and open `AtlasManager.exe`. Allow administrator access when prompted, then choose **Install Atlas**.
+Download `AtlasManager.exe` from the [AtlasOS home page](/) or the [latest Atlas release](https://github.com/Atlas-OS/Atlas/releases/latest) and open it.
+On Home, choose **Install Atlas**.
+When Windows asks whether to let Atlas make changes, choose **Yes**.
 
-In **Get ready**, Manager checks your PC and downloads Atlas under **Installation files**. If the download does not start, choose **Download latest version**. If you already have an Atlas package (`.apbx`), you can choose **Open package file** instead.
+## 3. Get ready
 
-Check that Manager shows the version you intend to install. Resolve any failed PC checks, then choose **Check again**.
+**Get ready** checks your PC, prepares the installation files and updates Windows.
+The bar at the top of the page always names the next thing to do.
 
-## 3. Update Windows and Store apps
+### Installation files
 
-Choose how drivers should be installed:
+Atlas Manager downloads the latest Atlas release under **Installation files**.
+If the download doesn't start, choose **Download latest version**.
+If you already have an Atlas package (`.apbx`), choose **Open package file** instead.
+
+### PC checks
+
+**PC checks** lists the [checks Atlas Manager runs](/docs/install/requirements/#what-atlas-manager-checks).
+Fix anything marked, then choose **Check again**.
+A check that fails offers the Windows Settings page that fixes it, such as **Open installed apps** for other antivirus software.
+
+If Atlas Manager says **Windows on this PC looks used**, back up your files and reinstall Windows first.
+You can choose **Continue anyway**, but installing on a used Windows is unsupported.
+
+If your PC needs a newer release of Windows, a **Windows 11, version** card explains the move and asks you to accept Microsoft's licence terms.
+See [Move Windows to a newer release](/docs/upgrade/windows-release/).
+
+### Drivers
+
+Answer **How should drivers be installed?**
 
 - **Get drivers through Windows Update** lets Windows find drivers for your hardware.
-- **Install drivers myself** blocks driver downloads from Windows Update. You will need to install the drivers yourself. Drivers already installed remain in place.
+  It's recommended for most PCs.
+- **Install drivers myself** stops Windows Update installing drivers, so you get them from your PC or device maker.
+  Drivers already installed are kept.
 
-Choose **Check and install updates**. Manager installs recommended Windows updates, updates Microsoft Store, and finishes updates for installed Store apps. Save your work first: Store apps may close during this step.
+You can switch later from the Atlas folder; see [driver updates](/docs/atlas-configuration/settings/#driver-updates).
 
-Preparation excludes optional preview updates and Windows feature upgrades. It will not move an unsupported Windows installation to 25H2 for you.
+### Update Windows and Store apps
 
-If a restart is needed, choose **Restart and continue**. After signing back into the same account, Manager restores your choices. Choose **Continue updates** and let it check again. Repeat until preparation completes.
+Save your work, then choose **Check and install updates** under **Update Windows and Store apps**.
+Atlas Manager installs the recommended Windows updates, updates Microsoft Store and finishes updates for your Store apps.
+Store apps you have open, such as Notepad or Paint, may close while they update.
 
-<Callout type="tip" title="Manager did not reopen?">
-  Open Atlas Manager manually and continue setup. If updates failed, resolve the error shown
-  before retrying. See [installation troubleshooting](/docs/faq/installation/#what-if-windows-update-fails).
+Optional preview updates and feature updates aren't installed here, unless you chose to move Windows to a newer release.
+
+When Windows needs a restart, choose **Restart and continue**.
+Atlas Manager opens again after you sign in to the same account.
+Choose **Continue updates** to finish, and repeat until Atlas Manager finds no more updates to install.
+
+To stop, choose **Stop updating**.
+Atlas Manager stops after the current step, so keep it open until then.
+
+<Callout type="tip" title="Atlas Manager didn't open after the restart?">
+  Open Atlas Manager yourself and choose **Continue setup** on Home.
+  If updates failed, read the message on the update card, fix the cause, then choose **Try again**.
+  See [What if Windows Update fails?](/docs/faq/installation/#what-if-windows-update-fails)
 </Callout>
 
-## 4. Choose your Atlas settings
+## 4. Your choices
 
-Review each choice, including Microsoft Defender, CPU mitigations, automatic Windows updates, optional apps, and power settings. Read the explanation beside each option before changing it.
+**Your choices** asks one question per screen, then shows one screen of optional extras.
+Each answer shows what it means for your PC before you continue.
 
-These choices define how Windows behaves after installation. The [configuration guide](/docs/atlas-configuration/) explains the controls available afterwards.
+| Screen | Answers |
+| --- | --- |
+| **Keep Microsoft Defender?** | **Keep Microsoft Defender (recommended)** or **Remove Microsoft Defender** |
+| **Keep Windows' processor protections?** | **Keep processor protections (recommended)** or **Turn off processor protections** |
+| **How should Windows install updates?** | **Install updates myself** or **Install updates automatically** |
+| **Do you use multiple keyboard languages?** | **Yes, with keyboard shortcuts**, **Yes, with the taskbar selector** or **No, I use one keyboard layout** |
+| Optional extras | **Turn off hibernation**, **Turn off power saving**, **Turn off virtualisation-based security (VBS)**, **Remove Snipping Tool**, **Remove Microsoft Edge**, **Install a browser**, **Install Atlas Toolbox** and **Install eclean** |
+
+These pages explain each choice and how to change it later:
+
+- Microsoft Defender, processor protections and VBS: [security settings](/docs/atlas-configuration/security/)
+- Windows updates: [automatic Windows updates](/docs/atlas-configuration/settings/#automatic-windows-updates)
+- Keyboard languages: [keyboard languages](/docs/atlas-configuration/tweaks/#keyboard-languages)
+- Hibernation and power saving: [power settings](/docs/atlas-configuration/settings/#power-saving)
+- Browsers: [choosing a browser](/docs/essential-setup/software/browsers/)
+- Atlas Toolbox: [Atlas Toolbox](/docs/toolbox/)
+
+You can change Microsoft Defender, processor protections and update settings later from the Atlas folder on your desktop.
+To get Microsoft Edge back, run `Install or Remove Edge.cmd` in the Atlas folder's `1. Software` folder.
+Snipping Tool can be installed again from Microsoft Store.
 
 <a href="/assets/images/manager/defender-choice.png" target="_blank" rel="noopener noreferrer" aria-label="Open the Defender choice screenshot at full size">
 <Figure
   src="/assets/images/manager/defender-choice.png"
   alt="Atlas Manager's Your choices step, with Keep Microsoft Defender selected and its explanation visible."
-  caption="Choose protection for after installation; the temporary security step comes next. Select the image to enlarge."
+  caption="Each choice explains what it means for your PC. Select the image to enlarge."
   width={902}
   height={681}
 />
 </a>
 
-## 5. Complete the Windows Security step
+## 5. Windows Security
 
-When Manager asks, open **Windows Security → Virus & threat protection → Manage settings**. Turn off the switches it lists, starting with **Tamper Protection**:
+Microsoft Defender can block the changes Atlas makes, so Atlas Manager asks you to turn off four protection switches for the installation.
+This is separate from your choice to keep or remove Microsoft Defender afterwards.
 
-1. Tamper Protection
-2. Real-time protection
-3. Cloud-delivered protection
-4. Automatic sample submission
+1. Choose **Open Windows Security**.
+2. Under **Virus & threat protection settings**, turn off each switch Atlas Manager lists:
+   **Tamper Protection**, **Real-time protection**, **Cloud-delivered protection** and **Automatic sample submission**.
+3. Return to Atlas Manager.
+   It reads the switches as you change them and says when **The four protection switches are off**.
 
-Return to Manager and wait for the checks to update. If a switch cannot be read, check it yourself before confirming. If Defender was removed by an earlier Atlas installation, follow Manager's instructions for that state.
+If Atlas Manager couldn't read a switch, check it in Windows Security yourself, then select **I've checked Windows Security and all four switches are off**.
+If Microsoft Defender isn't on the PC, there's nothing to turn off, and Atlas Manager says so.
 
-This temporary installation step is separate from your choice to keep or remove Defender after installation. If you abandon setup, turn the protections back on.
+If you keep Microsoft Defender, turn the switches back on after installation finishes.
+If you stop before installing, turn them back on straight away; Home reminds you which are still off.
 
 ## 6. Install and restart
 
-Review your choices and start installation. Keep your PC on, plugged in, and connected. Manager checks readiness again before applying changes.
+The **Install** step shows **Review your Atlas setup**, with a **Change** link beside each choice.
+**Show details** lists the installation files, your Windows version, activation and the installation command.
 
-When installation succeeds, Manager starts a restart countdown. Use **Restart now**, or **Restart later** if you need to save work first. Restarting completes setup.
+**Restart my PC automatically after installation** is on by default.
+Save your work and close your apps, then choose **Install Atlas**.
 
-After signing in, confirm Manager shows Atlas as installed, then follow [First setup](/docs/install/setup/).
+Atlas Manager checks your PC and the protection switches one last time, then installs.
+Keep your PC on and plugged in.
+If you close the window, installation continues in the background; open Atlas Manager again to see progress and the result.
 
-## If installation does not finish
+When installation finishes, a countdown restarts Windows.
+To save your work first, choose **Restart later**, then **Restart now** when you're ready.
+The restart finishes setting up Atlas.
 
-Read the reported error and export diagnostics before retrying or deleting anything. Some changes may already have been applied. Reopen Manager to recover an interrupted session and follow its instructions; do not start a second installer alongside it.
+After you sign in, Atlas Manager opens to say that Atlas is installed.
+Continue with [First setup](/docs/install/setup/).
 
-See [installation troubleshooting](/docs/faq/installation/#what-if-installation-fails) for recovery and reporting steps.
+## If installation doesn't finish
+
+Read the message under **Installation didn't finish**.
+It says whether changes may already have been made and what to do next.
+
+- Fix the cause it names, then choose **Try again**.
+- If it stops again, choose **Send a report**, or export diagnostics before you retry or reinstall Windows.
+  See [Report a problem](/docs/faq/report-a-problem/).
+- If you stop here, turn the protection switches back on in Windows Security, if they're still available.
+
+If the app closed, open it again.
+Home offers to finish the installation that stopped, which continues with the same choices.
+Don't start a second installation alongside it.
+
+See [What if installation fails?](/docs/faq/installation/#what-if-installation-fails) for more help.

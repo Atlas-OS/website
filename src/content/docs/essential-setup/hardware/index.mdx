@@ -1,7 +1,7 @@
 ---
-title: "Hardware optimization"
-metaDescription: "AtlasOS hardware optimization: XMP/DOCP for RAM, Resizable BAR for GPU, BIOS updates. Recommended order."
-description: Optimize hardware for AtlasOS.
+title: "Hardware optimisation"
+metaDescription: "AtlasOS hardware optimisation: XMP/DOCP for RAM, Resizable BAR for GPU, BIOS updates. Recommended order."
+description: Optimise hardware for AtlasOS.
 order: 3
 ---
 
@@ -9,10 +9,11 @@ import Callout from '@/components/docs/Callout.astro';
 import QuickLinkCard from '@/components/docs/QuickLinkCard.astro';
 import QuickLinksGrid from '@/components/docs/QuickLinksGrid.astro';
 
-These optional changes can improve performance, especially in games. Measure performance before and after each change.
+This section covers optional firmware and hardware settings that can improve performance in some games and apps.
+Measure performance before and after each change.
 
-<Callout type="info" title="Update BIOS First">
-  Update BIOS before enabling XMP/DOCP or Resizable BAR. Enabling them first can cause settings to
+<Callout type="info" title="Update your BIOS first">
+  Update your BIOS before enabling XMP/DOCP or Resizable BAR. Enabling them first can cause settings to
   revert after the update.
 </Callout>
 
@@ -29,14 +30,14 @@ These optional changes can improve performance, especially in games. Measure per
   <QuickLinkCard
     href="/docs/essential-setup/hardware/gpu/"
     icon="tabler:device-desktop"
-    title="GPU Settings"
+    title="GPU settings"
     description="Enable Resizable BAR for better performance"
   />
 
   <QuickLinkCard
     href="/docs/essential-setup/hardware/bios-update/"
     icon="tabler:settings"
-    title="BIOS Update"
+    title="BIOS update"
     description="Keep your BIOS up to date"
   />
 </QuickLinksGrid>
@@ -49,16 +50,16 @@ These optional changes can improve performance, especially in games. Measure per
 
 ## What these features do
 
-### XMP/DOCP (Memory Overclocking)
+### XMP/DOCP (memory overclocking)
 
 - Runs RAM at its advertised profile speed
 - Can improve performance, especially in games
 - Intel uses XMP, AMD uses DOCP
 
-### Resizable BAR (GPU Enhancement)
+### Resizable BAR (GPU enhancement)
 
 - Improves CPU–GPU communication
-- Can improve frame rates by up to 15% in some games
+- Can improve frame rates in supported games; the difference depends on the game and platform
 - Requires NVIDIA GeForce 30 series or AMD Radeon RX 6000 Series or newer
 
 ### BIOS updates
@@ -70,7 +71,7 @@ These optional changes can improve performance, especially in games. Measure per
 
 ## Next steps
 
-After hardware optimization:
+After hardware optimisation:
 
-- **[Configure Atlas settings](/docs/atlas-configuration/):** Customize your installation
-- **[Optional tweaks](/docs/atlas-configuration/tweaks/):** Personalize your experience
+- **[Configure Atlas settings](/docs/atlas-configuration/):** customise your installation
+- **[Optional tweaks](/docs/atlas-configuration/tweaks/):** personalise Windows

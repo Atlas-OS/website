@@ -1,51 +1,64 @@
 ---
 title: "Reverting Atlas"
-metaDescription: "Remove Atlas with a clean Windows installation using Microsoft media. Prepare backups, drivers, and the correct installation drive."
+metaDescription: "Remove Atlas with a clean Windows installation from Microsoft's media. Prepare backups, drivers and the right installation drive."
 description: Remove Atlas and return to standard Windows.
 order: 33
 ---
 
 import Callout from '@/components/docs/Callout.astro';
 
-To remove Atlas, perform a **clean Windows installation using unmodified Microsoft media**. Reset this PC, an in-place repair, and deleting Atlas Manager are not supported ways to undo all Atlas changes.
+To remove Atlas, do a **clean installation of Windows from Microsoft's installation media**.
+**Reset this PC**, an in-place repair and deleting Atlas Manager don't undo all of Atlas's changes.
 
-<Callout type="warning" title="Use Microsoft media">
-  An ISO or USB prepared by Atlas Manager includes Atlas setup. Use Microsoft's Windows media
-  for this process, otherwise Atlas setup can start again after Windows is installed.
+<Callout type="warning" title="Use Microsoft's media">
+  An ISO or USB drive created by Atlas Manager installs Atlas too.
+  Use Microsoft's Windows media for this process, or Atlas setup starts again after Windows is installed.
 </Callout>
 
-If you want to keep Atlas and resolve a problem, start with [troubleshooting](/docs/faq/installation/) or [report an issue](/docs/contributing/reporting/). To reinstall Atlas instead, follow the [installation guide](/docs/install/).
+If you want to keep Atlas and fix a problem, start with [troubleshooting](/docs/faq/installation/) or [report the problem](/docs/faq/report-a-problem/).
+To reinstall Atlas instead, follow the [installation guide](/docs/install/).
 
 ## 1. Prepare your backup
 
-Copy personal files, game saves, application settings, and any recovery keys you need to storage outside the installation drive. Open a few backed-up files to check them. A restore point is not a substitute for this backup.
+Copy personal files, game saves, app settings and any recovery keys you need to storage outside the installation drive.
+Open a few of the backed-up files to check them.
+A restore point doesn't replace this backup.
 
-Note your Windows edition and activation status in **Settings → System → Activation**. Reinstall the edition covered by your license. Keep access to any accounts and application licenses needed afterwards.
+Note your Windows edition and activation status in **Settings** > **System** > **Activation**.
+Reinstall the edition your licence covers, and keep access to any accounts and app licences you need afterwards.
 
-Download a network driver for your exact PC or motherboard from its manufacturer's support page and save it separately. Choose the package matching your Windows architecture; you do not need every listed driver version. See [network drivers](/docs/essential-setup/drivers/network/).
+Download the network driver for your exact PC or motherboard from its maker's support page and save it separately.
+Choose the package that matches your Windows architecture; you don't need every listed version.
+See [network drivers](/docs/essential-setup/drivers/network/).
 
 ## 2. Create Windows installation media
 
-Use [Microsoft's installation-media guide](https://support.microsoft.com/en-us/windows/deployment/install-upgrade/create-installation-media-for-windows) and official downloads. Check **Settings → System → About → System type** to select the correct architecture.
+Use [Microsoft's installation media guide](https://support.microsoft.com/en-us/windows/deployment/install-upgrade/create-installation-media-for-windows) and official downloads.
+Check **Settings** > **System** > **About** > **System type** to choose the right architecture.
 
-Use an empty USB drive that meets the tool's requirements. Creating installation media erases that USB, so keep your backup on another drive.
+Use an empty USB drive that meets the tool's requirements.
+Creating installation media erases the drive, so keep your backup on another one.
 
 ## 3. Start a clean installation
 
-Boot from the USB and follow the **clean installation** section of [Microsoft's reinstall guide](https://support.microsoft.com/en-us/windows/deployment/install-upgrade/reinstall-windows-with-the-installation-media).
+Start the PC from the USB drive and follow the **clean installation** section of [Microsoft's reinstall guide](https://support.microsoft.com/en-us/windows/deployment/install-upgrade/reinstall-windows-with-the-installation-media).
 
 <Callout type="danger" title="Check the destination drive">
-  Deleting partitions erases their contents. Identify the Windows destination by its size and
-  disk details before deleting anything. Do not assume a disk number identifies the correct drive.
-  If you cannot identify it confidently, stop before changing partitions.
+  Deleting partitions erases their contents.
+  Identify the Windows drive by its size and details before you delete anything; a disk number alone doesn't identify it.
+  If you can't identify it with confidence, stop before you change partitions.
 </Callout>
 
-Disconnect backup storage before starting installation. Where practical, disconnect other drives to reduce the chance of selecting the wrong one. Follow your device manufacturer's instructions for opening its boot menu.
+Disconnect your backup storage before you start.
+Where you can, disconnect other drives too, so you can't select the wrong one.
+Follow your PC maker's instructions for opening its boot menu.
 
 ## 4. Complete Windows setup
 
-Follow the account, network, and privacy prompts on screen. The sequence can vary by Windows edition and release; use the prompts supplied by your installation media.
+Follow the account, network and privacy prompts on screen.
+They vary by Windows edition and release, so follow the ones your installation media shows.
 
-At the desktop, check activation, install Windows updates and needed drivers, then restore your files and applications. See [Microsoft's driver-update instructions](https://support.microsoft.com/en-us/windows/hardware/drivers/automatically-get-recommended-and-updated-hardware-drivers).
+At the desktop, check activation, install Windows updates and the drivers you need, then restore your files and apps.
+See [Microsoft's driver update instructions](https://support.microsoft.com/en-us/windows/hardware/drivers/automatically-get-recommended-and-updated-hardware-drivers).
 
 Your PC now runs standard Windows.

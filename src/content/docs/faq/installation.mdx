@@ -1,98 +1,133 @@
 ---
 title: "Installation FAQ"
-metaDescription: "Troubleshoot Atlas Manager preparation, restarts, failed installation, and diagnostic exports for Atlas 0.6."
+metaDescription: "Answers about installing Atlas with Atlas Manager: requirements, Windows updates, restarts, Windows Security, failed installations and what Atlas removes."
 description: Installation questions and recovery steps.
 order: 27
 ---
 
-Find answers for Atlas Manager installation.
+Answers to common questions about installing Atlas with Atlas Manager.
 
 ## What do I need before installing?
 
-Atlas 0.6 requires Windows 11 25H2 (build 26200) on a supported edition, administrator access, a backup, internet access, and reliable power. A first installation requires fresh Windows. See the [requirements](/docs/install/requirements/) for the full checklist.
+A supported release and edition of Windows 11, freshly installed, an administrator account with UAC on, a backup, an internet connection and a power supply.
+See [Before you install](/docs/install/requirements/) for the full list.
 
 ## Who is Atlas designed for?
 
-Atlas is for people who want to choose how Windows handles background activity, privacy, and system features, and are comfortable troubleshooting those changes. Use a PC you own and can modify. Be prepared to reinstall Windows if you want to remove Atlas.
+Atlas is for people who want to choose how Windows handles background activity, privacy and system features, and who are comfortable troubleshooting those changes.
+Use a PC you own and can modify.
+Be prepared to reinstall Windows if you want to remove Atlas.
 
-## Do I still need AME Wizard?
+## Which app installs Atlas?
 
-No. [Atlas Manager](/docs/install/manager/) downloads and installs Atlas itself. AME Wizard is still supported if you prefer it: see [Install with AME Wizard](/docs/install/ame-wizard/) and the [AME Wizard FAQ](/docs/faq/ame/).
+[Atlas Manager](/docs/install/manager/) is the only way to install Atlas.
+It downloads Atlas, updates Windows and installs Atlas itself, so you don't need any other tools.
 
 ## Can I install on a virtual machine?
 
-Yes. Use a supported Windows installation and the same preparation steps as a physical PC. A VM is useful for trying Atlas and testing ISO media, but does not establish performance or driver compatibility on your hardware.
+Yes.
+Use a supported Windows installation and follow the same steps as on a physical PC.
+A virtual machine is useful for trying Atlas and testing an Atlas ISO, but it doesn't tell you how Atlas performs or which drivers work on your hardware.
 
 ## Where is the Atlas ISO file?
 
-Atlas does not distribute a premodified Windows ISO. You can [create one with Atlas Manager](/docs/install/iso/) from your own unmodified Microsoft ISO. ISO creation and USB writing are beta features.
+Atlas doesn't distribute a ready-made Windows ISO.
+You can [create one with Atlas Manager](/docs/install/iso/) from Microsoft's Windows 11 ISO.
+See [Where is the Atlas ISO file?](/docs/faq/atlas-iso-files/)
 
 ## How long does installation take?
 
-Allow time for Windows installation, Windows and Store updates, and any restarts, as well as Atlas itself. The total depends on your hardware, connection, and update queue. A stage without a percentage may still be working.
+Allow time for Windows updates, Store app updates and any restarts, as well as Atlas itself.
+The total depends on your hardware, your connection and how many updates Windows needs.
+Atlas Manager's **Install** step shows an estimate for Atlas itself.
+A stage without a percentage may still be working.
 
 ## What if Windows Update fails?
 
-Read the error in Manager before retrying:
+Read the message on the **Update Windows and Store apps** card before you retry.
 
-- **Connection problem:** Use unmetered Wi-Fi or Ethernet. Complete any network sign-in first. If Wi-Fi is missing, install your saved network driver.
-- **App in use:** Save your work and close the named Store app, then retry. Restart if its files remain in use.
-- **Another installation is running:** Let it finish. Do not kill Windows servicing processes.
-- **Restart required:** Choose **Restart and continue**. After signing back into the same account, choose **Continue updates**.
-- **Store is missing or updates remain incomplete:** Resolve the Store problem first. Atlas cannot treat an unavailable update service as a successful check.
+- **Connection problem:** use Wi-Fi or Ethernet that isn't metered, and sign in to the network if it asks.
+  If you don't see any Wi-Fi networks, install your network driver first.
+- **Metered connection:** connect to an unmetered network, or turn off **Metered connection** in network settings.
+- **Updates started earlier are still running:** let them finish.
+  Atlas Manager waits for them; don't end Windows servicing processes.
+- **Restart needed:** choose **Restart and continue**, then **Continue updates** after you sign in to the same account.
+- **Microsoft Store can't update apps:** Atlas Manager repairs Microsoft Store once by itself.
+  If that fails, choose **Repair Microsoft Store** to try again.
+- **Windows reports damage:** Atlas Manager repairs Windows' component store first, which can take half an hour or more.
 
-If preparation still fails, use **Export diagnostics**. If Windows keeps reporting the same pending restart after a reboot, inspect Windows Update for unfinished work. Export the error instead of repeatedly restarting without a change.
+If it still fails, choose **Send a report**, or [export diagnostics](/docs/faq/report-a-problem/#export-diagnostics) to share when you ask for help.
+If Windows keeps asking for the same restart, check Windows Update for unfinished work instead of restarting again and again.
 
-## Manager did not reopen after restarting
+## Atlas Manager didn't open after restarting
 
-Open Atlas Manager manually and choose **Continue setup** if offered. Continue updates when prompted; a successful check before the restart does not replace the next check.
+Open Atlas Manager yourself and choose **Continue setup** on Home.
+Then choose **Continue updates**; a check before the restart doesn't replace the next one.
 
-Use the same Windows account you started with. If Manager cannot recover the session, export diagnostics before clearing app data.
+Use the same Windows account you started with.
+If Atlas Manager can't continue, [report the problem](/docs/faq/report-a-problem/) before you clear its data.
 
-## Why does Manager ask me to turn off protection?
+## Why does Atlas Manager ask me to turn off protection?
 
-The Windows Security step temporarily pauses protections that can block installation. Follow that step only when you are ready to install. Your choice to keep or remove Defender after installation is separate.
+Microsoft Defender can block the changes Atlas makes.
+The **Windows Security** step asks you to turn off four protection switches for the installation only.
+Your choice to keep or remove Microsoft Defender afterwards is separate.
 
-If you stop setup, turn the protections back on. After a successful installation, check that Windows Security matches your selected configuration.
+If you stop setup, turn the switches back on; Home reminds you which are still off.
+After installing, check that Windows Security matches the choices you made.
 
 ## What if I get a BitLocker error?
 
-Keep your recovery key available before reinstalling Windows. If Windows Setup specifically asks you to suspend BitLocker, return to Windows and manage the affected drive in **Control Panel → BitLocker Drive Encryption**. Resume protection after the operation that required suspension. Do not disable encryption as a general fix for an unrelated Atlas error.
+Keep your recovery key available before you reinstall Windows.
+If Windows setup asks you to suspend BitLocker, return to Windows and manage the drive in **Control Panel** > **BitLocker Drive Encryption**.
+Resume protection after the operation that needed it.
+Don't turn off encryption to fix an unrelated Atlas error.
 
 ## What was removed from Windows?
 
-Atlas changes services, policies, apps, and interface defaults. Some changes depend on your installation choices, such as removing Edge or Snipping Tool. Use the [configuration guide](/docs/atlas-configuration/) to find available controls, and [Atlas's source code](https://github.com/Atlas-OS/Atlas) for the exact changes. Do not assume every removal can be undone individually.
+Atlas removes selected built-in apps and OneDrive, removes Windows telemetry components, and changes services, policies and interface defaults.
+Some removals are your choice during installation, such as Microsoft Edge, Snipping Tool and Microsoft Defender.
 
-## Why disconnect internet during Windows installation?
+The exact list comes from Atlas's source:
 
-Older guides used disconnection to delay driver downloads. Manager lets you choose Windows Update drivers or manual drivers before preparation. It needs internet access to prepare Windows and install Atlas. That choice does not remove drivers Windows already installed.
+- The [install tweaks catalog](https://github.com/Atlas-OS/Atlas/blob/main/docs/catalog/tweaks.md) lists every change Atlas makes during installation.
+- The [toggles catalog](https://github.com/Atlas-OS/Atlas/blob/main/docs/catalog/toggles.md) lists every setting the Atlas folder can change back.
+
+Not every removal can be undone on its own.
+The [configuration guide](/docs/atlas-configuration/) explains the controls in the Atlas folder.
+
+## Do I need to disconnect from the internet during Windows setup?
+
+No.
+Atlas Manager asks **How should drivers be installed?** before it updates Windows, and it needs the internet to update Windows and install Atlas.
+Choosing **Install drivers myself** doesn't remove drivers Windows already installed.
 
 ## What if installation fails?
 
-1. Read the failure message. If Atlas had started applying changes, your PC may be partially modified.
-2. Choose **Export diagnostics** in Manager before retrying, clearing app data, or reinstalling Windows.
-3. Resolve the reported cause, then use **Try again** if offered. If you opened a saved Atlas package, keep it available for recovery.
-4. If the app closed, reopen it to recover the session. Do not start AME Wizard alongside an active Manager installation.
-5. If you stop here, restore the Windows Security protections you disabled, if they remain available.
+1. Read the message under **Installation didn't finish**.
+   It says whether Atlas had started making changes.
+2. Choose **Send a report**, or export diagnostics, before you retry, clear app data or reinstall Windows.
+   See [Report a problem](/docs/faq/report-a-problem/).
+3. Fix the cause it names, then choose **Try again**.
+   If you opened a saved Atlas package, keep it; finishing the installation needs the same package.
+4. If Atlas Manager closed, open it again.
+   Home offers to finish the installation that stopped.
+5. If you stop here, turn the Windows Security protection switches back on, if they're still available.
 
-Use **Show diagnostic ZIP** to find the exported archive. Review it before sharing: redaction removes common personal identifiers and credentials, but cannot identify every possible piece of private text. Nothing is uploaded automatically.
-
-If Manager cannot open, run this from the folder containing the app:
-
-```powershell
-.\AtlasManager.exe --export-diagnostics
-```
-
-Exports are saved under `%LOCALAPPDATA%\AtlasOS\App\Diagnostics`. Include the ZIP, your Atlas and Windows versions, what you were doing, the error, and whether it repeats. See [Report issues](/docs/contributing/reporting/).
+If the same error repeats, Atlas Manager says another try is unlikely to help and points you to **Send a report**.
 
 ## How do I remove Windows.old?
 
-Recover any files you need first. Then open **Settings → System → Storage → Temporary files** and remove **Previous version of Windows** if listed. Do not treat Windows.old as your only backup.
+Recover any files you need from it first.
+Then open **Settings** > **System** > **Storage** > **Temporary files** and remove **Previous version of Windows**, if it's listed.
+Don't treat Windows.old as your only backup.
 
 ## What should I do after installation?
 
-Follow [First setup](/docs/install/setup/) to check protection, drivers, and Atlas configuration.
+Follow [First setup](/docs/install/setup/) to check protection, updates, drivers and Atlas health.
 
 ## How do I uninstall AtlasOS?
 
-Reinstall Windows from unmodified Microsoft media. Deleting Manager or the Atlas folder does not undo Atlas's changes. Follow [Reverting Atlas](/docs/faq/reverting/).
+Reinstall Windows from Microsoft's installation media.
+Deleting Atlas Manager or the Atlas folder doesn't undo Atlas's changes.
+Follow [Reverting Atlas](/docs/faq/reverting/).

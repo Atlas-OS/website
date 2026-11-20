@@ -139,7 +139,7 @@ import { ATLAS_GITHUB_LATEST_RELEASE_URL, ATLAS_RELEASE_LABEL } from '@/constant
       >
         <Image
           src={AtlasManagerHome}
-          alt="Atlas Manager home showing Atlas 0.6, guided installation steps, and the option to create an Atlas ISO."
+          alt="Atlas Manager's home page, with the guided installation and the option to create an Atlas ISO."
           width={902}
           height={681}
           widths={[450, 700, 902]}
@@ -508,7 +508,8 @@ import { ATLAS_GITHUB_LATEST_RELEASE_URL, ATLAS_RELEASE_LABEL } from '@/constant
 
       const label = document.getElementById('atlas-release-label');
       const version = release.name || release.tag_name;
-      if (label && version) label.textContent = version.startsWith('Atlas') ? version : `Atlas v${version}`;
+      if (label && version)
+        label.textContent = version.startsWith('Atlas') ? version : `Atlas v${version.replace(/^v/, '')}`;
 
       // Without a Manager asset the button keeps linking to the release page.
       const manager = release.assets?.find((asset) => MANAGER_ASSET.test(asset.name ?? ''));

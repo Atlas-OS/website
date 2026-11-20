@@ -10,11 +10,12 @@ sidebar:
 import Callout from '@/components/docs/Callout.astro';
 import CodeInline from '@/components/docs/CodeInline.astro';
 
-Enable XMP (Intel) or DOCP (AMD) to unlock your RAM's full speed. High-performance RAM has a speed rating (e.g., 3200MHz) but runs at a slower default when first installed.
+This guide shows how to enable XMP (Intel) or DOCP (AMD) so your RAM runs at its rated speed.
+High-performance RAM has a speed rating, such as 3200 MHz, but runs at a slower default speed until you enable its profile.
 
 XMP or DOCP in BIOS lets RAM run at its advertised speed, which can improve performance in games and data-heavy applications.
 
-<Callout type="info" title="Update BIOS First">
+<Callout type="info" title="Update your BIOS first">
   Before enabling XMP/DOCP, [update your BIOS](/docs/essential-setup/hardware/bios-update/). If you
   enable XMP/DOCP first, your settings may revert after updating the BIOS.
 </Callout>
@@ -56,5 +57,5 @@ Memory profiles can be unstable and cause crashes. Run a stress test for at leas
 
 After enabling XMP/DOCP:
 
-- **[Enable Resizable BAR](/docs/essential-setup/hardware/gpu/)** (optional) - Improve GPU performance if you have a compatible graphics card
-- **[Configure Atlas settings](/docs/atlas-configuration/):** Customize your installation
+- **[Enable Resizable BAR](/docs/essential-setup/hardware/gpu/)** (optional): improve GPU performance if you have a compatible graphics card
+- **[Configure Atlas settings](/docs/atlas-configuration/):** customise your installation

@@ -1,17 +1,22 @@
 ---
-title: "Web Browsers"
+title: "Web browsers"
 metaDescription: "AtlasOS browsers: Edge, Brave, Helium, LibreWolf, Firefox, Chrome. Privacy, open source, features."
 description: Recommended web browsers.
 order: 3
 ---
 
-import Callout from '@/components/docs/Callout.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
 import Table from '@/components/ui/Table.astro';
 import TableRow from '@/components/ui/TableRow.astro';
 import TableCell from '@/components/ui/TableCell.astro';
 import { Icon } from 'astro-icon/components';
 
-During Atlas installation, you can remove Edge and install another browser. Compare privacy, speed, usability, and the features you need.
+This page compares browsers you can use on AtlasOS by privacy, ease of use and features.
+
+When you install Atlas, the **Your choices** page offers **Remove Microsoft Edge** and **Install a browser**.
+Atlas can install Brave, LibreWolf, Firefox or Chrome, and doesn't change the browser's settings.
+Removing Edge on a PC you already use deletes your Edge bookmarks, history and saved passwords on that PC.
+To install or remove Edge later, run <CodeInline text="Install or Remove Edge.cmd" /> in the Atlas folder's <CodeInline text="1. Software" /> folder.
 
 ## Comparison
 
@@ -66,11 +71,11 @@ During Atlas installation, you can remove Edge and install another browser. Comp
 **Notes:**
 
 - [Chrome](https://tosdr.org/en/service/217) and [Edge](https://tosdr.org/en/service/244) collect significant telemetry and user data.
-- [Helium](https://helium.computer/) is an open-source Chromium browser with ad and tracker blocking enabled by default. It is currently in beta and does not include browser sync, a built-in password manager, or Widevine DRM support for some streaming services.
-- LibreWolf's privacy protections may require turning off protections for specific websites.
+- [Helium](https://helium.computer/) is an open-source Chromium browser with ad and tracker blocking enabled by default. Check its website for the features it supports, such as browser sync, a built-in password manager and the Widevine DRM some streaming services need.
+- LibreWolf's privacy protections can break some websites, so you may need to turn them off for those sites.
 - See [privacytests.org](https://privacytests.org/) for tracking prevention comparisons.
 
 ## Next steps
 
-- **[Software overview](/docs/essential-setup/software/):** More recommended apps
-- **[Configure Atlas](/docs/atlas-configuration/):** Customize your installation
+- **[Software overview](/docs/essential-setup/software/):** more recommended apps
+- **[Configure Atlas](/docs/atlas-configuration/):** customise your installation

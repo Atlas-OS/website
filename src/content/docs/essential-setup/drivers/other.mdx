@@ -8,11 +8,13 @@ order: 5
 import Callout from '@/components/docs/Callout.astro';
 import CodeInline from '@/components/docs/CodeInline.astro';
 
-Install drivers for Bluetooth, printers, scanners, and other peripherals from the device manufacturer's support site. Use Snappy Driver Installer Origin (SDIO) only when the manufacturer does not provide a driver.
+This guide covers drivers for Bluetooth, printers, scanners and other peripherals.
+Install them from the device manufacturer's support site.
+Use Snappy Driver Installer Origin (SDIO) only when the manufacturer doesn't provide a driver.
 
 ## Manufacturer drivers (recommended)
 
-Search for your device model or motherboard manufacturer, as they provide drivers optimized for your specific hardware.
+Search for your device model or motherboard manufacturer, as they provide drivers made for your hardware.
 
 **For example, search for:**
 
@@ -31,7 +33,7 @@ Snappy Driver Installer Origin (SDIO) finds compatible drivers. It scans for mis
 
 1. Visit the [SDIO website](https://www.glenn.delahoy.com/snappy-driver-installer-origin) and download the installer from the "Download Application" section
 2. Extract the .zip file and run the <CodeInline text="x64" /> executable
-   - The x64 build is required for AtlasOS
+   - Use the build that matches your Windows architecture, which is x64 on most PCs
    - When prompted, select **"Download indexes only"** to avoid downloading unnecessary drivers
 3. Wait for SDIO to download the driver indexes
 4. Select the drivers you need and click **"Install"**
@@ -40,6 +42,6 @@ Snappy Driver Installer Origin (SDIO) finds compatible drivers. It scans for mis
 
 After installing all necessary drivers:
 
-- **[Optimize hardware](/docs/essential-setup/hardware/)** (optional) - Enable XMP/DOCP and Resizable BAR for better performance
-- **[Configure Atlas settings](/docs/atlas-configuration/):** Customize your installation
-- **Explore [optional tweaks](/docs/atlas-configuration/tweaks/)** to personalize your experience
+- **[Optimise hardware](/docs/essential-setup/hardware/)** (optional): enable XMP/DOCP and Resizable BAR
+- **[Configure Atlas settings](/docs/atlas-configuration/):** customise your installation
+- **Explore [optional tweaks](/docs/atlas-configuration/tweaks/)** to personalise Windows

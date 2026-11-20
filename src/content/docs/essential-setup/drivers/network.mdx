@@ -8,13 +8,15 @@ order: 2
 import Callout from '@/components/docs/Callout.astro';
 import CodeInline from '@/components/docs/CodeInline.astro';
 
-Wi-Fi and Ethernet adapters need network drivers to connect to the internet. If you saved a driver before [installing Windows](/docs/install/manager/#1-prepare-a-fresh-windows-installation), use that installer if your adapter is missing. Manager-created media can also include network drivers from the PC that created it.
+This guide helps you install the drivers your Wi-Fi and Ethernet adapters need to connect to the internet.
+If you saved a network driver [before reinstalling Windows](/docs/install/requirements/), use that installer when your adapter is missing.
+An [Atlas ISO](/docs/install/iso/) created for this PC can also include its network drivers.
 
 ## Finding your network adapter
 
-1. Open **Device Manager** (press <CodeInline text="Win + X" /> <CodeInline text="Enter" /> or search in Start)
+1. Open **Device Manager**: right-click **Start** and select **Device Manager**, or search for it in Start
 2. Expand **Network adapters**
-3. Note the name of your Wi-Fi or Ethernet adapter (e.g., Intel Wi-Fi 6, Realtek PCIe GbE)
+3. Note the name of your Wi-Fi or Ethernet adapter, such as Intel Wi-Fi 6 or Realtek PCIe GbE
 
 ## Installing from manufacturer website
 
@@ -26,7 +28,7 @@ Download network drivers from your motherboard or device manufacturer's support 
 4. Run the installer and follow the setup instructions
 5. Restart your computer if prompted
 
-<Callout type="info" title="Can't Find Drivers?">
+<Callout type="info" title="Can't find drivers?">
   Search for your network adapter name (from Device Manager) plus "driver". Intel, Realtek, and
   Qualcomm provide generic drivers for their adapters.
 </Callout>
@@ -39,6 +41,6 @@ Download network drivers from your motherboard or device manufacturer's support 
 
 ## Troubleshooting
 
-- **No internet after install:** Download network drivers before reinstalling Windows. If you have another device with internet, download there and transfer via USB.
+- **No internet after installing Windows:** download network drivers before you reinstall Windows. If you have another device with internet access, download the driver there and copy it over on a USB drive.
 - **Driver won't install:** Run the installer as administrator (right-click <CodeInline text="Run as administrator" />).
-- **Still no connection:** Try [Snappy Driver Installer Origin](/docs/essential-setup/drivers/other/#snappy-driver-installer-origin-sdio) as a backup, select only your network adapter driver.
+- **Still no connection:** Try [Snappy Driver Installer Origin](/docs/essential-setup/drivers/other/#snappy-driver-installer-origin-sdio) as a backup, and select only your network adapter driver.

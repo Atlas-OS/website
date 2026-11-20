@@ -1,85 +1,89 @@
 ---
 title: "Post-install FAQ"
-metaDescription: "AtlasOS post-install: Atlas folder, drivers, Bluetooth, Windows Update."
-description: Post-installation questions.
+metaDescription: "After installing AtlasOS: find or restore the Atlas folder, install drivers, and turn Bluetooth, driver updates and visual effects back on."
+description: Questions after installing Atlas.
 order: 28
 ---
 
 import AtlasFolderRestoreLink from '@/components/docs/AtlasFolderRestoreLink.astro';
-import Callout from '@/components/docs/Callout.astro';
 import CodeInline from '@/components/docs/CodeInline.astro';
 import IconArrow from '@/components/ui/IconArrow.astro';
 
-Find the Atlas folder, install drivers, and restore common settings after installation.
+Find the Atlas folder, install drivers and restore common settings after installing Atlas.
 
 ## Atlas folder
 
 ### Where is the Atlas folder?
 
-The Atlas folder is at <CodeInline text="C:\Windows\AtlasDesktop" />. It also appears on your Desktop or in the Start Menu.
+The Atlas folder is at <CodeInline text="%windir%\AtlasDesktop" />.
+You can open it from the shortcut on your desktop or in the Start menu, or enter that path in File Explorer's address bar.
 
 ### I can't find the Atlas folder
 
-If you can't find the Atlas folder, see <AtlasFolderRestoreLink samePage={true} /> below.
+See <AtlasFolderRestoreLink samePage={true} /> below.
 
 ### Restoring the Atlas folder
 
-First, check whether the shortcut or the folder itself is missing.
+First, check whether only the shortcut is missing, or the folder itself.
 
-**If only the Desktop shortcut is missing:** Open <CodeInline text="C:\Windows" /> in File Explorer. Right-click <CodeInline text="AtlasDesktop" />, then select **Send to**<IconArrow />**Desktop (create shortcut)**.
+**If only the desktop shortcut is missing:** enter <CodeInline text="%windir%" /> in File Explorer's address bar.
+Right-click <CodeInline text="AtlasDesktop" />, then select **Send to**<IconArrow />**Desktop (create shortcut)**.
 
-**If <CodeInline text="C:\Windows\AtlasDesktop" /> is missing:** Open Atlas Manager and check the installation status. If setup is incomplete, follow its recovery instructions. Otherwise, use **Export diagnostics** and [report the missing folder](/docs/contributing/reporting/). Do not reinstall an older Atlas release to repair the folder.
+**If <CodeInline text="%windir%\AtlasDesktop" /> is missing:** open Atlas Manager and check what Home shows.
+If an installation didn't finish, choose the option Home offers to finish it.
+If Atlas is installed, choose **Reinstall Atlas** to put the folder back; **Keep my choices** keeps your settings.
+If that doesn't help, [report the problem](/docs/faq/report-a-problem/).
 
 ### What's in the Atlas folder?
 
-The Atlas folder contains configuration files, scripts, and utilities for customizing your AtlasOS installation:
-
-- Configuration files for tweaks and settings
-- Scripts to enable/disable features
-- Windows Settings shortcuts
-- Driver installation options
+The Atlas folder contains launchers that turn Windows features and Atlas settings on or off, shortcuts to Windows Settings pages, driver options and troubleshooting tools.
+See the [Atlas folder overview](/docs/atlas-configuration/atlas-folder/).
 
 ## Drivers
 
-### Do I need to install drivers manually?
+### Do I need to install drivers myself?
 
-Follow the driver method you chose during installation:
+It depends on what you chose for **How should drivers be installed?** in Atlas Manager:
 
-- **Windows Update method**: Drivers install automatically
-- **Manual method**: Install drivers manually
+- **Get drivers through Windows Update:** Windows installs drivers for you.
+- **Install drivers myself:** install drivers from your PC, motherboard or device maker.
 
-See the [Drivers Guide](/docs/essential-setup/drivers/) for detailed instructions.
+See the [drivers guide](/docs/essential-setup/drivers/).
 
 ### Which drivers do I need?
 
-Essential drivers typically include:
+Most PCs need drivers for:
 
 - Graphics (GPU)
-- Network/Wi-Fi
+- Network and Wi-Fi
 - Audio
-- Bluetooth (if needed)
-- Chipset (recommended)
+- Bluetooth, if you use it
+- Chipset
 
 ## Configuration
 
-### How do I enable Bluetooth?
+### How do I turn Bluetooth back on?
 
-Bluetooth is enabled by default in the current Atlas folder. If you disabled it and want to restore the default:
+Atlas leaves Bluetooth on by default.
+If you turned it off:
 
-1. Open the Atlas folder
-2. Go to <CodeInline text="6. Advanced Configuration" /><IconArrow /><CodeInline text="Services" /><IconArrow /><CodeInline text="Bluetooth" />
-3. Run <CodeInline text="Enable Bluetooth (default).cmd" />
-4. Restart your computer
+1. Open the Atlas folder.
+2. Go to <CodeInline text="6. Advanced Configuration" /><IconArrow /><CodeInline text="Services" /><IconArrow /><CodeInline text="Bluetooth" />.
+3. Run <CodeInline text="Enable Bluetooth (default).cmd" />.
+4. Restart your PC.
 
-### How do I enable Windows Update for drivers?
+### How do I get drivers from Windows Update?
 
-1. Open the Atlas folder
-2. Go to <CodeInline text="2. Drivers" /><IconArrow /><CodeInline text="Drivers from Windows Update" />
-3. Run the appropriate script to enable Windows Update driver installation
-4. Restart your computer
+1. Open the Atlas folder.
+2. Go to <CodeInline text="2. Drivers" /><IconArrow /><CodeInline text="Drivers from Windows Update" />.
+3. Run <CodeInline text="Enable Drivers from Windows Update.reg" />.
+4. Restart your PC, then check for updates in Windows Update.
+
+See [driver updates](/docs/atlas-configuration/settings/#driver-updates).
 
 ### How do I restore Windows visual effects?
 
-1. Open the Atlas folder
-2. Go to <CodeInline text="4. Interface Tweaks" /><IconArrow /><CodeInline text="Visual Effects (Animations)" />
-3. Run <CodeInline text="Default Windows Visual Effects.cmd" />
+1. Open the Atlas folder.
+2. Go to <CodeInline text="4. Interface Tweaks" /><IconArrow /><CodeInline text="Visual Effects (Animations)" />.
+3. Run <CodeInline text="Default Windows Visual Effects.cmd" />.
+4. Sign out and back in when it asks, so the change applies.

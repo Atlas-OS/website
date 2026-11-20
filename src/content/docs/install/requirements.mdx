@@ -1,6 +1,6 @@
 ---
 title: "Before you install"
-metaDescription: "Prepare for Atlas 0.6: Windows 11 25H2, a fresh installation, backups, internet access, and power."
+metaDescription: "Check that your PC can run Atlas: a supported Windows 11 release and edition, a fresh installation, the right account, a backup, internet access and power."
 description: Check compatibility and prepare your PC for Atlas.
 order: 3
 sidebar:
@@ -9,41 +9,82 @@ sidebar:
 
 import Callout from '@/components/docs/Callout.astro';
 
-Check these requirements before changing your Windows installation.
+This page lists what Atlas needs before you install it.
+Atlas Manager checks most of these for you on its **Get ready** page, so you can also open the app and read its **PC checks**.
 
-## Windows compatibility
+## Windows release
 
-- **Windows 11 25H2, build 26200**, from an official public release. Windows 10, 24H2, and Insider builds are outside this release's supported installation path.
-- Use **Pro, Pro for Workstations, or Enterprise**. Home and LTSC are not supported.
-- Use a PC that meets Windows 11's hardware requirements. The Atlas Manager media guide uses **x64 Windows** and a **UEFI** PC; do not use that media for an ARM device.
-- Keep a valid licence for the edition you install. Atlas does not activate Windows or provide a Windows licence.
+Atlas installs on public releases of Windows 11 that the Atlas package supports.
+The list of supported releases and builds is kept in one place: the [supported releases table](https://github.com/Atlas-OS/Atlas/blob/main/docs/windows-release-policy.md#supported-releases), which follows `SupportedBuilds` in the package's [`playbook.conf`](https://github.com/Atlas-OS/Atlas/blob/main/playbook/playbook.conf).
 
-Press **Win + R**, enter `winver`, and check the version and build. You can check your edition in **Settings → System → About**.
+- Insider, Release Preview and other preview builds aren't supported.
+- A build that Microsoft hasn't listed as a public release yet can't take Atlas until it's listed.
+- If your PC has an older Windows 11 release, Atlas Manager can [move Windows to a newer release](/docs/upgrade/windows-release/) before it installs Atlas.
+
+To check your release, press **Win + R**, enter `winver` and read the version and build.
+
+## Windows edition
+
+Windows 11 Home, LTSC and Server editions aren't supported.
+Use another edition, such as Pro, Education or Enterprise, that you have a Windows licence for.
+
+Atlas doesn't activate Windows or provide a licence.
+Atlas Manager shows whether Windows is activated, but you can install without activation.
+To check your edition, open **Settings** > **System** > **About**.
 
 ## Start with fresh Windows
 
-A first Atlas installation requires a fresh Windows installation from unmodified Microsoft media. Install Atlas before restoring your apps and customisations. A repair installation that keeps your existing apps and settings is not a fresh start.
+Install Atlas on a fresh installation of Windows from Microsoft's installation media, before you restore your apps and files.
+If Windows on your PC was installed at least a week ago or already has several apps, Atlas Manager warns that **Windows on this PC looks used**.
+Installing there is unsupported: apps and settings you already have may not work as expected, and Atlas removes OneDrive, so files in it stop syncing.
 
-If you already use Atlas, read [Before upgrading](/docs/upgrade/requirements/). Eligible Atlas upgrades do not require a Windows reinstall, but must meet the Windows build requirement separately.
+You can reinstall Windows from Microsoft's media, or [create an Atlas ISO](/docs/install/iso/) that installs Windows and Atlas together.
 
-<Callout type="danger" title="Back up before reinstalling">
-  Reinstalling Windows can erase your files, apps, and settings. Copy important files to separate
-  storage and check that you can open the backup. Save any drive-encryption recovery keys and
-  network drivers you may need. Removing Atlas later also requires reinstalling Windows.
+If Atlas is already installed, you don't need to reinstall Windows to get a newer release.
+Follow [Before updating](/docs/upgrade/requirements/) instead.
+
+<Callout type="danger" title="Back up before reinstalling Windows">
+  Reinstalling Windows can erase your files, apps and settings.
+  Copy important files to separate storage and check that you can open the backup.
+  Save any drive encryption recovery keys and the network driver for your PC.
+  Removing Atlas later also means reinstalling Windows.
 </Callout>
+
+## Your account
+
+- Sign in with a local account or a Microsoft account that's an administrator on the PC.
+  Atlas can't be installed from a work or school (Microsoft Entra ID) account.
+- Keep User Account Control (UAC) turned on.
+- Don't use the built-in Administrator account.
+  Sign in with another administrator account instead.
 
 ## Have these ready
 
-- **An administrator account** on a PC you own and can modify.
-- **Unmetered internet access**, through Wi-Fi or Ethernet, for update preparation and downloads. Save your manufacturer's network driver before reinstalling in case Windows cannot connect.
-- **A power supply**. Keep laptops plugged in through updates and installation.
-- **Enough free storage** for Windows updates and the installation files. ISO creation also needs working space on a local NTFS or ReFS drive; Manager checks the selected location.
-- **A USB drive**, if you are reinstalling from USB. Creating installation media erases that USB drive.
+- **An internet connection that isn't metered**, over Wi-Fi or Ethernet.
+  Atlas Manager needs it to update Windows and download Atlas, and Atlas needs it while it installs software.
+- **A power supply.**
+  Keep laptops plugged in until installation finishes.
+- **Free storage** for Windows updates and the installation files.
+- **No other antivirus software.**
+  Antivirus apps other than Microsoft Defender can block installation, so uninstall them first.
+- **A USB drive**, if you're reinstalling Windows from USB.
+  Creating installation media erases that drive.
 
-## Let Manager prepare Windows
+## What Atlas Manager checks
 
-Atlas Manager checks for incompatible antivirus software, pending restarts, and Windows compatibility. Its preparation step installs recommended Windows updates and updates Microsoft Store and installed Store apps. Resolve any reported problem before continuing.
+| Check | What it needs |
+| --- | --- |
+| **Permission to install** | Atlas Manager runs with administrator permission. |
+| **User account** | UAC is on, and the account isn't the built-in Administrator or a work or school account. |
+| **Windows compatibility** | A supported edition and public release of Windows 11. |
+| **Windows updates** | No updates waiting to install. Atlas Manager installs them for you. |
+| **Pending restart** | Windows doesn't need a restart to finish earlier changes. |
+| **Other antivirus software** | No antivirus apps other than Microsoft Defender. |
+| **Internet connection** | A working connection. |
+| **Power supply** | The PC is plugged in. |
+| **Windows activation** | Shown for your information. It doesn't stop installation. |
 
-Leave antivirus protection on while preparing Windows. Manager explains which switches to turn off when you reach the Windows Security step.
+Keep Microsoft Defender's protection on while you prepare Windows.
+Atlas Manager tells you which switches to turn off when you reach its **Windows Security** step.
 
 Continue with [Install with Atlas Manager](/docs/install/manager/).

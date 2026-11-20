@@ -1,31 +1,38 @@
 ---
 title: "Antivirus"
-metaDescription: "AtlasOS antivirus: Windows Defender, Bitdefender, Kaspersky, Malwarebytes, HitmanPro, ESET."
+metaDescription: "AtlasOS antivirus: Microsoft Defender, Bitdefender, Kaspersky, Malwarebytes, HitmanPro, ESET."
 description: Recommended antivirus software.
 order: 2
 ---
 
 import Callout from '@/components/docs/Callout.astro';
-import CodeInline from '@/components/docs/CodeInline.astro';
 
-<Callout type="tip" title="Start with Windows Defender">
-  Windows Defender is free, updated, and integrated into Windows. Consider the options below if you
-  want something more advanced.
+This page lists antivirus apps that work with AtlasOS: real-time scanners, which protect you all the time, and on-demand scanners, which you run when you need them.
+
+<Callout type="tip" title="Start with Microsoft Defender">
+  Microsoft Defender is free, regularly updated and built into Windows. Consider the options below
+  if you want something different.
 </Callout>
-
-Reliable antivirus options: on-demand and real-time solutions.
 
 ## Real-time scanners
 
-These apps run continuously to protect against malware.
+These apps run all the time to protect against malware.
 
-### Windows Defender (Highly Recommended)
+<Callout type="warning" title="Install other antivirus apps after Atlas">
+  Antivirus apps other than Microsoft Defender can block the Atlas installation, so Atlas Manager
+  asks you to uninstall them first. Install a real-time scanner after Atlas is installed.
+</Callout>
 
-Lightweight, consistently updated malware definitions and native protection inside Windows. It is enabled by default on AtlasOS.
+### Microsoft Defender (recommended)
+
+Microsoft Defender is the antivirus built into Windows, with regularly updated malware definitions.
+When you install Atlas, **Keep Microsoft Defender (recommended)** is the default choice.
+See [Defender](/docs/atlas-configuration/security/#defender) for what each choice means and how to change it later.
 
 ### Bitdefender Antivirus Free Edition
 
-Offers lightweight yet effective protection. Use the official Bitdefender product page if the direct installer link changes.
+Bitdefender's free edition offers lightweight protection.
+Use the official Bitdefender product page if the direct installer link changes.
 
 [Download Bitdefender](https://download.bitdefender.com/windows/installer/en-us/bitdefender_avfree.exe)
 
@@ -34,40 +41,40 @@ Offers lightweight yet effective protection. Use the official Bitdefender produc
 These tools scan and remove threats on demand. They don't run continuously.
 
 <Callout type="info" title="Kaspersky availability">
-  Kaspersky is not available in the United States.
+  Kaspersky isn't available in the United States.
 </Callout>
 
-### Kaspersky Virus Removal Tool (Recommended)
+### Kaspersky Virus Removal Tool (recommended)
 
-A powerful tool for detecting and eliminating various types of malware.
+A free tool for finding and removing many types of malware.
 
 [Download Kaspersky Virus Removal Tool](https://www.kaspersky.com/downloads/free-virus-removal-tool)
 
 ### HitmanPro
 
-Effective in finding and removing new and complex malware.
+Finds and removes new and complex malware.
 
 [Download HitmanPro](https://www.hitmanpro.com/)
 
 ### Malwarebytes
 
-Effective at detecting and removing malware.
+Detects and removes malware.
 
 [Download Malwarebytes](https://www.malwarebytes.com/)
 
 ### ESET Online Scanner
 
-A one-time tool for thorough malware removal.
+A one-time scanner for thorough malware removal.
 
 [Download ESET Online Scanner](https://www.eset.com/int/home/online-scanner/)
 
 ### AdwCleaner
 
-Specializes in removing adware and PUPs.
+Removes adware and potentially unwanted programs.
 
 [Download AdwCleaner](https://downloads.malwarebytes.com/file/adwcleaner)
 
 ## Next steps
 
-- **[Software overview](/docs/essential-setup/software/):** More recommended apps
-- **[Configure Atlas](/docs/atlas-configuration/):** Customize your installation
+- **[Software overview](/docs/essential-setup/software/):** more recommended apps
+- **[Configure Atlas](/docs/atlas-configuration/):** customise your installation

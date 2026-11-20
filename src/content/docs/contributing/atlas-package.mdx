@@ -1,0 +1,110 @@
+---
+title: "Contributing to the Atlas package"
+metaDescription: "How the Atlas package is organised, how to build a local test package, and how to test it with Atlas Manager."
+description: Build and test changes to the Atlas package.
+order: 41
+sidebar:
+  label: "Atlas package"
+---
+
+import Callout from '@/components/docs/Callout.astro';
+
+This guide is for contributors who change what Atlas does to Windows.
+Read the [contribution guide](/docs/contributing/) first.
+
+The [Atlas repository](https://github.com/Atlas-OS/Atlas) holds the Atlas package, Atlas Manager, and their build and test tools.
+
+## How the Atlas package works
+
+The Atlas package is an `.apbx` file.
+It holds the PowerShell scripts, data definitions and supporting files that apply Atlas to Windows.
+
+Atlas Manager prepares the PC, collects the user's choices and then runs the package's front door, `Executables\AtlasModules\Scripts\Entry\Install-Atlas.ps1`.
+The front door checks that the PC is ready, copies the package to a protected staging folder and runs the install plan as TrustedInstaller.
+
+The front door picks one of four install modes:
+
+| Mode | When it runs |
+| --- | --- |
+| Fresh | Atlas isn't installed yet. |
+| Upgrade | The installed Atlas version is listed in `UpgradableFrom`. |
+| Reapply | The installed version is the same as the package's. |
+| Rebase | Windows rebuilt itself while Atlas Manager moved it to a newer release. |
+
+On an update or reinstall, Atlas Manager asks whether to **Keep my choices** or **Choose again**.
+The repository's [upgrading guide](https://github.com/Atlas-OS/Atlas/blob/main/docs/upgrading.md) explains what each mode and each answer applies.
+
+After installation, the launchers in the Atlas folder run toggles from the same modules.
+The [architecture guide](https://github.com/Atlas-OS/Atlas/blob/main/docs/architecture.md) covers the install plan, identities, install state, retries and recorded choices.
+
+## Find the relevant source
+
+- `playbook/playbook.conf`: the release version, `SupportedBuilds`, `UpgradableFrom` and the installation choices.
+- `playbook/Executables/AtlasModules`: the install framework, phases, tweaks and toggle definitions.
+- `playbook/Executables/AtlasDesktop`: the Atlas folder's launchers and shortcuts.
+- `app`: Atlas Manager, a Rust app. See its [README](https://github.com/Atlas-OS/Atlas/blob/main/app/README.md).
+- `tools` and `tests`: build tools, developer tools and automated checks.
+- `docs/catalog`: generated references for every [toggle](https://github.com/Atlas-OS/Atlas/blob/main/docs/catalog/toggles.md) and install tweak.
+
+The [contributor quick start](https://github.com/Atlas-OS/Atlas/blob/main/.github/CONTRIBUTING.md) explains how to add or change a tweak or toggle, and how to regenerate the launchers and catalog afterwards.
+
+## Build a test package
+
+Install **PowerShell 7** and **7-Zip or NanaZip**, then open the repository root.
+
+On Windows:
+
+```powershell
+.\build.cmd
+```
+
+On a Unix shell:
+
+```sh
+./build.sh
+```
+
+Both write `playbook/Atlas Test.apbx` with the local test profile.
+That profile leaves out `SupportedBuilds` and the product code, so it suits quick structure checks.
+Atlas Manager and the front door refuse to install it.
+
+To build a package you can install, run a full build from PowerShell 7:
+
+```powershell
+pwsh tools/build/Build-Playbook.ps1 -FileName 'Atlas Lab' -ReplaceOldPlaybook -DontOpenPbLocation
+```
+
+This writes `playbook/Atlas Lab.apbx` with every check in place.
+Never distribute a package you built yourself as a release.
+
+The build tools use PowerShell 7.
+The scripts in the package run on Windows PowerShell 5.1, which every supported Windows includes, so avoid syntax that only PowerShell 7 supports.
+The [build guide](https://github.com/Atlas-OS/Atlas/blob/main/docs/building.md) lists the build options and how to verify a built package.
+
+## Test a built package
+
+Use a disposable virtual machine for each supported Windows release.
+The [supported releases](https://github.com/Atlas-OS/Atlas/blob/main/docs/windows-release-policy.md#supported-releases) table lists them.
+Take a checkpoint before each test, and keep separate checkpoints for a fresh Windows installation and for each Atlas release that can update directly.
+
+To install your full build, open Atlas Manager, choose **Install Atlas**, and choose **Open package file** under **Installation files** on the **Get ready** page.
+
+<Callout type="info" title="Running the front door directly">
+  When testing, you can run `Install-Atlas.ps1` from an elevated Windows PowerShell prompt in the
+  extracted package's `Executables` folder. The architecture guide lists its parameters and exit
+  codes. Atlas Manager remains the only way to install Atlas for users.
+</Callout>
+
+Check these for every change:
+
+- The changed behaviour, its failures and a retry after a failure.
+- Restarts during the **Get ready** page and after installation.
+- Updates with **Keep my choices** and with **Choose again**, and a reinstall of the same version.
+- The recorded choices, and **9. Troubleshooting → Check Atlas Health.cmd** after the restart.
+- The installing account, another existing account and a new account.
+
+For ISO changes, boot the created media and finish setup on the destination PC.
+A successful ISO build alone doesn't prove the media works.
+
+Follow the [testing guide](/docs/contributing/testing/) and the repository's [testing reference](https://github.com/Atlas-OS/Atlas/blob/main/docs/testing.md), which covers the automated checks and lab VM runs.
+Test on real hardware as well as VMs before treating a change as verified, and [report issues](/docs/contributing/reporting/) with diagnostics and exact versions.

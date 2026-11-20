@@ -1,81 +1,138 @@
 ---
 title: "Security settings"
-metaDescription: "AtlasOS security: mitigations, Defender, Core Isolation, UAC, and Firewall defaults."
-description: Configure security features.
+metaDescription: "Atlas security settings: Microsoft Defender, processor protections (mitigations), core isolation and VBS, User Account Control and the firewall."
+description: Change Microsoft Defender, processor protections and core isolation.
 order: 24
 ---
 
 import Callout from '@/components/docs/Callout.astro';
 import CodeInline from '@/components/docs/CodeInline.astro';
+import IconArrow from '@/components/ui/IconArrow.astro';
 
-Use this page to review each security option, its default, and the file that changes it.
+This page explains each security setting Atlas lets you change, what it protects and which file changes it.
+Read it before you turn any protection off.
 
-All configuration files listed here are in the <CodeInline text="7. Security" /> folder within the Atlas folder on your Desktop.
+The files are in <CodeInline text="7. Security" /> in the Atlas folder, at <CodeInline text="%windir%\AtlasDesktop" />.
 
 <Callout type="danger" title="Understand the risk">
-Disable a security feature only if:
-
-- You understand what it protects
-- You accept the added risk and know how to protect the system without it
-
-Disabling protection can expose your files, accounts, and system to attack. Atlas does not accept
-responsibility for damage caused by disabling security features against these recommendations.
+  Turn off a protection only if you know what it protects and how you'll protect your PC without
+  it. Turning protection off can expose your files, accounts and PC to attack.
 </Callout>
-
-## Mitigations
-
-Mitigations are software or hardware techniques that address security vulnerabilities or weaknesses in the CPU. They help prevent software (e.g., vulnerable games) from being exploited to remotely execute code on your system.
-
-Atlas provides scripts and an installation prompt for Windows mitigations. Disabling mitigations can improve performance on some older CPUs. On newer CPUs, including [Zen 4](https://www.phoronix.com/news/AMD-Zen-4-Mitigations-Off), disabling them can reduce performance as well as security.
-
-Atlas disables [Fault Tolerant Heap](https://learn.microsoft.com/en-us/windows/win32/win7appqual/fault-tolerant-heap 'Microsoft FTH documentation') by default. FTH applies non-CPU mitigations to repeatedly crashing processes, at the cost of significantly reduced performance. If you have consistent application crashes, try enabling FTH.
-
-If an anticheat stops working after you disable mitigations, run <CodeInline text="Set Windows Default Mitigations.cmd" /> in the <CodeInline text="Mitigations" /> folder. To enable every available mitigation, run <CodeInline text="Enable All Mitigations.cmd" />. This is stricter than the Windows default and can reduce performance or compatibility.
 
 ## Defender
 
-Defender protects against many threats (ransomware, spyware). Some users disable it for privacy and performance on older hardware. Disabling Defender increases infection risk; Atlas doesn't recommend it.
+Microsoft Defender is the antivirus built into Windows.
+It protects against threats such as ransomware and spyware.
+Atlas recommends keeping it.
 
-If you use another trusted antivirus, you do not need to disable Defender manually.
+During installation, Atlas Manager asks **Keep Microsoft Defender?**, with two answers:
 
-Atlas 0.6 offers **Keep Microsoft Defender** or **Remove Microsoft Defender** during installation. This choice is separate from temporarily switching off Windows Security protections when the installer asks.
+- **Keep Microsoft Defender (recommended)** keeps Windows' antivirus.
+- **Remove Microsoft Defender** removes it, along with SmartScreen. Your PC has no antivirus protection until you install another antivirus app, and Windows doesn't warn you before you open unrecognised apps or downloads.
 
-To change the component-level choice afterwards, run <CodeInline text="Toggle Defender.cmd" /> in the <CodeInline text="Defender" /> folder and choose **Enable Windows Defender** or **Disable Windows Defender**. The enable option reverses Atlas's Defender package change. Follow the restart prompt, then open Windows Security and review the protection switches; restoring the component is not the same as confirming that every protection is on.
+Whichever you choose, Atlas turns off Smart App Control, Enhanced Phishing Protection and Find my device.
+
+This choice is separate from the Windows Security step during installation.
+In that step, you turn off the four Windows Security protection switches so they don't block installation.
+If you keep Defender, turn those switches back on after installation; Atlas Manager reminds you if any is still off.
+
+If you use another trusted antivirus app, you don't need to remove Defender.
+
+### Change Defender later
+
+In <CodeInline text="7. Security" /><IconArrow /><CodeInline text="Defender" />, run <CodeInline text="Toggle Defender.cmd" /> and choose **Disable Windows Defender** or **Enable Windows Defender**.
+Restart when it asks.
+After enabling Defender, open Windows Security and check that the protection switches are on; bringing Defender back doesn't turn every switch on.
+
+When you update or reinstall Atlas, **Choose again** also lets you keep or remove Defender.
+
+### Windows Security page and tray icon
+
+Two subfolders of <CodeInline text="Defender" /> change how Windows Security looks:
+
+- <CodeInline text="Hide App and Browser Control" />: <CodeInline text="Hide App and Browser Control (default).cmd" /> hides the **App & browser control** page in Windows Security, and <CodeInline text="Show App and Browser Control.cmd" /> shows it.
+- <CodeInline text="Security Health Tray" />: <CodeInline text="Remove Security Tray from Startup (default).cmd" /> stops the Windows Security icon starting with Windows, and <CodeInline text="Add Security Tray to Startup.cmd" /> adds it back.
+
+## Mitigations
+
+Processor protections, also called security mitigations, defend against processor flaws such as Spectre and Meltdown, and against attacks that exploit bugs in apps.
+They help stop a vulnerable app or game being used to run code on your PC.
+
+During installation, Atlas Manager asks **Keep Windows' processor protections?**:
+
+- **Keep processor protections (recommended)** keeps the Windows defaults.
+- **Turn off processor protections** turns them off, along with Exploit protection for apps, such as Control Flow Guard. This reduces security. Any performance difference depends on your processor; on some recent processors, such as [AMD Zen 4](https://www.phoronix.com/news/AMD-Zen-4-Mitigations-Off), turning them off reduces performance.
+
+To change the choice later, open <CodeInline text="7. Security" /><IconArrow /><CodeInline text="Mitigations" />, run one of these files, then restart:
+
+- <CodeInline text="Set Windows Default Mitigations.cmd" /> restores the Windows defaults. It matches **Keep processor protections (recommended)**. Run it if an anti-cheat stops working after you turn protections off.
+- <CodeInline text="Disable All Mitigations.cmd" /> turns them off. It matches **Turn off processor protections**.
+- <CodeInline text="Enable All Mitigations.cmd" /> turns on every available protection. This is stricter than the Windows default and can reduce performance or compatibility.
+
+### Fault Tolerant Heap
+
+[Fault Tolerant Heap](https://learn.microsoft.com/windows/win32/win7appqual/fault-tolerant-heap) (FTH) applies extra protections to apps that keep crashing, at a cost to their performance.
+Atlas turns it off.
+
+In <CodeInline text="Mitigations" /><IconArrow /><CodeInline text="Fault Tolerant Heap" />:
+
+- <CodeInline text="Disable FTH (default).cmd" /> turns FTH off.
+- <CodeInline text="Enable FTH.cmd" /> turns it on. Try it if an app keeps crashing.
+- <CodeInline text="Reset FTH entries.lnk" /> clears the list of apps FTH is tracking.
+
+Restart after turning FTH on or off.
 
 ## Core isolation
 
-[Core isolation](https://support.microsoft.com/en-us/windows/core-isolation-e30ed737-17d8-42f3-a2a9-87521df09b78) is a Windows security feature that protects core processes from malicious software by running them in a virtualized environment.
+[Core isolation](https://support.microsoft.com/windows/core-isolation-e30ed737-17d8-42f3-a2a9-87521df09b78) uses virtualisation-based security (VBS) to run core parts of Windows in an isolated environment, out of reach of malicious software.
+It can have a [noticeable performance cost](https://www.tomshardware.com/news/windows-11-gaming-benchmarks-performance-vbs-hvci-security), especially on older processors.
 
-Core isolation can have a [significant performance cost](https://www.tomshardware.com/news/windows-11-gaming-benchmarks-performance-vbs-hvci-security), especially on older CPUs. Atlas recommends disabling it for most users because the performance cost outweighs the added protection.
+During installation, the check box **Turn off virtualisation-based security (VBS)** turns off VBS and memory integrity.
+This removes an extra layer of Windows security, and may affect apps or games that require it.
+Atlas leaves Credential Guard, LSA protection and kernel stack protection preferences as they are.
 
-For Windows 11 users, Core isolation features are typically enabled by default, as long as your CPU supports Windows 11.
+In <CodeInline text="7. Security" /><IconArrow /><CodeInline text="Core Isolation (VBS)" />:
 
-The <CodeInline text="Core Isolation (VBS)" /> folder contains <CodeInline text="Current Configuration.cmd" /> to check which Core isolation features are available and configured, plus shortcuts to Core isolation settings. Atlas setup also offers a choice to disable VBS; review its consequences before selecting it.
+- <CodeInline text="Current Configuration.cmd" /> shows which core isolation features are available and running.
+- <CodeInline text="Disable VBS.cmd" /> turns VBS and memory integrity off. It matches **Turn off virtualisation-based security (VBS)**.
+- <CodeInline text="Enable VBS.cmd" /> turns them back on.
+- <CodeInline text="Core Isolation - Windows Security.url" /> opens the **Core isolation** page in Windows Security.
+
+Restart after either change.
+A policy on your PC, or a UEFI lock, can keep VBS as it is; Atlas then leaves it unchanged and says why.
 
 ### Core isolation features
 
-Available features depend on your hardware and Windows edition. Windows 11 usually exposes more Core isolation features.
+The features available depend on your hardware and firmware.
 
-- **Memory integrity:** Also known as HVCI or 'Hypervisor-protected Code Integrity' - Like a security guard between the core components of Windows
-- **Credential Guard:** Protects <CodeInline text="lsass.exe" /> by preventing attackers from stealing/dumping credentials from it - <CodeInline text="lsass.exe" /> contains lots of authentication tokens used by Windows
-- **Microsoft Vulnerable Driver Blocklist:** A blocklist to block drivers with known security vulnerabilities, as drivers have unrestricted access to a system
-- **Firmware protection:** Protects against a compromised UEFI/BIOS
-- **Memory access protection:** Also called Kernel DMA protection. Blocks malicious PCI devices, including devices connected through a Thunderbolt port, from accessing memory
-- **Kernel-mode Hardware-enforced Stack Protection:** Protects against [Return-Oriented Programming (ROP)](https://en.wikipedia.org/wiki/Return-oriented_programming) attacks
+- **Memory integrity**, also called hypervisor-protected code integrity (HVCI), stops untrusted code from loading into the core of Windows.
+- **Credential Guard** stops attackers stealing sign-in secrets from the Local Security Authority (`lsass.exe`).
+- **Microsoft Vulnerable Driver Blocklist** blocks drivers with known security flaws.
+- **Firmware protection** protects against compromised firmware.
+- **Memory access protection**, also called Kernel DMA Protection, blocks malicious devices, such as those connected through Thunderbolt, from reading memory.
+- **Kernel-mode Hardware-enforced Stack Protection** protects against [return-oriented programming](https://en.wikipedia.org/wiki/Return-oriented_programming) attacks.
 
 ## UAC
 
-UAC (User Account Control) is a feature in Windows that helps control what changes software can make to your computer. It helps protect against applications malfunctioning or making harmful changes to your computer.
+User Account Control (UAC) asks for permission before an app makes changes that need administrator rights.
+Atlas Manager's **User account** check requires UAC to be on, and Atlas doesn't install from the built-in Administrator account.
+Atlas has no file to turn UAC off.
 
-Sophisticated malware can bypass lower UAC levels. Set UAC to its highest level for the strongest prompt protection.
+Atlas changes one UAC setting during installation: UAC prompts don't switch to the secure desktop, so the screen doesn't dim.
+The secure desktop stops software without administrator rights from imitating the prompt or interacting with it.
+Without it, UAC prompts appear on the normal desktop, where other apps can draw over them or read credentials you type.
 
-When UAC is disabled, everything runs with fewer elevation prompts. On the current version of Atlas, UAC is enabled by default and the Atlas folder does not ship a UAC disable script. If you change UAC manually, treat it as an advanced Windows configuration change rather than a supported Atlas preset.
+Windows' own UAC settings stay available in **Control Panel**<IconArrow />**User Accounts**<IconArrow />**Change User Account Control settings**.
 
 ## Firewall
 
-Firewall is a built-in Windows feature that blocks unwanted connections. Atlas keeps it enabled by default to enhance system security. The current Atlas folder does not ship a Firewall disable script.
+Atlas keeps Windows Defender Firewall on, and has no file to turn it off.
+It changes two groups of firewall rules:
+
+- It turns off the Remote Assistance rules during installation, because Atlas turns off Remote Assistance.
+- [File sharing](/docs/atlas-configuration/settings/#file-sharing) manages the File and Printer Sharing and Network Discovery rules. Atlas turns them off on a first installation. Turning file sharing on can enable them for Private networks only.
 
 ## Next steps
 
-- **[Basic settings](/docs/atlas-configuration/settings/):** Configure Windows features like Bluetooth and Game Mode
-- **[Optional tweaks](/docs/atlas-configuration/tweaks/):** Personalize your interface
+- [Basic settings](/docs/atlas-configuration/settings/): Windows updates, drivers, power and privacy settings.
+- [Antivirus software](/docs/essential-setup/software/anti-virus/): other antivirus options.

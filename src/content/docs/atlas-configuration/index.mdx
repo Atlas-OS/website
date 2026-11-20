@@ -1,87 +1,35 @@
 ---
 title: "Atlas configuration"
-metaDescription: "Customize AtlasOS: basic settings, tweaks, advanced options, security, and Windows settings."
-description: Customize your AtlasOS installation.
+metaDescription: "Change Atlas after installation: the Atlas folder's settings, tweaks, security, advanced and troubleshooting tools, and what Atlas Manager does."
+description: Change your Atlas settings after installation.
 order: 19
 ---
 
 import AtlasFolderRestoreLink from '@/components/docs/AtlasFolderRestoreLink.astro';
 import Callout from '@/components/docs/Callout.astro';
 import CodeInline from '@/components/docs/CodeInline.astro';
+import DirectoryTree from '@/components/docs/DirectoryTree.astro';
 import QuickLinkCard from '@/components/docs/QuickLinkCard.astro';
 import QuickLinksGrid from '@/components/docs/QuickLinksGrid.astro';
-import DirectoryTree from '@/components/docs/DirectoryTree.astro';
 
-Open the Atlas folder from your Desktop or Start menu to change Windows features and Atlas settings. Use **Atlas Manager** to view your installed version, check for Atlas releases, and export diagnostics.
+This section explains how to change Atlas and Windows settings after you install Atlas.
+Change only what you need; Atlas works without any of these changes.
+
+## Atlas Manager and the Atlas folder
+
+You use two places to manage Atlas after installation:
+
+- **Atlas Manager** shows your installed Atlas version and installation history, and updates or reinstalls Atlas. When you update or reinstall, **Choose again** lets you change your installation choices. Its **Settings** page has **Send a report** and **Export diagnostics**.
+- **The Atlas folder** holds a file for each setting you can change, such as Bluetooth, Windows updates or the context menu. Open it from the **Atlas** shortcut on your desktop or in the Start menu, or go to <CodeInline text="%windir%\AtlasDesktop" />.
 
 <Callout type="info" title="Missing Atlas folder?">
-  If you can't find the Atlas folder, see <AtlasFolderRestoreLink />.
+  If you can't find the Atlas folder, follow <AtlasFolderRestoreLink />.
 </Callout>
 
-## Choose what to configure
-
-- **Basic Settings:** Enable or disable Windows features (Bluetooth, Game Mode, notifications)
-- **Optional Tweaks:** Context menu styles, Alt-Tab appearance, and more
-- **Advanced Options:** Fine-tune system behavior (power users)
-- **Security Settings:** Security features and privacy options
-- **Windows Settings:** Shortcuts to common Windows configuration
-
-<Callout type="tip">
-  Most changes require a restart. A reminder appears when needed.
-</Callout>
-
-## Configuration sections
-
-<QuickLinksGrid columns={{ md: 2 }}>
-  <QuickLinkCard
-    href="/docs/atlas-configuration/atlas-folder/"
-    icon="tabler:folder"
-    title="Atlas folder overview"
-    description="Find each configuration section and learn what its files do"
-  />
-
-  <QuickLinkCard
-    href="/docs/atlas-configuration/settings/"
-    icon="tabler:settings"
-    title="Basic settings"
-    description="Enable or disable Windows features and system options"
-  />
-
-  <QuickLinkCard
-    href="/docs/atlas-configuration/tweaks/"
-    icon="tabler:sparkles"
-    title="Optional tweaks"
-    description="Personalize your Windows interface and experience"
-  />
-
-  <QuickLinkCard
-    href="/docs/atlas-configuration/advanced/"
-    icon="tabler:code"
-    title="Advanced options"
-    description="Fine-tune system behavior for experienced users"
-  />
-
-  <QuickLinkCard
-    href="/docs/atlas-configuration/security/"
-    icon="tabler:shield"
-    title="Security settings"
-    description="Configure security features and privacy options"
-  />
-
-  <QuickLinkCard
-    href="/docs/atlas-configuration/windows/"
-    icon="tabler:brand-windows"
-    title="Windows settings"
-    description="Open common Windows settings from one folder"
-  />
-</QuickLinksGrid>
-
-## Understanding the Atlas folder
-
-The Atlas folder is at <CodeInline text="C:\Windows\AtlasDesktop" />. It holds scripts, registry files, shortcuts, and utilities in numbered sections. The Desktop and Start Menu shortcut opens it.
+## The Atlas folder
 
 <DirectoryTree>
-C:\Windows\AtlasDesktop
+%windir%\AtlasDesktop
 ├── 1. Software
 ├── 2. Drivers
 ├── 3. General Configuration
@@ -93,19 +41,65 @@ C:\Windows\AtlasDesktop
 └── 9. Troubleshooting
 </DirectoryTree>
 
-Each section contains scripts, registry files, shortcuts, or utilities. Run the file that names the action you want. Restart when the file or documentation tells you to.
+Run the file that names the action you want.
+Each file tells you when to restart or sign out.
+A file name ending in <CodeInline text="(default)" /> marks what Atlas applies on a first installation, not what's active on your PC.
 
-<Callout type="warning" title="Modify with Caution">
-  Change only settings you understand. A wrong setting can break features or make Windows
-  unstable. Read the relevant page first or ask for help in [Discord](https://discord.com/invite/atlasos).
+## Configuration pages
+
+<QuickLinksGrid columns={{ md: 2 }}>
+  <QuickLinkCard
+    href="/docs/atlas-configuration/atlas-folder/"
+    icon="tabler:folder"
+    title="Atlas folder"
+    description="How the folder is organised and how its files work"
+  />
+
+  <QuickLinkCard
+    href="/docs/atlas-configuration/settings/"
+    icon="tabler:settings"
+    title="Basic settings"
+    description="Windows updates, drivers, AI features, power, privacy and sharing"
+  />
+
+  <QuickLinkCard
+    href="/docs/atlas-configuration/tweaks/"
+    icon="tabler:sparkles"
+    title="Optional tweaks"
+    description="Context menus, File Explorer, keyboard languages and visual effects"
+  />
+
+  <QuickLinkCard
+    href="/docs/atlas-configuration/security/"
+    icon="tabler:shield"
+    title="Security settings"
+    description="Microsoft Defender, processor protections and core isolation"
+  />
+
+  <QuickLinkCard
+    href="/docs/atlas-configuration/advanced/"
+    icon="tabler:code"
+    title="Advanced options"
+    description="Boot settings, services and driver tools for experienced users"
+  />
+
+  <QuickLinkCard
+    href="/docs/atlas-configuration/windows/"
+    icon="tabler:brand-windows"
+    title="Windows settings"
+    description="Shortcuts to common Windows Settings pages"
+  />
+
+  <QuickLinkCard
+    href="/docs/atlas-configuration/troubleshooting/"
+    icon="tabler:first-aid-kit"
+    title="Troubleshooting tools"
+    description="Check Atlas health and repair common problems"
+  />
+</QuickLinksGrid>
+
+<Callout type="warning" title="Change settings with care">
+  Change only settings you understand, one at a time. A wrong setting can break a feature or make
+  Windows unstable. Read the setting's description first, or ask in
+  [Discord](https://discord.com/invite/atlasos).
 </Callout>
-
-## Getting started
-
-Start with:
-
-1. **[Atlas folder overview](/docs/atlas-configuration/atlas-folder/)** – Folder structure
-2. **[Basic Settings](/docs/atlas-configuration/settings/)** – Enable or disable features
-3. **[Optional Tweaks](/docs/atlas-configuration/tweaks/)** – Personalize your interface
-
-Read each setting's description before you run its file.

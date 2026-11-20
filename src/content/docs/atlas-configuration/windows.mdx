@@ -1,6 +1,6 @@
 ---
 title: "Windows settings"
-metaDescription: "AtlasOS shortcuts to Windows Settings: activation, colors, date, apps, region, taskbar."
+metaDescription: "Atlas shortcuts to Windows Settings: activation, colours, date and time, default apps, graphics (HAGS), desktop icons, language, privacy, region and taskbar."
 description: Shortcuts to Windows Settings pages.
 order: 25
 ---
@@ -8,37 +8,57 @@ order: 25
 import AtlasFolderRestoreLink from '@/components/docs/AtlasFolderRestoreLink.astro';
 import Callout from '@/components/docs/Callout.astro';
 import CodeInline from '@/components/docs/CodeInline.astro';
+import IconArrow from '@/components/ui/IconArrow.astro';
 
-Run these shortcuts to open common Windows settings. Some settings remain locked until you activate Windows.
+The <CodeInline text="5. Windows Settings" /> folder in the Atlas folder holds shortcuts to Windows settings you might want after installing Atlas.
+Each shortcut opens a page in Windows; it doesn't change anything by itself.
 
-Open <CodeInline text="5. Windows Settings" /> in the Atlas folder on your Desktop. If the Atlas folder is missing, follow{' '}<AtlasFolderRestoreLink />.
-
-Each file opens its matching Windows Settings page.
-
-## Activation
-
-Run the Activation file to open Windows activation settings. Activate Windows before you change settings that require a license.
-
-AtlasOS requires a valid Windows license. Activate Windows with a legitimate license before installation. Activation is a one-time process.
-
-<Callout type="warning" title="Atlas is Not Pre-activated">
-  AtlasOS is **not** a pre-activated version of Windows. You must activate Windows with a valid,
-  legitimate license before installation. When purchasing a Windows license, confirm the seller is
-  trusted and the license is legitimate.
-</Callout>
+Open the Atlas folder from your desktop or the Start menu, or go to <CodeInline text="%windir%\AtlasDesktop" />.
+If it's missing, follow <AtlasFolderRestoreLink />.
 
 ## Shortcut reference
 
-Each file opens the corresponding Windows Settings page:
+| Shortcut | Opens |
+| --- | --- |
+| <CodeInline text="Activation" /> | **Settings**<IconArrow />**System**<IconArrow />**Activation** |
+| <CodeInline text="Colors" /> | Colour and accent settings |
+| <CodeInline text="Date & Time" /> | Time, date and time zone settings |
+| <CodeInline text="Default Apps" /> | Default apps for file types and links, such as your browser |
+| <CodeInline text="Default Graphics Settings (HAGS)" /> | Default graphics settings, including hardware-accelerated GPU scheduling |
+| <CodeInline text="Desktop Icons" /> | **Desktop Icon Settings**, for icons such as This PC and Recycle Bin |
+| <CodeInline text="Language" /> | Display language, keyboards and input languages |
+| <CodeInline text="Privacy" /> | **Settings**<IconArrow />**Privacy & security** |
+| <CodeInline text="Region" /> | The **Region** control panel, for formats and administrative language settings |
+| <CodeInline text="Taskbar" /> | Taskbar settings |
 
-| File | Opens |
-|------|-------|
-| **Colors** | Color and styling options |
-| **Date & Time** | Time, date, and time zone settings |
-| **Default apps** | Default apps for file types (e.g., browser, media player) |
-| **Default Graphics Settings (HAGS)** | Hardware-accelerated GPU scheduling and default graphics preferences |
-| **Desktop icons** | Desktop icon visibility (This PC, Recycle Bin, etc.) |
-| **Language** | Display and input language |
-| **Privacy** | Privacy and diagnostic settings |
-| **Region** | Country and region settings |
-| **Taskbar** | Taskbar customization |
+## Activation
+
+Atlas doesn't activate Windows and doesn't change your activation.
+Activate Windows with a valid licence for the edition you installed.
+Some personalisation settings stay locked until Windows is activated.
+
+Atlas Manager's **Windows activation** check only informs you.
+It doesn't stop installation when Windows isn't activated.
+
+<Callout type="warning" title="Atlas isn't pre-activated Windows">
+  Atlas changes your own Windows installation and doesn't include a Windows licence. When you buy
+  a licence, make sure the seller is trustworthy and the licence is genuine.
+</Callout>
+
+## Hardware-accelerated GPU scheduling
+
+Hardware-accelerated GPU scheduling (HAGS) moves some graphics scheduling work to the graphics card.
+Whether it's available depends on your graphics card and driver.
+Turning it on doesn't guarantee better performance.
+
+To try it:
+
+1. Install your graphics driver.
+2. Open <CodeInline text="Default Graphics Settings (HAGS)" />, then turn on **Hardware-accelerated GPU scheduling** if Windows offers it.
+3. Restart your PC.
+4. Compare the apps and games you use before and after.
+
+## Keyboard languages
+
+The <CodeInline text="Language" /> shortcut opens the page where you add keyboards and languages.
+To change the Alt+Shift and Ctrl+Shift switching shortcuts, see [Keyboard languages](/docs/atlas-configuration/tweaks/#keyboard-languages).

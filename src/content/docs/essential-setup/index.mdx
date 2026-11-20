@@ -1,7 +1,7 @@
 ---
 title: "Essential setup"
-metaDescription: "AtlasOS essential setup: drivers (manual or Windows Update), hardware optimization (BIOS, XMP/DOCP, Resizable BAR)."
-description: Drivers and hardware optimization.
+metaDescription: "AtlasOS essential setup: drivers (manual or Windows Update), hardware optimisation (BIOS, XMP/DOCP, Resizable BAR), software and maintenance."
+description: Drivers, hardware optimisation and software.
 order: 10
 ---
 
@@ -10,33 +10,36 @@ import QuickLinkCard from '@/components/docs/QuickLinkCard.astro';
 import QuickLinksGrid from '@/components/docs/QuickLinksGrid.astro';
 import IconArrow from '@/components/ui/IconArrow.astro';
 
-After installing AtlasOS, install your drivers first. Apply the optional hardware optimizations afterward.
+This section helps you finish setting up your PC after installing Atlas.
+Install your drivers first, then apply the optional hardware optimisations.
 
-## Follow your driver method
+## Follow your driver choice
 
-Follow the option you selected during installation.
+On the **Get ready** page, Atlas Manager asks how drivers should be installed.
+Follow the steps for the answer you chose.
 
-### If you chose Windows Update (automatic)
+### If you chose Get drivers through Windows Update
 
-Windows Update installs drivers automatically. Verify everything is up to date:
+Windows Update installs drivers for your hardware. Check that everything is up to date:
 
 1. Open **Settings**<IconArrow />**Windows Update**
-2. Click **Check for updates**
-3. Install all available updates, including optional updates (especially driver updates)
-4. Restart if prompted, then check for updates again until no more are available
+2. Select **Check for updates**
+3. Install the available updates, including optional driver updates
+4. Restart if prompted, then check for updates again until none are left
 
 <Callout type="tip">
-  If internet and display work, Windows Update likely installed your drivers. Skip the drivers
-  section and go to hardware optimization (optional).
+  If your internet connection and display work, Windows Update has probably installed your drivers.
+  You can skip the drivers guide and go to hardware optimisation, which is optional.
 </Callout>
 
-**Next:** Continue to [hardware optimization](/docs/essential-setup/hardware/) or skip it.
+**Next:** Continue to [hardware optimisation](/docs/essential-setup/hardware/), or skip it.
 
-### If you chose manual installation
+### If you chose Install drivers myself
 
-Install drivers yourself for full control over versions.
+Windows Update doesn't install drivers, so you choose each driver and its version yourself.
+Drivers that were already installed are kept.
 
-**Next:** [Install your drivers](/docs/essential-setup/drivers/), then continue to hardware optimization or skip it.
+**Next:** [Install your drivers](/docs/essential-setup/drivers/), then continue to hardware optimisation or skip it.
 
 ## Your setup path
 
@@ -45,21 +48,21 @@ Install drivers yourself for full control over versions.
     href="/docs/essential-setup/drivers/"
     icon="tabler:device-desktop"
     title="Drivers"
-    description="Manually install graphics, network, audio, chipset, and device drivers"
+    description="Install graphics, network, audio, chipset and device drivers"
   />
 
   <QuickLinkCard
     href="/docs/essential-setup/hardware/"
     icon="tabler:cpu"
-    title="Hardware optimization"
-    description="Update your BIOS, enable a memory profile, and configure your GPU"
+    title="Hardware optimisation"
+    description="Update your BIOS, enable a memory profile and configure your GPU"
   />
 
   <QuickLinkCard
     href="/docs/essential-setup/software/"
     icon="tabler:download"
     title="Software"
-    description="Choose a browser, antivirus, media player, and other apps"
+    description="Choose a browser, antivirus, media player and other apps"
   />
 
   <QuickLinkCard
@@ -71,14 +74,14 @@ Install drivers yourself for full control over versions.
 </QuickLinksGrid>
 
 <Callout type="info">
-  Hardware optimization is optional but recommended. It can improve performance, especially for
-  gaming.
+  Hardware optimisation is optional. Any performance difference depends on your hardware and the
+  apps and games you use.
 </Callout>
 
 ## Next steps
 
 After completing essential setup:
 
-- **[Configure Atlas settings](/docs/atlas-configuration/):** Customize your installation
-- **[FAQ](/docs/faq/):** Get help if you encounter any issues
-- **Explore [optional tweaks](/docs/atlas-configuration/tweaks/)** to personalize your experience
+- **[Configure Atlas settings](/docs/atlas-configuration/):** customise your installation
+- **[FAQ](/docs/faq/):** get help if something isn't working
+- **Explore [optional tweaks](/docs/atlas-configuration/tweaks/)** to personalise Windows

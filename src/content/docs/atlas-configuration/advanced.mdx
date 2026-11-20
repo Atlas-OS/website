@@ -1,7 +1,7 @@
 ---
 title: "Advanced configuration"
-metaDescription: "AtlasOS advanced config: boot, driver tools, Microsoft Store, Process Explorer, services, and Windows Update."
-description: Advanced configuration for power users.
+metaDescription: "Atlas advanced configuration: boot settings, driver tools, Microsoft Store, Process Explorer, services including NVIDIA Display Container and SysMain, and Toggle Windows Updates."
+description: Advanced configuration for experienced users.
 order: 22
 sidebar:
   label: "Advanced options"
@@ -10,66 +10,130 @@ sidebar:
 import AtlasFolderRestoreLink from '@/components/docs/AtlasFolderRestoreLink.astro';
 import Callout from '@/components/docs/Callout.astro';
 import CodeInline from '@/components/docs/CodeInline.astro';
+import IconArrow from '@/components/ui/IconArrow.astro';
 import Term from '@/components/docs/Term.astro';
 
-<Callout type="danger" title="Advanced users only">
-  Use these settings only if you understand their effects and know how to reverse them. A wrong
-  setting can cause compatibility or recovery problems.
-</Callout>
+This page covers the <CodeInline text="6. Advanced Configuration" /> folder in the Atlas folder, at <CodeInline text="%windir%\AtlasDesktop" />.
+It's for experienced users who know how to undo a change.
+If the Atlas folder is missing, follow <AtlasFolderRestoreLink />.
 
-Open <CodeInline text="6. Advanced Configuration" /> in the Atlas folder on your Desktop. If the Atlas folder is missing, follow{' '}<AtlasFolderRestoreLink />.
+<Callout type="danger" title="Experienced users only">
+  Change these settings only if you understand their effects and know how to reverse them. A
+  wrong setting can cause compatibility problems or make Windows harder to recover.
+</Callout>
 
 ## Boot configuration
 
-Boot Configuration contains scripts for Windows boot appearance and behavior.
+<CodeInline text="Boot Configuration" /> changes how Windows starts.
+Each file opens a menu with the Atlas default marked; restart afterwards to see the change.
 
-- **Appearance:** Toggle boot logo, spinning animation, and the newer boot menu.
-- **Behavior:** Toggle advanced boot options, automatic repair, highest graphics mode, and kernel parameter editing at startup.
-- **View Current Values:** Check the current boot configuration before changing it.
+| File | What it changes | Atlas default |
+| --- | --- | --- |
+| <CodeInline text="Appearance" /><IconArrow /><CodeInline text="Boot Logo.cmd" /> | The Windows logo while Windows starts | On |
+| <CodeInline text="Appearance" /><IconArrow /><CodeInline text="New Boot Menu.cmd" /> | The graphical boot menu, instead of the text menu | Off |
+| <CodeInline text="Appearance" /><IconArrow /><CodeInline text="Spinning Animation.cmd" /> | The spinning dots while Windows starts | On |
+| <CodeInline text="Behavior" /><IconArrow /><CodeInline text="Always Go to Advanced Boot Options.cmd" /> | Opening the advanced boot options at every start | Off |
+| <CodeInline text="Behavior" /><IconArrow /><CodeInline text="Automatic Repair.cmd" /> | Windows Automatic Repair after failed starts | On |
+| <CodeInline text="Behavior" /><IconArrow /><CodeInline text="Editing Kernel Parameters on Startup.cmd" /> | Editing kernel parameters before Windows starts | Off |
+| <CodeInline text="Behavior" /><IconArrow /><CodeInline text="Highest Mode.cmd" /> | The highest graphics mode for boot screens | Off |
 
-Incorrect boot settings can make Windows harder to recover. Change one option at a time and record its original value.
+<CodeInline text="View Current Values.cmd" /> shows the current boot configuration, so you can note the original values before changing anything.
+<CodeInline text="Explanations from Microsoft.url" /> opens Microsoft's `bcdedit /set` reference.
+Change one option at a time.
 
 ## Driver configuration
 
-<Term term="Affinities" definition="Settings that control which CPU core a driver or process runs on. Spreading them across cores can reduce bottlenecks." /> assign a driver or process to specific CPU cores. Windows places most driver activity on Core 0 by default. Moving selected drivers can reduce Core 0 interrupts and improve latency, but poor assignments can reduce performance.
+<Term term="Interrupt affinity" definition="Which processor cores handle a device's interrupts. Windows handles most driver activity on core 0 by default." /> decides which processor cores handle a device.
+Moving a busy device, such as a graphics card, away from core 0 can reduce latency on some PCs, but a poor assignment can reduce performance.
 
-The Driver Configuration folder contains links to tools and documentation for MSI mode, interrupt policy, and driver affinity configuration. These are manual tools for advanced troubleshooting and tuning.
+<CodeInline text="Driver Configuration" /> holds links to third-party tools for this tuning.
+Atlas doesn't install or run them.
+
+- <CodeInline text="AutoGpuAffinity.url" /> benchmarks which core suits your graphics card's interrupts.
+- <CodeInline text="GoInterruptPolicy.url" /> and <CodeInline text="Interrupt Affinity Tool.url" /> set interrupt affinity for a device.
+- <CodeInline text="MSI Utility V3.url" /> switches devices to message-signalled interrupts (MSI mode).
+
+Record each setting before you change it, and test one change at a time.
 
 ## Microsoft Store
 
-Microsoft Store contains scripts to disable or restore Microsoft Store access.
+In <CodeInline text="Microsoft Store" />:
 
-- Run <CodeInline text="Disable Microsoft Store.cmd" /> only if you intentionally do not use Store apps.
-- Run <CodeInline text="Enable Microsoft Store (default).cmd" /> to restore the default Atlas state.
+- <CodeInline text="Disable Microsoft Store.cmd" /> removes Microsoft Store for every account on this PC. Run it only if you don't use Store apps.
+- <CodeInline text="Enable Microsoft Store (default).cmd" /> restores Microsoft Store for your account only. It may need an internet connection to download the Store from Microsoft.
+
+While Microsoft Store is removed this way, Atlas Manager's **Get ready** step skips Store app updates and says so.
 
 ## Process Explorer
 
-Process Explorer is part of Microsoft Sysinternals. It is an advanced Task Manager that shows what resources each program uses. See [Microsoft's Process Explorer documentation](https://learn.microsoft.com/en-us/sysinternals/downloads/process-explorer).
+[Process Explorer](https://learn.microsoft.com/sysinternals/downloads/process-explorer) is a Microsoft Sysinternals tool that shows which resources each program uses, in more detail than Task Manager.
 
-This folder has scripts to install or uninstall Process Explorer.
+In <CodeInline text="Process Explorer" />:
+
+- <CodeInline text="Install Process Explorer.cmd" /> installs Process Explorer and makes it replace Task Manager.
+- <CodeInline text="Uninstall Process Explorer.cmd" /> removes it and restores Task Manager.
 
 ## Services
 
-The Services folder contains toggles for Windows and vendor services that Atlas exposes as optional configuration:
+<CodeInline text="Services" /> holds a subfolder for each Windows or vendor service you can turn off.
+Atlas keeps all of them on.
 
-<span id="nvidia-display-container"></span>
+These are documented with the other basic settings:
 
-- **Bluetooth:** Enabled by default. Disable only if you do not use Bluetooth devices.
-- **Lanman Workstation (SMB):** Enabled by default. Required by file sharing and some software such as AMD Ryzen Master.
-- **NVIDIA Display Container:** Enabled by default. Some stripped NVIDIA driver setups may disable it.
-- **Network Discovery:** Enabled by default. Controls local network discovery services.
-- **Printing:** Enabled by default. Disable only if you never print or use print-to-PDF workflows.
-- **Superfetch:** Toggle SysMain/Superfetch behavior.
+- [Bluetooth](/docs/atlas-configuration/settings/#bluetooth)
+- [Lanman Workstation (SMB)](/docs/atlas-configuration/settings/#lanman-workstation-smb)
+- [Network discovery](/docs/atlas-configuration/settings/#network-discovery)
+- [Printing](/docs/atlas-configuration/settings/#printing)
+
+To restore Atlas's service settings, run <CodeInline text="Set services to defaults.cmd" /> in <CodeInline text="9. Troubleshooting" />; see [Troubleshooting tools](/docs/atlas-configuration/troubleshooting/#services).
+
+### NVIDIA Display Container
+
+The NVIDIA Display Container LS service (`NVDisplay.ContainerLocalSystem`) runs with NVIDIA graphics drivers.
+The NVIDIA Control Panel and most other NVIDIA driver features need it.
+
+Turning it off is meant for stripped-down NVIDIA driver installations, and for people who rarely open the NVIDIA Control Panel.
+While it's off, the NVIDIA Control Panel and most NVIDIA driver features stop working.
+
+In <CodeInline text="Services" /><IconArrow /><CodeInline text="NVIDIA Display Container" />:
+
+- <CodeInline text="Disable NVIDIA Display Container LS.cmd" /> stops the service and stops it starting with Windows.
+- <CodeInline text="Enable NVIDIA Display Container LS (default).cmd" /> sets it to start automatically and starts it.
+
+The <CodeInline text="Context Menu" /> subfolder adds a quick switch to the desktop:
+
+- <CodeInline text="Add Container Context Menu.cmd" /> adds an **NVIDIA Container** menu to the desktop's right-click menu, with options to enable or disable the service.
+- <CodeInline text="Remove Container Context Menu (default).cmd" /> removes that menu.
+
+These files work only while the service is installed, so install your NVIDIA driver first.
+If you remove the NVIDIA driver, Atlas drops your recorded choice the next time you update or reinstall it.
+
+### Superfetch
+
+Superfetch, also called SysMain, preloads apps you use often so they open faster.
+It also runs ReadyBoost.
+
+In <CodeInline text="Services" /><IconArrow /><CodeInline text="Superfetch" />:
+
+- <CodeInline text="Disable SuperFetch.cmd" /> turns off SysMain and ReadyBoost. Windows then stops preloading apps, and ReadyBoost is unavailable.
+- <CodeInline text="Enable SuperFetch (default).cmd" /> turns them back on.
+
+Restart afterwards.
 
 ## Toggle Windows Updates
 
-The Toggle Windows Updates folder contains the Windows Update script and its README. Read the README, then run the script to change update behavior after installation.
+<CodeInline text="Toggle Windows Updates" /> holds <CodeInline text="Toggle Windows Updates.cmd" /> and a README.
+The file opens a menu with **Disable Windows Updates** and **Enable Windows Updates**, which change Windows Update's services, scheduled tasks and policies.
 
-<Callout type="info" title="Not in this folder">
-  DSCP, Static IP, Gameutil, and Wi-Fi scripts are not present in the current Atlas Advanced Configuration folder.
+<Callout type="warning" title="This can break Windows Update and Microsoft Store">
+  Disabling Windows Updates turns off Windows Update completely. Microsoft Store stops working, and
+  Xbox app updates may fail. Enabling it again usually restores them, but may not. To hold updates
+  for a while, use [Pause updates](/docs/atlas-configuration/settings/#pause-updates) instead.
 </Callout>
+
+Read the README before you run the file, and restart when it asks.
 
 ## Next steps
 
-- **[Basic settings](/docs/atlas-configuration/settings/):** Configure Windows features
-- **[Optional tweaks](/docs/atlas-configuration/tweaks/):** Personalize your interface
+- [Basic settings](/docs/atlas-configuration/settings/): Windows updates, drivers, power and privacy settings.
+- [Troubleshooting tools](/docs/atlas-configuration/troubleshooting/): repair tools and Atlas's health check.

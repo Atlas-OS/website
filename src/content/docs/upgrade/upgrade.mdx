@@ -1,38 +1,104 @@
 ---
-title: "Upgrade instructions"
-metaDescription: "Upgrade Atlas with Atlas Manager, then verify your version and configuration."
-description: Apply Atlas 0.6 to an eligible installation.
+title: "Update instructions"
+metaDescription: "Update Atlas with Atlas Manager: get ready, keep your choices or choose again, install, restart and check the result."
+description: Update Atlas step by step with Atlas Manager.
 order: 9
 ---
 
-Read [Before upgrading](/docs/upgrade/requirements/) and back up before starting. These steps apply only when both your Atlas version and Windows build are eligible.
+import Callout from '@/components/docs/Callout.astro';
 
-## Upgrade with Atlas Manager
+This guide walks you through updating Atlas with Atlas Manager.
+Read [Before updating](/docs/upgrade/requirements/) first, and back up your files.
 
-1. Open Atlas Manager and allow administrator access when prompted.
-2. Check the installed version on Home. Choose **Check again** if the release check has not completed.
-3. Read the release notes, then choose **Update to Atlas 0.6.0** when offered.
-4. In **Get ready**, let Manager download Atlas 0.6 and resolve the PC checks. If you already have the Atlas 0.6 package (`.apbx`), you can choose **Open package file** instead.
-5. Review the driver choice and complete Windows and Store update preparation. Use **Restart and continue**, then **Continue updates** after sign-in, if requested.
-6. Review the Atlas options and complete the Windows Security step when Manager asks.
-7. Start the upgrade and keep your PC powered on. After it succeeds, restart to complete setup.
+## 1. Start the update
 
-The preparation and security steps are explained in [Install with Atlas Manager](/docs/install/manager/#3-update-windows-and-store-apps).
+1. Open Atlas Manager and choose **Yes** when Windows asks for permission.
+2. On Home, read **What's new in Atlas** for the release on offer, or choose **View release notes on GitHub**.
+   If Atlas Manager hasn't checked for updates yet, choose **Check again**.
+3. Choose the **Update to Atlas** button.
+
+If the update also moves Windows to a newer release, Home says the update has two parts: Windows first, then Atlas.
+See [Move Windows to a newer release](/docs/upgrade/windows-release/).
+
+## 2. Get ready
+
+**Get ready** works as it does for a first installation:
+
+1. Atlas Manager downloads the new release under **Installation files**.
+2. Fix anything marked in **PC checks**, then choose **Check again**.
+3. Answer **How should drivers be installed?**
+4. Choose **Check and install updates** to update Windows and Store apps.
+   Use **Restart and continue** when asked, then **Continue updates** after you sign in.
+
+See [Get ready](/docs/install/manager/#3-get-ready) in the installation guide for details.
+
+## 3. Keep my choices or Choose again
+
+The first screen of **Your choices** asks how you want to update.
+It also lists **Your choices on this PC now**, read from how your PC is set up.
+
+- **Keep my choices** is the default and the quicker way.
+  Atlas keeps every choice as your PC has it now and changes none of them.
+  It asks only about a choice it can't tell from your PC.
+- **Choose again** takes you through every choice again, starting from how your PC is set up now.
+  Atlas Manager marks the answer your PC has with **On this PC now**, and says what each other answer changes.
+  Atlas applies each answer as a new installation would.
+
+With **Choose again**, your apps, files, Start menu, taskbar and theme stay as they are, and so do Atlas folder settings these choices don't cover.
+Some answers are fixed, because an update can't undo them:
+
+- If Microsoft Edge is already removed, **Remove Microsoft Edge** stays selected.
+  To install Edge again, run `Install or Remove Edge.cmd` in the Atlas folder.
+- An app Atlas installed, such as Atlas Toolbox or a browser, stays selected.
+  Atlas doesn't uninstall apps; remove them from **Installed apps** in Windows Settings.
+  You can still choose another browser, which Atlas installs beside the first.
+
+If Atlas's record of your last installation doesn't match your PC, the screen says which choices differ and goes by what your PC has.
+
+## 4. Windows Security and Install
+
+Turn off the four protection switches when Atlas Manager asks, as in the [installation guide](/docs/install/manager/#5-windows-security).
+On **Install**, the first row of the summary, **How Atlas updates**, shows your answer.
+Choose **Install Atlas**, keep your PC on, and restart when the update finishes.
 
 ## Check the result
 
-After restarting:
+After the restart:
 
-1. Open Atlas Manager and confirm it shows the new installed version.
-2. Open `C:\Windows\AtlasDesktop` and review the settings you rely on.
-3. Run **9. Troubleshooting → Check Atlas Health.cmd** in the Atlas folder. It reports installed state and settings that differ from recorded choices without changing them.
-4. Check Windows Security, Windows Update, Microsoft Store, and your everyday apps.
-5. Sign into other accounts you use and check their settings too.
+1. Check that Atlas Manager shows the new version, and read anything its completion window lists.
+2. Run `Check Atlas Health.cmd` from the Atlas folder's `9. Troubleshooting` folder.
+   See [Check Atlas health](/docs/atlas-configuration/troubleshooting/#check-atlas-health).
+3. Check Windows Security, Windows Update, Microsoft Store and the apps you use every day.
+4. Ask anyone else who uses the PC to sign in and check their settings.
 
-See [Atlas configuration](/docs/atlas-configuration/) for the available controls. If you chose manual drivers, check those as well.
+If the completion window says **Microsoft Defender is still removed**, you chose to keep Defender but an earlier update didn't bring it back.
+Update or reinstall Atlas and select **Choose again**, or follow [Defender](/docs/atlas-configuration/security/#defender) to bring it back from the Atlas folder.
 
-## If the upgrade fails
+## Reinstall the same version
 
-Use **Export diagnostics** before retrying. Reopen Manager to recover the saved session and follow the reported error. If you opened a saved Atlas package, keep it available; a retry may need the same package and choices.
+To apply the installed release again, for example to get fixes in a newer build of the same version, choose **Reinstall Atlas** on Home.
+Your choices then asks **How do you want to reinstall Atlas**, with the same two answers.
+A reinstall applies Atlas's settings again, and other accounts get the changes at their next sign-in.
 
-If the installed version cannot be read, or the installer cannot confirm its result, use [installation troubleshooting](/docs/faq/installation/#what-if-installation-fails) before starting another attempt.
+## Finish an installation that stopped
+
+If an update stopped before it finished, Home offers **Finish installing Atlas**.
+It continues the way it began, with the same choices, so you can't change them until it's done.
+If Atlas Manager asks for the Atlas package, choose **Open package file** and select the package for the same version.
+
+## If Windows reinstalled itself
+
+Sometimes Windows reinstalls itself while it moves to a newer release, which undoes some of Atlas's changes.
+Get ready then says **Windows reinstalled itself while it updated**, and Atlas puts its changes back with the choices you made before.
+There's nothing to choose in this installation.
+To change your choices afterwards, choose **Reinstall Atlas**, then select **Choose again**.
+
+## If the update fails
+
+<Callout type="warning" title="Collect diagnostics before you retry">
+  Read the message Atlas Manager shows.
+  It says whether changes may already have been made and what to do next.
+  If it keeps failing, [send a report or export diagnostics](/docs/faq/report-a-problem/) before you try again or reinstall Windows.
+</Callout>
+
+See [What if installation fails?](/docs/faq/installation/#what-if-installation-fails) for more help.

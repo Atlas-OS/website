@@ -1,0 +1,100 @@
+---
+title: "Move Windows to a newer release"
+metaDescription: "How Atlas Manager moves Windows 11 to a newer supported release through Windows Update before it installs Atlas, and what to do if it can't."
+description: How Atlas Manager moves Windows to a newer release.
+order: 10
+sidebar:
+  label: "Newer Windows releases"
+---
+
+import Callout from '@/components/docs/Callout.astro';
+
+When an Atlas release needs a newer release of Windows 11 than your PC has, Atlas Manager can install it from Windows Update before it installs Atlas.
+This page explains when that happens, what you do and what to expect.
+
+## When Atlas Manager moves Windows
+
+Atlas installs only on the Windows releases listed in the [supported releases table](https://github.com/Atlas-OS/Atlas/blob/main/docs/windows-release-policy.md#supported-releases).
+
+- **Your release isn't supported.**
+  **PC checks** says that this version of Atlas doesn't support your Windows release, and that Atlas moves Windows when it updates Windows.
+  The move is required to install or update Atlas.
+- **A newer release is recommended.**
+  If your release is supported but a newer one gets security updates for longer, Atlas Manager recommends moving.
+  You can choose to stay on your release.
+
+When the move is part of an Atlas update, Home shows the update in two parts: first Windows, then Atlas.
+
+## What changes
+
+Windows Update installs the new release as a feature update.
+Usually it's a small update that switches on parts of Windows that are already installed, so your files, apps and Atlas's changes stay.
+Your PC restarts at least once more to finish it.
+
+Afterwards, Windows stays on the new release and doesn't move to a newer one on its own.
+The Windows card in Atlas Manager lists anything the new release leaves out, such as older Windows tools.
+
+If Windows reinstalls itself instead, some of Atlas's changes are undone.
+Atlas puts them back when it installs, using the choices you made before.
+See [If Windows reinstalled itself](/docs/upgrade/upgrade/#if-windows-reinstalled-itself).
+
+## Move Windows with Atlas Manager
+
+1. Start the installation or update, and work through **Get ready** as usual.
+2. On the **Windows 11, version** card, answer **Which version of Windows should this PC use?**
+   Choose **Update to Windows 11, version** followed by the new release, or, where moving is optional, **Keep Windows 11, version** followed by yours.
+3. Choose **Read the licence terms**, then select the check box to accept Microsoft's licence terms for the new release.
+4. Save your work and choose **Update Windows to version** followed by the new release.
+   Atlas Manager installs the updates Windows is waiting for, then the new release, then updates Microsoft Store and your Store apps.
+5. When asked, choose **Restart and continue**.
+   After you sign in, Atlas Manager opens again; choose **Continue updates**.
+
+Then continue with **Your choices** as usual.
+
+### Waiting for Windows Update
+
+Windows Update usually offers the new release within minutes, but can take up to two hours.
+While Atlas Manager stays open, it checks again every 10 minutes and continues as soon as the release is offered.
+You can keep using your PC, or choose **Check again** to look straight away.
+
+If nothing is offered within two hours, Atlas Manager stops waiting and puts your Windows Update settings back.
+Try again later, or back up your files and reinstall Windows with an [Atlas ISO](/docs/install/iso/).
+
+## Windows Update settings
+
+If Windows Update is turned off, paused or set to delay monthly updates, Atlas Manager turns it on for the move and says which settings it changes.
+When Atlas is installed, those settings go back as they were, or as you chose them in Atlas.
+
+To stop before the move, choose **Cancel**, then **Stop updating**.
+Atlas Manager puts back the Windows Update settings it changed, and updates Windows already installed stay installed.
+If you close Atlas Manager while settings are changed, it offers **Put back and close**.
+
+Until Atlas is installed, Home shows that Windows Update settings are changed for the Atlas update.
+Choose **Continue update** to carry on, or **Put back settings** to undo the change.
+
+## When Atlas Manager can't move Windows
+
+Atlas Manager tells you why and what to do.
+The most common reasons are:
+
+| Reason | What to do |
+| --- | --- |
+| The edition is Home, LTSC or Server. | Atlas can't install on these editions. |
+| Windows Update can't move your release to a supported one. | Back up your files and reinstall Windows with an [Atlas ISO](/docs/install/iso/). |
+| The PC doesn't meet the Windows 11 hardware requirements, such as TPM 2.0 or UEFI firmware. | Windows Update won't offer the new release. Reinstall Windows with an Atlas ISO. |
+| The PC gets updates from an organisation's update server. | Atlas can't move it. Ask whoever manages the PC. |
+| There isn't enough free space on the Windows drive. | Free up the space Atlas Manager names, then choose **Try again**. |
+| Windows reports damage to its component store that it can't repair. | Repair Windows, then choose **Try again**. |
+| The new release is hidden in Windows Update. | Show it again with the tool you used to hide it, then choose **Try again**. |
+| Windows went back to your old release during the restart. | Your files and apps aren't affected. Choose **Try again**, or **Send a report**. |
+
+For anything else, choose **Send a report**, or see [Report a problem](/docs/faq/report-a-problem/).
+
+## Undo the move
+
+To undo it, uninstall the update from **Update history** in Windows Update.
+If Windows reinstalled itself to move, choose **Go back** under **Recovery** in **System** settings instead, within 10 days.
+
+<Callout type="warning" title="Don't undo a required move">
+  If the new Atlas release doesn't support your old Windows release, don't undo the move once Atlas is installed.
+</Callout>

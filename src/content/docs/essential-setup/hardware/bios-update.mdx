@@ -9,9 +9,10 @@ import Callout from '@/components/docs/Callout.astro';
 import CodeInline from '@/components/docs/CodeInline.astro';
 import FeatureList from '@/components/ui/FeatureList.astro';
 
-Keep your BIOS up to date for compatibility, performance, and security. Update BIOS first—before XMP/DOCP and Resizable BAR—because updates can reset those settings.
+This guide shows how to update your BIOS safely, for compatibility, performance and security.
+Update the BIOS before you enable XMP/DOCP or Resizable BAR, because an update can reset those settings.
 
-<Callout type="warning" title="Important Warning">
+<Callout type="warning" title="Important warning">
   Incorrect BIOS updates can permanently damage your motherboard. Only update if necessary, follow
   manufacturer instructions exactly, and never interrupt the update process.
 </Callout>
@@ -52,10 +53,10 @@ You need to know your exact motherboard model:
 
 ### Step 2: Prepare for update
 
-1. **Backup current BIOS** - Some manufacturers provide backup tools
-2. **Stable power** - Use a UPS if possible, or confirm your laptop is fully charged and plugged in
-3. **Close all applications** - Close unnecessary programs
-4. **Disable antivirus temporarily** - May interfere with BIOS update
+1. **Back up the current BIOS:** some manufacturers provide backup tools
+2. **Keep the power stable:** use a UPS if possible, or make sure your laptop is fully charged and plugged in
+3. **Close your apps:** close programs you don't need
+4. **Check your antivirus:** if the manufacturer's instructions say so, turn it off temporarily, and turn it back on afterwards
 
 ### Step 3: Update BIOS
 
@@ -64,7 +65,7 @@ You need to know your exact motherboard model:
 Many manufacturers provide Windows utilities:
 
 1. Extract the downloaded BIOS file
-2. Run the BIOS update utility (e.g., <CodeInline text="Setup.exe" /> or manufacturer-specific tool)
+2. Run the BIOS update utility, such as <CodeInline text="Setup.exe" /> or the manufacturer's own tool
 3. Follow on-screen instructions
 4. **Don't power off or restart** during the update
 5. System will restart automatically when complete
@@ -78,7 +79,7 @@ Many manufacturers provide Windows utilities:
 5. Start the update process
 6. **Do not power off or restart** during the update
 
-<Callout type="danger" title="Critical Warning">
+<Callout type="danger" title="Critical warning">
   **NEVER** interrupt a BIOS update. The system will restart automatically when complete.
   Interrupting can brick your motherboard.
 </Callout>
@@ -87,7 +88,7 @@ Many manufacturers provide Windows utilities:
 
 1. BIOS will restart automatically
 2. Enter BIOS/UEFI and verify the new version
-3. Load optimized defaults or reconfigure settings
+3. Load the optimised defaults, or set your settings again
 4. Save and exit
 5. Boot into Windows and verify everything works
 
@@ -104,7 +105,7 @@ If the update process was interrupted:
 ### System won't boot after update
 
 1. **Clear CMOS** - Remove CMOS battery or use jumper (check manual)
-2. **Reset BIOS settings** - Load default/optimized settings
+2. **Reset BIOS settings:** load the default or optimised settings
 3. **Check all connections** - Confirm RAM, CPU, and power cables are secure
 
 ## Manufacturer resources
@@ -144,7 +145,7 @@ If the update process was interrupted:
 - **Read release notes:** Understand what the update fixes or adds
 - **Use stable power:** Avoid power loss during the update
 - **Follow manufacturer instructions:** Each manufacturer has specific procedures
-- **Keep a backup:** Some tools let you backup current BIOS before updating
+- **Keep a backup:** some tools let you back up the current BIOS before updating
 
 ## Next steps
 
@@ -152,4 +153,4 @@ After updating your BIOS:
 
 - **[Enable XMP/DOCP](/docs/essential-setup/hardware/memory/):** Unlock your RAM's full speed
 - **[Enable Resizable BAR](/docs/essential-setup/hardware/gpu/):** Improve GPU performance if you have a compatible graphics card
-- **[Configure Atlas settings](/docs/atlas-configuration/):** Customize your installation
+- **[Configure Atlas settings](/docs/atlas-configuration/):** customise your installation

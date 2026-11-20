@@ -1,19 +1,26 @@
 ---
 title: "Where is the Atlas ISO file?"
-metaDescription: "Atlas Manager can create your own Atlas installation ISO from unmodified Microsoft Windows media."
+metaDescription: "Atlas doesn't distribute a Windows ISO. Atlas Manager can create your own Atlas ISO from Microsoft's Windows 11 media."
 description: How to get Windows media and create an Atlas ISO.
 order: 31
 ---
 
-Atlas does not distribute premodified Windows ISO files. Get unmodified Windows media from Microsoft, then use one of these routes:
+Atlas doesn't distribute ready-made Windows ISO files.
+Get Windows 11 from Microsoft, then choose one of these routes:
 
-- **[Install with Atlas Manager](/docs/install/manager/):** Install fresh Windows first, then let Manager prepare and apply Atlas.
-- **[Create an Atlas ISO](/docs/install/iso/):** Use Manager's beta media tools to include Manager, Atlas, and optional saved settings in your own ISO.
+- **[Install with Atlas Manager](/docs/install/manager/):** install Windows from Microsoft's media first, then let Atlas Manager update Windows and install Atlas.
+- **[Create an Atlas ISO](/docs/install/iso/):** use Atlas Manager to make a copy of Microsoft's ISO with Atlas Manager, Atlas and, if you like, your choices added.
 
-## Is Atlas already installed inside a Manager-created ISO?
+## Is Atlas already installed inside an Atlas ISO?
 
-The ISO contains the setup files. Atlas is applied on the destination PC after Windows setup and sign-in, so Manager can check Windows and Store updates for the account using it. Internet access and security checks are still required, including in the before-desktop setup mode.
+No.
+The ISO contains the files Atlas needs.
+Atlas installs on the destination PC after Windows setup and your first sign-in, so Atlas Manager can update Windows and Store apps for the account that uses it.
+That PC still needs an internet connection and the Windows Security step, even with **Finish setup before the desktop**.
 
 ## Which Windows ISO should I use?
 
-For Atlas Manager's ISO creation, use an unmodified **Windows 11 25H2 x64 ISO** containing a supported edition. Manager checks the release and included editions before building. See the [media guide](/docs/install/iso/#1-choose-your-files) for the full requirements.
+Use Microsoft's Windows 11 ISO for a [supported release](https://github.com/Atlas-OS/Atlas/blob/main/docs/windows-release-policy.md#supported-releases), x64 or Arm64.
+**Download Windows 11 from Microsoft** on Atlas Manager's **Files** step opens Microsoft's download page.
+Atlas Manager checks the release and the editions in the ISO before it builds.
+See [Create an Atlas ISO](/docs/install/iso/#what-you-need) for the full requirements.
