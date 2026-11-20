@@ -1,10 +1,10 @@
 import { unified } from '@astrojs/markdown-remark';
 import mdx from '@astrojs/mdx';
-import partytown from '@astrojs/partytown';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import icon from 'astro-icon';
 import { defineConfig, fontProviders, svgoOptimizer } from 'astro/config';
+import cloudflareRedirects from './src/integrations/cloudflare-redirects';
 import pagefind from './src/integrations/pagefind';
 import rehypeExternalLinks from './src/utils/rehype-external-links';
 
@@ -49,10 +49,23 @@ const legacyDocsRedirects = {
   '/branding/': '/docs/branding/',
 };
 
+// Retired files that old social shares and other sites may still link to.
+const brandPreview = (path: string): [string, string] => [
+  `/assets/images/brand/${path}.png`,
+  `/assets/images/brand/${path}.avif`,
+];
+const legacyAssetRedirects = Object.fromEntries<string>([
+  ['/defaultimg.png', '/og-image.png'],
+  ...['avatars/preview-avatar-v1', 'avatars/preview-avatar-v2'].map(brandPreview),
+  ...['banners/preview-banner-v1', 'banners/preview-banner-v2', 'banners/preview-banner-v3'].map(
+    brandPreview,
+  ),
+]);
+
 export default defineConfig({
   site: 'https://atlasos.net',
   trailingSlash: 'always',
-  redirects: legacyDocsRedirects,
+  redirects: { ...legacyDocsRedirects, ...legacyAssetRedirects },
 
   fonts: [
     {
@@ -86,6 +99,8 @@ export default defineConfig({
 
   build: {
     inlineStylesheets: 'auto',
+    // Redirects ship as real 301s in _redirects (see the cloudflare-redirects integration), not HTML pages.
+    redirects: false,
   },
 
   markdown: {
@@ -113,12 +128,12 @@ export default defineConfig({
   },
 
   integrations: [
-    partytown(),
     icon(),
     mdx({ optimize: true }),
     sitemap({ changefreq: 'weekly', priority: 0.8 }),
     // Search covers the documentation only; the homepage and legal pages are never indexed.
     pagefind({ includeGlob: 'docs/**/*.html' }),
+    cloudflareRedirects(),
   ],
 
   // Vite 8 already minifies CSS with Lightning CSS and strips legal comments from minified output.

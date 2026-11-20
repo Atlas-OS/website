@@ -31,3 +31,6 @@ nul
 # Cloudflare local state
 .wrangler/
 .wrangler-dry-run/
+
+# jampack optimizer cache
+.jampack/

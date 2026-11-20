@@ -14,5 +14,14 @@
     "run_worker_first": ["/api/*"]
   },
   "observability": { "enabled": true, "head_sampling_rate": 1 },
-  "kv_namespaces": [{ "binding": "MS_ISO_LINKS", "id": "5c778e1859c64276b5fe5b4291deb857" }]
+  "kv_namespaces": [{ "binding": "MS_ISO_LINKS", "id": "5c778e1859c64276b5fe5b4291deb857" }],
+  // Hourly refresh of cached ISO links before they expire (`scheduled` in src/worker.ts).
+  // Cron Triggers only run the production deployment, never previews.
+  "triggers": { "crons": ["0 * * * *"] },
+  // PR previews (`wrangler preview`) inherit no bindings. Their ISO-link cache is a separate namespace
+  // so preview code never writes into the production cache.
+  "previews": {
+    "browser": { "binding": "BROWSER" },
+    "kv_namespaces": [{ "binding": "MS_ISO_LINKS", "id": "4b1a3c4ca06142ce8d931de14fe1b1d7" }]
+  }
 }

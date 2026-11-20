@@ -1,25 +1,12 @@
 const FEEDBACK_MS = 2000;
 
-/** Copy text using the async Clipboard API, falling back to a hidden textarea on insecure contexts. */
+/**
+ * Copy text with the async Clipboard API. The site is HTTPS-only, so the API is always present in
+ * supported browsers; without it (plain-HTTP dev hosts) callers show their "copy failed" state.
+ */
 export async function copyText(text: string): Promise<void> {
-  if (navigator.clipboard?.writeText) {
-    await navigator.clipboard.writeText(text);
-    return;
-  }
-
-  const textarea = document.createElement('textarea');
-  textarea.value = text;
-  textarea.readOnly = true;
-  textarea.style.cssText = 'position:fixed;inset:0 auto auto 0;opacity:0';
-  document.body.append(textarea);
-  textarea.select();
-
-  try {
-    // `execCommand` is deprecated but remains the only fallback for non-secure contexts.
-    if (!document.execCommand('copy')) throw new Error('Copy command failed.');
-  } finally {
-    textarea.remove();
-  }
+  if (!navigator.clipboard?.writeText) throw new Error('Clipboard API unavailable.');
+  await navigator.clipboard.writeText(text);
 }
 
 export interface CopyButtonOptions {
@@ -51,24 +38,23 @@ export function bindCopyButton(button: HTMLElement, options: CopyButtonOptions):
     if (options.status) options.status.textContent = '';
   };
 
-  button.addEventListener(
-    'click',
-    async () => {
-      window.clearTimeout(resetTimer);
-      try {
-        await copyText(options.getText());
-        button.dataset.copied = 'true';
-        button.setAttribute('aria-label', labels.copied);
-        if (options.status) options.status.textContent = announcements.copied;
-      } catch {
-        button.dataset.copied = 'false';
-        button.setAttribute('aria-label', labels.failed);
-        if (options.status) options.status.textContent = announcements.failed;
-      }
-      resetTimer = window.setTimeout(reset, FEEDBACK_MS);
-    },
-    { signal: options.signal },
-  );
+  const copy = async () => {
+    window.clearTimeout(resetTimer);
+    try {
+      await copyText(options.getText());
+      button.dataset.copied = 'true';
+      button.setAttribute('aria-label', labels.copied);
+      if (options.status) options.status.textContent = announcements.copied;
+    } catch {
+      button.dataset.copied = 'false';
+      button.setAttribute('aria-label', labels.failed);
+      if (options.status) options.status.textContent = announcements.failed;
+    }
+    resetTimer = window.setTimeout(reset, FEEDBACK_MS);
+  };
+
+  // `copy` handles its own failures, so the listener can drop the promise.
+  button.addEventListener('click', () => void copy(), { signal: options.signal });
 }
 
 const COPY_ICON =

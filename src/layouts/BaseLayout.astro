@@ -31,7 +31,11 @@ const isDocsPage = Astro.props.currentPath?.startsWith('/docs/') ?? false;
     </script>
     <!-- Only warm the API connection on the route that needs it during initial rendering. -->
     {isHomePage && <link rel="preconnect" href="https://api.atlasos.net" crossorigin />}
-    <link rel="dns-prefetch" href="https://pla.atlasos.net" />
+    <!--
+      Plausible runs once per visit: the ClientRouter skips scripts it has already executed, and
+      Plausible's own history hook records each client-side navigation as a pageview.
+    -->
+    <script is:inline defer data-domain="atlasos.net" src="https://pla.atlasos.net/js/script.js"></script>
 
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -46,12 +50,6 @@ const isDocsPage = Astro.props.currentPath?.startsWith('/docs/') ?? false;
     <slot name="body" />
     <slot />
     <KapaWidget />
-    <script
-      is:inline
-      type="text/partytown"
-      src="https://pla.atlasos.net/js/script.js"
-      data-domain="atlasos.net"
-    ></script>
   </body>
 </html>
 

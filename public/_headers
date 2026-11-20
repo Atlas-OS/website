@@ -1,11 +1,23 @@
+# Content-hashed build output: every deploy ships new filenames, so cache it forever.
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
 
-/assets/*
+# pagefind.js, its worker and wasm keep their filenames across Pagefind upgrades, so revalidate them.
+/pagefind/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Matching rules join Cache-Control values, so the hashed index chunks detach the header first.
+/pagefind/fragment/*
+  ! Cache-Control
   Cache-Control: public, max-age=31536000, immutable
 
-/pagefind/*
+/pagefind/index/*
+  ! Cache-Control
   Cache-Control: public, max-age=31536000, immutable
+
+# public/assets filenames are not hashed: replacing a screenshot must reach returning visitors.
+/assets/*
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
 
 /*
   X-Frame-Options: SAMEORIGIN

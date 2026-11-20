@@ -18,7 +18,7 @@ This repository contains the source code for [atlasos.net](https://atlasos.net),
 
 ## Prerequisites
 
-- Bun ≥ 1.3.0
+- Bun ≥ 1.3.0 (CI uses the version pinned in `packageManager`)
 - Node.js ≥ 22.23.4
 
 ## Installation
@@ -31,31 +31,34 @@ Installing also runs `wrangler types`, which generates `worker-configuration.d.t
 
 ## Available Scripts
 
-| Command                  | Description                                                       |
-| ------------------------ | ----------------------------------------------------------------- |
-| `bun dev`                | Start the development server                                      |
-| `bun run build`          | Build the site and the Pagefind search index                      |
-| `bun run preview`        | Preview the production build locally                              |
-| `bun run check`          | Regenerate Worker types, run `astro check`, type-check the Worker |
-| `bun run lint`           | Lint with ESLint                                                  |
-| `bun format`             | Format with Prettier                                              |
-| `bun run format:check`   | Verify formatting without writing                                 |
-| `bun run types`          | Regenerate `worker-configuration.d.ts` from `wrangler.jsonc`      |
-| `bun run deploy:dry-run` | Validate the Cloudflare Worker bundle without deploying           |
-| `bun run deploy`         | Build and deploy to Cloudflare Workers                            |
+| Command                  | Description                                                                 |
+| ------------------------ | --------------------------------------------------------------------------- |
+| `bun dev`                | Start the development server                                                |
+| `bun run build`          | Build the site, the Pagefind search index, and `_redirects`                 |
+| `bun run preview`        | Preview the production build locally                                        |
+| `bun run check`          | Regenerate Worker types, run `astro check`, type-check the Worker and tests |
+| `bun run test`           | Run the unit and Worker tests with Vitest                                   |
+| `bun run lint`           | Lint with ESLint (type-aware rules for TypeScript, a11y rules for Astro)    |
+| `bun format`             | Format with Prettier                                                        |
+| `bun run format:check`   | Verify formatting without writing                                           |
+| `bun run types`          | Regenerate `worker-configuration.d.ts` from `wrangler.jsonc`                |
+| `bun run deploy:dry-run` | Validate the Cloudflare Worker bundle without deploying                     |
+| `bun run deploy`         | Build and deploy to Cloudflare Workers                                      |
 
 ## Deployment
 
-The site deploys as a static Astro build served by Cloudflare Workers static assets. The Worker only runs for `/api/*` routes, which power the Windows ISO downloader in the docs.
+The site deploys as a static Astro build served by Cloudflare Workers static assets. Legacy URLs from `redirects` in `astro.config.ts` are written to `_redirects` at build time, so they are real 301s rather than HTML pages.
+
+The Worker only runs for `/api/*` routes, which resolve signed Windows ISO download links for clients such as Atlas Manager. An hourly Cron Trigger refreshes cached links before they expire, and the `Canary` workflow checks the API daily.
 
 Required Cloudflare setup:
 
 - `CLOUDFLARE_API_TOKEN` GitHub secret with Workers deploy access
 - `CLOUDFLARE_ACCOUNT_ID` GitHub secret
 - `BROWSER` Browser Run binding in `wrangler.jsonc`
-- `MS_ISO_LINKS` KV namespace binding in `wrangler.jsonc`
+- `MS_ISO_LINKS` KV namespace binding in `wrangler.jsonc` (previews use a separate namespace under `previews`)
 
-The deploy workflow runs install, lint, check, build, a Wrangler dry run, then `wrangler deploy`.
+Pushes deploy through `deploy-workers.yml` after the CI workflow (lint, format, check, test, build, Wrangler dry run) passes. Pull requests from this repository get a Workers Preview, deleted when the pull request closes.
 
 ## Configuration
 
@@ -65,6 +68,7 @@ The deploy workflow runs install, lint, check, build, a Wrangler dry run, then `
 | `wrangler.jsonc`        | Cloudflare Workers deployment config and bindings    |
 | `tsconfig.json`         | TypeScript config for the site                       |
 | `tsconfig.worker.json`  | TypeScript config for the Cloudflare Worker          |
+| `vitest.config.ts`      | Test projects: Worker (workerd) and unit (Node)      |
 | `src/styles/global.css` | Tailwind theme, design tokens, and global styles     |
 | `eslint.config.js`      | ESLint rules for Astro and TypeScript                |
 | `.prettierrc`           | Prettier settings and plugins                        |
@@ -81,7 +85,7 @@ Components live in `src/components/` and follow a purpose-based organization:
 
 | Directory   | Contents                                               |
 | ----------- | ------------------------------------------------------ |
-| `ui/`       | Reusable primitives (Button, Tabs, Spotlight, Video)   |
+| `ui/`       | Reusable primitives (Button, Tabs, Spotlight)          |
 | `layout/`   | Layout elements (Navbar, Footer, Sidebar)              |
 | `sections/` | Homepage sections                                      |
 | `docs/`     | Documentation components (Callout, CodeBlock, PageNav) |

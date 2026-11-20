@@ -1,0 +1,126 @@
+# Daily check that the production Windows ISO API works end to end:
+#   /api/ms-iso/skus  -> Microsoft returns a SKU list that includes English (United States)
+#   /api/ms-iso/links -> the Worker returns a signed https:// ISO link for that SKU
+# The Worker's hourly cron keeps the English links warm in KV, so a passing check also means that
+# refresh is succeeding. A slow links response suggests a KV miss and is flagged as a warning.
+
+name: ISO API canary
+
+on:
+  schedule:
+    - cron: '23 7 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: iso-api-canary
+  cancel-in-progress: false
+
+jobs:
+  check:
+    name: ISO API (${{ matrix.arch }})
+    runs-on: ubuntu-latest
+    # Worst case: 3 attempts x 60s for SKUs plus 3 attempts x 240s for links.
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [x64, arm64]
+    env:
+      BASE_URL: https://atlasos.net
+      ARCH: ${{ matrix.arch }}
+      LANGUAGE: English (United States)
+      # A KV hit returns in well under a second; resolving a fresh link with Browser Run takes much longer.
+      SLOW_LINKS_SECONDS: 10
+
+    steps:
+      - name: Check SKUs and ISO link
+        run: |
+          set -uo pipefail
+
+          summary() { printf '%s\n' "$@" >> "$GITHUB_STEP_SUMMARY"; }
+
+          # fail <message> [response body]
+          fail() {
+            summary "### ISO API canary failed (${ARCH})" "" "$1"
+            if [ -n "${2:-}" ]; then
+              summary "" "Response (truncated):" "" '```' "$(printf '%s' "$2" | head -c 1500)" '```'
+            fi
+            echo "::error title=ISO API canary (${ARCH})::$1"
+            exit 1
+          }
+
+          # request <path> <max seconds>: sets STATUS, SECONDS_TAKEN and BODY, or CURL_ERROR on failure.
+          request() {
+            local out err meta
+            out="$(mktemp)"
+            err="$(mktemp)"
+            if meta="$(curl --silent --show-error --location \
+                --connect-timeout 15 --max-time "$2" \
+                --retry 2 --retry-delay 10 --retry-connrefused \
+                --user-agent 'iso-api-canary' \
+                --header 'Accept: application/json' \
+                --output "$out" --write-out '%{http_code} %{time_total}' \
+                "${BASE_URL}$1" 2>"$err")"; then
+              STATUS="${meta%% *}"
+              SECONDS_TAKEN="${meta##* }"
+              BODY="$(cat "$out")"
+              return 0
+            fi
+            CURL_ERROR="$(cat "$err")"
+            return 1
+          }
+
+          # Error envelopes from the Worker ({error}) or proxied from Microsoft ({Errors} / ValidationContainer).
+          api_error() {
+            jq -r '[.error, .Errors[0]?.Value, .ValidationContainer?.Errors[0]?.Value,
+              .ValidationContainer?.ErrorList[0]?.Value] | map(select(. != null)) | first // empty' <<<"$1"
+          }
+
+          # 1. Language list (Microsoft's JSON, passed through by the Worker)
+          skus_path="/api/ms-iso/skus?arch=${ARCH}"
+          request "$skus_path" 60 || fail "Request to \`${skus_path}\` failed: ${CURL_ERROR}"
+          [ "$STATUS" = 200 ] || fail "\`${skus_path}\` returned HTTP ${STATUS}." "$BODY"
+          jq -e 'type == "object"' <<<"$BODY" >/dev/null 2>&1 ||
+            fail "\`${skus_path}\` did not return a JSON object." "$BODY"
+          error="$(api_error "$BODY")"
+          [ -z "$error" ] || fail "\`${skus_path}\` returned an error: ${error}" "$BODY"
+
+          # The skuId must come from this response: the Worker rejects unknown ids. Microsoft labels the
+          # US English SKU in LocalizedLanguage; Language is accepted too in case the two are swapped.
+          sku_id="$(jq -r --arg lang "$LANGUAGE" '
+            first(.Skus[]? | select(.LocalizedLanguage == $lang or .Language == $lang) | .Id)
+            // empty | tostring' <<<"$BODY")"
+          if [ -z "$sku_id" ]; then
+            languages="$(jq -r '[.Skus[]? | .LocalizedLanguage // .Language] | join(", ")' <<<"$BODY")"
+            fail "\`${skus_path}\` has no SKU for ${LANGUAGE}. Languages returned: ${languages:-none}." "$BODY"
+          fi
+          [[ "$sku_id" =~ ^[A-Za-z0-9_-]+$ ]] || fail "Unexpected SKU id for ${LANGUAGE}: ${sku_id}"
+          skus_seconds="$SECONDS_TAKEN"
+
+          # 2. Signed ISO link (cached in KV; a miss falls back to Browser Run, which can take minutes)
+          links_path="/api/ms-iso/links?arch=${ARCH}&skuId=${sku_id}"
+          request "$links_path" 240 || fail "Request to \`${links_path}\` failed: ${CURL_ERROR}"
+          [ "$STATUS" = 200 ] || fail "\`${links_path}\` returned HTTP ${STATUS}." "$BODY"
+          jq -e 'type == "object"' <<<"$BODY" >/dev/null 2>&1 ||
+            fail "\`${links_path}\` did not return a JSON object." "$BODY"
+          error="$(api_error "$BODY")"
+          [ -z "$error" ] || fail "\`${links_path}\` returned an error: ${error}" "$BODY"
+
+          uri="$(jq -r '.ProductDownloadOptions[0]?.Uri // empty' <<<"$BODY")"
+          [[ "$uri" == https://* ]] ||
+            fail "\`${links_path}\` did not return an https:// ProductDownloadOptions[0].Uri (got: '${uri}')." "$BODY"
+          links_seconds="$SECONDS_TAKEN"
+
+          summary "### ISO API canary passed (${ARCH})" "" \
+            "| Check | Result |" "| --- | --- |" \
+            "| SKU for ${LANGUAGE} | \`${sku_id}\` (${skus_seconds}s) |" \
+            "| ISO link | \`${uri%%\?*}\` (${links_seconds}s) |"
+
+          if awk -v t="$links_seconds" -v max="$SLOW_LINKS_SECONDS" 'BEGIN { exit !(t > max) }'; then
+            message="The links request took ${links_seconds}s, which suggests a KV miss. Check that the hourly refresh cron is succeeding."
+            summary "" "**Warning:** ${message}"
+            echo "::warning title=ISO API canary (${ARCH})::${message}"
+          fi
