@@ -7,11 +7,6 @@ export const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.png` as const;
 export const DEFAULT_META_DESCRIPTION =
   'AtlasOS - An optimized Windows experience with stronger performance, better privacy, and cleaner defaults.' as const;
 
-/** The latest release's version, shown until the latest-release API responds. Update it when a release is published. */
-export const ATLAS_RELEASE_TAG_FALLBACK = '0.6.0' as const;
-
-export const ATLAS_RELEASE_LABEL = `Atlas v${ATLAS_RELEASE_TAG_FALLBACK}` as const;
-
 export const ATLAS_API_URL = 'https://api.atlasos.net/' as const;
 
 export const ATLAS_GITHUB_LATEST_RELEASE_API_URL =

@@ -8,7 +8,11 @@ import PcGuideLogomark from '@/assets/pcguide-logomark.svg';
 import TechSpotLogomark from '@/assets/techspot-logomark.svg';
 import WePCLogomark from '@/assets/wepc-logomark.svg';
 import Button from '@/components/ui/Button.astro';
-import { ATLAS_GITHUB_LATEST_RELEASE_URL, ATLAS_RELEASE_LABEL } from '@/constants';
+import { ATLAS_GITHUB_LATEST_RELEASE_URL } from '@/constants';
+import { latestReleaseLabel } from '@/utils/latest-release';
+
+// Fetched when the site is built; the script below refreshes it in the browser.
+const releaseLabel = await latestReleaseLabel();
 ---
 
 <section class="relative overflow-visible px-4 pt-14 md:pt-22" data-home-hero>
@@ -63,11 +67,14 @@ import { ATLAS_GITHUB_LATEST_RELEASE_URL, ATLAS_RELEASE_LABEL } from '@/constant
         AtlasOS is creating a "kinder" Windows experience. Reducing bloatware and optimizing performance for
         enthusiasts, gamers, and privacy-conscious individuals.
       </p>
-      <p class="mb-4 text-sm text-white/70" data-animate>
-        The latest version is{' '}
-        <span id="atlas-release-label" class="font-semibold text-white">
-          {ATLAS_RELEASE_LABEL}
-        </span>
+      <p id="atlas-release" class="mb-4 text-sm text-white/70" data-animate>
+        {releaseLabel ? (
+          <>
+            The latest version is <span class="font-semibold text-white">{releaseLabel}</span>
+          </>
+        ) : (
+          'Download the latest version'
+        )}
       </p>
       <div class="flex flex-wrap items-center justify-center gap-4" data-animate>
         <Button
@@ -489,16 +496,11 @@ import { ATLAS_GITHUB_LATEST_RELEASE_URL, ATLAS_RELEASE_LABEL } from '@/constant
 
 <script>
   import { ATLAS_API_URL, ATLAS_GITHUB_LATEST_RELEASE_API_URL } from '@/constants';
+  import { releaseLabel, type GitHubRelease } from '@/utils/latest-release';
   import { isLocalhost, onPageLoad } from '@/utils/page-lifecycle';
 
   const FALLBACK_DOWNLOAD_COUNT = '2,000,000';
   const MANAGER_ASSET = /^AtlasManager[\w.-]*\.exe$/i;
-
-  interface GitHubRelease {
-    tag_name?: string;
-    name?: string;
-    assets?: Array<{ name?: string; browser_download_url?: string }>;
-  }
 
   async function updateLatestRelease(signal: AbortSignal): Promise<void> {
     try {
@@ -506,10 +508,14 @@ import { ATLAS_GITHUB_LATEST_RELEASE_URL, ATLAS_RELEASE_LABEL } from '@/constant
       if (!response.ok) return;
       const release = (await response.json()) as GitHubRelease;
 
-      const label = document.getElementById('atlas-release-label');
-      const version = release.name || release.tag_name;
-      if (label && version)
-        label.textContent = version.startsWith('Atlas') ? version : `Atlas v${version.replace(/^v/, '')}`;
+      const paragraph = document.getElementById('atlas-release');
+      const text = releaseLabel(release);
+      if (paragraph && text) {
+        const label = document.createElement('span');
+        label.className = 'font-semibold text-white';
+        label.textContent = text;
+        paragraph.replaceChildren('The latest version is ', label);
+      }
 
       // Without a Manager asset the button keeps linking to the release page.
       const manager = release.assets?.find((asset) => MANAGER_ASSET.test(asset.name ?? ''));
@@ -518,7 +524,7 @@ import { ATLAS_GITHUB_LATEST_RELEASE_URL, ATLAS_RELEASE_LABEL } from '@/constant
         button.href = manager.browser_download_url;
       }
     } catch {
-      // Keep the static fallbacks rendered from constants.
+      // Keep the label and link rendered at build time.
     }
   }
 
