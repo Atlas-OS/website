@@ -5,7 +5,7 @@
  * (see `run_worker_first` in wrangler.jsonc) and powers the Windows ISO downloader in the docs:
  *
  *   GET /api/ms-iso/skus?arch=x64|arm64&sessionId=…   → language list proxied from Microsoft
- *   GET /api/ms-iso/links?arch=x64|arm64&skuId=…      → signed ISO URL resolved with Browser Rendering
+ *   GET /api/ms-iso/links?arch=x64|arm64&skuId=…      → signed ISO URL resolved with Browser Run
  *
  * Binding types (`Env`) are generated from wrangler.jsonc by `wrangler types`.
  */
@@ -42,8 +42,12 @@ const ARCHITECTURES = {
 
 type Arch = keyof typeof ARCHITECTURES;
 
+/**
+ * Desktop Chrome UA, matching the Chrome release Browser Run ships (152 with @cloudflare/puppeteer 2),
+ * so the header agrees with the engine's own client hints. Bump it when Browser Run moves Chrome.
+ */
 const USER_AGENT =
-  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36';
 
 const ALLOWED_ORIGINS = new Set(['https://atlasos.net', 'https://www.atlasos.net']);
 
@@ -153,7 +157,7 @@ async function fetchSkus(arch: Arch, sessionId: string, request: Request): Promi
 }
 
 /* ------------------------------------------------------------------------- */
-/* Browser Rendering: resolve the signed ISO link                            */
+/* Browser Run: resolve the signed ISO link                                  */
 /* ------------------------------------------------------------------------- */
 
 type LinkResult = { ok: true; href: string; label: string } | { ok: false; error: string };
@@ -207,7 +211,7 @@ async function resolveIsoLinkOnce(env: Env, arch: Arch, skuId: string): Promise<
     page.setDefaultTimeout(BROWSER_STEP_TIMEOUT_MS);
     page.setDefaultNavigationTimeout(BROWSER_NAVIGATION_TIMEOUT_MS);
 
-    await page.setUserAgent(USER_AGENT);
+    await page.setUserAgent({ userAgent: USER_AGENT });
     await page.setViewport({ width: 1365, height: 900 });
     await page.goto(downloadPage, { waitUntil: 'domcontentloaded' });
     await sleep(BROWSER_ANTI_BOT_SETTLE_MS);

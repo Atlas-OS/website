@@ -121,14 +121,11 @@ export default defineConfig({
     pagefind({ includeGlob: 'docs/**/*.html' }),
   ],
 
+  // Vite 8 already minifies CSS with Lightning CSS and strips legal comments from minified output.
   vite: {
     plugins: [tailwindcss()],
     build: {
-      cssMinify: 'lightningcss',
       chunkSizeWarningLimit: 1000,
-    },
-    esbuild: {
-      legalComments: 'none',
     },
   },
 });

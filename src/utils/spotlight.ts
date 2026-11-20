@@ -24,6 +24,7 @@ interface PagefindResult {
 }
 
 interface Pagefind {
+  options: (options: { excerptEllipsis?: string }) => Promise<void>;
   init: () => Promise<void>;
   debouncedSearch: (
     query: string,
@@ -50,6 +51,8 @@ let pagefindPromise: Promise<Pagefind | null> | null = null;
 function loadPagefind(): Promise<Pagefind | null> {
   pagefindPromise ??= import(/* @vite-ignore */ PAGEFIND_PATH)
     .then(async (module: Pagefind) => {
+      // Mark excerpts that start or end mid-sentence, so a clipped snippet doesn't read as a whole one.
+      await module.options({ excerptEllipsis: '…' });
       await module.init();
       return module;
     })

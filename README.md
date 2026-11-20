@@ -19,7 +19,7 @@ This repository contains the source code for [atlasos.net](https://atlasos.net),
 ## Prerequisites
 
 - Bun ≥ 1.3.0
-- Node.js ≥ 22.22.3
+- Node.js ≥ 22.23.4
 
 ## Installation
 
@@ -52,7 +52,7 @@ Required Cloudflare setup:
 
 - `CLOUDFLARE_API_TOKEN` GitHub secret with Workers deploy access
 - `CLOUDFLARE_ACCOUNT_ID` GitHub secret
-- `BROWSER` Browser Rendering binding in `wrangler.jsonc`
+- `BROWSER` Browser Run binding in `wrangler.jsonc`
 - `MS_ISO_LINKS` KV namespace binding in `wrangler.jsonc`
 
 The deploy workflow runs install, lint, check, build, a Wrangler dry run, then `wrangler deploy`.
