@@ -16,8 +16,10 @@ The [Atlas repository](https://github.com/Atlas-OS/Atlas) holds the Atlas packag
 
 ## How the Atlas package works
 
-The Atlas package is an `.apbx` file.
+The Atlas package is an `.atlaspkg` file, a ZIP archive that opens with the public password `atlasos`.
 It holds the PowerShell scripts, data definitions and supporting files that apply Atlas to Windows.
+Its manifest, `atlas.json`, declares the version, the supported Windows builds, the versions it can update, the requirements and the installation choices.
+The repository's [package format](https://github.com/Atlas-OS/Atlas/blob/main/docs/package-format.md) defines the archive and the manifest.
 
 Atlas Manager prepares the PC, collects the user's choices and then runs the package's front door, `Executables\AtlasModules\Scripts\Entry\Install-Atlas.ps1`.
 The front door checks that the PC is ready, copies the package to a protected staging folder and runs the install plan as TrustedInstaller.
@@ -27,7 +29,7 @@ The front door picks one of four install modes:
 | Mode | When it runs |
 | --- | --- |
 | Fresh | Atlas isn't installed yet. |
-| Upgrade | The installed Atlas version is listed in `UpgradableFrom`. |
+| Upgrade | The installed Atlas version is listed in `updatableFrom`. |
 | Reapply | The installed version is the same as the package's. |
 | Rebase | Windows rebuilt itself while Atlas Manager moved it to a newer release. |
 
@@ -39,9 +41,9 @@ The [architecture guide](https://github.com/Atlas-OS/Atlas/blob/main/docs/archit
 
 ## Find the relevant source
 
-- `playbook/playbook.conf`: the release version, `SupportedBuilds`, `UpgradableFrom` and the installation choices.
-- `playbook/Executables/AtlasModules`: the install framework, phases, tweaks and toggle definitions.
-- `playbook/Executables/AtlasDesktop`: the Atlas folder's launchers and shortcuts.
+- `package/atlas.json`: the manifest, with the release version, `supportedBuilds`, `updatableFrom`, `requirements` and the installation choices.
+- `package/Executables/AtlasModules`: the install framework, phases, tweaks and toggle definitions.
+- `package/Executables/AtlasDesktop`: the Atlas folder's launchers and shortcuts.
 - `app`: Atlas Manager, a Rust app. See its [README](https://github.com/Atlas-OS/Atlas/blob/main/app/README.md).
 - `tools` and `tests`: build tools, developer tools and automated checks.
 - `docs/catalog`: generated references for every [toggle](https://github.com/Atlas-OS/Atlas/blob/main/docs/catalog/toggles.md) and install tweak.
@@ -64,17 +66,17 @@ On a Unix shell:
 ./build.sh
 ```
 
-Both write `playbook/Atlas Test.apbx` with the local test profile.
-That profile leaves out `SupportedBuilds` and the product code, so it suits quick structure checks.
+Both write `package/Atlas Test.atlaspkg` with the local test profile.
+That profile leaves out `supportedBuilds`, so it suits quick structure checks.
 Atlas Manager and the front door refuse to install it.
 
 To build a package you can install, run a full build from PowerShell 7:
 
 ```powershell
-pwsh tools/build/Build-Playbook.ps1 -FileName 'Atlas Lab' -ReplaceOldPlaybook -DontOpenPbLocation
+pwsh tools/build/Build-Package.ps1 -FileName 'Atlas Lab' -ReplaceExisting -NoExplorer
 ```
 
-This writes `playbook/Atlas Lab.apbx` with every check in place.
+This writes `package/Atlas Lab.atlaspkg` with every check in place.
 Never distribute a package you built yourself as a release.
 
 The build tools use PowerShell 7.
@@ -87,12 +89,13 @@ Use a disposable virtual machine for each supported Windows release.
 The [supported releases](https://github.com/Atlas-OS/Atlas/blob/main/docs/windows-release-policy.md#supported-releases) table lists them.
 Take a checkpoint before each test, and keep separate checkpoints for a fresh Windows installation and for each Atlas release that can update directly.
 
-To install your full build, open Atlas Manager, choose **Install Atlas**, and choose **Open package file** under **Installation files** on the **Get ready** page.
+To install your full build, open Atlas Manager, choose **Install Atlas**, and choose **Open package file** under **Installation files** on the **Get ready** page, then select your `.atlaspkg` file.
 
 <Callout type="info" title="Running the front door directly">
   When testing, you can run `Install-Atlas.ps1` from an elevated Windows PowerShell prompt in the
-  extracted package's `Executables` folder. The architecture guide lists its parameters and exit
-  codes. Atlas Manager remains the only way to install Atlas for users.
+  extracted package's `Executables` folder. The [front door
+  reference](https://github.com/Atlas-OS/Atlas/blob/main/docs/front-door.md) lists its parameters
+  and exit codes. Atlas Manager remains the only way to install Atlas for users.
 </Callout>
 
 Check these for every change:
