@@ -51,6 +51,12 @@ const sections = [
     --motion-reveal-blur: 6px;
     --motion-reveal-ease: cubic-bezier(0.22, 1, 0.36, 1);
     --motion-reveal-scale-start: 0.985;
+    /*
+     * The scenes' glows, ropes and skies fade out past the content's edges by design; clip them at
+     * the screen so they never make the page scroll sideways. `clip` (unlike `hidden`) makes no
+     * scroll container, so sticky headings still stick and vertical overflow still shows.
+     */
+    overflow-x: clip;
   }
 </style>
 

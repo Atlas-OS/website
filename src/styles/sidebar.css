@@ -1,11 +1,10 @@
 #sidebar {
-  transform-origin: left center;
   /* Same hairline as the navbar's bottom border, so the two meet in a clean T-junction. */
-  border-inline-end: 1px solid rgba(255, 255, 255, 0.06);
+  border-inline-end: 1px solid color-mix(in oklch, var(--color-fg) 6%, transparent);
 }
 
 #sidebar nav {
-  padding-bottom: 1rem;
+  padding-block-end: 1rem;
 }
 
 #sidebar-scroll {
@@ -15,10 +14,9 @@
   overscroll-behavior: contain;
 }
 
-#sidebar-scroll:hover,
 #sidebar-scroll:focus-visible,
 #sidebar-scroll.is-scrolling {
-  scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+  scrollbar-color: color-mix(in oklch, var(--color-fg) 18%, transparent) transparent;
 }
 
 #sidebar-scroll::-webkit-scrollbar {
@@ -34,20 +32,28 @@
   border-radius: 999px;
 }
 
-#sidebar-scroll:hover::-webkit-scrollbar-thumb,
 #sidebar-scroll:focus-visible::-webkit-scrollbar-thumb,
 #sidebar-scroll.is-scrolling::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.18);
+  background-color: color-mix(in oklch, var(--color-fg) 18%, transparent);
 }
 
-#sidebar-scroll::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(255, 255, 255, 0.32);
+@media (hover: hover) and (pointer: fine) {
+  #sidebar-scroll:hover {
+    scrollbar-color: color-mix(in oklch, var(--color-fg) 18%, transparent) transparent;
+  }
+
+  #sidebar-scroll:hover::-webkit-scrollbar-thumb {
+    background-color: color-mix(in oklch, var(--color-fg) 18%, transparent);
+  }
+
+  #sidebar-scroll::-webkit-scrollbar-thumb:hover {
+    background-color: color-mix(in oklch, var(--color-fg) 32%, transparent);
+  }
 }
 
 /* Links: every state keys off `aria-current`, which the client keeps in sync across navigations. */
 .sidebar-primary-link,
 .sidebar-link {
-  outline: none;
   transition:
     background-color var(--motion-duration-fast) var(--motion-ease-out),
     color var(--motion-duration-fast) var(--motion-ease-out);
@@ -55,23 +61,25 @@
 
 .sidebar-primary-link {
   min-height: 2.25rem;
-  color: rgba(255, 255, 255, 0.85);
+  color: color-mix(in oklch, var(--color-fg) 85%, transparent);
 }
 
 .sidebar-link {
   min-height: 2.25rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: color-mix(in oklch, var(--color-fg) 70%, transparent);
 }
 
-.sidebar-primary-link:not([aria-current='page']):hover,
-.sidebar-link:not([aria-current='page']):hover {
-  color: white;
+@media (hover: hover) and (pointer: fine) {
+  .sidebar-primary-link:not([aria-current='page']):hover,
+  .sidebar-link:not([aria-current='page']):hover {
+    color: var(--color-fg);
+  }
 }
 
 .sidebar-primary-link[aria-current='page'],
 .sidebar-link[aria-current='page'] {
-  background: rgba(255, 255, 255, 0.045);
-  color: rgba(255, 255, 255, 0.86);
+  background: color-mix(in oklch, var(--color-fg) 4.5%, transparent);
+  color: color-mix(in oklch, var(--color-fg) 86%, transparent);
   transition-duration: 0ms;
 }
 
@@ -79,19 +87,23 @@
   font-weight: 500;
 }
 
-.sidebar-primary-link[aria-current='page']:hover,
-.sidebar-link[aria-current='page']:hover {
-  background: rgba(255, 255, 255, 0.06);
-  color: rgba(255, 255, 255, 0.92);
+@media (hover: hover) and (pointer: fine) {
+  .sidebar-primary-link[aria-current='page']:hover,
+  .sidebar-link[aria-current='page']:hover {
+    background: color-mix(in oklch, var(--color-fg) 6%, transparent);
+    color: color-mix(in oklch, var(--color-fg) 92%, transparent);
+  }
 }
 
 .sidebar-primary-icon {
-  color: rgba(255, 255, 255, 0.52);
+  color: color-mix(in oklch, var(--color-fg) 52%, transparent);
   transition: color var(--motion-duration-fast) var(--motion-ease-out);
 }
 
-.sidebar-primary-link:hover .sidebar-primary-icon {
-  color: rgba(255, 255, 255, 0.76);
+@media (hover: hover) and (pointer: fine) {
+  .sidebar-primary-link:hover .sidebar-primary-icon {
+    color: color-mix(in oklch, var(--color-fg) 76%, transparent);
+  }
 }
 
 .sidebar-primary-link[aria-current='page'] .sidebar-primary-icon {
@@ -100,17 +112,18 @@
 
 .sidebar-badge {
   flex-shrink: 0;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid color-mix(in oklch, var(--color-fg) 8%, transparent);
   border-radius: var(--docs-radius-sm);
-  padding: 0.125rem 0.375rem;
+  padding-block: 0.125rem;
+  padding-inline: 0.375rem;
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.025em;
-  color: rgba(255, 255, 255, 0.6);
+  color: color-mix(in oklch, var(--color-fg) 60%, transparent);
 }
 
 .sidebar-badge-sm {
-  border-color: rgba(255, 255, 255, 0.06);
+  border-color: color-mix(in oklch, var(--color-fg) 6%, transparent);
   padding-inline: 0.25rem;
   font-weight: 400;
 }
@@ -121,7 +134,7 @@
   margin-block: 0.125rem 0.375rem;
   margin-inline-start: 0.875rem;
   padding-inline-start: 0.625rem;
-  border-inline-start: 1px solid rgba(255, 255, 255, 0.08);
+  border-inline-start: 1px solid color-mix(in oklch, var(--color-fg) 8%, transparent);
 }
 
 .sidebar-rail-nested {
@@ -134,7 +147,7 @@
 }
 
 .sidebar-rail > li + li {
-  margin-top: 0.125rem;
+  margin-block-start: 0.125rem;
 }
 
 .sidebar-rail > li:has(> .group > a[aria-current='page'])::before,
@@ -142,15 +155,37 @@
   content: '';
   position: absolute;
   inset-inline-start: calc(-0.625rem - 1px);
-  top: 0.375rem;
-  bottom: 0.375rem;
+  inset-block: 0.375rem;
   width: 2px;
   border-radius: 999px;
   background: var(--color-primary);
 }
 
+/*
+ * Group toggles: the chevron looks 36px square but takes a 44px-wide press (the extra width fills
+ * the gap beside the link; it stays 36px tall so it never overlaps the rows above and below), and
+ * gives under the finger when pressed.
+ */
 .sidebar-toggle {
+  position: relative;
   opacity: 0.72;
+}
+
+.sidebar-toggle::after {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  inset-inline: min(0px, (100% - 44px) / 2);
+}
+
+.sidebar-toggle:active {
+  scale: 0.95;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .sidebar-toggle {
+    transition-property: color, outline-color, scale;
+  }
 }
 
 .sidebar-section:not(.is-collapsed) > .group .sidebar-toggle,
@@ -162,12 +197,11 @@
 .sidebar-collapsible {
   display: grid;
   grid-template-rows: 1fr;
-  transition: grid-template-rows var(--motion-duration-normal) var(--motion-ease-out);
 }
 
 .sidebar-collapsible > * {
   min-height: 0;
-  overflow: hidden;
+  overflow: clip;
 }
 
 .is-collapsed > .sidebar-collapsible {
@@ -177,11 +211,21 @@
 .is-collapsed > .sidebar-collapsible > * {
   margin-block: 0;
   visibility: hidden;
-  transition: visibility 0s var(--motion-duration-normal);
 }
 
 .is-collapsed > .group .sidebar-arrow {
   transform: rotate(-90deg);
+}
+
+/* The collapse eases open and shut; the list hides only once it has finished closing. */
+@media (prefers-reduced-motion: no-preference) {
+  .sidebar-collapsible {
+    transition: grid-template-rows var(--motion-duration-normal) var(--motion-ease-out);
+  }
+
+  .is-collapsed > .sidebar-collapsible > * {
+    transition: visibility 0s var(--motion-duration-normal);
+  }
 }
 
 #sidebar:not(.initialized) .sidebar-arrow,
@@ -191,17 +235,73 @@
 }
 
 @media (max-width: 1023px) {
+  /*
+   * Closed, the drawer is hidden as well as slid away, so it is out of the tab order and the
+   * accessibility tree even before utils/sidebar.ts makes it inert. With motion, visibility flips
+   * after the slide when closing and at once when opening, so the motion is unchanged; without it,
+   * the drawer simply appears and disappears.
+   */
   #sidebar {
     transform: translateX(-100%);
+    visibility: hidden;
     will-change: transform;
     background-color: var(--docs-panel-bg);
   }
 
   #sidebar.open {
     transform: translateX(0);
+    visibility: visible;
   }
 
-  body.sidebar-open {
+  @media (prefers-reduced-motion: no-preference) {
+    #sidebar {
+      transition:
+        transform 250ms cubic-bezier(0.4, 0, 0.2, 1),
+        visibility 0s linear 250ms;
+    }
+
+    #sidebar.open {
+      transition:
+        transform 250ms cubic-bezier(0.4, 0, 0.2, 1),
+        visibility 0s;
+    }
+  }
+
+  /* The page stays put behind the open drawer; the root's reserved gutter keeps it from shifting. */
+  body:has(#sidebar.open) {
     overflow: hidden;
+  }
+
+  /* With the drawer open, the floating Ask AI button steps aside instead of covering it. */
+  body:has(#sidebar.open) #ask-ai-button {
+    visibility: hidden;
+    opacity: 0;
+  }
+}
+
+/* Phones: the drawer's footer carries the links the docs navbar has no room for. */
+.sidebar-drawer-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-block: 0.5rem max(0.5rem, env(safe-area-inset-bottom, 0px));
+  padding-inline: 1rem 0.75rem;
+  border-block-start: 1px solid color-mix(in oklch, var(--color-fg) 6%, transparent);
+}
+.sidebar-drawer-footer__link {
+  display: inline-flex;
+  min-height: 2.5rem;
+  align-items: center;
+  gap: 0.5rem;
+  color: color-mix(in oklch, var(--color-fg) 70%, transparent);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: color 160ms var(--motion-ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .sidebar-drawer-footer__link:hover {
+    opacity: 1;
+    color: var(--color-fg);
   }
 }

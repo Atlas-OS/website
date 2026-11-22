@@ -1,9 +1,12 @@
 ---
+import AtlasLogomarkInk from '@/assets/atlas-logomark-ink.svg';
 import AtlasLogomark from '@/assets/atlas-logomark.svg';
 import NavLink from '@/components/ui/NavLink.astro';
 import IconButton from '@/components/ui/IconButton.astro';
 import SearchButton from '@/components/ui/SearchButton.astro';
 import SocialIconLink from '@/components/ui/SocialIconLink.astro';
+import ThemeToggle from '@/components/ui/ThemeToggle.astro';
+import { Icon } from 'astro-icon/components';
 import '@/styles/navbar.css';
 
 interface Props {
@@ -44,9 +47,9 @@ const isDocumentationActive = isOnDocsPage && !hasActiveDocsSubItem;
   id="main-header"
   data-pagefind-ignore
   data-docs-page={String(isOnDocsPage)}
-  class={`site-header bg-background sticky top-0 z-50 w-full border-b border-white/[0.06] transition-[background-color,box-shadow,backdrop-filter] duration-300 ${isOnDocsPage ? '' : 'backdrop-blur-md'}`}
+  class:list={['site-header inset-bs-0 z-50 w-full', isOnDocsPage && 'sticky']}
 >
-  <div class="mx-auto flex h-14 items-center justify-between px-4 sm:px-6">
+  <div class="mx-auto flex h-(--site-header-height) items-center justify-between px-(--space-page-edge)">
     <div class="flex min-w-0 flex-1 items-center gap-6">
       <a
         href="/"
@@ -60,10 +63,18 @@ const isDocumentationActive = isOnDocsPage && !hasActiveDocsSubItem;
             alt="AtlasOS"
             width={100}
             height={32}
-            class="relative z-10 block h-5 w-auto"
+            class="site-logo site-logo--night relative z-10 block h-5 w-auto"
             loading="eager"
             decoding="sync"
-            fetchpriority="high"
+          />
+          <img
+            src={AtlasLogomarkInk.src}
+            alt="AtlasOS"
+            width={100}
+            height={32}
+            class="site-logo site-logo--day relative z-10 h-5 w-auto"
+            loading="eager"
+            decoding="sync"
           />
         </div>
       </a>
@@ -82,19 +93,21 @@ const isDocumentationActive = isOnDocsPage && !hasActiveDocsSubItem;
       </nav>
     </div>
 
-    <div class="flex shrink-0 items-center gap-3">
+    <div class="flex shrink-0 items-center gap-1.5 sm:gap-2">
       {isOnDocsPage && (
         <>
           <SearchButton />
-          <SearchButton mobile={true} />
+          <SearchButton mobile={true} class="nav-icon--search" />
         </>
       )}
 
-      <div class="nav-social-links hidden items-center gap-2 sm:flex">
+      <div class="nav-social-links hidden items-center gap-1 sm:flex">
         <SocialIconLink href="https://github.com/Atlas-OS/Atlas" icon="tabler:brand-github" label="GitHub" />
         <SocialIconLink href="https://discord.com/invite/atlasos" icon="tabler:brand-discord" label="Discord" />
         <SocialIconLink href="https://x.com/atlasos" icon="tabler:brand-x" label="X (Twitter)" />
       </div>
+      <span class="nav-divider hidden sm:block" aria-hidden="true"></span>
+      <ThemeToggle />
 
       {isOnDocsPage ? (
         <IconButton
@@ -120,25 +133,39 @@ const isDocumentationActive = isOnDocsPage && !hasActiveDocsSubItem;
 
   {!isOnDocsPage && (
     <div id="mobile-menu" class="mobile-menu md:hidden" hidden inert>
-      <div id="mobile-menu-content" class="mobile-menu-content space-y-1 px-4 py-3 backdrop-blur-xl">
-        {mainNavItems.map((item) => {
-          const itemIsActive =
-            item.href === '/docs/' ? isDocumentationActive : !item.isExternal && isActive(item.href, currentPath);
+      <div id="mobile-menu-content" class="mobile-menu-content">
+        <nav class="mobile-menu__links" aria-label="Main">
+          {mainNavItems.map((item) => {
+            const itemIsActive =
+              item.href === '/docs/' ? isDocumentationActive : !item.isExternal && isActive(item.href, currentPath);
 
-          return (
-            <a
-              href={item.href}
-              data-astro-prefetch={!item.isExternal && item.href.startsWith('/') ? 'hover' : undefined}
-              target={item.isExternal ? '_blank' : undefined}
-              rel={item.isExternal ? 'noopener noreferrer' : undefined}
-              class={`block rounded-md px-4 py-2.5 text-sm font-medium text-white transition-colors duration-200 ${
-                itemIsActive ? 'bg-white/5 text-primary' : 'hover:bg-white/5'
-              }`}
-            >
-              {item.label}
-            </a>
-          );
-        })}
+            return (
+              <a
+                href={item.href}
+                data-astro-prefetch={!item.isExternal && item.href.startsWith('/') ? 'hover' : undefined}
+                target={item.isExternal ? '_blank' : undefined}
+                rel={item.isExternal ? 'noopener noreferrer' : undefined}
+                aria-current={itemIsActive ? 'page' : undefined}
+                class="mobile-menu__link"
+              >
+                <span>{item.label}</span>
+                <Icon
+                  name={item.isExternal ? 'tabler:arrow-up-right' : 'tabler:chevron-right'}
+                  class="mobile-menu__chevron"
+                  aria-hidden="true"
+                />
+              </a>
+            );
+          })}
+        </nav>
+        <div class="mobile-menu__footer">
+          <span class="mobile-menu__note">Find us on</span>
+          <div class="flex items-center gap-1">
+            <SocialIconLink href="https://github.com/Atlas-OS/Atlas" icon="tabler:brand-github" label="GitHub" />
+            <SocialIconLink href="https://discord.com/invite/atlasos" icon="tabler:brand-discord" label="Discord" />
+            <SocialIconLink href="https://x.com/atlasos" icon="tabler:brand-x" label="X (Twitter)" />
+          </div>
+        </div>
       </div>
     </div>
   )}

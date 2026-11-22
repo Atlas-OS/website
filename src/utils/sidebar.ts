@@ -96,10 +96,10 @@ function setOpen(elements: SidebarElements, isOpen: boolean): void {
   const isMobile = !desktopQuery().matches;
   const wasOpen = sidebar.classList.contains('open');
 
+  // The page's scroll lock and the Ask AI button key off `#sidebar.open` with `:has()` (sidebar.css).
   sidebar.classList.toggle('open', isOpen);
   sidebar.inert = isMobile && !isOpen;
   sidebar.setAttribute('aria-hidden', String(isMobile && !isOpen));
-  document.body.classList.toggle('sidebar-open', isMobile && isOpen);
   toggleButton.setAttribute('aria-expanded', String(isOpen));
   setBackgroundInert(isMobile && isOpen, sidebar);
 

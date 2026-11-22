@@ -21,20 +21,21 @@ const linkClass =
 ---
 
 {showInline && (
-  <details class="toc-inline docs-surface not-prose mb-8 xl:hidden" data-pagefind-ignore>
-    <summary class="flex min-h-11 cursor-pointer items-center justify-between gap-3 px-4 py-2.5 text-sm font-semibold text-[var(--docs-text-secondary)]">
+  <details class="toc-inline docs-surface not-prose mbe-8 xl:hidden" data-pagefind-ignore>
+    <summary class="flex min-h-11 cursor-pointer items-center justify-between gap-3 px-4 py-2.5 text-sm font-semibold text-[var(--docs-text-secondary)] active:opacity-70">
       <span>On this page</span>
       <Icon
         name="tabler:chevron-down"
-        class="toc-inline-icon h-4 w-4 shrink-0 text-[var(--docs-text-muted)] transition-transform duration-200"
+        is:inline
+        class="toc-inline-icon h-4 w-4 shrink-0 text-[var(--docs-text-muted)] motion-safe:transition-transform motion-safe:duration-200"
         aria-hidden="true"
       />
     </summary>
-    <nav aria-label="On this page" class="border-t border-[var(--docs-surface-border)] px-4 py-3">
+    <nav aria-label="On this page" class="border-bs border-[var(--docs-surface-border)] px-4 py-3">
       <ul class="space-y-1">
         {entries.map((heading) => (
           <li>
-            <a href={`#${heading.slug}`} class:list={[linkClass, heading.depth === 3 ? 'pl-4' : '']}>
+            <a href={`#${heading.slug}`} class:list={[linkClass, heading.depth === 3 ? 'ps-4' : '']}>
               {heading.text}
             </a>
           </li>
@@ -48,16 +49,17 @@ const linkClass =
   <aside id="toc" data-pagefind-ignore class="toc-column hidden min-w-0 xl:block">
     <nav
       class="toc-panel sticky overflow-y-auto px-2"
-      style="top: calc(var(--docs-header-height) + 1.5rem); max-height: calc(100vh - var(--docs-header-height) - 3rem);"
+      style="inset-block-start: calc(var(--site-header-height) + 1.5rem); max-height: calc(100vh - var(--site-header-height) - 3rem);"
       aria-label="On this page"
     >
       <div class="space-y-4">
-        <h2 class="mb-4 text-sm font-semibold text-[var(--docs-text-muted)]">On this page</h2>
+        <h2 class="mbe-4 text-sm font-semibold text-[var(--docs-text-muted)]">On this page</h2>
         <div class="toc-rail relative">
+          <!-- The marker fades in place; with motion it also slides to the active heading. -->
           <div
             id="toc-marker"
-            class="absolute left-0 w-[2px] rounded-full bg-primary opacity-0 transition-[height,opacity,top] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1.0)]"
-            style="top: 0; height: 0;"
+            class="absolute start-0 w-[2px] rounded-full bg-primary opacity-0 transition-opacity duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] motion-safe:transition-[height,opacity,inset-block-start]"
+            style="inset-block-start: 0; height: 0;"
           >
             <div class="absolute inset-0 bg-primary/50 blur-[2px]" />
           </div>
@@ -67,7 +69,7 @@ const linkClass =
               <li>
                 <a
                   href={`#${heading.slug}`}
-                  class:list={[linkClass, heading.depth === 3 ? 'pl-6' : 'pl-4']}
+                  class:list={[linkClass, heading.depth === 3 ? 'ps-6' : 'ps-4']}
                   data-toc-link
                 >
                   {heading.text}
@@ -77,7 +79,7 @@ const linkClass =
           </ul>
         </div>
 
-        <div class="toc-utilities mt-6 flex flex-col gap-2 border-t border-white/[0.06] pt-4">
+        <div class="toc-utilities mbs-6 flex flex-col gap-2 border-bs border-fg/[0.06] pbs-4">
           <button
             type="button"
             id="toc-copy-link"
@@ -106,9 +108,10 @@ const linkClass =
 <style>
   .toc-panel {
     /* Keep the utilities clear of the floating "Ask AI" button. */
-    padding-bottom: 6rem;
+    padding-block-end: 6rem;
+    overscroll-behavior: contain;
     scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+    scrollbar-color: color-mix(in oklch, var(--color-fg) 10%, transparent) transparent;
   }
 
   .toc-panel::-webkit-scrollbar {
@@ -120,24 +123,25 @@ const linkClass =
   }
 
   .toc-panel::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: color-mix(in oklch, var(--color-fg) 10%, transparent);
     border-radius: 3px;
   }
 
-  .toc-panel::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+  @media (hover: hover) and (pointer: fine) {
+    .toc-panel::-webkit-scrollbar-thumb:hover {
+      background-color: color-mix(in oklch, var(--color-fg) 20%, transparent);
+    }
   }
 
   /* Faint rail the active marker travels along. */
   .toc-rail::before {
     content: '';
     position: absolute;
-    top: 0.25rem;
-    bottom: 0.25rem;
-    left: 0;
+    inset-block: 0.25rem;
+    inset-inline-start: 0;
     width: 2px;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.08);
+    background: color-mix(in oklch, var(--color-fg) 8%, transparent);
   }
 
   .toc-link {
@@ -148,6 +152,7 @@ const linkClass =
     color: var(--color-link);
   }
 
+  /* The inline list opens and closes by easing its height (`::details-content`, docs.css). */
   .toc-inline summary {
     list-style: none;
   }
@@ -229,7 +234,7 @@ const linkClass =
       }
       const linkRect = activeLink.getBoundingClientRect();
       const containerRect = marker.parentElement.getBoundingClientRect();
-      marker.style.top = `${linkRect.top - containerRect.top}px`;
+      marker.style.insetBlockStart = `${linkRect.top - containerRect.top}px`;
       marker.style.height = `${linkRect.height}px`;
       marker.style.opacity = '1';
     };

@@ -1,33 +1,98 @@
 ---
-import SectionTitle from '@/components/sections/common/SectionTitle.astro';
+/**
+ * Gather round the campfire: the warmth at the close of the homepage's night, and the one section
+ * where campfire amber leads. The invitation stands just above a small campfire drawn in the hero
+ * camp's language (join-community/Campfire.astro); when the fire catches, its light spills up
+ * onto the two buttons, warming the edges that face it.
+ */
+import SectionHeading from '@/components/sections/common/SectionHeading.astro';
+import NightSky from '@/components/sections/common/NightSky.astro';
+import Campfire from '@/components/sections/join-community/Campfire.astro';
 import Button from '@/components/ui/Button.astro';
 ---
 
-<section class="relative mx-auto mt-32 mb-32 max-w-7xl px-4 text-center">
-  <div data-animate>
-    <SectionTitle>Join our community</SectionTitle>
-  </div>
-  <h2 class="mb-6 text-4xl font-semibold tracking-tight text-white md:text-5xl" data-animate>
-    Be part of the <span class="text-primary">Atlas</span> community
-  </h2>
-  <p class="mx-auto mb-12 max-w-2xl text-white/70" data-animate>
-    Join our thriving community of over 50,000 members and millions of AtlasOS users. <br /> Connect, share, and stay
-    updated.
+<section class="join-community content-grid relative my-32 text-center">
+  <NightSky seed={0x5ca1e} density={9} height="24rem" lane={0.56} top="-5rem" />
+
+  <SectionHeading near="Be part of the Atlas community" align="center" />
+  <p class="summit-lede mx-auto mbs-5 mbe-10 w-full" data-animate>
+    Join our thriving community of over 50,000 members and millions of AtlasOS users. <br class="max-sm:hidden" />
+    Connect, share, and stay updated.
   </p>
-  <div class="flex flex-col items-center justify-center gap-5 sm:flex-row" data-animate>
-    <Button href="https://discord.com/invite/atlasos" variant="primary" size="lg" icon="tabler:brand-discord" external>
+  <div class="community-actions flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-5" data-animate>
+    <Button
+      href="https://discord.com/invite/atlasos"
+      variant="primary"
+      size="lg"
+      icon="tabler:brand-discord"
+      external
+      class="community-cta community-cta--near-left"
+    >
       Join Discord
+      <span class="firelight" aria-hidden="true"></span>
     </Button>
-    <Button href="https://x.com/atlasos" variant="secondary" size="lg" icon="tabler:brand-x" external>
+    <Button
+      href="https://x.com/atlasos"
+      variant="secondary"
+      size="lg"
+      icon="tabler:brand-x"
+      external
+      class="community-cta community-cta--near-right"
+    >
       Follow us
+      <span class="firelight" aria-hidden="true"></span>
     </Button>
   </div>
-  <div class="community-glow pointer-events-none absolute -inset-y-16 inset-x-0 -z-10" aria-hidden="true"></div>
+
+  <div class="community-fire" data-animate>
+    <Campfire />
+  </div>
 </section>
 
 <style>
-  .community-glow {
-    /* Keep the entire fade inside the layer so none of its edges clip the glow. */
-    background: radial-gradient(ellipse 48% 48% at 50% 50%, var(--home-ambient-glow), transparent 100%);
+  .community-fire {
+    margin-block-start: 0.75rem;
+  }
+
+  /*
+   * Firelight on the buttons. The fire burns just below and between them, so each button's
+   * lower edge and its corner nearest the fire catch a warm light; the moon still rims the top
+   * edge, as everywhere else on the page. The light sits inside each link, so it moves with it.
+   * `in srgb` keeps the blend between the warm stops as it was drawn.
+   */
+  .firelight {
+    --toward: 50%;
+    /* The fire's amber, as it reaches the buttons. */
+    --fire-amber: oklch(0.786 0.151 59.1);
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(
+      90% 110% at var(--toward) 130% in srgb,
+      oklch(0.818 0.133 64.3 / 0.26),
+      color-mix(in oklch, var(--fire-amber) 8%, transparent) 50%,
+      transparent 75%
+    );
+    box-shadow:
+      inset 0 -1px 0 oklch(0.858 0.115 72.3 / 0.5),
+      0 12px 28px -16px color-mix(in oklch, var(--fire-amber) 55%, transparent);
+  }
+  @media (min-width: 640px) {
+    :global(.community-cta--near-left) .firelight {
+      --toward: 88%;
+    }
+    :global(.community-cta--near-right) .firelight {
+      --toward: 12%;
+    }
+  }
+
+  /* The light comes up with the fire (see Campfire.astro): unlit until the scene has caught. */
+  .firelight {
+    transition: opacity 1200ms cubic-bezier(0.33, 1, 0.68, 1) 420ms;
+  }
+  :global(html[data-motion] .join-community:has([data-campfire]:not([data-lit])) .firelight) {
+    opacity: 0;
   }
 </style>

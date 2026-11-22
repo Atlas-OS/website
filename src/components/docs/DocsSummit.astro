@@ -1,0 +1,53 @@
+---
+/**
+ * A quiet echo of the home hero for the docs index: a static horizon on the title's baseline,
+ * with the Atlas summit and its flag. Decorative only, and hidden on narrow screens.
+ */
+import { DOCS_RIDGE } from '@/utils/hero-summit-geometry';
+
+const { view, apex, hills, summit, summitEdge, litFace, notch } = DOCS_RIDGE;
+const flagTop = apex[1] - 14;
+---
+
+<svg
+  class="docs-summit"
+  viewBox={`0 0 ${view.width} ${view.height}`}
+  aria-hidden="true"
+  focusable="false"
+  data-pagefind-ignore
+>
+  <defs>
+    <linearGradient id="docs-summit-fade" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#1A91FF" stop-opacity="0.14"></stop>
+      <stop offset="1" stop-color="#1A91FF" stop-opacity="0"></stop>
+    </linearGradient>
+  </defs>
+  <path d={hills.shape} fill="url(#docs-summit-fade)"></path>
+  <path d={hills.edge} fill="none" stroke="#8DBEFF" stroke-opacity="0.22" vector-effect="non-scaling-stroke"></path>
+  <path d={summit} fill="#16294F"></path>
+  <path d={litFace} fill="#1D3766"></path>
+  <path d={notch} fill="#0A1636" fill-opacity="0.7"></path>
+  <path d={summitEdge} fill="none" stroke="#A9CEFF" stroke-opacity="0.5" vector-effect="non-scaling-stroke"></path>
+  <rect x={apex[0] - 0.5} y={flagTop} width="1" height={apex[1] - flagTop} fill="#A9CEFF" fill-opacity="0.6"></rect>
+  <path d={`M${apex[0] + 0.5} ${flagTop}h9l-2.4 3 2.4 3h-9Z`} fill="#1A91FF"></path>
+</svg>
+
+<style>
+  .docs-summit {
+    position: absolute;
+    inset-inline-end: 0;
+    inset-block-end: 0;
+    width: min(46%, 22rem);
+    height: auto;
+    pointer-events: none;
+    /* Fades in from the title side and settles into the page at its foot. */
+    mask-image: linear-gradient(to right, transparent, black 35%), linear-gradient(to bottom, black 50%, transparent);
+    mask-composite: intersect;
+  }
+
+  @media (max-width: 767px) {
+    .docs-summit {
+      display: none;
+    }
+  }
+</style>

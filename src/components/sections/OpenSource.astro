@@ -1,295 +1,368 @@
 ---
+/**
+ * Open source, "Stargazers": the project's GitHub stars as stars in the sky. A patch of night in
+ * which the stars trace the Atlas mark as a constellation, with the live stargazer count set
+ * beneath it like a star chart's caption. Geometry in utils/open-source-constellation.ts.
+ *
+ * As the chart scrolls into view its lines draw in, one pen tracing the mark from the summit and
+ * back, and the summit star glints as the outline closes. The field twinkles slowly, paused off
+ * screen. Without JavaScript or with reduced motion the chart renders complete and still.
+ */
 import { Icon } from 'astro-icon/components';
-import { Picture, Image } from 'astro:assets';
-import GitHub from '@/assets/github-overview.webp';
-import GitHubStar from '@/assets/github-star.svg';
+import { Image } from 'astro:assets';
 import GPLLogo from '@/assets/gpl3-logo.svg';
+import SectionHeading from '@/components/sections/common/SectionHeading.astro';
+import Button from '@/components/ui/Button.astro';
+import { CHART, DRAW, FIELD, FIELD_GROUPS, FIELD_INSET, LINES, STARS, SUMMIT } from '@/utils/open-source-constellation';
 
 const links = {
   github: 'https://github.com/Atlas-OS/Atlas',
+  license: 'https://github.com/Atlas-OS/Atlas/blob/main/LICENSE',
+  contributing: '/docs/contributing/',
 };
+
+const chartView = `0 0 ${CHART.width} ${CHART.height}`;
+const fieldView = `${FIELD.x} ${FIELD.y} ${FIELD.width} ${FIELD.height}`;
+const fieldStyle = `inset-inline-start: ${FIELD_INSET.left}%; inset-block-start: ${FIELD_INSET.top}%; width: ${FIELD_INSET.width}%; height: ${FIELD_INSET.height}%`;
+/** The field's mask is centred on the constellation, not on the field. */
+const fieldCentre = {
+  x: Math.round(((CHART.width / 2 - FIELD.x) / FIELD.width) * 1000) / 10,
+  y: Math.round(((CHART.height / 2 - FIELD.y) / FIELD.height) * 1000) / 10,
+};
+const fieldMask = `--field-x: ${fieldCentre.x}%; --field-y: ${fieldCentre.y}%`;
 ---
 
-<section class="relative z-10 mx-auto mt-32 mb-32 flex max-w-7xl flex-col items-end px-4 lg:flex-row lg:justify-between">
-  <div class="github-wrapper relative hidden h-[330px] w-[587px] lg:block" data-animate>
-    <Picture
-      src={GitHub}
-      alt="GitHub repository"
-      formats={['avif', 'webp']}
-      fallbackFormat="webp"
-      layout="constrained"
-      width={587}
-      height={330}
-      widths={[587, 1174]}
-      sizes="587px"
-      quality={72}
-      class="media-outline h-auto w-full rounded-md shadow-[0_24px_70px_rgba(0,0,0,0.3)] select-none"
-      loading="lazy"
-      draggable={false}
-    />
-    <div
-      id="gh-stars-wrap"
-      class="absolute right-[-60px] bottom-[-7px] w-[300px] cursor-pointer rounded-md bg-secondary/80 text-gray-400 shadow-[var(--shadow-surface)] backdrop-blur-md transition-[border-radius,box-shadow] duration-200"
-    >
-      <button
-        id="toggle-star-list-btn"
-        aria-controls="gh-star-list"
-        aria-expanded="false"
-        class="w-full border-none bg-transparent p-0 text-left transition-opacity duration-200 outline-none hover:opacity-80 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:outline-none"
-        type="button"
-      >
-        <div class="flex w-full cursor-pointer justify-between">
-          <div class="flex items-center px-4 py-2">
-            <div class="mr-4 h-[19px] w-[19px]">
-              <Image
-                src={GitHubStar}
-                alt="GitHub star"
-                class="h-full w-full select-none"
-                loading="lazy"
-                draggable={false}
-              />
-            </div>
-            <p class="text-white">Starred</p>
-            <span
-              id="star-amount-badge"
-              class="ml-8 min-w-[50px] rounded-full bg-secondary/80 px-3 py-2 text-center text-sm tabular-nums"
-            >
-              --
-            </span>
-          </div>
-          <div class="flex items-center">
-            <div class="ml-2 h-full w-px bg-white/10"></div>
-            <div class="flex h-full items-center justify-center px-4 py-2">
-              <Icon name="tabler:chevron-down" class="h-5 w-5 transition-transform duration-200" />
-            </div>
-          </div>
-        </div>
-      </button>
-      <div
-        id="gh-star-list"
-        class="gh-star-dropdown absolute top-full left-0 z-[999] -ml-[1px] w-[calc(100%+2px)] rounded-b-md border border-t-0 border-white/[0.06]"
-      >
-        <div class="gh-star-dropdown-inner min-h-0 overflow-hidden">
-          <div id="gh-star-list-items" class="flex flex-col gap-4 bg-secondary/80 px-5 py-5 backdrop-blur-md"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="max-w-lg text-right" data-animate>
-    <h2 class="mb-6 ml-auto max-w-md text-4xl font-semibold tracking-tight text-white md:text-5xl">
-      An open-source, <span class="text-primary">GPL-3.0</span> project
-    </h2>
-    <p class="max-w-lg leading-relaxed text-white/80">
+<section class="stargazers relative mx-auto my-32 max-w-7xl px-4" data-open-source>
+  <div class="stargazers-intro">
+    <SectionHeading near="An open-source, GPL-3.0 project" />
+    <p class="summit-lede" data-animate>
       We are an open-source, community-driven project, licensed under GPL-3.0. We would greatly appreciate it if you
       check it out and, if interested, consider contributing to our vision.
     </p>
-    <div class="mt-10 flex items-center justify-end gap-8">
-      <div class="flex items-center gap-2">
-        <div class="h-[19px] w-[19px]">
-          <Image
-            src={GitHubStar}
-            alt="GitHub star"
-            class="h-full w-full select-none"
-            loading="lazy"
-            draggable={false}
+  </div>
+
+  <div class="stargazers-sky" style={`--draw-total: ${DRAW.total}ms`} data-animate>
+    <div class="sky-chart">
+      <svg class="sky-field" style={`${fieldStyle}; ${fieldMask}`} viewBox={fieldView} aria-hidden="true">
+        {FIELD_GROUPS.map((group, index) => (
+          <g class:list={['sky-twinkle', `sky-twinkle--${index}`]}>
+            <path d={group.warm} fill="#EEF5FF" />
+            <path d={group.cool} fill="#A9CBFF" />
+          </g>
+        ))}
+      </svg>
+
+      <svg class="sky-constellation" viewBox={chartView} aria-hidden="true">
+        <defs>
+          <radialGradient id="sky-summit-halo" cx={SUMMIT.x} cy={SUMMIT.y} r="26" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#CFE2FF" stop-opacity="0.55"></stop>
+            <stop offset="0.4" stop-color="#7FAEF5" stop-opacity="0.16"></stop>
+            <stop offset="1" stop-color="#3A6FD0" stop-opacity="0"></stop>
+          </radialGradient>
+        </defs>
+        {LINES.map((line, index) => (
+          <path
+            class="sky-line"
+            d={line.d}
+            pathLength="1"
+            style={`--draw-delay: ${DRAW.lines[index]?.delay ?? 0}ms; --draw-duration: ${DRAW.lines[index]?.duration ?? 0}ms`}
           />
-        </div>
-        <p class="text-white">
-          <span id="star-amount-tag" class="mr-1 font-semibold text-yellow-400 tabular-nums">
-            --
-          </span>
-          <span class="text-white/70">
-            stargazers on
-            <a
-              href={links.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="font-semibold text-primary hover:underline"
-            >
-              GitHub
-            </a>
-          </span>
-        </p>
-      </div>
-      <Image src={GPLLogo} alt="GPL logo" class="h-10 w-auto select-none" loading="lazy" draggable={false} />
+        ))}
+        <circle class="sky-halo" cx={SUMMIT.x} cy={SUMMIT.y} r="26" fill="url(#sky-summit-halo)"></circle>
+        {STARS.map(({ x, y, r }) => (
+          <circle cx={x} cy={y} r={r} fill="#EEF5FF" />
+        ))}
+        <path class="sky-glint" d={SUMMIT.glint} fill="#F4F8FF"></path>
+      </svg>
     </div>
+
+    <p class="sky-count">
+      <span id="star-amount-tag" class="sky-count__number" data-pending>
+        --
+      </span>
+      <span class="sky-count__label">stargazers on GitHub</span>
+    </p>
+  </div>
+
+  <div class="stargazers-actions" data-animate>
+    <div class="stargazers-links">
+      <Button href={links.contributing} variant="secondary" size="lg" icon="tabler:git-pull-request">
+        Read the contribution guide
+      </Button>
+      <a href={links.github} target="_blank" rel="noopener noreferrer" class="summit-link stargazers-repo">
+        <Icon name="tabler:brand-github" class="h-4 w-4" aria-hidden="true" />
+        View the repository on GitHub
+      </a>
+    </div>
+    <a href={links.license} target="_blank" rel="noopener noreferrer" class="stargazers-license">
+      <Image
+        src={GPLLogo}
+        alt="Read the GPL-3.0 license"
+        class="h-10 w-auto select-none"
+        loading="lazy"
+        draggable={false}
+      />
+    </a>
   </div>
 </section>
 
-<script>
-  import { ATLAS_API_URL } from '@/constants';
-
-  type StarsCountResponse = { count: number };
-  type RecentStar = { username: string; avatar: string };
-  type RecentStarsResponse = RecentStar[];
-
-  class GitHubStarsManager {
-    private starListItems: HTMLElement | null;
-    private starCountEl: HTMLElement | null;
-    private starBadgeEl: HTMLElement | null;
-    private signal: AbortSignal;
-
-    constructor(signal: AbortSignal) {
-      this.starListItems = document.getElementById('gh-star-list-items');
-      this.starCountEl = document.getElementById('star-amount-tag');
-      this.starBadgeEl = document.getElementById('star-amount-badge');
-      this.signal = signal;
-
-      this.initDropdown();
-      if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-        this.updateStarInfo();
-      }
-    }
-
-    private initDropdown(): void {
-      const toggleBtn = document.getElementById('toggle-star-list-btn');
-      const starList = document.getElementById('gh-star-list');
-      const wrapper = document.getElementById('gh-stars-wrap');
-      if (!toggleBtn || !starList || !wrapper) return;
-
-      toggleBtn.addEventListener(
-        'click',
-        (e) => {
-          e.stopPropagation();
-          const isOpen = starList.classList.toggle('show');
-          wrapper.classList.toggle('toggled', isOpen);
-          toggleBtn.classList.toggle('toggled', isOpen);
-          const icon = toggleBtn.querySelector('svg');
-          if (icon) icon.classList.toggle('rotate-180', isOpen);
-          toggleBtn.setAttribute('aria-expanded', isOpen.toString());
-        },
-        { signal: this.signal }
-      );
-
-      document.addEventListener(
-        'click',
-        (event: MouseEvent) => {
-          const target = event.target as Node;
-          if (!wrapper.contains(target)) {
-            starList.classList.remove('show');
-            wrapper.classList.remove('toggled');
-            toggleBtn.classList.remove('toggled');
-            const icon = toggleBtn.querySelector('svg');
-            if (icon) icon.classList.remove('rotate-180');
-            toggleBtn.setAttribute('aria-expanded', 'false');
-          }
-        },
-        { signal: this.signal }
-      );
-    }
-
-    private async fetchData<T>(url: string): Promise<T> {
-      const res = await fetch(url, { signal: this.signal });
-      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-      return res.json() as Promise<T>;
-    }
-
-    private createStarElement(star: { username: string; avatar: string }): HTMLElement {
-      const el = document.createElement('div');
-      el.className = 'flex items-center gap-2';
-      const img = document.createElement('img');
-      img.src = star.avatar;
-      img.alt = `${star.username} avatar`;
-      img.loading = 'lazy';
-      img.className = 'media-outline w-10 h-10 rounded-full object-cover';
-      const p = document.createElement('p');
-      p.textContent = star.username;
-      p.className = 'text-white';
-      el.append(img, p);
-      return el;
-    }
-
-    private async updateStarInfo(): Promise<void> {
-      try {
-        const responses = await Promise.all([
-          this.fetchData(`${ATLAS_API_URL}stars`),
-          this.fetchData(`${ATLAS_API_URL}recent-stars`),
-        ]);
-        const starsResponse = responses[0] as StarsCountResponse;
-        const recentStars = responses[1] as RecentStarsResponse;
-        if (!starsResponse || typeof starsResponse.count !== 'number') {
-          throw new Error('Invalid star count data received');
-        }
-        const count = starsResponse.count;
-
-        if (this.starCountEl) {
-          this.starCountEl.textContent = count.toLocaleString();
-        }
-        if (this.starBadgeEl) {
-          this.starBadgeEl.textContent = `${(count / 1000).toFixed(1)}k`;
-        }
-
-        if (!Array.isArray(recentStars)) {
-          throw new Error('Invalid recent stars data received');
-        }
-
-        const items = recentStars.slice(0, 4).map((stargazer) => this.createStarElement(stargazer));
-
-        if (this.starListItems) {
-          this.starListItems.replaceChildren(...items);
-        }
-      } catch {
-        if (this.signal.aborted) return;
-        if (this.starCountEl) this.starCountEl.textContent = '--';
-        if (this.starBadgeEl) this.starBadgeEl.textContent = '--';
-        if (this.starListItems) {
-          const message = document.createElement('p');
-          message.className = 'text-center text-white/70';
-          message.textContent = 'Could not load stargazers.';
-          this.starListItems.replaceChildren(message);
-        }
-      }
-    }
-  }
-
-  function init(): void {
-    const wrapper = document.getElementById('gh-stars-wrap');
-    if (!wrapper || wrapper.dataset.initialized === 'true') return;
-
-    wrapper.dataset.initialized = 'true';
-    const controller = new AbortController();
-    new GitHubStarsManager(controller.signal);
-    document.addEventListener('astro:before-swap', () => controller.abort(), { once: true });
-  }
-
-  document.addEventListener('astro:page-load', init);
-</script>
-
 <style>
-  .gh-star-dropdown {
+  .stargazers {
     display: grid;
-    grid-template-rows: 0fr;
-    transform-origin: top center;
-    transition: grid-template-rows var(--motion-duration-normal, 250ms)
-      var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1));
+    grid-template-areas: 'intro' 'sky' 'actions';
+    gap: 3rem;
+  }
+  .stargazers-intro {
+    grid-area: intro;
+    display: grid;
+    gap: 1.5rem;
+  }
+  .stargazers-sky {
+    grid-area: sky;
+  }
+  .stargazers-actions {
+    grid-area: actions;
   }
 
-  .gh-star-dropdown-inner {
-    opacity: 0;
-    transform: translateY(-6px);
-    filter: blur(2px);
-    transition:
-      opacity var(--motion-duration-normal, 250ms) var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1)),
-      transform var(--motion-duration-normal, 250ms) var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1)),
-      filter var(--motion-duration-normal, 250ms) var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1));
+  /* The sky takes the wide column on the left, under the moon; the copy reads beside it. */
+  @media (min-width: 1024px) {
+    .stargazers {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      grid-template-areas: 'sky intro' 'sky actions';
+      grid-template-rows: auto 1fr;
+      column-gap: 4.5rem;
+      row-gap: 2.5rem;
+      align-items: center;
+    }
+    .stargazers-intro {
+      align-self: end;
+    }
+    .stargazers-actions {
+      align-self: start;
+    }
   }
 
-  .gh-star-dropdown.show {
-    grid-template-rows: 1fr;
+  /* ---- The chart ------------------------------------------------------------------------------ */
+
+  .stargazers-sky {
+    position: relative;
+    width: min(100%, 36rem);
+    justify-self: center;
+  }
+  .sky-chart {
+    position: relative;
+    aspect-ratio: 560 / 380;
+  }
+  /* A soft patch of deeper night behind the constellation: a glow, never a box. */
+  .sky-chart::before {
+    --patch: oklch(0.383 0.108 262.5);
+    content: '';
+    position: absolute;
+    inset-block: -20% -34%;
+    inset-inline: -22%;
+    z-index: -1;
+    background: radial-gradient(
+      ellipse 50% 50% at 50% 46%,
+      color-mix(in oklch, var(--patch) 24%, transparent),
+      color-mix(in oklch, var(--patch) 13%, transparent) 30%,
+      color-mix(in oklch, var(--patch) 5%, transparent) 58%,
+      color-mix(in oklch, var(--patch) 1.5%, transparent) 80%,
+      transparent
+    );
+    pointer-events: none;
+  }
+  .sky-field,
+  .sky-constellation {
+    position: absolute;
+    overflow: visible;
+    pointer-events: none;
+  }
+  .sky-field {
+    z-index: -1;
+    mask-image: radial-gradient(
+      ellipse 50% 50% at var(--field-x) var(--field-y),
+      black 30%,
+      color-mix(in oklch, black 45%, transparent) 62%,
+      transparent 100%
+    );
+  }
+  .sky-constellation {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .sky-twinkle--1 {
+    opacity: 0.8;
+  }
+  .sky-twinkle--2 {
+    opacity: 0.6;
   }
 
-  .gh-star-dropdown.show .gh-star-dropdown-inner {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
+  .sky-line {
+    fill: none;
+    stroke: var(--summit-moonlight);
+    stroke-opacity: 0.36;
+    stroke-width: 1;
+    stroke-linecap: round;
+  }
+  .sky-glint,
+  .sky-halo {
+    transform-box: fill-box;
+    transform-origin: center;
   }
 
-  #gh-stars-wrap.toggled {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    box-shadow: var(--shadow-surface-hover);
-    transition: border-radius var(--motion-duration-normal, 250ms)
-      var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1));
+  /* The count is the chart's caption: the size of the sky, in moonlight. */
+  .sky-count {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    gap: 0.25rem;
+    margin-block-start: -0.5rem;
+    text-align: center;
+  }
+  .sky-count__number {
+    padding-block-end: 0.06em;
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 2.2rem + 3vw, 4.5rem);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    background: linear-gradient(in srgb to bottom, var(--summit-lit) 35%, var(--summit-lit-end));
+    background-clip: text;
+    color: transparent;
+  }
+  /* Until the count arrives (and if it can't), its `--` reads as faint, unlit dashes. */
+  .sky-count__number[data-pending] {
+    background: none;
+    color: color-mix(in oklch, var(--summit-moonlight) 40%, transparent);
+    letter-spacing: 0.12em;
+  }
+  .sky-count__label {
+    color: var(--summit-text-muted);
+    font-size: 1rem;
+  }
+
+  /* ---- Actions -------------------------------------------------------------------------------- */
+
+  .stargazers-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.75rem;
+  }
+  .stargazers-repo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.5rem;
+  }
+  .stargazers-license {
+    display: inline-flex;
+    margin-block-start: 2.25rem;
+    border-radius: 0.375rem;
+    opacity: 0.72;
+    transition: opacity 160ms var(--motion-ease-out);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .stargazers-license:hover {
+      opacity: 1;
+    }
+  }
+  .stargazers-repo:focus-visible,
+  .stargazers-license:focus-visible {
+    outline: 2px solid var(--summit-moon);
+    outline-offset: 4px;
+  }
+
+  /* ---- Motion --------------------------------------------------------------------------------- */
+
+  @media (prefers-reduced-motion: no-preference) {
+    /*
+     * The draw-in: hidden only once JavaScript has committed to revealing the chart, then traced
+     * when the scroll reveal marks it in view. The summit glints as the outline closes on it.
+     */
+    :global(html[data-motion]) .sky-line {
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+      transition: stroke-dashoffset var(--draw-duration) linear calc(var(--draw-delay) + 420ms);
+    }
+    :global(html[data-motion]) .sky-glint {
+      opacity: 0;
+      scale: 0.4;
+      transition:
+        opacity 700ms var(--motion-ease-out) calc(var(--draw-total) + 380ms),
+        scale 900ms cubic-bezier(0.22, 1, 0.36, 1) calc(var(--draw-total) + 380ms);
+    }
+    :global(html[data-motion]) .stargazers-sky.animate-in .sky-line {
+      stroke-dashoffset: 0;
+    }
+    :global(html[data-motion]) .stargazers-sky.animate-in .sky-glint {
+      opacity: 1;
+      scale: 1;
+    }
+
+    /* Slow ambient loops: the field twinkles out of step and the summit breathes. */
+    .sky-twinkle--1 {
+      animation: sky-twinkle 6.8s ease-in-out -2.6s infinite alternate;
+    }
+    .sky-twinkle--2 {
+      animation: sky-twinkle 9.6s ease-in-out -5.4s infinite alternate;
+    }
+    .sky-halo {
+      animation: sky-breathe 7s ease-in-out infinite alternate;
+    }
+    .stargazers[data-paused] :is(.sky-twinkle, .sky-halo) {
+      animation-play-state: paused;
+    }
+  }
+
+  @keyframes sky-twinkle {
+    to {
+      opacity: 0.28;
+    }
+  }
+
+  @keyframes sky-breathe {
+    from {
+      opacity: 0.7;
+      transform: scale(0.88);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1.06);
+    }
   }
 </style>
+
+<script>
+  import { ATLAS_API_URL } from '@/constants';
+  import { pauseWhenOffscreen } from '@/utils/in-view';
+  import { isLocalhost, onPageLoad } from '@/utils/page-lifecycle';
+
+  type StarsCountResponse = { count?: unknown };
+
+  /** The live stargazer count. It stays `--` on localhost and whenever the API can't be reached. */
+  async function updateStarCount(signal: AbortSignal): Promise<void> {
+    const element = document.getElementById('star-amount-tag');
+    if (!element || isLocalhost()) return;
+
+    try {
+      const response = await fetch(`${ATLAS_API_URL}stars`, { signal });
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      const data = (await response.json()) as StarsCountResponse | null;
+      if (typeof data?.count !== 'number') throw new Error('Invalid star count data received');
+      element.textContent = data.count.toLocaleString();
+      element.removeAttribute('data-pending');
+    } catch {
+      if (signal.aborted) return;
+      element.textContent = '--';
+      element.setAttribute('data-pending', '');
+    }
+  }
+
+  onPageLoad((signal) => {
+    void updateStarCount(signal);
+    pauseWhenOffscreen('[data-open-source]', signal);
+  });
+</script>

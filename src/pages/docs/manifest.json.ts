@@ -16,5 +16,5 @@ export const GET: APIRoute = async () => {
     })
     .sort((a, b) => a.section.localeCompare(b.section) || a.title.localeCompare(b.title));
 
-  return Response.json({ entries }, { headers: { 'Cache-Control': 'public, max-age=3600' } });
+  return Response.json({ entries });
 };

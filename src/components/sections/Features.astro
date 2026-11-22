@@ -1,60 +1,507 @@
 ---
-import SectionTitle from '@/components/sections/common/SectionTitle.astro';
-import { Icon } from 'astro-icon/components';
+/**
+ * Why Atlas, in the Summit hero's language. The headline comes in two atmospheres: the problem
+ * recessed like the far ranges, the answer in moonlight. Each feature has a small illustrated
+ * vignette from the same night instead of an icon. A few faint stars carry the hero's sky down.
+ *
+ * Vignettes are decorative. Their slow loops are CSS, paused off screen by utils/in-view.ts, and
+ * still under reduced motion; without JavaScript everything renders complete.
+ */
+import SectionHeading from '@/components/sections/common/SectionHeading.astro';
+import { PERFORMANCE, PRIVACY, USABILITY, VIGNETTE } from '@/utils/feature-vignettes';
+import { cssGlow, DAY_PATCH, glowStops, NIGHT_PATCH } from '@/utils/glow';
+
+const view = `0 0 ${VIGNETTE.width} ${VIGNETTE.height}`;
+/** The moon's halo, and the patch of night behind each scene, both thinning out with no edge (utils/glow.ts). */
+const moonHalo = glowStops(0.34, { hold: 0.38 });
+/** By day the patch behind each scene is a soft piece of pale sky, so the sun and white cloud read. */
+const sceneGlow = [
+  `--vignette-glow: ${cssGlow(NIGHT_PATCH, 0.34, 'ellipse 50% 50% at 50% 58%')}`,
+  `--vignette-glow-day: ${cssGlow(DAY_PATCH, 0.62, 'ellipse 50% 50% at 50% 58%')}`,
+].join('; ');
+const { tent } = USABILITY;
+const streakMotion = `--travel-x: ${PERFORMANCE.streak.travel.x}%; --travel-y: ${PERFORMANCE.streak.travel.y}%`;
+const cloudMotion = `--drift-open: ${PRIVACY.drift.open}%; --drift-hidden: ${PRIVACY.drift.hidden}%`;
+/**
+ * The cloud's fill runs solid through its arcs, then eases out (a smoothstep) through its rounded
+ * foot, so it thins into the night like the hero's fog instead of stopping at a line.
+ */
+const cloudTop = PRIVACY.cloud.y - PRIVACY.cloud.height * 0.72;
+const cloudFadeFrom = ((PRIVACY.cloud.y - cloudTop) / (PRIVACY.cloudFoot - cloudTop)) * 0.78;
+const cloudStops = [0, 0.2, 0.4, 0.6, 0.8, 1].map((t) => ({
+  offset: Math.round((cloudFadeFrom + (1 - cloudFadeFrom) * t) * 1000) / 1000,
+  opacity: Math.round((1 - t * t * (3 - 2 * t)) * 100) / 100,
+}));
+
+/**
+ * A sparse scatter of stars carrying the hero's sky down, in a 1280 × 544 field that starts under
+ * the press row and fades in through the connector (which sits at y ≈ 128). They keep to the band
+ * above the headline and to the margins, never behind text, and thin out down the section.
+ * Entries are x, y, radius, opacity.
+ */
+const stars = [
+  [96, 40, 0.8, 0.45],
+  [230, 96, 0.9, 0.5],
+  [372, 28, 0.8, 0.4],
+  [520, 70, 1, 0.55],
+  [760, 52, 0.8, 0.45],
+  [880, 104, 0.9, 0.5],
+  [1010, 34, 0.8, 0.4],
+  [1170, 80, 1, 0.55],
+  [40, 166, 1, 0.7],
+  [150, 222, 0.8, 0.5],
+  [262, 154, 1.1, 0.8],
+  [356, 200, 0.8, 0.45],
+  [478, 170, 0.9, 0.6],
+  [590, 234, 0.8, 0.4],
+  [702, 158, 1, 0.65],
+  [812, 208, 0.8, 0.45],
+  [918, 150, 1.1, 0.75],
+  [1030, 194, 0.8, 0.5],
+  [1138, 164, 0.9, 0.6],
+  [1246, 226, 0.8, 0.45],
+  [18, 326, 0.8, 0.45],
+  [1262, 366, 0.9, 0.5],
+  [1240, 466, 0.8, 0.35],
+  [30, 496, 0.8, 0.3],
+] as const;
 ---
 
-<section class="relative mx-auto mt-32 mb-32 max-w-7xl px-4">
-  <div class="mb-16 grid grid-cols-1 items-end gap-8 md:grid-cols-3 lg:gap-12">
-    <div class="md:col-span-1" data-animate>
-      <SectionTitle>Invasive and slow</SectionTitle>
-      <h2 class="text-4xl font-semibold tracking-tight text-white md:text-5xl">
-        <span class="text-white/80">F**k Windows</span> Upgrade to <span class="text-primary">Atlas</span>
-      </h2>
-    </div>
-    <div class="md:col-span-2" data-animate>
-      <p class="leading-relaxed text-white/70">
-        Over time, Microsoft has made Windows sluggish, clunky and invasive. Atlas brings life back to Windows, designed
-        to maximize privacy, usability, and performance. We make Windows more responsive and less annoying, with many
-        users also claiming improved framerates, while being{' '}
-        <a href="/docs/atlas-configuration/atlas-folder/" class="underline hover:text-primary">
-          configurable and compatible
-        </a>
-        .
-      </p>
-    </div>
+<section class="features content-grid relative my-32" style={sceneGlow} data-features>
+  <svg class="features-stars" viewBox="0 0 1280 544" preserveAspectRatio="xMidYMin slice" aria-hidden="true">
+    {stars.map(([x, y, r, o]) => (
+      <circle cx={x} cy={y} r={r} fill="#DDEBFF" fill-opacity={o} />
+    ))}
+  </svg>
+
+  <div class="features-intro">
+    <SectionHeading far="F**k Windows." near="Upgrade to Atlas." />
+    <p class="summit-lede" data-animate>
+      Over time, Microsoft has made Windows sluggish, clunky and invasive. Atlas brings life back to Windows, designed
+      to maximize privacy, usability, and performance. We make Windows more responsive and less annoying, with many
+      users also claiming improved framerates, while being{' '}
+      <a href="/docs/atlas-configuration/atlas-folder/">configurable and compatible</a>.
+    </p>
   </div>
 
-  <div class="grid grid-cols-1 gap-16 md:grid-cols-3 md:gap-20">
-    <div class="relative py-2" data-animate>
-      <div class="flex h-12 w-12 items-center justify-center rounded-md bg-white/5">
-        <Icon name="tabler:gauge" class="h-6 w-6 text-white/80" />
+  <ul class="features-list">
+    <li class="feature" data-animate>
+      <!-- Performance: a shooting star streaking over a peak -->
+      <div class="vignette" aria-hidden="true">
+        <svg class="vignette-layer" viewBox={view}>
+          <defs>
+            <linearGradient id="vignette-horizon" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0" stop-color="#DDEBFF" stop-opacity="0"></stop>
+              <stop offset="0.5" stop-color="#DDEBFF" stop-opacity="0.3"></stop>
+              <stop offset="1" stop-color="#DDEBFF" stop-opacity="0"></stop>
+            </linearGradient>
+            <linearGradient id="vignette-rim" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stop-color="#E6F0FF" stop-opacity="0.8"></stop>
+              <stop offset="1" stop-color="#E6F0FF" stop-opacity="0"></stop>
+            </linearGradient>
+          </defs>
+          {PERFORMANCE.stars.map(([x, y, r]) => (
+            <circle cx={x} cy={y} r={r} fill="#DDEBFF" fill-opacity="0.7" />
+          ))}
+          <path d={PERFORMANCE.backHill} fill="#1D3363"></path>
+          <path d={PERFORMANCE.peak} fill="#193466"></path>
+          <path d={PERFORMANCE.litFace} fill="#22427F"></path>
+          <path d={PERFORMANCE.capLit} fill="#7393CF"></path>
+          <path d={PERFORMANCE.capShade} fill="#4B69A7"></path>
+          <path
+            d={PERFORMANCE.rim}
+            fill="none"
+            stroke="url(#vignette-rim)"
+            stroke-width="1"
+            stroke-linecap="round"
+          ></path>
+          <path d={`M0 ${VIGNETTE.horizon}H${VIGNETTE.width}`} stroke="url(#vignette-horizon)" stroke-width="1"></path>
+        </svg>
+        <svg class="vignette-layer vignette-streak vignette-loop" style={streakMotion} viewBox={view}>
+          <defs>
+            <linearGradient
+              id="vignette-streak"
+              gradientUnits="userSpaceOnUse"
+              x1={PERFORMANCE.streak.tail[0]}
+              y1={PERFORMANCE.streak.tail[1]}
+              x2={PERFORMANCE.streak.head[0]}
+              y2={PERFORMANCE.streak.head[1]}
+            >
+              <stop offset="0" stop-color="#DDEBFF" stop-opacity="0"></stop>
+              <stop offset="1" stop-color="#FFFFFF"></stop>
+            </linearGradient>
+          </defs>
+          <path
+            d={`M${PERFORMANCE.streak.tail.join(' ')}L${PERFORMANCE.streak.head.join(' ')}`}
+            stroke="url(#vignette-streak)"
+            stroke-width="1.4"
+            stroke-linecap="round"
+          ></path>
+          <circle cx={PERFORMANCE.streak.head[0]} cy={PERFORMANCE.streak.head[1]} r="1.3" fill="#FFFFFF"></circle>
+        </svg>
       </div>
-      <h3 class="mt-6 mb-2 text-xl font-semibold text-white">Performance</h3>
-      <p class="leading-relaxed text-white/70">
+      <h3>Performance</h3>
+      <p>
         By removing unnecessary background processes, telemetry, optionally disabling power-saving features and more.
       </p>
-    </div>
+    </li>
 
-    <div class="relative py-2" data-animate>
-      <div class="flex h-12 w-12 items-center justify-center rounded-md bg-white/5">
-        <Icon name="tabler:thumb-up" class="h-6 w-6 text-white/80" />
+    <li class="feature" data-animate>
+      <!-- Usability: a cozy tent with a lit doorway and a small campfire -->
+      <div class="vignette" aria-hidden="true">
+        <div class="vignette-light">
+          <svg class="vignette-layer vignette-glow vignette-loop" viewBox={view}>
+            <defs>
+              <radialGradient
+                id="vignette-pool"
+                cx={USABILITY.fire.x}
+                cy={VIGNETTE.horizon + 1}
+                r="50"
+                gradientUnits="userSpaceOnUse"
+                gradientTransform={`translate(0 ${(VIGNETTE.horizon + 1) * 0.82}) scale(1 0.18)`}
+              >
+                <stop offset="0" stop-color="#FFD28C" stop-opacity="0.85"></stop>
+                <stop offset="0.35" stop-color="#FF9F4A" stop-opacity="0.35"></stop>
+                <stop offset="1" stop-color="#3B5BA8" stop-opacity="0"></stop>
+              </radialGradient>
+            </defs>
+            <ellipse
+              cx={USABILITY.fire.x}
+              cy={VIGNETTE.horizon + 1}
+              rx="52"
+              ry="9"
+              fill="url(#vignette-pool)"
+            ></ellipse>
+          </svg>
+        </div>
+        <svg class="vignette-layer" viewBox={view}>
+          <defs>
+            <linearGradient id="vignette-doorway" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stop-color="#FFF3D2"></stop>
+              <stop offset="1" stop-color="#FF9F45"></stop>
+            </linearGradient>
+            <radialGradient
+              id="vignette-tent-glow"
+              cx={tent.glow[0]}
+              cy={tent.glow[1]}
+              r="26"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop offset="0" stop-color="#FFB76A" stop-opacity="0.75"></stop>
+              <stop offset="0.5" stop-color="#FF9A4F" stop-opacity="0.28"></stop>
+              <stop offset="1" stop-color="#FF9A4F" stop-opacity="0"></stop>
+            </radialGradient>
+          </defs>
+          <path d={USABILITY.mound} fill="#13264D"></path>
+          <path d={tent.groundsheet} fill="#08101E"></path>
+          <path d={tent.guys} fill="none" stroke="#9FB4D8" stroke-opacity="0.38" stroke-width="0.5"></path>
+          <path d={tent.pegs} fill="none" stroke="#C3CFE6" stroke-opacity="0.55" stroke-width="0.6"></path>
+          <path d={tent.side} fill="#1C3361"></path>
+          <path d={tent.front} fill="#33528F"></path>
+          <path d={tent.front} fill="url(#vignette-tent-glow)"></path>
+          <path d={tent.doorway} fill="url(#vignette-doorway)"></path>
+          <path d={tent.flap} fill="#C9783F"></path>
+          <path d={tent.seams} fill="none" stroke="#1A2D55" stroke-opacity="0.85" stroke-width="0.7"></path>
+          <path d={tent.ridge} fill="none" stroke="#9DBDF2" stroke-opacity="0.45" stroke-width="0.6"></path>
+          <path d={tent.rim} fill="none" stroke="#FFBE78" stroke-opacity="0.85" stroke-width="0.9"></path>
+          {USABILITY.stones.map(({ cx, cy, rx, ry }) => (
+            <ellipse cx={cx} cy={cy} rx={rx} ry={ry} fill="#283149" />
+          ))}
+          {USABILITY.logs.map((d) => (
+            <path d={d} stroke="#4A2E22" stroke-width="2.4" stroke-linecap="round" fill="none" />
+          ))}
+          <path d={`M0 ${VIGNETTE.horizon}H${VIGNETTE.width}`} stroke="url(#vignette-horizon)" stroke-width="1"></path>
+        </svg>
+        {USABILITY.flames.map((frame, index) => (
+          <svg
+            class:list={['vignette-layer vignette-flame vignette-loop', { 'vignette-flame--lead': index === 0 }]}
+            style={`--frame: ${index}`}
+            viewBox={view}
+          >
+            <path d={frame.outer} fill="#FF7A2E" />
+            <path d={frame.middle} fill="#FFB03D" />
+            <path d={frame.inner} fill="#FFF1B8" />
+          </svg>
+        ))}
       </div>
-      <h3 class="mt-6 mb-2 text-xl font-semibold text-white">Usability</h3>
-      <p class="leading-relaxed text-white/70">
+      <h3>Usability</h3>
+      <p>
         By removing Windows' advertising, and fixing general annoyances, you will have a more enjoyable Windows
         experience.
       </p>
-    </div>
+    </li>
 
-    <div class="relative py-2" data-animate>
-      <div class="flex h-12 w-12 items-center justify-center rounded-md bg-white/5">
-        <Icon name="tabler:shield-lock" class="h-6 w-6 text-white/80" />
+    <li class="feature" data-animate>
+      <!-- Privacy: the moon slipping behind a cloud, out of sight -->
+      <div class="vignette" aria-hidden="true">
+        <svg class="vignette-layer" viewBox={view}>
+          <defs>
+            <radialGradient
+              id="vignette-halo"
+              cx={PRIVACY.moon.cx}
+              cy={PRIVACY.moon.cy}
+              r={PRIVACY.moon.r * 2.6}
+              gradientUnits="userSpaceOnUse"
+            >
+              {moonHalo.map(({ offset, opacity }) => (
+                <stop offset={offset} stop-color="#A9CBFF" stop-opacity={opacity} />
+              ))}
+            </radialGradient>
+            <clipPath id="vignette-moon-disc">
+              <circle cx={PRIVACY.moon.cx} cy={PRIVACY.moon.cy} r={PRIVACY.moon.r}></circle>
+            </clipPath>
+          </defs>
+          <circle
+            cx={PRIVACY.moon.cx}
+            cy={PRIVACY.moon.cy}
+            r={PRIVACY.moon.r * 2.6}
+            fill="url(#vignette-halo)"
+          ></circle>
+          <circle cx={PRIVACY.moon.cx} cy={PRIVACY.moon.cy} r={PRIVACY.moon.r} fill="#DDEBFF"></circle>
+          <g clip-path="url(#vignette-moon-disc)">
+            <circle cx={PRIVACY.moon.cx + 6} cy={PRIVACY.moon.cy + 4} r={PRIVACY.moon.r} fill="#C3D8F7"></circle>
+            <circle cx={PRIVACY.moon.cx + 4} cy={PRIVACY.moon.cy - 5} r="2.6" fill="#B5CDF2"></circle>
+            <circle cx={PRIVACY.moon.cx - 3} cy={PRIVACY.moon.cy + 5} r="1.8" fill="#B1C9EF"></circle>
+          </g>
+          <path d={PRIVACY.ground} fill="#13264D"></path>
+          <path d={PRIVACY.pines} fill="#0B1428"></path>
+          <path d={`M0 ${VIGNETTE.horizon}H${VIGNETTE.width}`} stroke="url(#vignette-horizon)" stroke-width="1"></path>
+        </svg>
+        <svg class="vignette-layer vignette-cloud vignette-loop" style={cloudMotion} viewBox={view}>
+          <defs>
+            <linearGradient
+              id="vignette-cloud-fill"
+              gradientUnits="userSpaceOnUse"
+              x1="0"
+              x2="0"
+              y1={cloudTop}
+              y2={PRIVACY.cloudFoot}
+            >
+              <stop offset="0" stop-color="#2E4878"></stop>
+              {cloudStops.map((stop) => (
+                <stop offset={stop.offset} stop-color="#28406C" stop-opacity={stop.opacity} />
+              ))}
+            </linearGradient>
+            <linearGradient
+              id="vignette-cloud-rim"
+              gradientUnits="userSpaceOnUse"
+              x1="0"
+              x2="0"
+              y1={cloudTop}
+              y2={PRIVACY.cloud.y}
+            >
+              <stop offset="0" stop-color="#D6E6FF" stop-opacity="0.75"></stop>
+              <stop offset="1" stop-color="#D6E6FF" stop-opacity="0"></stop>
+            </linearGradient>
+          </defs>
+          <path d={PRIVACY.cloudShape} fill="url(#vignette-cloud-fill)"></path>
+          <path d={PRIVACY.cloudRim} fill="none" stroke="url(#vignette-cloud-rim)" stroke-width="1"></path>
+        </svg>
       </div>
-      <h3 class="mt-6 mb-2 text-xl font-semibold text-white">Privacy</h3>
-      <p class="leading-relaxed text-white/70">
+      <h3>Privacy</h3>
+      <p>
         By eliminating most of Microsoft's notorious tracking, pre-installed apps, and bloatware, Atlas makes Windows
         private.
       </p>
-    </div>
-  </div>
+    </li>
+  </ul>
 </section>
+
+<style>
+  /* The scenes grow with the screen, with a little more room under them. */
+  .features {
+    --vignette-size: clamp(10rem, 8.8855rem + 4.572vw, 13rem);
+    --vignette-gap: clamp(1.5rem, 1.4068rem + 0.382vw, 1.75rem);
+  }
+
+  /*
+   * The hero's night carries on faintly: the field fades in from under the press row, through the
+   * connector, and thins out down the section, so it never starts or stops on a line. It spans the
+   * page up to the breakout width, centred.
+   */
+  .features-stars {
+    grid-column: full-width;
+    position: absolute;
+    inset-block: -16rem auto;
+    inset-inline: 0;
+    z-index: -1;
+    width: min(100%, var(--breakout));
+    height: 34rem;
+    margin-inline: auto;
+    pointer-events: none;
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      color-mix(in oklch, black 30%, transparent) 12%,
+      color-mix(in oklch, black 70%, transparent) 22%,
+      black 32%,
+      color-mix(in oklch, black 60%, transparent) 62%,
+      transparent 100%
+    );
+  }
+
+  .features-intro {
+    display: grid;
+    gap: 1.5rem 3rem;
+    margin-block-end: 5rem;
+  }
+  @media (min-width: 768px) {
+    .features-intro {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      align-items: end;
+    }
+  }
+
+  .features-list {
+    display: grid;
+    gap: 3.5rem;
+  }
+  @media (min-width: 768px) {
+    .features-list {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 3rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .features-list {
+      gap: 4.5rem;
+    }
+  }
+
+  .feature h3 {
+    margin-block-end: 0.5rem;
+    color: var(--color-fg);
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .feature p {
+    max-width: 24rem;
+    color: color-mix(in oklch, var(--color-fg) 70%, transparent);
+    line-height: 1.7;
+  }
+
+  /* ---- Vignettes ------------------------------------------------------------------------------ */
+
+  .vignette {
+    position: relative;
+    width: var(--vignette-size);
+    aspect-ratio: 160 / 96;
+    margin-block-end: var(--vignette-gap);
+  }
+  /* A soft patch of night sky behind each scene: a glow, never a box. */
+  .vignette::before {
+    content: '';
+    position: absolute;
+    inset-block: -22% -4%;
+    inset-inline: -14%;
+    background: var(--vignette-glow);
+  }
+  .vignette-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+  .vignette-light {
+    position: absolute;
+    inset: 0;
+    mix-blend-mode: screen;
+  }
+
+  /* At rest (and under reduced motion) the star is caught mid-streak and the cloud half over the moon. */
+  .vignette-streak {
+    transform: translate(calc(var(--travel-x) * 0.3), calc(var(--travel-y) * 0.3));
+  }
+  .vignette-cloud {
+    transform: translateX(calc(var(--drift-hidden) - 8%));
+  }
+  .vignette-flame {
+    opacity: 0;
+  }
+  .vignette-flame--lead {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* A fast streak every seven seconds. */
+    .vignette-streak {
+      animation: vignette-streak 7s cubic-bezier(0.33, 1, 0.68, 1) 1.2s infinite backwards;
+    }
+    /* Four flame frames at about 9 fps, the camp's stepped flicker. */
+    .vignette-flame {
+      animation: vignette-frame 0.44s step-end calc((var(--frame) - 4) * 0.11s) infinite;
+    }
+    .vignette-glow {
+      animation: vignette-glow 0.44s step-end infinite;
+    }
+    /* The cloud drifts across the moon and back, slowly. */
+    .vignette-cloud {
+      animation: vignette-cloud 14s ease-in-out infinite alternate;
+    }
+
+    .features[data-paused] .vignette-loop {
+      animation-play-state: paused;
+    }
+  }
+
+  @keyframes vignette-streak {
+    0% {
+      opacity: 0;
+      transform: translate(0, 0);
+    }
+    2% {
+      opacity: 1;
+    }
+    9% {
+      opacity: 0;
+      transform: translate(var(--travel-x), var(--travel-y));
+    }
+    100% {
+      opacity: 0;
+      transform: translate(var(--travel-x), var(--travel-y));
+    }
+  }
+
+  @keyframes vignette-frame {
+    0% {
+      opacity: 1;
+    }
+    25%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes vignette-glow {
+    0% {
+      opacity: 1;
+    }
+    25% {
+      opacity: 0.85;
+    }
+    50% {
+      opacity: 0.95;
+    }
+    75% {
+      opacity: 0.9;
+    }
+  }
+
+  @keyframes vignette-cloud {
+    from {
+      transform: translateX(var(--drift-open));
+    }
+    to {
+      transform: translateX(var(--drift-hidden));
+    }
+  }
+</style>
+
+<script>
+  import { pauseWhenOffscreen } from '@/utils/in-view';
+  import { onPageLoad } from '@/utils/page-lifecycle';
+
+  onPageLoad((signal) => pauseWhenOffscreen('[data-features]', signal));
+</script>

@@ -64,6 +64,7 @@ Square profile images for social media, avatars and thumbnails, in several versi
 Wide banners for website headers, YouTube thumbnails and social media covers, in several styles.
 
 <Tabs
+  id="branding-v1"
   items={[
     { label: 'Version 1', value: 'v1' },
     { label: 'Version 2', value: 'v2' },
@@ -71,7 +72,7 @@ Wide banners for website headers, YouTube thumbnails and social media covers, in
   ]}
   defaultTab="v1"
 >
-  <TabPanel value="v1" default>
+  <TabPanel group="branding-v1" value="v1" label="Version 1">
     <BannerPreview
       image={{
         src: '/assets/images/brand/banners/preview-banner-v1.avif',
@@ -84,7 +85,7 @@ Wide banners for website headers, YouTube thumbnails and social media covers, in
       }}
     />
   </TabPanel>
-  <TabPanel value="v2">
+  <TabPanel group="branding-v1" value="v2" label="Version 2">
     <BannerPreview
       image={{
         src: '/assets/images/brand/banners/preview-banner-v2.avif',
@@ -97,7 +98,7 @@ Wide banners for website headers, YouTube thumbnails and social media covers, in
       }}
     />
   </TabPanel>
-  <TabPanel value="v3">
+  <TabPanel group="branding-v1" value="v3" label="Version 3">
     <BannerPreview
       image={{
         src: '/assets/images/brand/banners/preview-banner-v3.avif',
@@ -452,18 +453,57 @@ Text-only wordmarks without the icon, for minimalist designs or limited space, i
 
 Desktop wallpapers with AtlasOS branding, in 4:3, 16:9, 16:10 and 21:9 aspect ratios, organised by version and revision.
 
+### Atlas v0.6
+
+Maia Dark is the default Atlas desktop. Maia Light pairs the same constellation with a pale blue sky.
+
+<Tabs
+  id="branding-v06-maia"
+  items={[
+    { label: 'Maia Dark', value: 'dark' },
+    { label: 'Maia Light', value: 'light' },
+  ]}
+  defaultTab="dark"
+>
+  <TabPanel group="branding-v06-maia" value="dark" label="Maia Dark">
+    <WallpaperPreview
+      image={{
+        src: '/assets/images/brand/wallpapers/v0.6/preview-wallpaper-maia-dark.png',
+        alt: 'Faceted Atlas constellation above a midnight-blue horizon',
+      }}
+      downloadButtons={[
+        { href: '/assets/images/brand/wallpapers/v0.6/atlas-v0.6-maia-dark-4k.png', label: '4K PNG (3840×2160)' },
+        { href: '/assets/images/brand/wallpapers/v0.6/atlas-v0.6-maia-dark-1080p.png', label: '1080p PNG (1920×1080)' },
+      ]}
+    />
+  </TabPanel>
+  <TabPanel group="branding-v06-maia" value="light" label="Maia Light">
+    <WallpaperPreview
+      image={{
+        src: '/assets/images/brand/wallpapers/v0.6/preview-wallpaper-maia-light.png',
+        alt: 'Faceted Atlas constellation above a pale blue horizon',
+      }}
+      downloadButtons={[
+        { href: '/assets/images/brand/wallpapers/v0.6/atlas-v0.6-maia-light-4k.png', label: '4K PNG (3840×2160)' },
+        { href: '/assets/images/brand/wallpapers/v0.6/atlas-v0.6-maia-light-1080p.png', label: '1080p PNG (1920×1080)' },
+      ]}
+    />
+  </TabPanel>
+</Tabs>
+
 ### Atlas v0.5
 
 #### Rev 1
 
 <Tabs
+  id="branding-v05-r1-0"
   items={[
     { label: 'v0.5 Rev 1.0', value: 'v05-r1-0' },
     { label: 'v0.5 Rev 1.1', value: 'v05-r1-1' },
   ]}
   defaultTab="v05-r1-0"
 >
-  <TabPanel value="v05-r1-0" default>
+  <TabPanel group="branding-v05-r1-0" value="v05-r1-0" label="v0.5 Rev 1.0">
     <WallpaperPreview
       image={{
         src: '/assets/images/brand/wallpapers/v0.5/rev-1/preview-wallpaper-v0.5-rev1.0.png',
@@ -471,7 +511,7 @@ Desktop wallpapers with AtlasOS branding, in 4:3, 16:9, 16:10 and 21:9 aspect ra
       }}
       downloadButtons={[
         {
-          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.5/rev-1/wallpaper-v0.5-rev1.0-4_3.png',
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.5/rev-1/wallpaper-v0.4-rev1.0-4_3.png',
           label: 'PNG 4:3 (3072x2304)',
           external: true,
         },
@@ -493,7 +533,7 @@ Desktop wallpapers with AtlasOS branding, in 4:3, 16:9, 16:10 and 21:9 aspect ra
       ]}
     />
   </TabPanel>
-  <TabPanel value="v05-r1-1">
+  <TabPanel group="branding-v05-r1-0" value="v05-r1-1" label="v0.5 Rev 1.1">
     <WallpaperPreview
       image={{
         src: '/assets/images/brand/wallpapers/v0.5/rev-1/preview-wallpaper-v0.5-rev1.1.png',
@@ -506,7 +546,7 @@ Desktop wallpapers with AtlasOS branding, in 4:3, 16:9, 16:10 and 21:9 aspect ra
           external: true,
         },
         {
-          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.5/rev-1/wallpaper-v0.5-rev1.1-16_9.png',
+          href: 'https://gcore.jsdelivr.net/gh/Atlas-OS/branding@main/wallpapers/v0.5/rev-1/wallpaper-v0.5-rev1.1-16_9.png.png',
           label: 'PNG 16:9 (3840x2160)',
           external: true,
         },
@@ -530,13 +570,14 @@ Desktop wallpapers with AtlasOS branding, in 4:3, 16:9, 16:10 and 21:9 aspect ra
 #### Rev 1
 
 <Tabs
+  id="branding-v04-r1-0"
   items={[
     { label: 'v0.4 Rev 1.0', value: 'v04-r1-0' },
     { label: 'v0.4 Rev 1.1', value: 'v04-r1-1' },
   ]}
   defaultTab="v04-r1-0"
 >
-  <TabPanel value="v04-r1-0" default>
+  <TabPanel group="branding-v04-r1-0" value="v04-r1-0" label="v0.4 Rev 1.0">
     <WallpaperPreview
       image={{
         src: '/assets/images/brand/wallpapers/v0.4/rev-1/preview-wallpaper-v0.4-rev1.0.png',
@@ -566,7 +607,7 @@ Desktop wallpapers with AtlasOS branding, in 4:3, 16:9, 16:10 and 21:9 aspect ra
       ]}
     />
   </TabPanel>
-  <TabPanel value="v04-r1-1">
+  <TabPanel group="branding-v04-r1-0" value="v04-r1-1" label="v0.4 Rev 1.1">
     <WallpaperPreview
       image={{
         src: '/assets/images/brand/wallpapers/v0.4/rev-1/preview-wallpaper-v0.4-rev1.1.png',
@@ -603,6 +644,7 @@ Desktop wallpapers with AtlasOS branding, in 4:3, 16:9, 16:10 and 21:9 aspect ra
 #### Rev 1
 
 <Tabs
+  id="branding-v03-r1-0"
   items={[
     { label: 'v0.3 Rev 1.0', value: 'v03-r1-0' },
     { label: 'v0.3 Rev 1.1', value: 'v03-r1-1' },
@@ -610,7 +652,7 @@ Desktop wallpapers with AtlasOS branding, in 4:3, 16:9, 16:10 and 21:9 aspect ra
   ]}
   defaultTab="v03-r1-0"
 >
-  <TabPanel value="v03-r1-0" default>
+  <TabPanel group="branding-v03-r1-0" value="v03-r1-0" label="v0.3 Rev 1.0">
     <WallpaperPreview
       image={{
         src: '/assets/images/brand/wallpapers/v0.3/rev-1/preview-wallpaper-v0.3-rev1.0.png',
@@ -640,7 +682,7 @@ Desktop wallpapers with AtlasOS branding, in 4:3, 16:9, 16:10 and 21:9 aspect ra
       ]}
     />
   </TabPanel>
-  <TabPanel value="v03-r1-1">
+  <TabPanel group="branding-v03-r1-0" value="v03-r1-1" label="v0.3 Rev 1.1">
     <WallpaperPreview
       image={{
         src: '/assets/images/brand/wallpapers/v0.3/rev-1/preview-wallpaper-v0.3-rev1.1.png',
@@ -670,7 +712,7 @@ Desktop wallpapers with AtlasOS branding, in 4:3, 16:9, 16:10 and 21:9 aspect ra
       ]}
     />
   </TabPanel>
-  <TabPanel value="v03-r1-2">
+  <TabPanel group="branding-v03-r1-0" value="v03-r1-2" label="v0.3 Rev 1.2">
     <WallpaperPreview
       image={{
         src: '/assets/images/brand/wallpapers/v0.3/rev-1/preview-wallpaper-v0.3-rev1.2.png',
@@ -705,13 +747,14 @@ Desktop wallpapers with AtlasOS branding, in 4:3, 16:9, 16:10 and 21:9 aspect ra
 #### Rev 2
 
 <Tabs
+  id="branding-v03-r2-0"
   items={[
     { label: 'v0.3 Rev 2.0', value: 'v03-r2-0' },
     { label: 'v0.3 Rev 2.1', value: 'v03-r2-1' },
   ]}
   defaultTab="v03-r2-0"
 >
-  <TabPanel value="v03-r2-0" default>
+  <TabPanel group="branding-v03-r2-0" value="v03-r2-0" label="v0.3 Rev 2.0">
     <WallpaperPreview
       image={{
         src: '/assets/images/brand/wallpapers/v0.3/rev-2/preview-wallpaper-v0.3-rev2.0.png',
@@ -741,7 +784,7 @@ Desktop wallpapers with AtlasOS branding, in 4:3, 16:9, 16:10 and 21:9 aspect ra
       ]}
     />
   </TabPanel>
-  <TabPanel value="v03-r2-1">
+  <TabPanel group="branding-v03-r2-0" value="v03-r2-1" label="v0.3 Rev 2.1">
     <WallpaperPreview
       image={{
         src: '/assets/images/brand/wallpapers/v0.3/rev-2/preview-wallpaper-v0.3-rev2.1.png',
@@ -776,6 +819,7 @@ Desktop wallpapers with AtlasOS branding, in 4:3, 16:9, 16:10 and 21:9 aspect ra
 #### Rev 3
 
 <Tabs
+  id="branding-v03-r3-0"
   items={[
     { label: 'v0.3 Rev 3.0', value: 'v03-r3-0' },
     { label: 'v0.3 Rev 3.1', value: 'v03-r3-1' },
@@ -784,7 +828,7 @@ Desktop wallpapers with AtlasOS branding, in 4:3, 16:9, 16:10 and 21:9 aspect ra
   ]}
   defaultTab="v03-r3-0"
 >
-  <TabPanel value="v03-r3-0" default>
+  <TabPanel group="branding-v03-r3-0" value="v03-r3-0" label="v0.3 Rev 3.0">
     <WallpaperPreview
       image={{
         src: '/assets/images/brand/wallpapers/v0.3/rev-3/preview-wallpaper-v0.3-rev3.0.png',
@@ -814,7 +858,7 @@ Desktop wallpapers with AtlasOS branding, in 4:3, 16:9, 16:10 and 21:9 aspect ra
       ]}
     />
   </TabPanel>
-  <TabPanel value="v03-r3-1">
+  <TabPanel group="branding-v03-r3-0" value="v03-r3-1" label="v0.3 Rev 3.1">
     <WallpaperPreview
       image={{
         src: '/assets/images/brand/wallpapers/v0.3/rev-3/preview-wallpaper-v0.3-rev3.1.png',
@@ -844,7 +888,7 @@ Desktop wallpapers with AtlasOS branding, in 4:3, 16:9, 16:10 and 21:9 aspect ra
       ]}
     />
   </TabPanel>
-  <TabPanel value="v03-r3-2">
+  <TabPanel group="branding-v03-r3-0" value="v03-r3-2" label="v0.3 Rev 3.2">
     <WallpaperPreview
       image={{
         src: '/assets/images/brand/wallpapers/v0.3/rev-3/preview-wallpaper-v0.3-rev3.2.png',
@@ -874,7 +918,7 @@ Desktop wallpapers with AtlasOS branding, in 4:3, 16:9, 16:10 and 21:9 aspect ra
       ]}
     />
   </TabPanel>
-  <TabPanel value="v03-r3-3">
+  <TabPanel group="branding-v03-r3-0" value="v03-r3-3" label="v0.3 Rev 3.3">
     <WallpaperPreview
       image={{
         src: '/assets/images/brand/wallpapers/v0.3/rev-3/preview-wallpaper-v0.3-rev3.3.png',
@@ -909,6 +953,7 @@ Desktop wallpapers with AtlasOS branding, in 4:3, 16:9, 16:10 and 21:9 aspect ra
 #### Rev 4
 
 <Tabs
+  id="branding-v03-r4-0"
   items={[
     { label: 'v0.3 Rev 4.0', value: 'v03-r4-0' },
     { label: 'v0.3 Rev 4.1', value: 'v03-r4-1' },
@@ -918,7 +963,7 @@ Desktop wallpapers with AtlasOS branding, in 4:3, 16:9, 16:10 and 21:9 aspect ra
   ]}
   defaultTab="v03-r4-0"
 >
-  <TabPanel value="v03-r4-0" default>
+  <TabPanel group="branding-v03-r4-0" value="v03-r4-0" label="v0.3 Rev 4.0">
     <WallpaperPreview
       image={{
         src: '/assets/images/brand/wallpapers/v0.3/rev-4/preview-wallpaper-v0.3-rev4.0.png',
@@ -948,7 +993,7 @@ Desktop wallpapers with AtlasOS branding, in 4:3, 16:9, 16:10 and 21:9 aspect ra
       ]}
     />
   </TabPanel>
-  <TabPanel value="v03-r4-1">
+  <TabPanel group="branding-v03-r4-0" value="v03-r4-1" label="v0.3 Rev 4.1">
     <WallpaperPreview
       image={{
         src: '/assets/images/brand/wallpapers/v0.3/rev-4/preview-wallpaper-v0.3-rev4.1.png',
@@ -978,7 +1023,7 @@ Desktop wallpapers with AtlasOS branding, in 4:3, 16:9, 16:10 and 21:9 aspect ra
       ]}
     />
   </TabPanel>
-  <TabPanel value="v03-r4-2">
+  <TabPanel group="branding-v03-r4-0" value="v03-r4-2" label="v0.3 Rev 4.2">
     <WallpaperPreview
       image={{
         src: '/assets/images/brand/wallpapers/v0.3/rev-4/preview-wallpaper-v0.3-rev4.2.png',
@@ -1008,7 +1053,7 @@ Desktop wallpapers with AtlasOS branding, in 4:3, 16:9, 16:10 and 21:9 aspect ra
       ]}
     />
   </TabPanel>
-  <TabPanel value="v03-r4-3">
+  <TabPanel group="branding-v03-r4-0" value="v03-r4-3" label="v0.3 Rev 4.3">
     <WallpaperPreview
       image={{
         src: '/assets/images/brand/wallpapers/v0.3/rev-4/preview-wallpaper-v0.3-rev4.3.png',
@@ -1038,7 +1083,7 @@ Desktop wallpapers with AtlasOS branding, in 4:3, 16:9, 16:10 and 21:9 aspect ra
       ]}
     />
   </TabPanel>
-  <TabPanel value="v03-r4-4">
+  <TabPanel group="branding-v03-r4-0" value="v03-r4-4" label="v0.3 Rev 4.4">
     <WallpaperPreview
       image={{
         src: '/assets/images/brand/wallpapers/v0.3/rev-4/preview-wallpaper-v0.3-rev4.4.png',
@@ -1075,6 +1120,7 @@ Desktop wallpapers with AtlasOS branding, in 4:3, 16:9, 16:10 and 21:9 aspect ra
 #### Rev 1
 
 <Tabs
+  id="branding-gen-r1-0"
   items={[
     { label: 'Generic Rev 1.0', value: 'gen-r1-0' },
     { label: 'Generic Rev 1.1', value: 'gen-r1-1' },
@@ -1082,7 +1128,7 @@ Desktop wallpapers with AtlasOS branding, in 4:3, 16:9, 16:10 and 21:9 aspect ra
   ]}
   defaultTab="gen-r1-0"
 >
-  <TabPanel value="gen-r1-0" default>
+  <TabPanel group="branding-gen-r1-0" value="gen-r1-0" label="Generic Rev 1.0">
     <WallpaperPreview
       image={{
         src: '/assets/images/brand/wallpapers/generic/rev-1/preview-wallpaper-generic-rev1.0.png',
@@ -1113,7 +1159,7 @@ Desktop wallpapers with AtlasOS branding, in 4:3, 16:9, 16:10 and 21:9 aspect ra
       ]}
     />
   </TabPanel>
-  <TabPanel value="gen-r1-1">
+  <TabPanel group="branding-gen-r1-0" value="gen-r1-1" label="Generic Rev 1.1">
     <WallpaperPreview
       image={{
         src: '/assets/images/brand/wallpapers/generic/rev-1/preview-wallpaper-generic-rev1.1.png',
@@ -1144,7 +1190,7 @@ Desktop wallpapers with AtlasOS branding, in 4:3, 16:9, 16:10 and 21:9 aspect ra
       ]}
     />
   </TabPanel>
-  <TabPanel value="gen-r1-2">
+  <TabPanel group="branding-gen-r1-0" value="gen-r1-2" label="Generic Rev 1.2">
     <WallpaperPreview
       image={{
         src: '/assets/images/brand/wallpapers/generic/rev-1/preview-wallpaper-generic-rev1.2.png',
@@ -1179,8 +1225,8 @@ Desktop wallpapers with AtlasOS branding, in 4:3, 16:9, 16:10 and 21:9 aspect ra
 
 #### Rev 2
 
-<Tabs items={[{ label: 'Generic Rev 2.0', value: 'gen-r2-0' }]} defaultTab="gen-r2-0">
-  <TabPanel value="gen-r2-0" default>
+<Tabs id="branding-gen-r2-0" items={[{ label: 'Generic Rev 2.0', value: 'gen-r2-0' }]} defaultTab="gen-r2-0">
+  <TabPanel group="branding-gen-r2-0" value="gen-r2-0" label="Generic Rev 2.0">
     <WallpaperPreview
       image={{
         src: '/assets/images/brand/wallpapers/generic/rev-2/preview-wallpaper-generic-rev2.0.png',
@@ -1216,8 +1262,8 @@ Desktop wallpapers with AtlasOS branding, in 4:3, 16:9, 16:10 and 21:9 aspect ra
 
 #### Rev 3
 
-<Tabs items={[{ label: 'Generic Rev 3.0', value: 'gen-r3-0' }]} defaultTab="gen-r3-0">
-  <TabPanel value="gen-r3-0" default>
+<Tabs id="branding-gen-r3-0" items={[{ label: 'Generic Rev 3.0', value: 'gen-r3-0' }]} defaultTab="gen-r3-0">
+  <TabPanel group="branding-gen-r3-0" value="gen-r3-0" label="Generic Rev 3.0">
     <WallpaperPreview
       image={{
         src: '/assets/images/brand/wallpapers/generic/rev-3/preview-wallpaper-generic-rev3.0.png',

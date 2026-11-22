@@ -1,3 +1,6 @@
+# Nested Git checkouts
+.claude/worktrees/
+
 # Dependencies
 node_modules
 bun.lock

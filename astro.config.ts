@@ -32,6 +32,9 @@ const legacyDocsRedirects = {
   '/getting-started/post-installation/software/getting-started/': '/docs/essential-setup/software/',
   '/getting-started/post-installation/software/web-browsers/':
     '/docs/essential-setup/software/browsers/',
+  '/getting-started/post-installation/atlas-folder/troubleshooting/':
+    '/docs/atlas-configuration/troubleshooting/',
+  '/contributions/': '/docs/contributing/',
   '/getting-started/reverting-atlas/': '/docs/faq/reverting/',
   '/general-faq/': '/docs/faq/general/',
   '/general-faq/atlas-and-security/': '/docs/faq/general/#security-and-atlasos',
@@ -75,7 +78,8 @@ export default defineConfig({
       name: 'Inter',
       cssVariable: '--font-sans-source',
       provider: fontProviders.fontsource(),
-      weights: [400, 500, 600, 700],
+      // One variable file covers every weight the site uses (400–700), instead of four static files.
+      weights: ['400 700'],
       styles: ['normal'],
       subsets: ['latin'],
       display: 'swap',
@@ -143,6 +147,12 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
     build: {
+      // Inline the home-only CSS in the generated HTML. Keep the shared and docs stylesheets
+      // independently cacheable, and leave Vite's default threshold in place for other assets.
+      assetsInlineLimit(file, content) {
+        if (file.endsWith('.css') && content.includes('.homepage-motion')) return true;
+        return undefined;
+      },
       chunkSizeWarningLimit: 1000,
     },
   },

@@ -1,0 +1,725 @@
+/*
+ * Daylight: the homepage's scenes by day (`<html data-theme="light">`).
+ *
+ * The night artwork is the source of truth and stays untouched in its components. By day these
+ * rules repaint it: CSS beats SVG presentation attributes, so each override targets a scene's own
+ * night colour (`[fill='#1D3363' i]`) or gradient, scoped to its section. Keeping the night value in
+ * the selector means every day colour can be traced back to what it replaces.
+ *
+ * The day world: a pale blue sky, a warm sun where the moon stood, snow and sunlit rims where the
+ * moonlight caught, white mist instead of night fog, and no stars. The near ground still becomes
+ * the page, now the page's light colour. Fire, lanterns and Atlas blue keep their colours.
+ */
+
+:root[data-theme='light'] {
+  /* ---- Shared: stars go out by day, and the moon becomes the sun ------------------------------ */
+
+  /* Night stars are drawn in moonlight with a fill-opacity; the moon's disc has none. */
+  :is(.features, .why, .bench, .reviews, .site-footer, .connector, .lost-scene)
+    circle:is([fill='#DDEBFF' i], [fill='#EEF5FF' i])[fill-opacity] {
+    opacity: 0;
+  }
+
+  /* ---- Hero sky (HeroBackdrop) ------------------------------------------------------------------ */
+
+  .summit-sky {
+    --sky: oklch(0.89 0.052 236);
+  }
+  .summit-sky__stars,
+  .summit-aurora-in,
+  .summit-meteor {
+    display: none;
+  }
+
+  /* ---- Hero stage (SummitStage) ----------------------------------------------------------------- */
+
+  .summit-stage {
+    /* The sky brightens towards the horizon, as daylight does. */
+    #stage-horizon stop:nth-child(1) {
+      stop-color: white;
+      stop-opacity: 0.7;
+    }
+    #stage-horizon stop:nth-child(2) {
+      stop-color: oklch(0.97 0.015 251.2);
+      stop-opacity: 0.35;
+    }
+
+    /* The moon is the sun: a warm disc, its craters gone, a soft warm halo. */
+    #stage-moon-halo stop:nth-child(1) {
+      stop-color: oklch(0.9605 0.0585 93.52);
+      stop-opacity: 0.8;
+    }
+    #stage-moon-halo stop:nth-child(2) {
+      stop-color: oklch(0.92 0.089 85.9);
+      stop-opacity: 0.24;
+    }
+    #stage-moon-halo stop:nth-child(3) {
+      stop-color: oklch(0.885 0.118 82.9);
+    }
+    [fill='#DDEBFF' i] {
+      fill: oklch(0.973 0.038 92.2);
+    }
+    :is([fill='#C3D8F7' i], [fill='#B5CDF2' i], [fill='#B1C9EF' i], [fill='#A9C3EC' i]) {
+      fill: oklch(0.973 0.038 92.2);
+    }
+
+    /* The far range: hazy blue with white snow and contours. */
+    #stage-far-fill stop:nth-child(1) {
+      stop-color: oklch(0.835 0.05 255.9);
+    }
+    #stage-far-fill stop:nth-child(2) {
+      stop-color: oklch(0.791 0.062 256.9);
+    }
+    [fill='#7392C8' i] {
+      fill: white;
+      fill-opacity: 0.85;
+    }
+    #stage-contour stop {
+      stop-color: white;
+    }
+    #stage-contour stop:nth-child(1) {
+      stop-opacity: 0.35;
+    }
+
+    /* Rims catch the sun, not the moon: white, brightest towards it. */
+    :is(#stage-rim-far, #stage-rim-back, #stage-rim-near) stop {
+      stop-color: white;
+    }
+    :is(#stage-rim-far, #stage-rim-back) stop:nth-child(1) {
+      stop-opacity: 0.95;
+    }
+    :is(#stage-rim-far, #stage-rim-back) stop:nth-child(2) {
+      stop-opacity: 0.5;
+    }
+    #stage-rim-near stop:nth-child(1) {
+      stop-opacity: 0.85;
+    }
+    #stage-rim-near stop:nth-child(2) {
+      stop-opacity: 0.4;
+    }
+
+    /* Night fog becomes white mist. */
+    :is(#stage-fog-far-fill, #stage-fog-mid-fill) stop {
+      stop-color: white;
+    }
+    :is(#stage-fog-far-fill, #stage-fog-mid-fill) stop:nth-child(1) {
+      stop-opacity: 0.55;
+    }
+
+    /* The back range, and the summit nearer and deeper in colour, its snowcap white. */
+    [fill='#1D3363' i] {
+      fill: oklch(0.749 0.071 259.3);
+    }
+    [fill='#22427F' i] {
+      fill: oklch(0.676 0.097 259.5);
+    }
+    [fill='#193466' i] {
+      fill: oklch(0.606 0.104 260.3);
+    }
+    [fill='#7393CF' i] {
+      fill: white;
+    }
+    [fill='#4B69A7' i] {
+      fill: oklch(0.905 0.03 256);
+    }
+    [fill='#081736' i] {
+      fill: oklch(0.485 0.103 260.8);
+    }
+    [stroke='#040C20' i] {
+      stroke: oklch(0.398 0.09 260.8);
+    }
+    [stroke='#B9D6FF' i] {
+      stroke: white;
+      stroke-opacity: 0.8;
+    }
+    #stage-rim-peak stop {
+      stop-color: white;
+    }
+    [fill='#0B1630' i] {
+      fill: oklch(0.403 0.069 262.5);
+    }
+
+    /* Sunlit foothills, darker pines, and the near ground in the page's light. */
+    [fill='#13264D' i] {
+      fill: oklch(0.842 0.048 257.3);
+    }
+    [fill='#0F1F42' i] {
+      fill: oklch(0.65 0.09 259.4);
+    }
+    [fill='#0B1428' i] {
+      fill: oklch(0.548 0.103 259.7);
+    }
+    #stage-near-fill stop:nth-child(1) {
+      stop-color: oklch(0.924 0.022 254.4);
+    }
+
+    .stage-lantern,
+    .stage-reflection {
+      display: none;
+    }
+  }
+
+  /* The camp's mound matches the near ground; its sleepers' zzZ in ink. */
+  .summit-camp {
+    path[fill='#0B1428' i] {
+      fill: oklch(0.924 0.022 254.4);
+    }
+    .camp-z {
+      color: color-mix(in oklch, var(--color-fg) 50%, transparent);
+    }
+  }
+
+  /* The headline in ink to Atlas navy, as the section headings are by day. */
+  .hero-title {
+    background-image: linear-gradient(
+      in srgb to bottom,
+      var(--summit-lit) 30%,
+      var(--summit-lit-end)
+    );
+  }
+
+  /* The Atlas Manager window's shadow, at rest and lifted, falls softer in daylight. */
+  .manager-preview {
+    --window-shadow:
+      0 24px 60px color-mix(in oklch, var(--ink) 22%, transparent),
+      0 0 90px color-mix(in oklch, var(--window-glow) 12%, transparent);
+    --window-shadow-lifted:
+      0 30px 70px color-mix(in oklch, var(--ink) 28%, transparent),
+      0 0 90px color-mix(in oklch, var(--window-glow) 12%, transparent);
+    border-color: color-mix(in oklch, var(--ink) 14%, transparent);
+  }
+
+  /* ---- Press row --------------------------------------------------------------------------------- */
+
+  .press-logo img {
+    filter: brightness(0);
+    opacity: 0.38;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .press-logo:hover img {
+      opacity: 0.7;
+    }
+  }
+
+  /* ---- Scenes on the page: vignettes, charts, footer (shared day palette) ------------------------ */
+
+  :is(.features, .why, .bench, .site-footer, .cf-stage, .docs-summit, .lost-scene) {
+    /* Ground and hills: pale, sunlit. */
+    [fill='#13264D' i] {
+      fill: oklch(0.888 0.034 253.7);
+    }
+    [fill='#112246' i] {
+      fill: oklch(0.858 0.044 258);
+    }
+    [fill='#1D3363' i] {
+      fill: oklch(0.827 0.051 257.7);
+    }
+    /* Peaks: the near face deeper, the sunlit face lighter, snow white. */
+    [fill='#193466' i] {
+      fill: oklch(0.663 0.098 259.5);
+    }
+    [fill='#22427F' i] {
+      fill: oklch(0.738 0.083 258.3);
+    }
+    [fill='#7393CF' i] {
+      fill: white;
+    }
+    [fill='#4B69A7' i] {
+      fill: oklch(0.911 0.028 256.5);
+    }
+    /* Pines, darker than the land they stand on. */
+    [fill='#0B1428' i] {
+      fill: oklch(0.548 0.103 259.7);
+    }
+    [fill='#0F1F42' i] {
+      fill: oklch(0.65 0.09 259.4);
+    }
+    /* Groundsheets and shadows under things. */
+    [fill='#08101E' i] {
+      fill: oklch(0.713 0.059 262.6);
+    }
+    /* Tent pegs: a little darker so they show on the light ground. */
+    [stroke='#C3CFE6' i] {
+      stroke: oklch(0.713 0.059 262.6);
+    }
+  }
+
+  /* Horizon lines, drawn in moonlight by night, in ink by day. */
+  :is(#vignette-horizon, [id$='-horizon']) stop {
+    stop-color: var(--ink);
+  }
+  :is(#vignette-horizon, [id$='-horizon']) stop:nth-child(2) {
+    stop-opacity: 0.2;
+  }
+
+  /* ---- Features ---------------------------------------------------------------------------------- */
+
+  .features {
+    .features-stars,
+    .vignette-streak {
+      display: none;
+    }
+    .vignette::before {
+      background: var(--vignette-glow-day);
+    }
+    #vignette-rim stop {
+      stop-color: white;
+    }
+    /* Privacy: the sun slipping behind a white cloud. */
+    circle[fill='#DDEBFF' i]:not([fill-opacity]) {
+      fill: oklch(0.967 0.046 92.2);
+    }
+    :is([fill='#C3D8F7' i], [fill='#B5CDF2' i], [fill='#B1C9EF' i]) {
+      fill: oklch(0.967 0.046 92.2);
+    }
+    #vignette-halo stop:nth-child(1) {
+      stop-color: oklch(0.899 0.114 86.5);
+      stop-opacity: 0.55;
+    }
+    #vignette-halo stop:nth-child(2) {
+      stop-color: oklch(0.899 0.114 86.5);
+    }
+    #vignette-cloud-fill stop {
+      stop-color: white;
+    }
+    #vignette-cloud-rim stop:nth-child(1) {
+      stop-color: oklch(0.88 0.035 256.3);
+    }
+  }
+
+  /* ---- Why choose AtlasOS ------------------------------------------------------------------------ */
+
+  .why {
+    .why-scene::before {
+      background: var(--scene-glow-day);
+    }
+
+    /* The closed tent. */
+    [fill='#22406F' i] {
+      fill: oklch(0.6 0.104 260.8);
+    }
+    [fill='#1A315C' i] {
+      fill: oklch(0.537 0.104 260.9);
+    }
+    [fill='#152950' i] {
+      fill: oklch(0.49 0.106 261.3);
+    }
+    [stroke='#B9D3FA' i] {
+      stroke: white;
+    }
+
+    /* The rocket's sparks and trail, and the telescope's stars, in Atlas blue against the day. */
+    #why-performance-trail stop {
+      stop-color: oklch(0.678 0.176 250.6);
+    }
+    .why-vignette :is(circle[fill='#FFFFFF' i], circle[fill='#8CCBFF' i], path[fill='#FFFFFF' i]) {
+      fill: oklch(0.678 0.176 250.6);
+    }
+    .why-vignette circle[fill='#DDEBFF' i]:not([fill-opacity]) {
+      fill: oklch(0.678 0.176 250.6);
+    }
+    path[fill='#DDEBFF' i] {
+      fill: oklch(0.878 0.034 257.9);
+    }
+
+    /* The feather: its quill in ink, its notches cut to the page. */
+    path[stroke='#DDEBFF' i] {
+      stroke: oklch(0.417 0.106 261.5);
+    }
+    path[stroke='#0B1428' i] {
+      stroke: var(--bg-primary);
+    }
+
+    /* The moon's phases: light shadow, warm lit side. */
+    circle[fill='#1A2F5C' i] {
+      fill: oklch(0.881 0.033 258.4);
+    }
+    #why-updates-halo stop:nth-child(1) {
+      stop-color: oklch(0.899 0.114 86.5);
+    }
+    #why-updates-halo stop:nth-child(2) {
+      stop-color: oklch(0.899 0.114 86.5);
+    }
+
+    /* Shadows on the ground, softer by day. */
+    ellipse[fill='#08101E' i] {
+      fill: oklch(0.713 0.059 262.6);
+      fill-opacity: 0.45;
+    }
+  }
+  .why-vignette g[clip-path] circle[fill='#DDEBFF' i] {
+    fill: oklch(0.889 0.133 87.9);
+  }
+  .why-vignette g[clip-path] circle[fill='#1A2F5C' i] {
+    fill: oklch(0.881 0.033 258.4);
+  }
+
+  /* ---- Benchmarks -------------------------------------------------------------------------------- */
+
+  .bench {
+    /* Stock Windows in the far haze; AtlasOS in a deeper, sunlit blue. */
+    [fill='#1A2F5C' i] {
+      fill: oklch(0.843 0.046 257.6);
+    }
+    [fill='#22396B' i] {
+      fill: oklch(0.881 0.034 257.9);
+    }
+    [fill='#3A5690' i] {
+      fill: oklch(0.922 0.023 258.4);
+    }
+    [fill='#24467F' i],
+    [fill='#1F3D75' i] {
+      fill: oklch(0.587 0.125 259.1);
+    }
+    [fill='#2A5296' i] {
+      fill: oklch(0.673 0.111 259);
+    }
+    [fill='#A9C6F2' i] {
+      fill: white;
+    }
+    [fill='#6F8FCB' i] {
+      fill: oklch(0.911 0.028 256.5);
+    }
+    [stroke='#E6F0FF' i],
+    [stroke='#BFD8FF' i] {
+      stroke: white;
+    }
+    [fill='#C9DCF7' i] {
+      fill: oklch(0.541 0.066 263.3);
+    }
+    #bench-cpu-calm stop {
+      stop-color: oklch(0.5839 0.1755 255.12);
+    }
+    .bench-grid-line {
+      stroke: color-mix(in oklch, var(--color-fg) 16%, transparent);
+    }
+    .bench-label {
+      fill: color-mix(in oklch, var(--color-fg) 55%, transparent);
+    }
+    :is(.bench-label--atlas, .bench-label--atlas .bench-label__value, .bench-freed-label) {
+      fill: var(--color-link);
+    }
+    .bench-measure {
+      stroke: var(--color-link);
+    }
+  }
+
+  /* ---- The choice for peak performance ----------------------------------------------------------- */
+
+  .pros {
+    /* The sun rising behind the frame. */
+    #pros-moon-halo stop {
+      stop-color: oklch(0.914 0.1 87.3);
+    }
+    .pros-moon [fill='#DDEBFF' i],
+    .pros-moon :is([fill='#C3D8F7' i], [fill='#B5CDF2' i], [fill='#B1C9EF' i]) {
+      fill: oklch(0.967 0.046 92.2);
+    }
+    .pros-frame {
+      box-shadow:
+        14px 28px 60px color-mix(in oklch, var(--ink) 18%, transparent),
+        0 0 0 1px var(--summit-rim-faint);
+    }
+
+    /* The glyphs: lines in ink and Atlas blue rather than moonlight. */
+    .pros-point__icon {
+      [stroke='#DDEBFF' i] {
+        stroke: var(--ink);
+      }
+      [stroke='#6BB8FF' i] {
+        stroke: oklch(0.5839 0.1755 255.12);
+      }
+      #pros-glyph-streak stop {
+        stop-color: oklch(0.5839 0.1755 255.12);
+      }
+      [stroke='#6BB8FF' i][stroke-opacity] {
+        stroke: oklch(0.5839 0.1755 255.12);
+      }
+      [fill='#EAF3FF' i] {
+        fill: oklch(0.289 0.062 263.9);
+      }
+      [fill='#A9C6F2' i] {
+        fill: oklch(0.451 0.084 261.6);
+      }
+    }
+  }
+
+  /* ---- Reviews: the rating's stars, gold by day -------------------------------------------------- */
+
+  .reviews {
+    .reviews-patch {
+      background: var(--patch-day);
+    }
+    #reviews-star-fill stop:nth-child(1) {
+      stop-color: oklch(0.897 0.133 90);
+    }
+    #reviews-star-fill stop:nth-child(2) {
+      stop-color: oklch(0.7819 0.1585 72.33);
+    }
+    .reviews-star path {
+      stroke: oklch(0.923 0.096 89.4);
+    }
+    #reviews-star-halo stop {
+      stop-color: oklch(0.877 0.13 83.9);
+    }
+    #reviews-arc stop {
+      stop-color: var(--ink);
+    }
+    .reviews-review__stars svg {
+      fill: oklch(0.7819 0.1585 72.33);
+    }
+    .reviews-verified {
+      color: var(--color-link);
+    }
+    .reviews-review::before {
+      background: linear-gradient(
+        to bottom,
+        color-mix(in oklch, var(--ink) 25%, transparent),
+        color-mix(in oklch, var(--ink) 3%, transparent)
+      );
+    }
+  }
+
+  /* ---- Linus Tech Tips: the outdoor screen by day ------------------------------------------------ */
+
+  .movie-section {
+    #movie-sheet stop:nth-child(1) {
+      stop-color: oklch(0.975 0.006 255.5);
+    }
+    #movie-sheet stop:nth-child(2) {
+      stop-color: oklch(0.913 0.017 256.3);
+    }
+    #movie-ground stop {
+      stop-color: var(--ink);
+    }
+    #movie-ground stop:nth-child(2) {
+      stop-opacity: 0.22;
+    }
+    [stroke='#DDEBFF' i] {
+      stroke: white;
+    }
+    [fill='#13244A' i] {
+      fill: oklch(0.548 0.103 259.7);
+    }
+    [stroke='#C3CFE6' i] {
+      stroke: oklch(0.713 0.059 262.6);
+    }
+    /*
+     * A beam barely shows in daylight, but it does in shade: the screen shades the ground beneath
+     * it, and the projector's light runs through that shade as a pale cone with bright edges.
+     */
+    .movie-day {
+      display: inline;
+    }
+    #movie-beam stop:nth-child(1) {
+      stop-color: white;
+      stop-opacity: 0.9;
+    }
+    #movie-beam stop:nth-child(2) {
+      stop-color: white;
+      stop-opacity: 0.4;
+    }
+    .movie-beam-edge {
+      stroke: white;
+      stroke-opacity: 0.85;
+    }
+    .movie-mote {
+      fill: oklch(0.622 0.073 262.3);
+      fill-opacity: 0.4;
+    }
+    #movie-lens stop {
+      stop-color: white;
+    }
+    .movie-spill {
+      display: none;
+    }
+    .movie-screen {
+      background: oklch(0.913 0.017 256.3);
+    }
+
+    /* The projector by day: the crate in sunlit wood, the vent dark, rims catching the sun. */
+    .movie-shadow {
+      fill: oklch(0.713 0.059 262.6);
+      fill-opacity: 0.35;
+    }
+    .movie-crate-front {
+      fill: oklch(0.536 0.067 58.3);
+    }
+    .movie-crate-side {
+      fill: oklch(0.453 0.056 56.5);
+    }
+    .movie-crate-top {
+      fill: oklch(0.619 0.073 62.2);
+    }
+    .movie-crate-planks {
+      stroke: oklch(0.391 0.05 54.9);
+    }
+    .movie-rim {
+      stroke: white;
+    }
+    .movie-vent {
+      stroke: oklch(0.222 0.052 263.4);
+      stroke-opacity: 0.5;
+    }
+  }
+
+  /* ---- Open source: the constellation as an inked star chart ------------------------------------- */
+
+  .stargazers {
+    .sky-chart::before {
+      --patch: oklch(0.838 0.06 248.5);
+      background: radial-gradient(
+        ellipse 50% 50% at 50% 46%,
+        color-mix(in oklch, var(--patch) 42%, transparent),
+        color-mix(in oklch, var(--patch) 24%, transparent) 30%,
+        color-mix(in oklch, var(--patch) 9%, transparent) 58%,
+        color-mix(in oklch, var(--patch) 2.5%, transparent) 80%,
+        transparent
+      );
+    }
+    .sky-field [fill='#EEF5FF' i] {
+      fill: oklch(0.423 0.104 261.3);
+    }
+    .sky-field [fill='#A9CBFF' i] {
+      fill: oklch(0.671 0.081 261.7);
+    }
+    .sky-constellation :is([fill='#EEF5FF' i], [fill='#F4F8FF' i]) {
+      fill: oklch(0.361 0.098 261.8);
+    }
+    .sky-line {
+      stroke: oklch(0.423 0.104 261.3);
+      stroke-opacity: 0.4;
+    }
+    .sky-halo {
+      display: none;
+    }
+    /* The GPL badge is drawn in white; in ink by day. */
+    .stargazers-license img {
+      filter: brightness(0);
+      opacity: 0.7;
+    }
+  }
+
+  /* ---- FAQ: unlit lanterns' glass and candles in daylight ---------------------------------------- */
+
+  .lantern {
+    [fill='#13264D' i] {
+      fill: oklch(0.902 0.027 255.1);
+    }
+    [stroke='#9DBDF2' i] {
+      stroke: white;
+      stroke-opacity: 0.8;
+    }
+    [fill='#2A3F68' i] {
+      fill: oklch(0.907 0.033 83.7);
+    }
+    [fill='#22365C' i] {
+      fill: oklch(0.839 0.045 81.8);
+    }
+    [fill='#34507F' i] {
+      fill: oklch(0.937 0.027 83.5);
+    }
+  }
+
+  /* ---- Join community: the camp's land by day ---------------------------------------------------- */
+
+  .cf-stage {
+    #cf-hill-rim stop {
+      stop-color: white;
+    }
+    #cf-ground-fill stop {
+      stop-color: oklch(0.924 0.022 254.4);
+    }
+  }
+
+  /* ---- eclean note ------------------------------------------------------------------------------- */
+
+  .eclean-note .note {
+    background: linear-gradient(
+      in srgb to bottom,
+      color-mix(in oklch, white 90%, transparent),
+      oklch(0.968 0.011 256.7 / 0.9)
+    );
+    box-shadow:
+      inset 0 1px 0 color-mix(in oklch, white 80%, transparent),
+      6px 14px 30px -12px color-mix(in oklch, var(--ink) 18%, transparent);
+  }
+
+  /* ---- Section connectors ------------------------------------------------------------------------ */
+
+  .connector {
+    :is([stroke='#FFFFFF' i], [stroke='#DDEBFF' i]) {
+      stroke: var(--ink);
+    }
+  }
+
+  /* ---- Footer: the horizon in ink, the summit by day, the camp asleep in the sun ----------------- */
+
+  .site-footer {
+    #footer-back-rim stop {
+      stop-color: var(--ink);
+    }
+    #footer-back-rim stop:nth-child(1) {
+      stop-opacity: 0.22;
+    }
+    #footer-back-rim stop:nth-child(2) {
+      stop-opacity: 0.14;
+    }
+    #footer-near-rim stop:nth-child(2),
+    #footer-near-rim stop:nth-child(3) {
+      stop-color: var(--ink);
+    }
+    [fill='#14264A' i] {
+      fill: oklch(0.606 0.104 260.3);
+    }
+    [fill='#1B3463' i] {
+      fill: oklch(0.676 0.097 259.5);
+    }
+    [fill='#3D5891' i] {
+      fill: oklch(0.905 0.03 256);
+    }
+    [fill='#5B78B2' i] {
+      fill: white;
+    }
+    [fill='#081530' i] {
+      fill: oklch(0.485 0.103 260.8);
+    }
+    [fill='#A9CEFF' i] {
+      fill: oklch(0.541 0.066 263.3);
+    }
+    .footer-z {
+      fill: color-mix(in oklch, var(--color-fg) 50%, transparent);
+    }
+  }
+
+  /* ---- 404: the moon becomes the sun ---------------------------------------------------------------- */
+
+  .lost-moon {
+    :is([fill='#DDEBFF' i], [fill='#C3D8F7' i], [fill='#B5CDF2' i], [fill='#B1C9EF' i]) {
+      fill: oklch(0.967 0.046 92.2);
+    }
+    #lost-moon-halo stop {
+      stop-color: oklch(0.914 0.1 87.3);
+    }
+  }
+
+  /* ---- Docs index summit ------------------------------------------------------------------------- */
+
+  .docs-summit {
+    [fill='#16294F' i] {
+      fill: oklch(0.606 0.104 260.3);
+    }
+    [fill='#1D3766' i] {
+      fill: oklch(0.676 0.097 259.5);
+    }
+    [fill='#0A1636' i] {
+      fill: oklch(0.485 0.103 260.8);
+    }
+    [stroke='#A9CEFF' i] {
+      stroke: white;
+    }
+    rect[fill='#A9CEFF' i] {
+      fill: oklch(0.541 0.066 263.3);
+    }
+  }
+}

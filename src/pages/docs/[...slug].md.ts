@@ -1,5 +1,5 @@
 import { docsRouteParam, getDocsEntries, type DocsEntry } from '@/utils/docs';
-import { docsEntryToMarkdown } from '@/utils/docs-markdown';
+import { docsEntryToMarkdown } from '@/utils/render-docs-markdown';
 import type { APIRoute, GetStaticPaths } from 'astro';
 
 interface Props {
@@ -16,10 +16,9 @@ export const getStaticPaths = (async () => {
   });
 }) satisfies GetStaticPaths;
 
-export const GET: APIRoute<Props> = ({ props, site }) =>
-  new Response(docsEntryToMarkdown(props.entry, site), {
+export const GET: APIRoute<Props> = async ({ props, site }) =>
+  new Response(await docsEntryToMarkdown(props.entry, site), {
     headers: {
       'Content-Type': 'text/markdown; charset=utf-8',
-      'Cache-Control': 'public, max-age=3600',
     },
   });

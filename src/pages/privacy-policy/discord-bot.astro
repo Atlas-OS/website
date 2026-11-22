@@ -47,12 +47,14 @@ const linkedData = [
   title="Discord Bot Privacy Policy | AtlasOS"
   description="Privacy policy for Atlas, the bot of the AtlasOS Discord server: what it collects, why, how long it is kept and how to have it deleted."
 >
-  <section class="mx-auto mt-16 max-w-4xl px-4 pb-16">
-    <h1 class="mb-2 text-4xl font-semibold tracking-tight text-white md:text-5xl">Discord Bot Privacy Policy</h1>
-    <p class="mb-8 text-sm text-white/50">Last updated: {lastUpdated}</p>
-    <div class="space-y-8 leading-relaxed text-white/75">
+  <section class="content-grid content-grid--reading mbs-16 pbe-16">
+    <h1 class="mbe-2 text-(length:--text-page-title) leading-(--leading-page-title) font-semibold tracking-tight text-fg">
+      Discord Bot Privacy Policy
+    </h1>
+    <p class="mbe-8 text-sm text-fg/50">Last updated: {lastUpdated}</p>
+    <div class="space-y-8 leading-relaxed text-fg/75">
       <div class="space-y-3">
-        <h2 class="mb-3 text-xl font-semibold text-white">Overview</h2>
+        <h2 class="mbe-3 text-xl font-semibold text-fg">Overview</h2>
         <p>
           Atlas is the Discord bot of the{' '}
           <a class="text-primary hover:underline" href="https://discord.gg/atlasos">
@@ -70,7 +72,7 @@ const linkedData = [
           it and may retain records about former members and people involved in moderation.
         </p>
         <p>
-          <strong class="text-white/90">Contact:</strong> email{' '}
+          <strong class="text-fg/90">Contact:</strong> email{' '}
           <a class="text-primary hover:underline" href={`mailto:${CONTACT_EMAIL}`}>
             {CONTACT_EMAIL}
           </a>{' '}
@@ -82,16 +84,15 @@ const linkedData = [
         </p>
       </div>
       <div class="space-y-3">
-        <h2 class="mb-3 text-xl font-semibold text-white">Summary</h2>
-        <ul class="list-disc space-y-1 pl-6">
+        <h2 class="mbe-3 text-xl font-semibold text-fg">Summary</h2>
+        <ul class="list-disc space-y-1 ps-6">
           <li>
-            Atlas stores your <strong class="text-white/90">Discord user ID</strong> next to a small amount of data
-            about your activity in the server: your level, moderation cases, which invite you joined with, and a few
-            counters.
+            Atlas stores your <strong class="text-fg/90">Discord user ID</strong> next to a small amount of data about
+            your activity in the server: your level, moderation cases, which invite you joined with, and a few counters.
           </li>
           <li>
-            <strong class="text-white/90">Atlas does not keep a database archive of ordinary server messages.</strong>{' '}
-            It caches messages in memory to run its features. Suggestion text, moderation reasons and staff-configured
+            <strong class="text-fg/90">Atlas does not keep a database archive of ordinary server messages.</strong> It
+            caches messages in memory to run its features. Suggestion text, moderation reasons and staff-configured
             content are stored separately. Selected deleted/edited messages and DMs are copied to restricted Discord log
             channels (see{' '}
             <a class="text-primary hover:underline" href="#discord-log-channels">
@@ -100,30 +101,30 @@ const linkedData = [
             ).
           </li>
           <li>
-            When a member invokes <strong class="text-white/90">Jarvis</strong> or{' '}
-            <strong class="text-white/90">Translate</strong>, selected text and relevant context are sent to Groq. This
-            may include messages written by other members. Search links can also contain message text, which is sent to
-            the linked service when someone follows the link.
+            When a member invokes <strong class="text-fg/90">Jarvis</strong> or{' '}
+            <strong class="text-fg/90">Translate</strong>, selected text and relevant context are sent to Groq. This may
+            include messages written by other members. Search links can also contain message text, which is sent to the
+            linked service when someone follows the link.
           </li>
           <li>
-            We do <strong class="text-white/90">not</strong> sell data, use it for advertising, or use it to train AI
+            We do <strong class="text-fg/90">not</strong> sell data, use it for advertising, or use it to train AI
             models.
           </li>
           <li>You can ask us to see, correct or delete your data at any time.</li>
         </ul>
       </div>
       <div class="space-y-3">
-        <h2 class="mb-3 text-xl font-semibold text-white">Data Linked to Your User ID</h2>
-        <div class="overflow-x-auto rounded-lg border border-white/10">
-          <table class="w-full text-left text-sm">
-            <thead class="bg-white/5 text-white/90">
+        <h2 class="mbe-3 text-xl font-semibold text-fg">Data Linked to Your User ID</h2>
+        <div class="overflow-x-auto rounded-lg border border-fg/10">
+          <table class="w-full text-start text-sm">
+            <thead class="bg-fg/5 text-fg/90">
               <tr>
                 <th class="px-4 py-3 font-semibold">Data</th>
                 <th class="px-4 py-3 font-semibold">Why</th>
                 <th class="px-4 py-3 font-semibold">Kept for</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-white/10">
+            <tbody class="*:border-fg/10 *:not-last:border-be">
               {linkedData.map((row) => (
                 <tr class="align-top">
                   <td class="px-4 py-3">{row.data}</td>
@@ -136,7 +137,7 @@ const linkedData = [
         </div>
       </div>
       <div class="space-y-3">
-        <h2 class="mb-3 text-xl font-semibold text-white">Aggregate Statistics and Message Links</h2>
+        <h2 class="mbe-3 text-xl font-semibold text-fg">Aggregate Statistics and Message Links</h2>
         <p>
           Atlas keeps counters that are not linked to any user ID, for example: how many current members have each
           onboarding status or profile badge, members by the year their Discord account was created, messages per
@@ -148,7 +149,7 @@ const linkedData = [
         </p>
       </div>
       <div class="space-y-3">
-        <h2 class="mb-3 text-xl font-semibold text-white">Submitted and Configured Text</h2>
+        <h2 class="mbe-3 text-xl font-semibold text-fg">Submitted and Configured Text</h2>
         <p>
           Atlas stores suggestion text and moderation reasons, including reasons received from Discord's audit log. It
           also stores staff-configured auto-responses, custom commands, scheduled messages and settings. These fields
@@ -158,34 +159,34 @@ const linkedData = [
         </p>
       </div>
       <div class="space-y-3">
-        <h2 class="mb-3 text-xl font-semibold text-white">Processing and Temporary Caches</h2>
-        <ul class="list-disc space-y-1 pl-6">
+        <h2 class="mbe-3 text-xl font-semibold text-fg">Processing and Temporary Caches</h2>
+        <ul class="list-disc space-y-1 ps-6">
           <li>
-            <strong class="text-white/90">Ordinary message content</strong> is read in memory to run auto-responses,
-            count configured keywords, and check attachments and images (file type checks and reading the text in images
-            to block scams). Message activity also earns XP. The message cache holds up to 200 messages per channel; an
+            <strong class="text-fg/90">Ordinary message content</strong> is read in memory to run auto-responses, count
+            configured keywords, and check attachments and images (file type checks and reading the text in images to
+            block scams). Message activity also earns XP. The message cache holds up to 200 messages per channel; an
             hourly sweep removes messages older than six hours. Images are checked locally with OCR, without an external
             OCR service, and the downloaded bytes are not archived.
           </li>
           <li>
-            <strong class="text-white/90">Presence</strong> (online status and active platforms) is cached in memory for{' '}
+            <strong class="text-fg/90">Presence</strong> (online status and active platforms) is cached in memory for{' '}
             <code>/userinfo</code>, the online count in <code>/serverinfo</code>, and aggregate online, idle and
             do-not-disturb counts. Atlas stores no individual presence history. Aggregate presence counts are retained
             in Prometheus for up to one year. There is no per-user tracking opt-out.
           </li>
           <li>
-            <strong class="text-white/90">Voice states</strong> are used to count occupants of configured voice
-            channels. Aggregate counts are retained in Prometheus for up to one year; Atlas does not record voice audio.
+            <strong class="text-fg/90">Voice states</strong> are used to count occupants of configured voice channels.
+            Aggregate counts are retained in Prometheus for up to one year; Atlas does not record voice audio.
           </li>
           <li>
-            <strong class="text-white/90">Usernames, display names and avatars</strong> are shown in replies and logs as
+            <strong class="text-fg/90">Usernames, display names and avatars</strong> are shown in replies and logs as
             Discord provides them; structured user references in the database use IDs. Submitted or configured text may
             also contain names or other identifiers.
           </li>
         </ul>
       </div>
       <div class="space-y-3">
-        <h2 class="mb-3 text-xl font-semibold text-white">Ko-fi Supporters</h2>
+        <h2 class="mbe-3 text-xl font-semibold text-fg">Ko-fi Supporters</h2>
         <p>
           When you support AtlasOS on Ko-fi, Ko-fi notifies Atlas and Atlas posts a thank-you message in the server with
           the amount and, only if you made your support public on Ko-fi, your Ko-fi name and message. Ko-fi's
@@ -194,12 +195,12 @@ const linkedData = [
         </p>
       </div>
       <div id="discord-log-channels" class="space-y-3">
-        <h2 class="mb-3 text-xl font-semibold text-white">Discord Log Channels</h2>
+        <h2 class="mbe-3 text-xl font-semibold text-fg">Discord Log Channels</h2>
         <p>
           To moderate the server, Atlas copies some events into{' '}
-          <strong class="text-white/90">restricted log channels in Discord</strong>:
+          <strong class="text-fg/90">restricted log channels in Discord</strong>:
         </p>
-        <ul class="list-disc space-y-1 pl-6">
+        <ul class="list-disc space-y-1 ps-6">
           <li>selected content from deleted or edited messages, with attachment names where available,</li>
           <li>direct messages you send to Atlas,</li>
           <li>moderation actions and their reasons,</li>
@@ -221,20 +222,19 @@ const linkedData = [
         </p>
       </div>
       <div class="space-y-3">
-        <h2 class="mb-3 text-xl font-semibold text-white">Third Parties</h2>
-        <ul class="list-disc space-y-1 pl-6">
+        <h2 class="mbe-3 text-xl font-semibold text-fg">Third Parties</h2>
+        <ul class="list-disc space-y-1 ps-6">
           <li>
-            <strong class="text-white/90">Discord.</strong> Atlas runs on Discord. Everything you post is also processed
-            by Discord under{' '}
+            <strong class="text-fg/90">Discord.</strong> Atlas runs on Discord. Everything you post is also processed by
+            Discord under{' '}
             <a class="text-primary hover:underline" href="https://discord.com/privacy">
               Discord's privacy policy
             </a>
             .
           </li>
           <li>
-            <strong class="text-white/90">Groq.</strong> When a member invokes{' '}
-            <strong class="text-white/90">Jarvis</strong> or <strong class="text-white/90">Translate</strong>, Atlas
-            sends selected text and relevant context to{' '}
+            <strong class="text-fg/90">Groq.</strong> When a member invokes <strong class="text-fg/90">Jarvis</strong>{' '}
+            or <strong class="text-fg/90">Translate</strong>, Atlas sends selected text and relevant context to{' '}
             <a class="text-primary hover:underline" href="https://groq.com">
               Groq
             </a>{' '}
@@ -255,40 +255,40 @@ const linkedData = [
             features.
           </li>
           <li>
-            <strong class="text-white/90">Infrastructure providers.</strong> AtlasOS operates the bot on hosted
+            <strong class="text-fg/90">Infrastructure providers.</strong> AtlasOS operates the bot on hosted
             infrastructure. The hosting provider supplies the underlying server. Cloudflare handles traffic to our
             public endpoints and authenticated monitoring services through Access and Tunnel, including monitoring
             results containing Discord IDs.
           </li>
           <li>
-            <strong class="text-white/90">Search links.</strong> <code>/lmgtfy</code> and a configured reaction can
-            create a link containing a query or text from a member's message. The bot posts the link in Discord;
-            following it sends that text to letmegooglethat.com and may lead to a search provider.
+            <strong class="text-fg/90">Search links.</strong> <code>/lmgtfy</code> and a configured reaction can create
+            a link containing a query or text from a member's message. The bot posts the link in Discord; following it
+            sends that text to letmegooglethat.com and may lead to a search provider.
           </li>
           <li>We share data for the features and infrastructure described in this policy, and never sell it.</li>
         </ul>
       </div>
       <div class="space-y-3">
-        <h2 class="mb-3 text-xl font-semibold text-white">Metrics</h2>
+        <h2 class="mbe-3 text-xl font-semibold text-fg">Metrics</h2>
         <p>
           Atlas exports operational and community metrics (for example member counts, message counts per channel and
-          per-moderator action counts) to a private <strong class="text-white/90">Prometheus</strong> and{' '}
-          <strong class="text-white/90">Grafana</strong> instance operated by AtlasOS. Only AtlasOS staff can view them.
-          Some series are labelled with Discord user IDs: <strong class="text-white/90">moderators' IDs</strong> on
-          moderation action counts and <strong class="text-white/90">invite creators' IDs</strong> on invite usage.
-          Metrics are kept for <strong class="text-white/90">up to one year</strong>. Administrators attempt to delete
-          the series labelled with your user ID and verify the result. Related moderator series are retained when
-          moderation records are kept. Aggregate counts cannot be separated back into individual contributions.
+          per-moderator action counts) to a private <strong class="text-fg/90">Prometheus</strong> and{' '}
+          <strong class="text-fg/90">Grafana</strong> instance operated by AtlasOS. Only AtlasOS staff can view them.
+          Some series are labelled with Discord user IDs: <strong class="text-fg/90">moderators' IDs</strong> on
+          moderation action counts and <strong class="text-fg/90">invite creators' IDs</strong> on invite usage. Metrics
+          are kept for <strong class="text-fg/90">up to one year</strong>. Administrators attempt to delete the series
+          labelled with your user ID and verify the result. Related moderator series are retained when moderation
+          records are kept. Aggregate counts cannot be separated back into individual contributions.
         </p>
       </div>
       <div class="space-y-3">
-        <h2 class="mb-3 text-xl font-semibold text-white">Storage &amp; Security</h2>
+        <h2 class="mbe-3 text-xl font-semibold text-fg">Storage &amp; Security</h2>
         <p>
           Atlas's database, metrics, persistent application logs and local backups are stored{' '}
-          <strong class="text-white/90">encrypted at rest</strong> on a LUKS2 volume on infrastructure operated by
-          AtlasOS. Administrative access is restricted to the team members who run the services. This encryption
-          protects stored volumes; it does not make a running server inaccessible to its administrators or control
-          storage held by Discord or other providers.
+          <strong class="text-fg/90">encrypted at rest</strong> on a LUKS2 volume on infrastructure operated by AtlasOS.
+          Administrative access is restricted to the team members who run the services. This encryption protects stored
+          volumes; it does not make a running server inaccessible to its administrators or control storage held by
+          Discord or other providers.
         </p>
         <p>
           Before database migrations, Atlas can create a backup in <code>/data/backups</code>; it keeps the three most
@@ -305,7 +305,7 @@ const linkedData = [
         </p>
       </div>
       <div class="space-y-3">
-        <h2 class="mb-3 text-xl font-semibold text-white">Moderation Records</h2>
+        <h2 class="mbe-3 text-xl font-semibold text-fg">Moderation Records</h2>
         <p>
           If you ask us to delete your data, we delete your moderation cases as well, unless keeping them is necessary
           to protect the server, for example to prevent someone who was banned from returning under a new account or to
@@ -316,21 +316,20 @@ const linkedData = [
         </p>
       </div>
       <div class="space-y-3">
-        <h2 class="mb-3 text-xl font-semibold text-white">Your Choices &amp; Rights</h2>
+        <h2 class="mbe-3 text-xl font-semibold text-fg">Your Choices &amp; Rights</h2>
         <p>You can ask us to:</p>
-        <ul class="list-disc space-y-1 pl-6">
+        <ul class="list-disc space-y-1 ps-6">
           <li>
-            <strong class="text-white/90">see</strong> what Atlas stores about you,
+            <strong class="text-fg/90">see</strong> what Atlas stores about you,
           </li>
           <li>
-            <strong class="text-white/90">correct</strong> something that is wrong (for example a moderation case
-            reason),
+            <strong class="text-fg/90">correct</strong> something that is wrong (for example a moderation case reason),
           </li>
           <li>
-            <strong class="text-white/90">delete</strong> your data,
+            <strong class="text-fg/90">delete</strong> your data,
           </li>
           <li>
-            <strong class="text-white/90">stop</strong> using your data for a specific purpose.
+            <strong class="text-fg/90">stop</strong> using your data for a specific purpose.
           </li>
         </ul>
         <p>
@@ -343,7 +342,7 @@ const linkedData = [
             discord.gg/atlasos
           </a>
           . We may ask you to confirm the request from your Discord account so we know it is yours. We respond{' '}
-          <strong class="text-white/90">within 30 days</strong>.
+          <strong class="text-fg/90">within 30 days</strong>.
         </p>
         <p>
           Administrators use <code>/privacy info</code> to see counts of stored database rows and{' '}
@@ -369,7 +368,7 @@ const linkedData = [
         </p>
       </div>
       <div class="space-y-3">
-        <h2 class="mb-3 text-xl font-semibold text-white">Changes to This Policy</h2>
+        <h2 class="mbe-3 text-xl font-semibold text-fg">Changes to This Policy</h2>
         <p>
           We will update this policy when Atlas starts collecting something new or uses data differently. The effective
           date at the top always shows the latest version, and significant changes are announced in the AtlasOS server.

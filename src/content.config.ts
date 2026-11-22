@@ -54,7 +54,6 @@ export const collections = {
       pattern: '**/*.{md,mdx}',
       base: './src/content/docs',
       generateId: generateDocsEntryId,
-      retainBody: true,
     }),
     schema: docsSchema,
   }),

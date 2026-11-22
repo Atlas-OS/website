@@ -1,10 +1,33 @@
 ---
+/**
+ * Not found. Centred copy under one small scene in the Features vignettes' language: a snowy mound
+ * at night (or by day, via styles/daylight.css) with two pines and the FAQ's lantern left lit on it,
+ * its warm light pooled on the snow, under a small moon and two stars on a soft patch of sky. A quiet
+ * line names the address that wasn't found.
+ *
+ * Cloudflare serves this page for every missing path (`not_found_handling: "404-page"`).
+ */
 import Footer from '@/components/layout/Footer.astro';
 import Navbar from '@/components/layout/Navbar.astro';
 import Button from '@/components/ui/Button.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { cssGlow, DAY_PATCH, glowStops, NIGHT_PATCH } from '@/utils/glow';
+import { pinePath } from '@/utils/hero-summit-geometry';
 
 const currentPath = '/404/';
+
+/* The vignette, in a 160 × 96 box with its horizon at y = 84, like the homepage's. */
+const pines = [pinePath(52, 72, 24), pinePath(64, 70.5, 16)];
+/** The FAQ's lantern, lit, standing on the mound: its own 40 × 72 box scaled into the scene. */
+const LANTERN = { x: 98, base: 68.6, scale: 0.34 };
+const lanternAt = `translate(${LANTERN.x - 20 * LANTERN.scale} ${LANTERN.base - 54.4 * LANTERN.scale}) scale(${LANTERN.scale})`;
+const lampGlow = glowStops(0.5);
+const poolGlow = glowStops(0.55);
+const moonHalo = glowStops(0.3, { hold: 0.36 });
+const sky = [
+  `--sky-night: ${cssGlow(NIGHT_PATCH, 0.34, 'ellipse 50% 50% at 50% 58%')}`,
+  `--sky-day: ${cssGlow(DAY_PATCH, 0.62, 'ellipse 50% 50% at 50% 58%')}`,
+].join('; ');
 ---
 
 <BaseLayout currentPath={currentPath}>
@@ -15,33 +38,107 @@ const currentPath = '/404/';
   </Fragment>
   <Fragment slot="body">
     <div class="flex min-h-dvh flex-col">
-      <header>
+      <header class="contents">
         <a href="#main-content" class="sr-only focus:not-sr-only">
           Skip to main content
         </a>
         <Navbar currentPath={currentPath} isDocsPage={false} />
       </header>
-      <main
-        id="main-content"
-        class="error-main relative flex flex-1 items-center justify-center px-6 py-20 text-center"
-      >
-        <div class="relative mx-auto w-full max-w-xl">
-          <p class="mb-5 text-sm font-semibold tracking-[0.16em] text-primary">ERROR 404</p>
-          <h1 class="mb-5 text-4xl font-semibold tracking-tight text-white md:text-5xl">Page not found.</h1>
-          <p class="mx-auto mb-8 max-w-md leading-relaxed text-white/70">
-            This page may have moved, or the link may be incorrect. Head home or explore the docs to find your way.
+
+      <main id="main-content" class="lost flex-1">
+        <div class="lost-copy">
+          <div class="lost-vignette" style={sky}>
+            <svg class="lost-scene" viewBox="0 0 160 96" aria-hidden="true">
+              <defs>
+                <radialGradient id="lost-moon-halo" cx="118" cy="26" r="30" gradientUnits="userSpaceOnUse">
+                  {moonHalo.map(({ offset, opacity }) => (
+                    <stop offset={offset} stop-color="#A9CBFF" stop-opacity={opacity} />
+                  ))}
+                </radialGradient>
+                <clipPath id="lost-moon-disc">
+                  <circle cx="118" cy="26" r="11"></circle>
+                </clipPath>
+                <radialGradient id="lost-lamp-glow" cx="98" cy="58" r="24" gradientUnits="userSpaceOnUse">
+                  {lampGlow.map(({ offset, opacity }) => (
+                    <stop offset={offset} stop-color="#FFB766" stop-opacity={opacity} />
+                  ))}
+                </radialGradient>
+                <radialGradient id="lost-lamp-pool">
+                  {poolGlow.map(({ offset, opacity }) => (
+                    <stop offset={offset} stop-color="#FFC27A" stop-opacity={opacity} />
+                  ))}
+                </radialGradient>
+                <radialGradient id="lost-lamp-glass" cx="20" cy="32" r="19" gradientUnits="userSpaceOnUse">
+                  <stop offset="0" stop-color="#FFE9B8"></stop>
+                  <stop offset="0.3" stop-color="#FFCB7A"></stop>
+                  <stop offset="0.7" stop-color="#F39A4A"></stop>
+                  <stop offset="1" stop-color="#D97A3C"></stop>
+                </radialGradient>
+                <linearGradient id="lost-horizon" x1="0" x2="1" y1="0" y2="0">
+                  <stop offset="0" stop-color="#DDEBFF" stop-opacity="0"></stop>
+                  <stop offset="0.5" stop-color="#DDEBFF" stop-opacity="0.3"></stop>
+                  <stop offset="1" stop-color="#DDEBFF" stop-opacity="0"></stop>
+                </linearGradient>
+              </defs>
+              <circle cx="30" cy="20" r="0.9" fill="#DDEBFF" fill-opacity="0.6"></circle>
+              <circle cx="66" cy="10" r="0.8" fill="#DDEBFF" fill-opacity="0.45"></circle>
+              <g class="lost-moon">
+                <circle cx="118" cy="26" r="30" fill="url(#lost-moon-halo)"></circle>
+                <circle cx="118" cy="26" r="11" fill="#DDEBFF"></circle>
+                <g clip-path="url(#lost-moon-disc)">
+                  <circle cx="122" cy="29" r="11" fill="#C3D8F7"></circle>
+                  <circle cx="121" cy="22" r="1.8" fill="#B5CDF2"></circle>
+                </g>
+              </g>
+              <!-- Pines behind the mound's shoulder, then the mound -->
+              {pines.map((d) => (
+                <path d={d} fill="#0B1428" />
+              ))}
+              <path d="M6 84C40 62 116 62 154 84Z" fill="#13264D"></path>
+
+              <!-- The lantern's warm light, in the air and pooled on the snow -->
+              <circle cx="98" cy="58" r="24" fill="url(#lost-lamp-glow)"></circle>
+              <ellipse cx="98" cy="69" rx="22" ry="3.6" fill="url(#lost-lamp-pool)"></ellipse>
+
+              <!-- The lantern, lit -->
+              <g transform={lanternAt}>
+                <circle cx="20" cy="4.5" r="2.4" fill="none" stroke="#7F95BE" stroke-width="1.1"></circle>
+                <path d="M16.5 7h7l5 7.5h-17Z" fill="#1F3D75"></path>
+                <rect x="10" y="14.5" width="20" height="3" rx="1" fill="#2A4E8C"></rect>
+                <rect x="12" y="17.5" width="16" height="29.5" fill="url(#lost-lamp-glass)"></rect>
+                <rect x="17.3" y="37" width="5.4" height="10" fill="#FFF1D6"></rect>
+                <path d="M20 37V34.6" stroke="#3A2A20" stroke-width="0.7" stroke-linecap="round"></path>
+                <path d="M20 27.4c1.3 1.9 2 3.3 2 4.6a2 2 0 0 1-4 0c0-1.3.7-2.7 2-4.6Z" fill="#FFA63D"></path>
+                <path d="M20 30.4c.55.8.85 1.4.85 2a.85.85 0 0 1-1.7 0c0-.6.3-1.2.85-2Z" fill="#FFF8DC"></path>
+                <rect x="10.5" y="17" width="2.4" height="30.5" fill="#1F3D75"></rect>
+                <rect x="27.1" y="17" width="2.4" height="30.5" fill="#1A3466"></rect>
+                <rect x="10" y="47" width="20" height="3.4" rx="1" fill="#2A4E8C"></rect>
+                <path d="M14 50.4h12l-2.4 4h-7.2Z" fill="#1F3D75"></path>
+              </g>
+              <path d="M0 84H160" stroke="url(#lost-horizon)" stroke-width="1"></path>
+            </svg>
+          </div>
+
+          <h1 class="summit-title">
+            <span class="summit-title__far">404</span>
+            <span class="summit-title__near">This page doesn't exist.</span>
+          </h1>
+          <p class="summit-lede lost-lede">The link may be broken, or the page may have moved.</p>
+          <p class="lost-address" hidden data-lost-address>
+            Nothing at <span class="lost-address__path"></span>
           </p>
-          <div class="flex flex-wrap items-center justify-center gap-4">
-            <Button variant="primary" size="lg" href="/" icon="tabler:home" iconPosition="before">
+          <div class="lost-actions">
+            <Button variant="primary" size="lg" href="/">
               Back to home
             </Button>
-            <Button variant="secondary" size="lg" href="/docs/" icon="tabler:book" iconPosition="before">
-              Documentation
+            <Button variant="secondary" size="lg" href="/docs/">
+              Read the docs
             </Button>
           </div>
         </div>
       </main>
-      <div class="error-footer w-full">
+
+      <div class="lost-footer w-full">
         <Footer />
       </div>
     </div>
@@ -49,19 +146,91 @@ const currentPath = '/404/';
 </BaseLayout>
 
 <style>
-  .error-main {
+  .lost {
+    display: grid;
     min-height: 32rem;
-    background: radial-gradient(ellipse 40% 50% at 50% 45%, rgb(25 144 254 / 0.045), transparent);
+    place-items: center;
+    padding-block: 4rem;
+    padding-inline: 1.5rem;
   }
 
-  .error-footer :global(> section) {
+  .lost-copy {
+    max-width: 36rem;
+    text-align: center;
+  }
+
+  /* The vignette, on a soft patch of sky as the homepage's sit. */
+  .lost-vignette {
+    position: relative;
+    width: 10rem;
+    margin-block: 0 2rem;
+    margin-inline: auto;
+  }
+  .lost-vignette::before {
+    content: '';
+    position: absolute;
+    inset-block: -22% -4%;
+    inset-inline: -14%;
+    z-index: -1;
+    background: var(--sky-night);
+  }
+  :global(:root[data-theme='light']) .lost-vignette::before {
+    background: var(--sky-day);
+  }
+  .lost-scene {
+    display: block;
     width: 100%;
-    margin-top: 0;
+    height: auto;
+    overflow: visible;
   }
 
-  @media (max-width: 640px) {
-    .error-main {
-      min-height: 28rem;
-    }
+  .lost-lede {
+    margin-block: 1.25rem 0;
+    margin-inline: auto;
+  }
+  .lost-address {
+    margin-block-start: 0.75rem;
+    color: var(--summit-text-faint);
+    font-size: 0.875rem;
+    overflow-wrap: anywhere;
+  }
+  .lost-address__path {
+    color: var(--summit-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+  }
+  .lost-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-block-start: 2rem;
+  }
+
+  .lost-footer :global(> section) {
+    width: 100%;
+    margin-block-start: 0;
   }
 </style>
+
+<script>
+  import { onPageLoad } from '@/utils/page-lifecycle';
+
+  /** The address as typed, decoded where it can be; a malformed escape such as `%E0%A4%A` stays as it is. */
+  function readablePath(pathname: string): string {
+    try {
+      return decodeURI(pathname);
+    } catch {
+      return pathname;
+    }
+  }
+
+  // Name the missing address, so a typo is easy to spot. Without JavaScript the line stays hidden.
+  onPageLoad(() => {
+    const line = document.querySelector<HTMLElement>('[data-lost-address]');
+    const path = line?.querySelector<HTMLElement>('.lost-address__path');
+    if (!line || !path || location.pathname === '/404/') return;
+    path.textContent = readablePath(location.pathname);
+    line.hidden = false;
+  });
+</script>

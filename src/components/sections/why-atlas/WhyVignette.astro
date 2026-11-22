@@ -1,0 +1,345 @@
+---
+/**
+ * A small scene for one of the reasons to choose AtlasOS, drawn in the Features vignettes' flat
+ * cartoon language at the same scale (one unit to a pixel): deep night navy, moonlight from the top
+ * left catching the edges that face it, Atlas blue for what matters, a soft ground and horizon.
+ * Each object stands for its reason: a tent zipped shut for privacy, a firework rocket for speed, a
+ * shield bearing the Atlas peak, a feather for a lighter system, the moon's phases for regular
+ * updates, a desktop and a laptop, a telescope for the project's stargazers, and a signpost that
+ * points both ways: there is always a way back to stock Windows. Decorative only.
+ */
+import { tent as tentGeometry } from '@/utils/hero-camp-geometry';
+import { glowStops } from '@/utils/glow';
+import { polygon, type Point } from '@/utils/hero-summit-geometry';
+
+export type WhyVignetteKind =
+  'privacy' | 'performance' | 'security' | 'usability' | 'updates' | 'devices' | 'open' | 'reversible';
+
+interface Props {
+  kind: WhyVignetteKind;
+}
+
+const { kind } = Astro.props;
+
+const W = 128;
+const H = 80;
+const G = 68; // the horizon
+const view = `0 0 ${W} ${H}`;
+const id = (name: string) => `why-${kind}-${name}`;
+
+const r1 = (value: number) => Math.round(value * 10) / 10;
+const pt = ([x, y]: Point) => `${r1(x)} ${r1(y)}`;
+const add = (a: Point, b: Point, k = 1): Point => [a[0] + b[0] * k, a[1] + b[1] * k];
+
+/** A soft rise of land from `x0` to `x1`; `top` is its control height, so the crest sits a little lower. */
+const hill = (x0: number, x1: number, top: number) => {
+  const w = x1 - x0;
+  return `M${pt([x0, G])}C${pt([x0 + w * 0.3, top])} ${pt([x0 + w * 0.62, top])} ${pt([x1, G])}Z`;
+};
+/** A four-pointed glint, for the brightest stars. */
+const glint = (x: number, y: number, s: number) =>
+  `M${x} ${y - s}Q${x} ${y} ${x + s} ${y}Q${x} ${y} ${x} ${y + s}Q${x} ${y} ${x - s} ${y}Q${x} ${y} ${x} ${y - s}Z`;
+
+/* ---- Privacy: a tent zipped shut for the night ---- */
+const tent = tentGeometry({ apex: [60, 30], half: 21, ground: G, ridge: [-26, 5], facing: 1 });
+const door = polygon([
+  [60, 41],
+  [68.5, G],
+  [52.5, G],
+]);
+
+/* ---- Performance: a firework rocket climbing fast, sparks in its wake ---- */
+const sparks: Array<[number, number, number, number]> = [
+  [62.4, 50, 0.9, 0.9],
+  [66, 54, 0.7, 0.7],
+  [61.6, 58, 0.8, 0.55],
+  [65.4, 61.5, 0.6, 0.4],
+  [63, 65, 0.6, 0.3],
+];
+const burst = Array.from({ length: 8 }, (_, i) => {
+  const a = (i / 8) * Math.PI * 2;
+  return [r1(28 + Math.cos(a) * 8), r1(22 + Math.sin(a) * 8)] as Point;
+});
+
+/* ---- Usability: a feather drifting down ---- */
+const quill = 'M98 14C82 28 58 50 36 64';
+const vaneUpper = 'M98 14C74 10 48 32 42 58C58 50 80 30 98 14Z';
+const vaneLower = 'M98 14C100 36 74 58 46 61C62 50 82 30 98 14Z';
+
+/* ---- Updates: the moon through its phases, new to full, along its path ---- */
+const moons: Array<{ cx: number; cy: number; phase: 'new' | 'crescent' | 'quarter' | 'gibbous' | 'full' }> = [
+  { cx: 18, cy: 48, phase: 'new' },
+  { cx: 41, cy: 37, phase: 'crescent' },
+  { cx: 64, cy: 33, phase: 'quarter' },
+  { cx: 87, cy: 37, phase: 'gibbous' },
+  { cx: 110, cy: 48, phase: 'full' },
+];
+const MOON_R = 7.5;
+
+/* ---- Open & transparent: a telescope trained on a cluster of stars ---- */
+const eye: Point = [42, 52];
+const lens: Point = [84, 28];
+const tubeLength = Math.hypot(lens[0] - eye[0], lens[1] - eye[1]);
+const along: Point = [(lens[0] - eye[0]) / tubeLength, (lens[1] - eye[1]) / tubeLength];
+const across: Point = [-along[1], along[0]]; // points down and to the right, away from the moon
+const tube = polygon([add(eye, across, 3), add(eye, across, -3), add(lens, across, -4.6), add(lens, across, 4.6)]);
+const tubeLit = `M${pt(add(eye, across, -3))}L${pt(add(lens, across, -4.6))}`;
+const lensRing = `M${pt(add(lens, across, -5))}L${pt(add(lens, across, 5))}`;
+const eyepiece = `M${pt(eye)}L${pt(add(eye, along, -6))}`;
+const mount = add(add(eye, along, 19), across, 3.5);
+const legs = [
+  [mount, [49, G + 0.5]],
+  [mount, [75, G + 0.5]],
+] as Array<[Point, Point]>;
+const frontLeg: [Point, Point] = [mount, [63, G + 2]];
+
+/* ---- Reversible: a signpost pointing both ways ---- */
+const ahead = polygon([
+  [58, 20],
+  [96, 20],
+  [102, 25.5],
+  [96, 31],
+  [58, 31],
+]);
+const back = polygon([
+  [70, 35],
+  [32, 35],
+  [26, 40.5],
+  [32, 46],
+  [70, 46],
+]);
+---
+
+<svg class="why-vignette" viewBox={view} aria-hidden="true">
+  <defs>
+    <linearGradient id={id('horizon')} x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#DDEBFF" stop-opacity="0"></stop>
+      <stop offset="0.5" stop-color="#DDEBFF" stop-opacity="0.3"></stop>
+      <stop offset="1" stop-color="#DDEBFF" stop-opacity="0"></stop>
+    </linearGradient>
+  </defs>
+
+  {kind === 'privacy' && (
+    <>
+      <circle cx="16" cy="16" r="0.9" fill="#DDEBFF" fill-opacity="0.6" />
+      <circle cx="104" cy="12" r="0.8" fill="#DDEBFF" fill-opacity="0.5" />
+      <path d={hill(-4, 132, 56)} fill="#13264D" />
+      <path d={tent.groundsheet} fill="#08101E" />
+      <path d={tent.guys} fill="none" stroke="#9FB4D8" stroke-opacity="0.35" stroke-width="0.5" />
+      <path d={tent.pegs} fill="none" stroke="#C3CFE6" stroke-opacity="0.5" stroke-width="0.6" />
+      <path d={tent.side} fill="#22406F" />
+      <path d={tent.front} fill="#1A315C" />
+      <path d={door} fill="#152950" />
+      <path d={`M60 41V${G}`} stroke="#A9C6F2" stroke-opacity="0.6" stroke-width="0.7" />
+      <rect x="58.9" y="49" width="2.2" height="3.4" rx="0.6" fill="#DDEBFF" fill-opacity="0.85" />
+      <path d={tent.ridge} fill="none" stroke="#B9D3FA" stroke-opacity="0.6" stroke-width="0.7" />
+    </>
+  )}
+
+  {kind === 'performance' && (
+    <>
+      <defs>
+        <linearGradient id={id('trail')} x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.9" />
+          <stop offset="1" stop-color="#8CCBFF" stop-opacity="0" />
+        </linearGradient>
+      </defs>
+      {burst.map(([x, y]) => (
+        <circle cx={x} cy={y} r="0.8" fill="#8CCBFF" fill-opacity="0.55" />
+      ))}
+      <circle cx="28" cy="22" r="1.1" fill="#DDEBFF" fill-opacity="0.7" />
+      <circle cx="106" cy="16" r="0.8" fill="#DDEBFF" fill-opacity="0.5" />
+      <path d={hill(6, 124, 58)} fill="#13264D" />
+      <g transform="rotate(16 64 40)">
+        <rect x="62.6" y="44" width="2.8" height="24" fill={`url(#${id('trail')})`} />
+        {sparks.map(([x, y, r, o]) => (
+          <circle cx={x} cy={y} r={r} fill="#FFFFFF" fill-opacity={o} />
+        ))}
+        <path d="M60 37l-4 7 4-1.6ZM68 37l4 7-4-1.6Z" fill="#1F6FD1" />
+        <rect x="60" y="22" width="8" height="21" rx="1" fill="#2B9BFF" />
+        <rect x="60" y="22" width="2.6" height="21" fill="#8CCBFF" />
+        <rect x="60" y="27" width="8" height="2" fill="#DDEBFF" fill-opacity="0.9" />
+        <path d="M60 22L64 13L68 22Z" fill="#DDEBFF" />
+        <path d="M64 13L68 22H64Z" fill="#A9C6F2" />
+      </g>
+    </>
+  )}
+
+  {kind === 'security' && (
+    <>
+      <circle cx="18" cy="14" r="0.9" fill="#DDEBFF" fill-opacity="0.6" />
+      <circle cx="108" cy="22" r="0.8" fill="#DDEBFF" fill-opacity="0.5" />
+      <path d={hill(-2, 130, 58)} fill="#13264D" />
+      <ellipse cx="70" cy={G - 0.5} rx="16" ry="2" fill="#08101E" fill-opacity="0.7" />
+      <path d="M44 20C54 17 74 17 84 20V38C84 52 74 61 64 67C54 61 44 52 44 38Z" fill="#1F3D75" />
+      <path d="M64 17.8C56 17.8 50 18.4 44 20V38C44 52 54 61 64 67Z" fill="#2C5299" />
+      <path
+        d="M64 17.8C56 17.8 50 18.4 44 20V38C44 46 47 52 51 57"
+        fill="none"
+        stroke="#CFE0FF"
+        stroke-opacity="0.75"
+        stroke-width="0.9"
+        stroke-linecap="round"
+      />
+      <path
+        d="M54.5 48L64 31L73.5 48"
+        fill="none"
+        stroke="#EAF3FF"
+        stroke-width="2.4"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </>
+  )}
+
+  {kind === 'usability' && (
+    <>
+      <circle cx="20" cy="18" r="0.9" fill="#DDEBFF" fill-opacity="0.6" />
+      <circle cx="112" cy="40" r="0.8" fill="#DDEBFF" fill-opacity="0.5" />
+      <path d={hill(-6, 134, 60)} fill="#13264D" />
+      <path d={vaneLower} fill="#22447F" />
+      <path d={vaneUpper} fill="#4F74B8" />
+      <path d="M70 34l-8-3.4M56 46l-7-2.2M80 30l4.5 6" stroke="#0B1428" stroke-width="1.2" stroke-linecap="round" />
+      <path d={quill} fill="none" stroke="#DDEBFF" stroke-width="1.1" stroke-linecap="round" />
+    </>
+  )}
+
+  {kind === 'updates' && (
+    <>
+      <defs>
+        {moons.map((moon, i) => (
+          <clipPath id={id(`disc-${i}`)}>
+            <circle cx={moon.cx} cy={moon.cy} r={MOON_R} />
+          </clipPath>
+        ))}
+        <radialGradient id={id('halo')} cx="110" cy="48" r="20" gradientUnits="userSpaceOnUse">
+          {glowStops(0.32, { hold: 0.36 }).map(({ offset, opacity }) => (
+            <stop offset={offset} stop-color="#A9CBFF" stop-opacity={opacity} />
+          ))}
+        </radialGradient>
+      </defs>
+      <circle cx="110" cy="48" r="20" fill={`url(#${id('halo')})`} />
+      {moons.map((moon, i) => (
+        <g>
+          <circle cx={moon.cx} cy={moon.cy} r={MOON_R} fill="#1A2F5C" />
+          {moon.phase !== 'new' && (
+            <g clip-path={`url(#${id(`disc-${i}`)})`}>
+              <circle cx={moon.cx} cy={moon.cy} r={MOON_R} fill="#DDEBFF" />
+              {moon.phase === 'crescent' && (
+                <circle cx={moon.cx - MOON_R * 0.4} cy={moon.cy} r={MOON_R} fill="#1A2F5C" />
+              )}
+              {moon.phase === 'quarter' && (
+                <rect x={moon.cx - MOON_R} y={moon.cy - MOON_R} width={MOON_R} height={MOON_R * 2} fill="#1A2F5C" />
+              )}
+              {moon.phase === 'gibbous' && (
+                <circle cx={moon.cx - MOON_R * 1.5} cy={moon.cy} r={MOON_R} fill="#1A2F5C" />
+              )}
+              {moon.phase === 'full' && (
+                <>
+                  <circle cx={moon.cx + 3} cy={moon.cy + 2.5} r={MOON_R} fill="#C3D8F7" />
+                  <circle cx={moon.cx + 2} cy={moon.cy - 3} r="1.6" fill="#B5CDF2" />
+                  <circle cx={moon.cx - 2.4} cy={moon.cy + 2.6} r="1.1" fill="#B1C9EF" />
+                </>
+              )}
+            </g>
+          )}
+          <circle
+            cx={moon.cx}
+            cy={moon.cy}
+            r={MOON_R - 0.3}
+            fill="none"
+            stroke="#9DBDF2"
+            stroke-opacity={moon.phase === 'new' ? 0.45 : 0.15}
+            stroke-width="0.6"
+          />
+        </g>
+      ))}
+      <path d={hill(-10, 70, 60)} fill="#13264D" />
+      <path d={hill(52, 140, 62)} fill="#112246" />
+    </>
+  )}
+
+  {kind === 'devices' && (
+    <>
+      <defs>
+        <linearGradient id={id('screen')} x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stop-color="#2F72D6" />
+          <stop offset="1" stop-color="#16336D" />
+        </linearGradient>
+      </defs>
+      <circle cx="16" cy="14" r="0.9" fill="#DDEBFF" fill-opacity="0.6" />
+      <circle cx="112" cy="20" r="0.8" fill="#DDEBFF" fill-opacity="0.5" />
+      <path d={hill(-6, 134, 58)} fill="#13264D" />
+      <ellipse cx="64" cy={G - 0.5} rx="46" ry="2" fill="#08101E" fill-opacity="0.6" />
+      {/* The desktop */}
+      <rect x="48" y="55" width="4" height="10" fill="#1A315C" />
+      <rect x="40" y="64.5" width="20" height="2.5" rx="1" fill="#22406F" />
+      <rect x="24" y="22" width="52" height="34" rx="2" fill="#0E1A33" />
+      <rect x="26.5" y="24.5" width="47" height="29" rx="0.8" fill={`url(#${id('screen')})`} />
+      <path d="M26.5 53.5L40 40L46 45L53 37.5L73.5 53.5Z" fill="#0F2552" fill-opacity="0.85" />
+      <circle cx="64" cy="31" r="2.6" fill="#DDEBFF" fill-opacity="0.9" />
+      <path d="M24 56V24a2 2 0 0 1 2-2h48" fill="none" stroke="#9DBDF2" stroke-opacity="0.5" stroke-width="0.7" />
+      {/* The laptop */}
+      <rect x="80" y="40" width="30" height="21" rx="1.6" fill="#0E1A33" />
+      <rect x="82" y="42" width="26" height="17" rx="0.6" fill={`url(#${id('screen')})`} />
+      <path d="M82 59L90 51L94 54L99 49L108 59Z" fill="#0F2552" fill-opacity="0.85" />
+      <path d="M76 61.5H114L116.5 66H73.5Z" fill="#22406F" />
+      <path d="M76 61.5H114" stroke="#B9D3FA" stroke-opacity="0.6" stroke-width="0.7" />
+      <path
+        d="M80 61V41.6a1.6 1.6 0 0 1 1.6-1.6H110"
+        fill="none"
+        stroke="#9DBDF2"
+        stroke-opacity="0.45"
+        stroke-width="0.6"
+      />
+    </>
+  )}
+
+  {kind === 'open' && (
+    <>
+      <path d={glint(104, 14, 3.6)} fill="#FFFFFF" />
+      <circle cx="114" cy="24" r="1" fill="#DDEBFF" fill-opacity="0.8" />
+      <circle cx="94" cy="9" r="0.8" fill="#DDEBFF" fill-opacity="0.65" />
+      <circle cx="120" cy="10" r="0.7" fill="#DDEBFF" fill-opacity="0.55" />
+      <circle cx="16" cy="18" r="0.8" fill="#DDEBFF" fill-opacity="0.45" />
+      <path d={hill(-4, 130, 58)} fill="#13264D" />
+      {legs.map(([from, to]) => (
+        <path d={`M${pt(from)}L${pt(to)}`} stroke="#2A4A85" stroke-width="1.6" stroke-linecap="round" />
+      ))}
+      <path d={tube} fill="#24467F" />
+      <path d={tubeLit} stroke="#A9C6F2" stroke-opacity="0.8" stroke-width="0.9" stroke-linecap="round" />
+      <path d={lensRing} stroke="#DDEBFF" stroke-width="1.8" stroke-linecap="round" />
+      <path d={eyepiece} stroke="#9FB4D8" stroke-width="2.6" stroke-linecap="round" />
+      <path d={`M${pt(frontLeg[0])}L${pt(frontLeg[1])}`} stroke="#3A5E9E" stroke-width="1.7" stroke-linecap="round" />
+      <circle cx={r1(mount[0])} cy={r1(mount[1])} r="1.8" fill="#9FB4D8" />
+    </>
+  )}
+
+  {kind === 'reversible' && (
+    <>
+      <circle cx="16" cy="16" r="0.9" fill="#DDEBFF" fill-opacity="0.6" />
+      <circle cx="112" cy="44" r="0.8" fill="#DDEBFF" fill-opacity="0.5" />
+      <path d={hill(-6, 134, 58)} fill="#13264D" />
+      <ellipse cx="68" cy={G - 0.2} rx="9" ry="1.6" fill="#08101E" fill-opacity="0.7" />
+      <rect x="61" y="15" width="5" height={G - 15} fill="#1A315C" />
+      <rect x="61" y="15" width="1.8" height={G - 15} fill="#2C5299" />
+      <path d={back} fill="#24467F" />
+      <path d="M70 35H32L26 40.5" fill="none" stroke="#B9D3FA" stroke-opacity="0.6" stroke-width="0.7" />
+      <path d="M36 40.5H62" stroke="#9DBDF2" stroke-opacity="0.35" stroke-width="1.2" stroke-linecap="round" />
+      <path d={ahead} fill="#2C5299" />
+      <path d="M58 20H96L102 25.5" fill="none" stroke="#CFE0FF" stroke-opacity="0.75" stroke-width="0.7" />
+      <path d="M66 25.5H92" stroke="#DDEBFF" stroke-opacity="0.45" stroke-width="1.2" stroke-linecap="round" />
+    </>
+  )}
+
+  <path d={`M0 ${G}H${W}`} stroke={`url(#${id('horizon')})`} stroke-width="1"></path>
+</svg>
+
+<style>
+  .why-vignette {
+    display: block;
+    width: 8rem;
+    height: auto;
+    overflow: visible;
+  }
+</style>

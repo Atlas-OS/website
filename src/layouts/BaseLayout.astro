@@ -1,6 +1,7 @@
 ---
 import KapaWidget from '@/components/ui/KapaWidget.astro';
-import { Font } from 'astro:assets';
+import { Font, getImage } from 'astro:assets';
+import { managerPreview } from '@/utils/manager-preview';
 import { ClientRouter } from 'astro:transitions';
 import '@/styles/global.css';
 
@@ -9,6 +10,7 @@ interface Props {
 }
 
 const isHomePage = Astro.props.currentPath === '/';
+const heroImage = isHomePage ? await getImage(managerPreview) : null;
 const isDocsPage = Astro.props.currentPath?.startsWith('/docs/') ?? false;
 ---
 
@@ -17,12 +19,45 @@ const isDocsPage = Astro.props.currentPath?.startsWith('/docs/') ?? false;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--
+      The theme, before anything paints: the visitor's choice (utils/theme.ts), else their system
+      setting, else night. The ClientRouter replaces <html>'s attributes on navigation, so carry it over.
+    -->
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        let stored = null;
+        try {
+          stored = localStorage.getItem('theme');
+        } catch {}
+        root.dataset.theme =
+          stored === 'light' || stored === 'dark'
+            ? stored
+            : matchMedia('(prefers-color-scheme: light)').matches
+              ? 'light'
+              : 'dark';
+        if (window.__atlasThemeCarried) return;
+        window.__atlasThemeCarried = true;
+        document.addEventListener('astro:before-swap', (event) => {
+          event.newDocument.documentElement.dataset.theme = document.documentElement.dataset.theme;
+        });
+      })();
+    </script>
+    {heroImage && (
+      <link
+        rel="preload"
+        as="image"
+        imagesrcset={heroImage.srcSet.attribute}
+        imagesizes={managerPreview.sizes}
+        fetchpriority="high"
+      />
+    )}
     <ClientRouter fallback="swap" />
     <Font cssVariable="--font-sans-source" preload={[{ weight: 400, style: 'normal', subset: 'latin' }]} />
     <Font cssVariable="--font-display-source" preload={[{ weight: 600, style: 'normal', subset: 'latin' }]} />
     <Font cssVariable="--font-mono-source" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="color-scheme" content="dark" />
+    <meta name="color-scheme" content="dark light" />
     <meta name="theme-color" content="#1990fe" />
 
     <!-- Reveal animations only hide content once JavaScript has committed to running them. -->
@@ -46,7 +81,7 @@ const isDocsPage = Astro.props.currentPath?.startsWith('/docs/') ?? false;
 
     <slot name="head" />
   </head>
-  <body class:list={['overflow-x-hidden', { 'docs-page': isDocsPage }]}>
+  <body class:list={['overflow-x-clip', { 'docs-page': isDocsPage }]}>
     <slot name="body" />
     <slot />
     <KapaWidget />
@@ -66,5 +101,15 @@ const isDocsPage = Astro.props.currentPath?.startsWith('/docs/') ?? false;
 
   body {
     min-height: 100%;
+  }
+</style>
+
+<style is:global>
+  :root {
+    /*
+     * The gap between the screen's edge and what's pinned to it (the navbar's contents, the Ask AI
+     * button): 16px on a phone (390px) growing to 24px on a desktop (1440px).
+     */
+    --space-page-edge: clamp(1rem, 0.8142rem + 0.762vw, 1.5rem);
   }
 </style>

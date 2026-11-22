@@ -1,28 +1,274 @@
+/*
+ * The navbar is open: no band and no boxes. On the homepage and the other pages it sits in the
+ * flow at the top and floats transparently over what's behind it (the hero's sky, a page's own
+ * background); it scrolls away with the page on every screen, so it never sits over the hero as a
+ * band. Docs pin it with content scrolling beneath, so there it has the page's colour and a
+ * hairline the sidebar meets. With the phone menu open it takes a solid backdrop so the menu reads
+ * over the page.
+ */
 .site-header {
+  --nav-hairline: color-mix(in oklch, var(--color-fg) 6%, transparent);
+  border-block-end: 1px solid transparent;
+  background-color: transparent;
+}
+.site-header:has(.mobile-menu-open) {
+  border-block-end-color: var(--nav-hairline);
   background-color: var(--nav-bg-translucent);
+  backdrop-filter: blur(12px) saturate(1.2);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
 }
-
 .site-header[data-docs-page='true'] {
+  border-block-end-color: var(--nav-hairline);
   background-color: var(--bg-primary);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
+/* The phone menu: roomy rows divided by hairlines, the current page marked, the socials below. */
 .mobile-menu-content {
+  padding-block: 0.25rem 0.75rem;
+  padding-inline: 1rem;
+  border-block-end: 1px solid var(--nav-hairline);
   background-color: var(--nav-menu-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+.mobile-menu__links {
+  display: grid;
+}
+.mobile-menu__link {
+  display: flex;
+  min-height: 3.25rem;
+  align-items: center;
+  gap: 0.75rem;
+  padding-block: 0;
+  padding-inline: 0.25rem;
+  border-block-end: 1px solid var(--nav-hairline);
+  color: color-mix(in oklch, var(--color-fg) 75%, transparent);
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color 160ms var(--motion-ease-out);
+}
+.mobile-menu__link:last-child {
+  border-block-end: 0;
+}
+@media (hover: hover) and (pointer: fine) {
+  .mobile-menu__link:hover {
+    opacity: 1;
+    color: var(--color-fg);
+  }
+}
+.mobile-menu__link[aria-current='page'] {
+  opacity: 1;
+  color: var(--color-fg);
+}
+.mobile-menu__link[aria-current='page']::before {
+  content: '';
+  width: 0.375rem;
+  height: 0.375rem;
+  flex: none;
+  border-radius: 50%;
+  background: var(--color-primary);
+}
+.mobile-menu__chevron {
+  width: 1rem;
+  height: 1rem;
+  margin-inline-start: auto;
+  color: color-mix(in oklch, var(--color-fg) 35%, transparent);
+}
+.mobile-menu__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-block-start: 0.25rem;
+  padding-block: 0.75rem 0;
+  padding-inline: 0.25rem;
+  border-block-start: 1px solid var(--nav-hairline);
+}
+.mobile-menu__note {
+  color: color-mix(in oklch, var(--color-fg) 50%, transparent);
+  font-size: 0.875rem;
 }
 
-.header-scrolled {
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+/* Links: quiet until pointed at; the current page is in full ink with a short line under its name. */
+.nav-link {
+  position: relative;
+  display: inline-flex;
+  min-height: 2.5rem;
+  flex-shrink: 0;
+  align-items: center;
+  padding-block: 0;
+  padding-inline: 0.75rem;
+  border-radius: 0.375rem;
+  color: color-mix(in oklch, var(--color-fg) 62%, transparent);
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: color 200ms var(--motion-ease-out);
 }
-
-.nav-link:hover .nav-link-underline {
+@media (hover: hover) and (pointer: fine) {
+  .nav-link:hover {
+    opacity: 1;
+    color: color-mix(in oklch, var(--color-fg) 92%, transparent);
+  }
+}
+.nav-link[aria-current='page'] {
+  color: var(--color-fg);
+}
+.nav-link-underline {
+  position: absolute;
+  inset-inline: 0.75rem;
+  inset-block-end: 0.375rem;
+  height: 1.5px;
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--color-fg) 30%, transparent);
+  transform: scaleX(0);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .nav-link-underline {
+    transition: transform 300ms var(--motion-ease-out);
+  }
+}
+@media (hover: hover) and (pointer: fine) {
+  .nav-link:hover .nav-link-underline {
+    transform: scaleX(1);
+  }
+}
+.nav-link[aria-current='page'] .nav-link-underline {
+  background: var(--color-primary);
   transform: scaleX(1);
 }
 
-.nav-link-underline {
-  transform-origin: left;
+/*
+ * Icons stand on their own, no tiles: a quiet circle of light behind them on hover. Their display
+ * comes from the markup's utilities (inline-flex), so responsive ones like md:hidden still win.
+ * The circle is 40px; an invisible layer stretches what a finger can hit to 44px.
+ */
+.nav-icon {
+  position: relative;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: color-mix(in oklch, var(--color-fg) 65%, transparent);
+  cursor: pointer;
+  transition:
+    color 160ms var(--motion-ease-out),
+    background-color 160ms var(--motion-ease-out);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .nav-icon {
+    transition:
+      color 160ms var(--motion-ease-out),
+      background-color 160ms var(--motion-ease-out),
+      scale 160ms var(--motion-ease-out);
+  }
+}
+.nav-icon::after {
+  content: '';
+  position: absolute;
+  inset: min(0px, (100% - 44px) / 2);
+}
+@media (hover: hover) and (pointer: fine) {
+  .nav-icon:hover {
+    opacity: 1;
+    color: var(--color-fg);
+    background-color: color-mix(in oklch, var(--color-fg) 6%, transparent);
+  }
+}
+.nav-icon:active {
+  scale: 0.94;
+}
+.nav-icon__glyph {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+/*
+ * Optical sizes: the glyphs fill their boxes differently (the sun and moon are small marks, the
+ * search lens fills its box), so they're sized to look the same rather than measure the same.
+ */
+.theme-toggle .nav-icon__glyph {
+  width: 1.35rem;
+  height: 1.35rem;
+}
+.theme-toggle .theme-toggle__moon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+.nav-icon--search .nav-icon__glyph {
+  width: 1.1rem;
+  height: 1.1rem;
 }
 
+/*
+ * Search, in the same open language: a soft field with no outline, its shortcut a quiet hint
+ * rather than a boxed key. It brightens a little on hover, as the icons do.
+ */
+.nav-search {
+  position: relative;
+  min-height: 2.5rem;
+  width: 15rem;
+  align-items: center;
+  gap: 0.6rem;
+  padding-block: 0;
+  padding-inline: 0.9rem 0.5rem;
+  border-radius: 999px;
+  background-color: color-mix(in oklch, var(--color-fg) 5%, transparent);
+  color: color-mix(in oklch, var(--color-fg) 55%, transparent);
+  font-size: 0.875rem;
+  text-align: start;
+  cursor: pointer;
+  transition:
+    background-color 160ms var(--motion-ease-out),
+    color 160ms var(--motion-ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .nav-search:hover {
+    opacity: 1;
+    background-color: color-mix(in oklch, var(--color-fg) 8%, transparent);
+    color: color-mix(in oklch, var(--color-fg) 80%, transparent);
+  }
+}
+.nav-search__icon {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+}
+.nav-search__label {
+  flex: 1;
+  min-width: 0;
+  overflow: clip;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.nav-search__keys {
+  display: none;
+  gap: 0.2rem;
+  padding-block: 0.15rem;
+  padding-inline: 0.5rem;
+  border-radius: 999px;
+  background-color: color-mix(in oklch, var(--color-fg) 6%, transparent);
+  color: color-mix(in oklch, var(--color-fg) 50%, transparent);
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+@media (min-width: 1280px) {
+  .nav-search__keys {
+    display: inline-flex;
+  }
+}
+
+/* A hairline between the project's links and the theme switch. */
+.nav-divider {
+  width: 1px;
+  height: 1.25rem;
+  margin-block: 0;
+  margin-inline: 0.25rem;
+  background: color-mix(in oklch, var(--color-fg) 12%, transparent);
+}
 header button:focus-visible,
 header a:focus-visible {
   outline: 2px solid var(--color-primary);
@@ -30,20 +276,53 @@ header a:focus-visible {
 }
 
 @media (max-width: 767px) {
+  /*
+   * The menu is shown and hidden with the `hidden` attribute (utils/navbar.ts). `display` transitions
+   * discretely, so closing keeps it visible until the fade ends, and `@starting-style` gives opening
+   * a closed state to animate from instead of starting from `display: none`. It fades for everyone;
+   * it unrolls (its height growing) only where motion is welcome.
+   */
   .mobile-menu {
     max-height: 0;
     opacity: 0;
-    overflow: hidden;
+    overflow: clip;
+    transition:
+      opacity var(--motion-duration-normal, 250ms)
+        var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1)),
+      display var(--motion-duration-normal, 250ms) allow-discrete;
+  }
+
+  .mobile-menu.mobile-menu-open {
+    max-height: 420px;
+    opacity: 1;
+  }
+
+  @starting-style {
+    .mobile-menu.mobile-menu-open {
+      max-height: 0;
+      opacity: 0;
+    }
+  }
+}
+
+@media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+  .mobile-menu {
     transition:
       max-height var(--motion-duration-normal, 250ms)
         var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1)),
       opacity var(--motion-duration-normal, 250ms)
-        var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1));
+        var(--motion-ease-out, cubic-bezier(0.33, 1, 0.68, 1)),
+      display var(--motion-duration-normal, 250ms) allow-discrete;
   }
+}
 
-  .mobile-menu.mobile-menu-open {
-    max-height: 320px;
-    opacity: 1;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-  }
+/* The wordmark in moonlight by night, in navy ink by day. */
+.site-logo--day {
+  display: none;
+}
+:root[data-theme='light'] .site-logo--night {
+  display: none;
+}
+:root[data-theme='light'] .site-logo--day {
+  display: block;
 }

@@ -15,14 +15,9 @@ const prefetchStrategy = !external && href.startsWith('/') ? 'hover' : undefined
   data-astro-prefetch={prefetchStrategy}
   target={external ? '_blank' : undefined}
   rel={external ? 'noopener noreferrer' : undefined}
-  class={`nav-link relative inline-flex min-h-10 shrink-0 items-center whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium transition-colors duration-200 ease-out outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black ${
-    isActive ? 'text-primary' : 'text-white/60 hover:text-white/85'
-  } ${className}`}
+  aria-current={isActive ? 'page' : undefined}
+  class={`nav-link ${className}`}
 >
   <slot />
-  <div
-    class={`nav-link-underline bg-primary absolute right-0 -bottom-[10px] left-0 h-0.5 transition-transform duration-300 ease-out ${
-      isActive ? 'scale-x-100' : 'scale-x-0'
-    }`}
-  ></div>
+  <span class="nav-link-underline" aria-hidden="true"></span>
 </a>

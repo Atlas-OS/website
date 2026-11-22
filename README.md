@@ -49,7 +49,7 @@ Installing also runs `wrangler types`, which generates `worker-configuration.d.t
 
 The site deploys as a static Astro build served by Cloudflare Workers static assets. Legacy URLs from `redirects` in `astro.config.ts` are written to `_redirects` at build time, so they are real 301s rather than HTML pages.
 
-The Worker only runs for `/api/*` routes, which resolve signed Windows ISO download links for clients such as Atlas Manager. An hourly Cron Trigger refreshes cached links before they expire, and the `Canary` workflow checks the API daily.
+The Worker handles `/api/ms-iso/skus` and `/api/ms-iso/links` for Microsoft ISO downloads. Atlas Manager currently opens Microsoft's download page in the browser. For `/docs/*`, the Worker serves HTML or Markdown according to the request's `Accept` header. An hourly Cron Trigger refreshes cached links before they expire, and the `Canary` workflow checks the API daily.
 
 Required Cloudflare setup:
 

@@ -1,61 +1,700 @@
 ---
+/**
+ * Movie night at camp: the Linus Tech Tips video is showing on an outdoor screen, a sheet stretched
+ * between two poles with guy ropes out to the ground, pines either side. An old reel-to-reel
+ * projector on a crate in front throws its beam up to it through the dark. The screen is the same
+ * link to the video it has always been.
+ *
+ * The one orchestrated moment: as the scene reveals, the projector comes on and the picture
+ * appears on the sheet. Without JavaScript or with reduced motion it is simply showing. Phones
+ * get the screen alone. Light falls off with the shared glow curve (utils/glow.ts).
+ */
 import LinusThumbnail from '@/assets/linus-tech-tips-video-thumbnail.webp';
-import SectionTitle from '@/components/sections/common/SectionTitle.astro';
+import SectionHeading from '@/components/sections/common/SectionHeading.astro';
+import { glowStops } from '@/utils/glow';
+import { pinePath } from '@/utils/hero-summit-geometry';
 import { Icon } from 'astro-icon/components';
 import { Image } from 'astro:assets';
 
 const links = {
+  videoId: 'dc7CIkZcWYE',
   linusvideo: 'https://www.youtube.com/watch?v=dc7CIkZcWYE',
 };
 const videoTitle = "You don't need a new PC - AtlasOS E-Waste PC refresh";
+
+/*
+ * The set, in a 1000 × 660 box. The picture fills 150–850 across from y = 40 (16:9, so down to
+ * 433.75); the sheet's margin shows around it; the ground runs at y = 516 under the poles' feet,
+ * and the projector stands in front of it, nearer to us.
+ */
+const BOX = { width: 1000, height: 660 };
+const SCREEN = { x: 150, y: 40, width: 700 };
+const screenBottom = SCREEN.y + (SCREEN.width * 9) / 16;
+const GROUND = 516;
+/** The projector stands on its crate in front of the screen; its crate's front foot is at PROJECTOR. */
+const PROJECTOR = { x: 502, y: 642 };
+/** Where the beam appears from behind the projector's body, on its way to the screen. */
+const lens = { x: PROJECTOR.x + 10, y: PROJECTOR.y - 76 };
+const projectorAt = `translate(${PROJECTOR.x} ${PROJECTOR.y})`;
+const screenStyle = [
+  `--screen-x: ${(SCREEN.x / BOX.width) * 100}%`,
+  `--screen-y: ${(SCREEN.y / BOX.height) * 100}%`,
+  `--screen-w: ${(SCREEN.width / BOX.width) * 100}%`,
+].join('; ');
+
+/* The beam runs from the lens to the picture's corners; the screen hides all but its foot. */
+const beam = `M${lens.x - 5} ${lens.y}L${lens.x + 5} ${lens.y}L${SCREEN.x + SCREEN.width} ${SCREEN.y}L${SCREEN.x} ${SCREEN.y}Z`;
+/* Pines either side, outside the guy ropes so nothing crosses. */
+const pines = [
+  pinePath(18, GROUND + 1, 62),
+  pinePath(44, GROUND + 1, 42),
+  pinePath(956, GROUND + 1, 42),
+  pinePath(982, GROUND + 1, 62),
+];
+const reelHoles = (r: number) =>
+  [0, 1, 2].map((i) => {
+    const a = (i / 3) * Math.PI * 2 + Math.PI / 6;
+    return { cx: Math.round(Math.cos(a) * r * 10) / 10, cy: Math.round(Math.sin(a) * r * 10) / 10 };
+  });
+/*
+ * The projector, from behind and a little to its right, in its own units (origin at the crate's
+ * front foot): the crate in perspective, the body on it, and two reels on arms with the film
+ * looping between them. The faces towards the moon (top and left) are lit; the right side is in shade.
+ */
+const reels = [
+  // The far reel first, so the near one overlaps it.
+  { cx: 16, cy: -114, r: 13 },
+  { cx: -6, cy: -102, r: 16 },
+];
+const lensGlow = glowStops(0.6);
+const groundSpill = glowStops(0.1);
 ---
 
-<section class="relative mx-auto mt-32 mb-32 max-w-7xl px-4">
-  <div class="text-center" data-animate>
-    <SectionTitle>Linus Tech Tips</SectionTitle>
-  </div>
-  <div class="mb-16 text-center" data-animate>
-    <h3 class="mb-6 text-4xl font-semibold tracking-tight text-white italic md:text-5xl">
-      <span class="text-white/70">"</span>
-      If you can run Windows with <span class="text-primary">this kind of performance</span>... Jeepers Creepers.
-      <span class="text-white/70">"</span>
-    </h3>
-    <p class="mt-4 text-base text-white/45 md:text-lg">- Linus Sebastian</p>
-  </div>
+<section class="movie-section content-grid relative my-32" data-movie>
+  <figure class="movie-quote">
+    <blockquote cite={links.linusvideo}>
+      <SectionHeading align="center" near="“If you can run Windows with this kind of performance… Jeepers Creepers.”" />
+    </blockquote>
+    <figcaption class="movie-quote__by" data-animate>
+      Linus Sebastian, Linus Tech Tips
+    </figcaption>
+  </figure>
 
-  <a
-    href={links.linusvideo}
-    target="_blank"
-    rel="noreferrer noopener"
-    aria-label="Watch what Linus said about Atlas OS"
-    class="group block"
-    data-animate
-  >
-    <div class="media-outline relative mx-auto h-64 max-w-full overflow-hidden rounded-t-lg md:h-[546px]">
-      <div class="relative h-full w-full transform transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_center,hsla(209,100%,42%,0)_0%,hsla(209,100%,42%,0)_50%,hsla(209,100%,12%,0.4)_100%)] before:opacity-0 before:transition-opacity before:duration-500 before:ease-[cubic-bezier(0.22,1,0.36,1)] before:content-[''] before:group-hover:opacity-100">
+  <div class="movie" data-animate>
+    <svg class="movie-set" viewBox={`0 0 ${BOX.width} ${BOX.height}`} aria-hidden="true">
+      <defs>
+        <linearGradient id="movie-ground" x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0" stop-color="#DDEBFF" stop-opacity="0"></stop>
+          <stop offset="0.5" stop-color="#DDEBFF" stop-opacity="0.32"></stop>
+          <stop offset="1" stop-color="#DDEBFF" stop-opacity="0"></stop>
+        </linearGradient>
+        <linearGradient id="movie-sheet" x1="0" x2="0.4" y1="0" y2="1">
+          <stop offset="0" stop-color="#8794AF"></stop>
+          <stop offset="1" stop-color="#5E6C8A"></stop>
+        </linearGradient>
+        <linearGradient id="movie-beam" x1="0" x2="0" y1={lens.y} y2={screenBottom} gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#EAF3FF" stop-opacity="0.26"></stop>
+          <stop offset="1" stop-color="#C9DCFF" stop-opacity="0.07"></stop>
+        </linearGradient>
+        <!-- By day: the screen's shade on the ground below it, which the beam lights up. -->
+        <linearGradient
+          id="movie-shade"
+          x1="0"
+          x2="0"
+          y1={screenBottom}
+          y2={PROJECTOR.y}
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop offset="0" stop-color="#6F8CC0" stop-opacity="0.26"></stop>
+          <stop offset="0.6" stop-color="#6F8CC0" stop-opacity="0.1"></stop>
+          <stop offset="1" stop-color="#6F8CC0" stop-opacity="0"></stop>
+        </linearGradient>
+        <linearGradient id="movie-shade-sides" x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"></stop>
+          <stop offset="0.25" stop-color="#FFFFFF"></stop>
+          <stop offset="0.75" stop-color="#FFFFFF"></stop>
+          <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"></stop>
+        </linearGradient>
+        <mask id="movie-shade-mask" maskContentUnits="objectBoundingBox">
+          <rect width="1" height="1" fill="url(#movie-shade-sides)"></rect>
+        </mask>
+        <radialGradient id="movie-lens" cx={lens.x} cy={lens.y} r="30" gradientUnits="userSpaceOnUse">
+          {lensGlow.map(({ offset, opacity }) => (
+            <stop offset={offset} stop-color="#EAF3FF" stop-opacity={opacity} />
+          ))}
+        </radialGradient>
+        <radialGradient
+          id="movie-spill"
+          cx="500"
+          cy={GROUND + 4}
+          r="380"
+          gradientUnits="userSpaceOnUse"
+          gradientTransform={`translate(0 ${(GROUND + 4) * (1 - 30 / 380)}) scale(1 ${30 / 380})`}
+        >
+          {groundSpill.map(({ offset, opacity }) => (
+            <stop offset={offset} stop-color="#5AA8F5" stop-opacity={opacity} />
+          ))}
+        </radialGradient>
+      </defs>
+
+      <!-- Pines either side, and the ground the poles stand on -->
+      {pines.map((d) => (
+        <path d={d} fill="#13244A" />
+      ))}
+      <ellipse
+        class="movie-on movie-spill"
+        cx="500"
+        cy={GROUND + 4}
+        rx="380"
+        ry="30"
+        fill="url(#movie-spill)"
+      ></ellipse>
+      <path d={`M0 ${GROUND}H${BOX.width}`} stroke="url(#movie-ground)" stroke-width="1.2"></path>
+
+      <!-- Guy ropes from the pole tops out to their pegs -->
+      <path d="M126 250L60 519M874 250L940 519" stroke="#8FA6CF" stroke-opacity="0.4" stroke-width="1.2"></path>
+      <path d="M57 514l5 7M943 514l-5 7" stroke="#C3CFE6" stroke-opacity="0.55" stroke-width="1.6"></path>
+
+      <!-- The poles and crossbar, the sheet hung from it -->
+      <rect x="121" y="12" width="9" height={GROUND - 12} fill="#1A315C"></rect>
+      <rect x="121" y="12" width="3.4" height={GROUND - 12} fill="#2C5299"></rect>
+      <rect x="870" y="12" width="9" height={GROUND - 12} fill="#162A52"></rect>
+      <rect x="114" y={GROUND - 5} width="23" height="6" rx="1.5" fill="#13244A"></rect>
+      <rect x="863" y={GROUND - 5} width="23" height="6" rx="1.5" fill="#13244A"></rect>
+      <rect x="114" y="18" width="772" height="7" rx="2" fill="#1F3D75"></rect>
+      <path d="M114 18.5H886" stroke="#B9D3FA" stroke-opacity="0.45" stroke-width="1"></path>
+      <rect x="141" y="25" width="718" height={screenBottom + 9 - 25} rx="2" fill="url(#movie-sheet)"></rect>
+      <path
+        d={`M141 ${screenBottom + 9}V27a2 2 0 0 1 2-2H859`}
+        fill="none"
+        stroke="#DDEBFF"
+        stroke-opacity="0.35"
+        stroke-width="1.2"
+      ></path>
+      {[170, 340, 500, 660, 830].map((x) => (
+        <path d={`M${x} 22v8`} stroke="#0E1A33" stroke-width="2" />
+      ))}
+
+      <!-- By day only: the screen's shade on the ground, which is what lets the beam show in daylight -->
+      <rect
+        class="movie-day"
+        x={SCREEN.x}
+        y={screenBottom}
+        width={SCREEN.width}
+        height={PROJECTOR.y - screenBottom}
+        fill="url(#movie-shade)"
+        mask="url(#movie-shade-mask)"
+      ></rect>
+
+      <!-- The projector's beam, its foot showing below the sheet -->
+      <path class="movie-on movie-beam" d={beam} fill="url(#movie-beam)"></path>
+      <path
+        class="movie-on movie-beam-edge"
+        d={`M${lens.x - 5} ${lens.y}L${SCREEN.x + SCREEN.width} ${SCREEN.y}M${lens.x + 5} ${lens.y}L${SCREEN.x} ${SCREEN.y}`}
+        fill="none"
+      ></path>
+      {[
+        [470, 492, 1.2],
+        [522, 466, 1],
+        [494, 452, 0.9],
+        [530, 508, 0.8],
+        [490, 532, 1],
+        [512, 486, 0.7],
+      ].map(([cx, cy, r]) => (
+        <circle class="movie-on movie-mote" cx={cx} cy={cy} r={r} />
+      ))}
+      <circle class="movie-on" cx={lens.x} cy={lens.y} r="30" fill="url(#movie-lens)"></circle>
+
+      <!-- The projector on its crate, from behind and a little to its right -->
+      <g transform={projectorAt}>
+        <ellipse class="movie-shadow" cx="8" cy="1" rx="60" ry="5"></ellipse>
+
+        <!-- The crate -->
+        <path class="movie-crate-front" d="M-40 -34H40V0H-40Z"></path>
+        <path class="movie-crate-side" d="M40 -34L52 -44V-10L40 0Z"></path>
+        <path class="movie-crate-top" d="M-40 -34H40L52 -44H-28Z"></path>
+        <path class="movie-crate-planks" d="M-40 -23H40M-40 -12H40M-34 -34V0M34 -34V0"></path>
+        <path class="movie-rim" d="M-40 -34L-28 -44H52" stroke-opacity="0.3"></path>
+
+        <!-- The film, running from the near reel down into the body and up to the far reel -->
+        <path class="movie-film" d="M-19 -96L-15 -72M5 -78L8 -106"></path>
+
+        <!-- The reels on their arms -->
+        <path class="movie-arm" d="M-6 -72V-102M13 -78L16 -114"></path>
+        {reels.map(({ cx, cy, r }) => (
+          <g transform={`translate(${cx} ${cy}) rotate(-10) scale(0.86 1)`}>
+            <g class="movie-reel-spin" style={`--turn: ${r * 0.1}s`}>
+              <circle r={r} class="movie-reel" />
+              <circle r={r - 0.7} class="movie-reel-rim" />
+              {reelHoles(r * 0.52).map((hole) => (
+                <circle cx={hole.cx} cy={hole.cy} r={r * 0.21} class="movie-reel-hole" />
+              ))}
+              <circle r="2.4" class="movie-reel-hub" />
+              <path d={`M0 -2.4V${-r * 0.3}`} class="movie-reel-spoke" />
+            </g>
+          </g>
+        ))}
+
+        <!-- The body: its back towards us, its top lit, its right side in shade -->
+        <path class="movie-body-side" d="M18 -70L30 -80V-50L18 -40Z"></path>
+        <path class="movie-body-top" d="M-22 -70H18L30 -80H-10Z"></path>
+        <path class="movie-body-back" d="M-22 -70H18V-40H-22Z"></path>
+        <path class="movie-rim" d="M-22 -40V-70L-10 -80H30" stroke-opacity="0.55"></path>
+        <!-- A vent leaking a little of the lamp's light, a dial, and the crank on its side -->
+        <path class="movie-vent" d="M-16 -62H-3M-16 -58H-3M-16 -54H-3"></path>
+        <circle class="movie-dial" cx="8" cy="-56" r="3.4"></circle>
+        <path class="movie-crank" d="M24 -60L33 -55"></path>
+        <circle class="movie-crank-knob" cx="33" cy="-55" r="1.7"></circle>
+        <circle class="movie-crank-hub" cx="24" cy="-60" r="2.2"></circle>
+      </g>
+    </svg>
+
+    <div class="movie-screen" style={screenStyle} data-movie-screen>
+      <a
+        href={links.linusvideo}
+        target="_blank"
+        rel="noreferrer noopener"
+        aria-label="Play what Linus said about Atlas OS"
+        class="movie-screen__link"
+        data-youtube-id={links.videoId}
+        data-youtube-title={`Linus Tech Tips: ${videoTitle}`}
+      >
         <Image
           src={LinusThumbnail}
           alt="Linus Tech Tips video thumbnail"
           layout="full-width"
           width={1280}
           height={720}
-          class="absolute inset-0 z-0 h-full w-full object-cover select-none"
+          class="movie-screen__picture"
           loading="lazy"
           draggable="false"
         />
-        <div class="absolute inset-0 z-10 flex items-center justify-center">
-          <div class="flex h-[120px] w-[120px] items-center justify-center rounded-full bg-black/40 shadow-[var(--shadow-surface)] backdrop-blur-lg transition-[background-color,box-shadow,scale] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:bg-black/50 group-hover:shadow-[var(--shadow-surface-hover),0_8px_30px_rgba(0,0,0,0.4)] group-active:scale-[0.96]">
-            <Icon
-              name="tabler:player-play"
-              class="h-[45px] w-[45px] text-white/80 transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:text-white"
-            />
-          </div>
-        </div>
-      </div>
-      <div class="pointer-events-none absolute right-0 bottom-0 left-0 z-20 h-[30%] bg-linear-to-t from-[var(--bg-primary)] to-transparent"></div>
+        <span class="movie-play" aria-hidden="true">
+          <Icon name="tabler:player-play-filled" class="movie-play__icon" />
+          <span class="movie-play__spinner"></span>
+        </span>
+      </a>
     </div>
-  </a>
-  <div class="mt-4 text-center" data-animate>
-    <p class="text-sm text-white/60 md:text-base">({videoTitle})</p>
   </div>
+  <p class="movie-title" data-animate>
+    {videoTitle}
+  </p>
 </section>
+
+<style>
+  /* The quote and the set fill the content column up to their own widths, centred in it. */
+  .movie-quote {
+    width: 100%;
+    max-width: 52rem;
+    margin-block: 0 3.5rem;
+    margin-inline: auto;
+    text-align: center;
+  }
+  .movie-quote__by {
+    margin-block-start: 1.25rem;
+    color: var(--summit-text-muted);
+    font-size: 0.9375rem;
+  }
+
+  /* ---- The set ---- */
+
+  .movie {
+    /* The beam's light, and the projector's steel, rims and shaded faces. */
+    --beam-light: oklch(0.961 0.019 255.5);
+    --projector-steel: oklch(0.766 0.057 261.2);
+    --projector-rim: oklch(0.794 0.083 260.4);
+    --projector-shade: oklch(0.334 0.094 262);
+    position: relative;
+    width: 100%;
+    max-width: 66rem;
+    margin-block: 0;
+    margin-inline: auto;
+  }
+  .movie-set {
+    display: none;
+  }
+
+  .movie-screen {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 9;
+    overflow: clip;
+    border-radius: 2px;
+    /* An unlit sheet until the picture arrives. */
+    background: oklch(0.351 0.057 265);
+  }
+  .movie-screen__link {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: block;
+  }
+  .movie-screen__link[hidden] {
+    display: none;
+  }
+  .movie-screen__link:active {
+    opacity: 1;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .movie-screen__link:hover {
+      opacity: 1;
+    }
+  }
+  .movie-screen__link:focus-visible {
+    outline: 2px solid var(--summit-blue);
+    outline-offset: 10px;
+  }
+  /* The player, under the still frame until it's ready to take over. */
+  .movie-screen :global(iframe) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  .movie-screen__picture {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    user-select: none;
+  }
+  /* Projected light, not a lit panel: the picture sits a touch soft and dim on the cloth at its edges. */
+  .movie-screen::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: radial-gradient(
+      ellipse 75% 75% at 50% 48%,
+      transparent 62%,
+      color-mix(in oklch, var(--summit-abyss) 28%, transparent)
+    );
+    pointer-events: none;
+  }
+
+  .movie-play {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    z-index: 1;
+    display: grid;
+    width: 4.5rem;
+    height: 4.5rem;
+    place-items: center;
+    border-radius: 50%;
+    translate: -50% -50%;
+    background: color-mix(in oklch, var(--summit-abyss) 55%, transparent);
+    color: white;
+    box-shadow:
+      inset 1px 1px 0 color-mix(in oklch, var(--summit-moonlight) 35%, transparent),
+      0 0 0 1px color-mix(in oklch, var(--summit-moonlight) 18%, transparent),
+      0 12px 32px color-mix(in oklch, var(--summit-shadow) 45%, transparent);
+    backdrop-filter: blur(12px);
+    transition: background-color 300ms var(--motion-ease-out);
+  }
+  .movie-play :global(svg) {
+    width: 1.75rem;
+    height: 1.75rem;
+    margin-inline-start: 0.2rem;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .movie-screen__link:hover .movie-play {
+      background-color: color-mix(in oklch, var(--summit-abyss) 72%, transparent);
+      scale: 1.06;
+    }
+  }
+  .movie-screen__link:active .movie-play {
+    scale: 0.96;
+  }
+  /* While the player loads, the play button turns into a small reel spinning up (a still ring under reduced motion). */
+  .movie-play__spinner {
+    position: absolute;
+    inset: 0.9rem;
+    border: 2px solid color-mix(in oklch, white 25%, transparent);
+    border-block-start-color: white;
+    border-radius: 50%;
+    opacity: 0;
+  }
+  .movie-screen__link[aria-busy] :global(.movie-play__icon) {
+    opacity: 0;
+  }
+  .movie-screen__link[aria-busy] .movie-play__spinner {
+    opacity: 1;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .movie-play {
+      transition:
+        background-color 300ms var(--motion-ease-out),
+        scale 300ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .movie-screen__link[aria-busy] .movie-play__spinner {
+      animation: movie-spin 0.8s linear infinite;
+    }
+  }
+  /* Once playing, the projected-light vignette steps off the player's controls. */
+  .movie[data-projector] .movie-screen::after {
+    opacity: 0;
+  }
+
+  .movie-title {
+    margin-block-start: 2rem;
+    color: var(--summit-text-muted);
+    font-size: 0.9375rem;
+    text-align: center;
+  }
+
+  /* Wider screens: the whole set, the picture placed on its sheet. */
+  @media (min-width: 768px) {
+    .movie {
+      aspect-ratio: 1000 / 660;
+    }
+    .movie-set {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+    .movie-screen {
+      position: absolute;
+      inset-block-start: var(--screen-y);
+      inset-inline-start: var(--screen-x);
+      width: var(--screen-w);
+    }
+    .movie-title {
+      margin-block-start: 0.5rem;
+    }
+    /* Pointing at the screen turns the projector up a little. */
+    @media (hover: hover) and (pointer: fine) {
+      .movie:has(.movie-screen__link:hover) .movie-beam {
+        filter: brightness(1.35);
+      }
+    }
+  }
+
+  .movie-beam {
+    transition: filter 300ms var(--motion-ease-out);
+  }
+  .movie-beam-edge {
+    stroke: var(--beam-light);
+    stroke-opacity: 0.08;
+    stroke-width: 1;
+  }
+  .movie-mote {
+    fill: var(--beam-light);
+    fill-opacity: 0.45;
+  }
+  /* The screen's shade only shows by day (styles/daylight.css). */
+  .movie-day {
+    display: none;
+  }
+
+  /* ---- The projector and its crate ---- */
+
+  .movie-shadow {
+    fill: oklch(0.146 0.028 263.1);
+    fill-opacity: 0.5;
+  }
+  .movie-crate-front {
+    fill: oklch(0.344 0.04 50.5);
+  }
+  .movie-crate-side {
+    fill: oklch(0.286 0.031 51.6);
+  }
+  .movie-crate-top {
+    fill: oklch(0.41 0.047 57.2);
+  }
+  .movie-crate-planks {
+    fill: none;
+    stroke: oklch(0.246 0.026 50.8);
+    stroke-opacity: 0.8;
+    stroke-width: 1;
+  }
+  .movie-rim {
+    fill: none;
+    stroke: oklch(0.861 0.061 258.4);
+    stroke-width: 1;
+    stroke-linejoin: round;
+  }
+  .movie-film {
+    fill: none;
+    stroke: oklch(0.222 0.052 263.4);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+  }
+  .movie-arm {
+    fill: none;
+    stroke: oklch(0.417 0.106 261.5);
+    stroke-width: 2.4;
+    stroke-linecap: round;
+  }
+  .movie-reel {
+    fill: oklch(0.369 0.103 261.6);
+  }
+  .movie-reel-rim {
+    fill: none;
+    stroke: var(--projector-rim);
+    stroke-opacity: 0.5;
+    stroke-width: 1;
+  }
+  .movie-reel-hole {
+    fill: var(--summit-abyss);
+  }
+  .movie-reel-hub,
+  .movie-crank-hub {
+    fill: var(--projector-steel);
+  }
+  .movie-body-back {
+    fill: oklch(0.4 0.104 260.1);
+  }
+  .movie-body-top {
+    fill: oklch(0.5 0.123 258.6);
+  }
+  .movie-body-side {
+    fill: var(--projector-shade);
+  }
+  /* The lamp's light leaking through the vent. */
+  .movie-vent {
+    fill: none;
+    stroke: oklch(0.819 0.098 244.3);
+    stroke-opacity: 0.55;
+    stroke-width: 1.4;
+    stroke-linecap: round;
+  }
+  .movie-dial {
+    fill: var(--projector-shade);
+    stroke: var(--projector-rim);
+    stroke-opacity: 0.5;
+  }
+  .movie-crank {
+    fill: none;
+    stroke: var(--projector-steel);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+  }
+  .movie-crank-knob {
+    fill: oklch(0.889 0.043 257.1);
+  }
+  .movie-reel-spoke {
+    stroke: var(--projector-steel);
+    stroke-width: 1.2;
+    stroke-linecap: round;
+  }
+
+  /*
+   * ---- The projector at work ----
+   * It follows the player (utils/youtube-screen.ts sets `data-projector`): spinning up while the
+   * video loads, then reels turning, film running through, the beam and the vent flickering and
+   * dust drifting up the beam while it plays. Paused or ended, it stops where it is. Off screen
+   * its loops rest; under reduced motion it stays still and the video simply plays.
+   */
+  .movie-reel-spin {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .movie[data-projector='loading'] .movie-reel-spin {
+      animation: movie-spin calc(var(--turn) * 3) linear infinite;
+    }
+    .movie[data-projector='playing'] .movie-reel-spin {
+      animation: movie-spin var(--turn) linear infinite;
+    }
+    .movie[data-projector='playing'] :is(.movie-beam, .movie-vent) {
+      animation: movie-flicker 0.36s steps(1, end) infinite;
+    }
+    .movie[data-projector='playing'] .movie-film {
+      stroke-dasharray: 1.6 1.6;
+      animation: movie-film 0.4s linear infinite;
+    }
+    .movie[data-projector='playing'] .movie-mote {
+      animation: movie-drift 5s linear calc(var(--i) * -0.9s) infinite;
+    }
+    .movie[data-paused] :is(.movie-reel-spin, .movie-beam, .movie-vent, .movie-film, .movie-mote) {
+      animation-play-state: paused;
+    }
+  }
+
+  @keyframes movie-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  /* A projector's light, never quite steady. */
+  @keyframes movie-flicker {
+    0% {
+      opacity: 1;
+    }
+    25% {
+      opacity: 0.86;
+    }
+    50% {
+      opacity: 0.97;
+    }
+    75% {
+      opacity: 0.9;
+    }
+  }
+  @keyframes movie-film {
+    to {
+      stroke-dashoffset: -3.2;
+    }
+  }
+  @keyframes movie-drift {
+    0% {
+      opacity: 0;
+      transform: translate(0, 0);
+    }
+    20%,
+    80% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translate(6px, -44px);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /*
+     * The one orchestrated moment: the projector comes on, then the picture lands on the sheet.
+     * `html[data-motion]` is only set with scripts on and motion allowed.
+     */
+    :global(html[data-motion]) .movie .movie-on {
+      transition: opacity 700ms cubic-bezier(0.33, 1, 0.68, 1) 450ms;
+    }
+    :global(html[data-motion]) .movie .movie-screen__picture {
+      transition: opacity 900ms cubic-bezier(0.33, 1, 0.68, 1) 850ms;
+    }
+    :global(html[data-motion]) .movie:not(.animate-in) :is(.movie-on, .movie-screen__picture) {
+      opacity: 0;
+    }
+  }
+</style>
+
+<script>
+  import { pauseWhenOffscreen } from '@/utils/in-view';
+  import { onPageLoad } from '@/utils/page-lifecycle';
+  import { initYouTubeScreen } from '@/utils/youtube-screen';
+
+  onPageLoad((signal) => {
+    const movie = document.querySelector<HTMLElement>('[data-movie] .movie');
+    const screen = movie?.querySelector<HTMLElement>('[data-movie-screen]');
+    if (!movie || !screen) return;
+
+    // The projector runs with the video: `data-projector` is loading, playing, paused or ended.
+    initYouTubeScreen(
+      screen,
+      (state) => {
+        if (state === 'idle') delete movie.dataset.projector;
+        else movie.dataset.projector = state;
+      },
+      signal
+    );
+    pauseWhenOffscreen('[data-movie] .movie', signal);
+    signal.addEventListener('abort', () => delete movie.dataset.projector, { once: true });
+  });
+</script>

@@ -31,23 +31,23 @@ function isExternalUrl(url: string): boolean {
       <div class="flex items-start gap-3">
         <Icon
           name={item.icon}
-          class={`h-5 w-5 ${item.disabled ? 'text-white/40' : 'text-primary'} mt-0.5 flex-shrink-0`}
+          class={`h-5 w-5 ${item.disabled ? 'text-fg/40' : 'text-primary'} mbs-0.5 flex-shrink-0`}
         />
         <div>
           {item.href ? (
             <a
               href={item.href}
-              class={`mb-1 block text-base leading-normal font-semibold text-primary hover:opacity-80 ${item.disabled ? 'text-white/60' : ''}`}
+              class={`mbe-1 block text-base leading-normal font-semibold text-primary hover:opacity-80 ${item.disabled ? 'text-fg/60' : ''}`}
               {...linkAttrs}
             >
               {item.title}
             </a>
           ) : (
-            <p class={`mb-1 text-base leading-normal font-semibold ${item.disabled ? 'text-white/60' : ''}`}>
+            <p class={`mbe-1 text-base leading-normal font-semibold ${item.disabled ? 'text-fg/60' : ''}`}>
               {item.title}
             </p>
           )}
-          <p class={`text-sm ${item.disabled ? 'text-white/50' : 'text-white/70'}`}>{item.description}</p>
+          <p class={`text-sm ${item.disabled ? 'text-fg/50' : 'text-fg/70'}`}>{item.description}</p>
         </div>
       </div>
     );

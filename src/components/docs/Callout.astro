@@ -29,9 +29,9 @@ const displayTitle = title ?? variant.title;
   data-type={type}
 >
   <div class="flex items-start gap-3">
-    <Icon name={variant.icon} class:list={['mt-0.5 h-5 w-5 shrink-0', variant.color]} aria-hidden="true" />
+    <Icon name={variant.icon} class:list={['mbs-0.5 h-5 w-5 shrink-0', variant.color]} aria-hidden="true" />
     <div class="min-w-0 flex-1">
-      <p class:list={['mb-1 text-sm font-semibold', variant.color]}>{displayTitle}</p>
+      <p class:list={['mbe-1 text-sm font-semibold', variant.color]}>{displayTitle}</p>
       <div class="callout-content text-sm leading-relaxed text-[var(--docs-text-secondary)]">
         <slot />
       </div>
@@ -41,18 +41,19 @@ const displayTitle = title ?? variant.title;
 
 <style is:global>
   .callout-content p {
-    margin: 0 0 0.5rem;
+    margin-block: 0 0.5rem;
+    margin-inline: 0;
     color: var(--docs-text-secondary);
     font-size: 0.875rem;
     line-height: 1.6;
   }
 
   .callout-content p:last-child {
-    margin-bottom: 0;
+    margin-block-end: 0;
   }
 
   .callout-content strong {
-    color: white;
+    color: var(--color-fg);
     font-weight: 600;
   }
 
@@ -63,14 +64,17 @@ const displayTitle = title ?? variant.title;
     transition: opacity var(--motion-duration-fast) var(--motion-ease-out);
   }
 
-  .callout-content a:hover {
-    opacity: 0.8;
+  @media (hover: hover) and (pointer: fine) {
+    .callout-content a:hover {
+      opacity: 0.8;
+    }
   }
 
   .callout-content ul,
   .callout-content ol {
-    margin: 0.5rem 0;
-    padding-left: 1.25rem;
+    margin-block: 0.5rem;
+    margin-inline: 0;
+    padding-inline-start: 1.25rem;
     list-style: none;
   }
 
@@ -79,7 +83,7 @@ const displayTitle = title ?? variant.title;
   }
 
   .callout-content li {
-    margin-bottom: 0.25rem;
+    margin-block-end: 0.25rem;
     color: var(--docs-text-secondary);
   }
 
@@ -90,8 +94,8 @@ const displayTitle = title ?? variant.title;
   .callout-content ul li::before {
     content: '';
     position: absolute;
-    left: -1.25rem;
-    top: 0.65em;
+    inset-inline-start: -1.25rem;
+    inset-block-start: 0.65em;
     width: 0.35em;
     height: 0.35em;
     background: var(--color-primary);

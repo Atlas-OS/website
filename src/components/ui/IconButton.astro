@@ -12,7 +12,7 @@ interface Props {
 
 const { id, icon, label, controls, expanded, class: className = '' } = Astro.props;
 
-const buttonClasses = `inline-flex size-10 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap text-white shadow-[var(--shadow-surface)] transition-[background-color,box-shadow,opacity,scale] duration-200 outline-none hover:bg-white/[0.04] hover:opacity-80 hover:shadow-[var(--shadow-surface-hover)] active:scale-[0.96] disabled:pointer-events-none disabled:opacity-50 ${className}`;
+const buttonClasses = `nav-icon inline-flex disabled:pointer-events-none disabled:opacity-50 ${className}`;
 ---
 
 <button
@@ -22,8 +22,7 @@ const buttonClasses = `inline-flex size-10 shrink-0 cursor-pointer items-center 
   aria-controls={controls}
   aria-expanded={expanded !== undefined ? expanded : undefined}
   class={buttonClasses}
-  style="background-color: var(--bg-primary);"
 >
-  <Icon name={icon} class="h-5 w-5" aria-hidden="true" />
+  <Icon name={icon} class="nav-icon__glyph" aria-hidden="true" />
   {label && <span class="sr-only">{label}</span>}
 </button>

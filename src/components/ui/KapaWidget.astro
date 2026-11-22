@@ -5,7 +5,7 @@ import { Icon } from 'astro-icon/components';
 <button
   id="ask-ai-button"
   type="button"
-  class="fixed right-4 bottom-4 z-20 inline-flex min-h-12 items-center gap-2 rounded-full bg-[#0b6fbd] px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-black/30 transition-[background-color,box-shadow,transform] duration-200 hover:bg-[#095a99] hover:shadow-xl focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-secondary focus-visible:outline-none active:scale-[0.97] disabled:cursor-wait disabled:opacity-80 sm:right-6 sm:bottom-6"
+  class="fixed inset-e-(--space-page-edge) inset-be-(--space-page-edge) z-20 inline-flex min-h-12 items-center gap-2 rounded-full [--ask-ai-bg:oklch(0.5328_0.1465_249.97)] bg-(--ask-ai-bg) px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-black/30 transition-[background-color,box-shadow] duration-200 hover:bg-[color-mix(in_oklch,var(--ask-ai-bg),black_13.5%)] hover:shadow-xl focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-2 focus-visible:ring-offset-secondary active:scale-[0.97] disabled:cursor-wait disabled:opacity-80 motion-safe:transition-[background-color,box-shadow,scale]"
   aria-haspopup="dialog"
 >
   <Icon name="tabler:sparkles" class="h-5 w-5" aria-hidden="true" />

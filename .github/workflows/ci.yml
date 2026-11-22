@@ -67,6 +67,11 @@ jobs:
       - name: Build
         run: bun run build
 
+      - name: Smoke test the built site with Cloudflare headers
+        run: |
+          bun x playwright install --with-deps chromium
+          bun run test:preview
+
       - name: Validate Cloudflare Worker bundle
         run: bun run deploy:dry-run
 

@@ -15,11 +15,11 @@ const actionClass =
 ---
 
 <div
-  class="page-actions not-prose mt-12 flex flex-wrap items-center gap-x-2 gap-y-1 border-t border-white/[0.06] pt-4"
+  class="page-actions not-prose mbs-12 flex flex-wrap items-center gap-x-2 gap-y-1 border-bs border-fg/[0.06] pbs-4"
   data-component="page-actions"
   data-pagefind-ignore
 >
-  <a href={editUrl} target="_blank" rel="noopener noreferrer" class:list={[actionClass, '-ml-2']}>
+  <a href={editUrl} target="_blank" rel="noopener noreferrer" class:list={[actionClass, '-ms-2']}>
     <Icon name="tabler:brand-github" class="h-4 w-4 shrink-0" aria-hidden="true" />
     Edit this page on GitHub
   </a>
@@ -36,6 +36,6 @@ const actionClass =
   .page-actions-divider {
     width: 1px;
     height: 1rem;
-    background: rgba(255, 255, 255, 0.1);
+    background: color-mix(in oklch, var(--color-fg) 10%, transparent);
   }
 </style>

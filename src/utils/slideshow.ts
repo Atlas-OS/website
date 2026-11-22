@@ -10,7 +10,8 @@ const DOT_INACTIVE = 'bg-white/30';
 
 /**
  * Auto-advancing testimonial slideshow with dot navigation and touch swipe support.
- * Pauses while hovered and honours reduced-motion preferences by never auto-advancing.
+ * Pauses while hovered, off screen, or in a hidden tab, and honours reduced-motion preferences by
+ * never auto-advancing. The current slide's control carries `aria-current`.
  */
 export function initSlideshow(signal: AbortSignal): void {
   const container = document.getElementById('player-slideshow-container');
@@ -25,6 +26,9 @@ export function initSlideshow(signal: AbortSignal): void {
   let current = 0;
   let timer: number | undefined;
   let touchStart: { x: number; y: number } | null = null;
+  // Autoplay runs only while the slideshow is on screen, its tab is visible and it isn't hovered.
+  let onScreen = true;
+  let hovered = false;
 
   const dots = slides.map((_, index) => {
     const button = document.createElement('button');
@@ -60,6 +64,7 @@ export function initSlideshow(signal: AbortSignal): void {
       slide.style.zIndex = isActive ? '10' : '0';
       dots[i]?.classList.toggle(DOT_ACTIVE, isActive);
       dots[i]?.classList.toggle(DOT_INACTIVE, !isActive);
+      dots[i]?.parentElement?.setAttribute('aria-current', String(isActive));
     });
   }
 
@@ -69,7 +74,7 @@ export function initSlideshow(signal: AbortSignal): void {
   }
 
   function start(): void {
-    if (!autoplay) return;
+    if (!autoplay || !onScreen || hovered || document.visibilityState === 'hidden') return;
     stop();
     timer = window.setInterval(() => show(current + 1), SLIDE_DURATION_MS);
   }
@@ -79,8 +84,35 @@ export function initSlideshow(signal: AbortSignal): void {
     start();
   }
 
-  container.addEventListener('mouseenter', stop, { signal });
-  container.addEventListener('mouseleave', start, { signal });
+  container.addEventListener(
+    'mouseenter',
+    () => {
+      hovered = true;
+      stop();
+    },
+    { signal },
+  );
+  container.addEventListener(
+    'mouseleave',
+    () => {
+      hovered = false;
+      start();
+    },
+    { signal },
+  );
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+      const entry = entries[entries.length - 1];
+      if (!entry) return;
+      onScreen = entry.isIntersecting;
+      if (onScreen) start();
+      else stop();
+    });
+    observer.observe(container);
+    signal.addEventListener('abort', () => observer.disconnect(), { once: true });
+  }
+  document.addEventListener('visibilitychange', restart, { signal });
 
   container.addEventListener(
     'touchstart',

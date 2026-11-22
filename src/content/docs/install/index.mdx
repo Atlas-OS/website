@@ -11,22 +11,23 @@ import QuickLinksGrid from '@/components/docs/QuickLinksGrid.astro';
 Atlas Manager is the only way to install Atlas.
 It checks your PC, installs Windows and Microsoft Store updates, guides you through your choices and then installs Atlas.
 
-Install Atlas on a fresh installation of Windows 11, before you add your own apps and files.
+For a first installation, choose **Create an Atlas ISO** on Home. The media lets you choose driver settings before Windows setup.
+If you already have a fresh installation of Windows 11, you can choose **Install Atlas** before adding apps or restoring files.
 If Atlas is already installed, follow [Update Atlas](/docs/upgrade/) instead.
 
 ## Choose your route
 
 <QuickLinksGrid columns={{ md: 2 }}>
   <QuickLinkCard href="/docs/install/requirements/" icon="tabler:checklist" title="Before you install" description="Check your Windows release, edition and account, and back up." />
+  <QuickLinkCard href="/docs/install/iso/" icon="tabler:disc" title="Create an Atlas ISO" description="Create installation media for this PC or another one." />
   <QuickLinkCard href="/docs/install/manager/" icon="tabler:device-desktop" title="Install with Atlas Manager" description="Prepare your PC and install Atlas from Windows." />
-  <QuickLinkCard href="/docs/install/iso/" icon="tabler:disc" title="Create an Atlas ISO (Beta)" description="Create installation media for this PC or another one." />
   <QuickLinkCard href="/docs/install/setup/" icon="tabler:circle-check" title="First setup" description="Check protection, updates and drivers after installing." />
 </QuickLinksGrid>
 
 ## What you download
 
-You only need **Atlas Manager**, a single program called `AtlasManager.exe`.
-Download it from the [AtlasOS home page](/) or the [latest Atlas release on GitHub](https://github.com/Atlas-OS/Atlas/releases/latest).
+Get **Atlas Manager** (`AtlasManager.exe`) from the [AtlasOS home page](/) or the [latest Atlas release on GitHub](https://github.com/Atlas-OS/Atlas/releases/latest).
+To create media, you also need a [Windows 11 ISO from Microsoft](/docs/install/iso/#what-you-need).
 Atlas Manager downloads the Atlas package for the latest release itself.
 
 An Atlas ISO is a copy of Microsoft's Windows installation media with Atlas Manager and Atlas added.

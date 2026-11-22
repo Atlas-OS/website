@@ -1,5 +1,3 @@
-const SCROLL_THRESHOLD = 10;
-
 function setMobileMenuOpen(menu: HTMLElement, button: HTMLElement, isOpen: boolean): void {
   menu.classList.toggle('mobile-menu-open', isOpen);
   menu.hidden = !isOpen;
@@ -20,26 +18,31 @@ function setupMobileMenu(signal: AbortSignal): void {
     { signal },
   );
 
+  // A tap anywhere outside the open menu closes it.
+  document.addEventListener(
+    'click',
+    event => {
+      if (!menu.classList.contains('mobile-menu-open')) return;
+      const target = event.target as Node | null;
+      if (target && (menu.contains(target) || button.contains(target))) return;
+      setMobileMenuOpen(menu, button, false);
+    },
+    { signal },
+  );
+
   document.addEventListener(
     'keydown',
     event => {
-      if (event.key === 'Escape') setMobileMenuOpen(menu, button, false);
+      if (event.key !== 'Escape' || !menu.classList.contains('mobile-menu-open')) return;
+      // Closing hides the menu; if focus was inside it, hand it back to the button that opened it.
+      const focusWasInside = menu.contains(document.activeElement);
+      setMobileMenuOpen(menu, button, false);
+      if (focusWasInside) button.focus();
     },
     { signal },
   );
 }
 
-function setupHeaderScroll(signal: AbortSignal): void {
-  const header = document.getElementById('main-header');
-  if (!header) return;
-
-  const update = () =>
-    header.classList.toggle('header-scrolled', window.scrollY > SCROLL_THRESHOLD);
-  update();
-  window.addEventListener('scroll', update, { passive: true, signal });
-}
-
 export function initNavbar(signal: AbortSignal): void {
   setupMobileMenu(signal);
-  setupHeaderScroll(signal);
 }

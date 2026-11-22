@@ -178,8 +178,7 @@ function renderGrouped(
 }
 
 interface SpotlightElements {
-  modal: HTMLElement;
-  backdrop: HTMLElement;
+  modal: HTMLDialogElement;
   input: HTMLInputElement;
   list: HTMLElement;
   idle: HTMLElement | null;
@@ -191,14 +190,14 @@ interface SpotlightElements {
 
 function getElements(): SpotlightElements | null {
   const modal = document.getElementById('spotlight-modal');
-  const backdrop = document.getElementById('spotlight-backdrop');
   const input = document.getElementById('spotlight-input');
   const list = document.getElementById('spotlight-list');
-  if (!modal || !backdrop || !(input instanceof HTMLInputElement) || !list) return null;
+  if (!(modal instanceof HTMLDialogElement) || !(input instanceof HTMLInputElement) || !list) {
+    return null;
+  }
 
   return {
     modal,
-    backdrop,
     input,
     list,
     idle: document.getElementById('spotlight-idle'),
@@ -214,7 +213,7 @@ export function initSpotlight(signal: AbortSignal): void {
   const elements = getElements();
   if (!elements) return;
 
-  const { modal, backdrop, input, list, idle, empty, emptyQuery, loading, footer } = elements;
+  const { modal, input, list, idle, empty, emptyQuery, loading, footer } = elements;
   const triggers = document.querySelectorAll<HTMLElement>(
     '#navbar-search-button, #navbar-search-button-mobile',
   );
@@ -222,9 +221,8 @@ export function initSpotlight(signal: AbortSignal): void {
   let selectedIndex = -1;
   let searchRun = 0;
   let lastFocused: HTMLElement | null = null;
-  let inertBackground: Array<{ element: HTMLElement; wasInert: boolean }> = [];
 
-  const isOpen = () => modal.classList.contains('open');
+  const isOpen = () => modal.open;
   const items = () => [...list.querySelectorAll<HTMLElement>('.spotlight-item')];
 
   let sectionLabels: Record<string, string> = {};
@@ -232,21 +230,6 @@ export function initSpotlight(signal: AbortSignal): void {
     sectionLabels = JSON.parse(list.dataset.sections ?? '{}') as Record<string, string>;
   } catch {
     // Fall back to ungrouped labels if the embedded map is malformed.
-  }
-
-  function setBackgroundInert(isInert: boolean): void {
-    if (!isInert) {
-      for (const { element, wasInert } of inertBackground) element.inert = wasInert;
-      inertBackground = [];
-      return;
-    }
-    if (inertBackground.length > 0) return;
-    for (const child of document.body.children) {
-      if (!(child instanceof HTMLElement) || child === modal || child === backdrop) continue;
-      if (child.matches('script, style')) continue;
-      inertBackground.push({ element: child, wasInert: child.inert });
-      child.inert = true;
-    }
   }
 
   function setState(state: 'idle' | 'loading' | 'empty' | 'results'): void {
@@ -286,19 +269,14 @@ export function initSpotlight(signal: AbortSignal): void {
       : active;
 
     closeSidebar();
-    setBackgroundInert(true);
     warm(input.value);
 
-    modal.inert = false;
-    modal.setAttribute('aria-hidden', 'false');
-    modal.classList.add('open');
-    backdrop.classList.add('open');
-    backdrop.setAttribute('aria-hidden', 'false');
+    // As a modal dialog it keeps focus inside, turns the page behind it inert and still (see
+    // Spotlight.astro), and closes on Escape.
+    modal.showModal();
     input.setAttribute('aria-expanded', 'true');
     for (const trigger of triggers) trigger.setAttribute('aria-expanded', 'true');
-    document.body.style.overflow = 'hidden';
-
-    window.setTimeout(() => input.focus(), 80);
+    input.focus({ preventScroll: true });
   }
 
   function reset(): void {
@@ -311,17 +289,14 @@ export function initSpotlight(signal: AbortSignal): void {
   }
 
   function close(): void {
-    if (!isOpen()) return;
-    modal.classList.remove('open');
-    modal.setAttribute('aria-hidden', 'true');
-    modal.inert = true;
-    backdrop.classList.remove('open');
-    backdrop.setAttribute('aria-hidden', 'true');
+    if (isOpen()) modal.close();
+  }
+
+  /** However the dialog closed (Escape, a click outside, a result, the shortcut), tidy up after it. */
+  function handleClose(): void {
     input.setAttribute('aria-expanded', 'false');
     for (const trigger of triggers) trigger.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
     reset();
-    setBackgroundInert(false);
     lastFocused?.focus();
     lastFocused = null;
   }
@@ -388,29 +363,24 @@ export function initSpotlight(signal: AbortSignal): void {
     }
   }
 
-  function trapFocus(event: KeyboardEvent): void {
-    if (event.key !== 'Tab' || !isOpen()) return;
-    const focusable = [
-      ...modal.querySelectorAll<HTMLElement>(
-        'input, a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
-      ),
-    ].filter(element => element.getClientRects().length > 0);
-    const first = focusable[0];
-    const last = focusable.at(-1);
-    if (!first || !last) return;
-
-    if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault();
-      last.focus();
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault();
-      first.focus();
-    }
-  }
-
   for (const trigger of triggers) trigger.addEventListener('click', open, { signal });
-  backdrop.addEventListener('click', close, { signal });
-  modal.addEventListener('keydown', trapFocus, { signal });
+  modal.addEventListener('close', handleClose, { signal });
+
+  // A click on the backdrop reaches the dialog itself, outside its box: close, as a tap outside does.
+  modal.addEventListener(
+    'click',
+    event => {
+      if (event.target !== modal) return;
+      const box = modal.getBoundingClientRect();
+      const inside =
+        event.clientX >= box.left &&
+        event.clientX <= box.right &&
+        event.clientY >= box.top &&
+        event.clientY <= box.bottom;
+      if (!inside) close();
+    },
+    { signal },
+  );
 
   document.getElementById('spotlight-input-container')?.addEventListener(
     'click',
@@ -473,8 +443,6 @@ export function initSpotlight(signal: AbortSignal): void {
         event.preventDefault();
         if (isOpen()) close();
         else open();
-      } else if (event.key === 'Escape' && isOpen()) {
-        close();
       }
     },
     { signal },
@@ -483,8 +451,6 @@ export function initSpotlight(signal: AbortSignal): void {
   signal.addEventListener(
     'abort',
     () => {
-      setBackgroundInert(false);
-      document.body.style.overflow = '';
       searchRun += 1;
     },
     { once: true },

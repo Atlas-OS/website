@@ -1,78 +1,275 @@
 ---
-import Logo from '@/assets/atlas-logo.svg';
-import ReviewStar from '@/assets/review-star.svg';
-import ReviewStars from '@/assets/review-stars.svg';
-import ReviewImage from '@/assets/review.png';
-import Verified from '@/assets/verified.svg';
-import { Image, Picture } from 'astro:assets';
+/**
+ * What does our community think? The rating is five stars rising across the night sky on the moon's
+ * arc, with the review read in the open beneath them. When the sky scrolls into view the stars come
+ * out one after another, left to right; without JavaScript or with reduced motion they are simply lit.
+ */
+import SectionHeading from '@/components/sections/common/SectionHeading.astro';
+import { cssGlow, DAY_PATCH, glowStops, NIGHT_PATCH } from '@/utils/glow';
+import { Icon } from 'astro-icon/components';
+
+const r2 = (value: number) => Math.round(value * 100) / 100;
+
+/** A five-pointed star centred on (cx, cy). */
+const star = (cx: number, cy: number, outer: number, inner = outer * 0.47) =>
+  `M${Array.from({ length: 10 }, (_, i) => {
+    const radius = i % 2 === 0 ? outer : inner;
+    const angle = (Math.PI / 5) * i - Math.PI / 2;
+    return `${r2(cx + radius * Math.cos(angle))} ${r2(cy + radius * Math.sin(angle))}`;
+  }).join('L')}Z`;
+
+/* The sky: 360 × 150, the five rating stars on a shallow arc, the middle one highest. */
+const ratingStars = [
+  { cx: 40, cy: 104, r: 19 },
+  { cx: 110, cy: 74, r: 21 },
+  { cx: 180, cy: 62, r: 23 },
+  { cx: 250, cy: 74, r: 21 },
+  { cx: 320, cy: 104, r: 19 },
+];
+const arc = 'M-10 130C80 52 280 52 370 130';
+const faintStars: Array<[number, number, number, number]> = [
+  [14, 30, 0.9, 0.5],
+  [70, 18, 0.8, 0.45],
+  [146, 22, 1, 0.55],
+  [214, 12, 0.8, 0.4],
+  [292, 26, 0.9, 0.5],
+  [348, 46, 0.8, 0.4],
+  [76, 132, 0.8, 0.35],
+  [286, 138, 0.8, 0.35],
+];
+const smallStar = star(8, 8, 7);
+/** Each star's own light: small and faint, brightest on the highest star. */
+const haloStops = glowStops(1);
+/** The patch of deeper night the arc hangs in, as in the Open source sky. */
+const skyPatch = [
+  `--patch-night: ${cssGlow(NIGHT_PATCH, 0.26, 'ellipse 50% 50% at 50% 46%')}`,
+  `--patch-day: ${cssGlow(DAY_PATCH, 0.5, 'ellipse 50% 50% at 50% 46%')}`,
+].join('; ');
 ---
 
-<section class="relative mx-auto mt-32 mb-32 max-w-7xl px-4">
-  <div class="flex flex-col items-start lg:flex-row">
-    <div class="flex-1" data-animate>
-      <h2 class="mb-6 max-w-md text-4xl font-semibold tracking-tight text-white md:text-5xl">
-        What does our <span class="text-primary">community</span> think?
-      </h2>
-      <p class="max-w-lg leading-relaxed text-white/80">
-        Our community is fantastic and reviews us with a significant amount of positive feedback. We take great pride in
-        our high rating, which reflects our commitment for improving Atlas.
-      </p>
-      <div class="mt-10 flex flex-wrap items-center gap-5 text-white/50">
-        <Image
-          src={ReviewStars}
-          alt="Review star"
-          class="h-[30px] w-[166px] select-none"
-          loading="lazy"
-          draggable="false"
-        />
-        <span class="font-semibold">Many Positive reviews</span>
-      </div>
-    </div>
-    <div class="relative ml-auto hidden w-fit lg:block" data-animate>
-      <div class="h-[251px] w-[587px] overflow-hidden">
-        <Picture
-          src={ReviewImage}
-          alt="Atlas review"
-          formats={['avif', 'webp']}
-          fallbackFormat="webp"
-          layout="constrained"
-          width={587}
-          height={251}
-          widths={[587, 1174]}
-          sizes="587px"
-          quality={72}
-          class="h-full w-full object-cover select-none"
-          loading="lazy"
-          draggable="false"
-        />
-      </div>
-      <div class="absolute bottom-[-60px] left-[-60px] flex w-full max-w-[500px] items-center gap-8 rounded-md border border-white/[0.06] bg-secondary/80 p-5 backdrop-blur-md">
-        <Image src={Logo} alt="Atlas logo" class="h-[94px] w-[106px] select-none" loading="lazy" draggable="false" />
-        <div>
-          <span class="mb-1 block text-xl font-bold text-white">atlasos.net</span>
-          <p class="mb-1 text-xs text-white/50">Reviews 184 - Excellent</p>
-          <div class="flex items-center">
-            <Image
-              src={ReviewStars}
-              alt="Review stars"
-              class="h-[18px] w-[100px] select-none"
-              loading="lazy"
-              draggable="false"
-            />
-          </div>
-          <div class="mt-2.5 flex items-center gap-2.5 rounded-md bg-green-300 px-3 py-1.5">
-            <Image src={Verified} alt="Verified" class="h-4 w-4 select-none" loading="lazy" draggable="false" />
-            <p class="m-0 text-xs font-semibold text-black">VERIFIED COMPANY</p>
-          </div>
-        </div>
-        <Image
-          src={ReviewStar}
-          alt="Review star"
-          class="absolute top-[-35px] right-[-35px] select-none"
-          loading="lazy"
-          draggable="false"
-        />
-      </div>
-    </div>
+<section class="reviews relative mx-auto my-32 max-w-7xl px-4">
+  <div class="reviews-intro">
+    <SectionHeading near="What does our community think?" />
+    <p class="summit-lede" data-animate>
+      Our community is fantastic and reviews us with a significant amount of positive feedback. We take great pride in
+      our high rating, which reflects our commitment for improving Atlas.
+    </p>
   </div>
+
+  <div class="reviews-rating" data-animate>
+    <div class="reviews-patch" style={skyPatch} aria-hidden="true"></div>
+    <svg class="reviews-sky" viewBox="0 0 360 150" role="img" aria-label="Rated 5 out of 5 stars">
+      <defs>
+        <linearGradient id="reviews-arc" x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0" stop-color="#DDEBFF" stop-opacity="0"></stop>
+          <stop offset="0.5" stop-color="#DDEBFF" stop-opacity="0.16"></stop>
+          <stop offset="1" stop-color="#DDEBFF" stop-opacity="0"></stop>
+        </linearGradient>
+        <linearGradient id="reviews-star-fill" x1="0" x2="0.6" y1="0" y2="1">
+          <stop offset="0" stop-color="#FFFFFF"></stop>
+          <stop offset="1" stop-color="#BCD4FA"></stop>
+        </linearGradient>
+        <radialGradient id="reviews-star-halo">
+          {haloStops.map(({ offset, opacity }) => (
+            <stop offset={offset} stop-color="#C4DCFF" stop-opacity={opacity} />
+          ))}
+        </radialGradient>
+      </defs>
+      {faintStars.map(([x, y, r, o]) => (
+        <circle cx={x} cy={y} r={r} fill="#DDEBFF" fill-opacity={o} />
+      ))}
+      <path d={arc} fill="none" stroke="url(#reviews-arc)" stroke-width="1" stroke-dasharray="2 4"></path>
+      {ratingStars.map(({ cx, cy, r }, i) => (
+        <g class="reviews-star" style={`--i: ${i}; transform-origin: ${cx}px ${cy}px`}>
+          <circle cx={cx} cy={cy} r={r * 1.9} fill="url(#reviews-star-halo)" opacity={0.12 + (r - 19) * 0.02} />
+          <path
+            d={star(cx, cy, r)}
+            fill="url(#reviews-star-fill)"
+            stroke="#EAF3FF"
+            stroke-width="2.5"
+            stroke-linejoin="round"
+          />
+        </g>
+      ))}
+    </svg>
+
+    <p class="reviews-grade">Excellent</p>
+    <p class="reviews-count">184 reviews of atlasos.net</p>
+    <p class="reviews-verified">
+      <Icon name="tabler:rosette-discount-check" aria-hidden="true" />
+      Verified company
+    </p>
+  </div>
+
+  <figure class="reviews-review" data-animate>
+    <blockquote>
+      <p class="reviews-review__title">Honest review</p>
+      <p>
+        Atlas OS made my PC so much better. I used to run stock Windows 11 and it was very slow. Once I upgraded to
+        Atlas, my PC is running so much better. Oh and, it has 50 processes in the background and only takes 15 GB of
+        storage! Very good OS for any PC
+      </p>
+      <p>I recommend it</p>
+    </blockquote>
+    <figcaption>
+      <span class="reviews-review__name">David Lucas</span>
+      <span class="reviews-review__stars" role="img" aria-label="5 out of 5 stars">
+        {Array.from({ length: 5 }, () => (
+          <svg viewBox="0 0 16 16" aria-hidden="true">
+            <path d={smallStar} />
+          </svg>
+        ))}
+      </span>
+    </figcaption>
+  </figure>
 </section>
+
+<style>
+  /* Phones: the copy, then the sky, then the review. Wide screens: the sky on the left. */
+  .reviews {
+    display: grid;
+    grid-template-areas: 'intro' 'rating' 'review';
+    gap: 3.5rem;
+  }
+  .reviews-intro {
+    grid-area: intro;
+  }
+  .reviews-intro .summit-lede {
+    margin-block-start: 1.5rem;
+    max-width: 34rem;
+  }
+  .reviews-rating {
+    position: relative;
+    grid-area: rating;
+    text-align: center;
+  }
+  .reviews-patch {
+    position: absolute;
+    background: var(--patch-night);
+    inset-block: -18% -10%;
+    inset-inline: -16%;
+    z-index: -1;
+    pointer-events: none;
+  }
+  .reviews-review {
+    grid-area: review;
+  }
+  @media (min-width: 1024px) {
+    .reviews {
+      grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+      grid-template-areas: 'rating intro' 'rating review';
+      gap: 2.5rem 6rem;
+      align-items: start;
+    }
+    .reviews-rating {
+      align-self: center;
+    }
+  }
+
+  /* ---- The sky ---- */
+
+  .reviews-sky {
+    display: block;
+    width: 100%;
+    max-width: 30rem;
+    height: auto;
+    margin-block: 0;
+    margin-inline: auto;
+    overflow: visible;
+  }
+  /* The stars come out only while scroll motion runs (html[data-motion]); otherwise they are lit. */
+  .reviews-star {
+    transform-box: view-box;
+  }
+  :global(html[data-motion]) .reviews-star {
+    transition:
+      opacity 600ms var(--motion-ease-out),
+      transform 700ms cubic-bezier(0.34, 1.4, 0.64, 1);
+    transition-delay: calc(200ms + var(--i) * 140ms);
+  }
+  :global(html[data-motion]) .reviews-rating:not(.animate-in) .reviews-star {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+
+  .reviews-grade {
+    margin-block-start: 0.5rem;
+    padding-block-end: 0.06em;
+    background: linear-gradient(in srgb to bottom, var(--summit-lit) 35%, var(--summit-lit-end));
+    background-clip: text;
+    color: transparent;
+    font-family: var(--font-display);
+    font-size: 2.25rem;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+  }
+  .reviews-count {
+    margin-block-start: 0.25rem;
+    color: var(--summit-text-muted);
+  }
+  .reviews-verified {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-block-start: 0.75rem;
+    color: oklch(0.812 0.1 247);
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  .reviews-verified :global(svg) {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  /* ---- The review, in the open ---- */
+
+  .reviews-review {
+    position: relative;
+    max-width: 34rem;
+    padding-inline-start: 1.5rem;
+  }
+  /* A moonlit stroke down the left edge, fading out towards the foot. */
+  .reviews-review::before {
+    content: '';
+    position: absolute;
+    inset-block: 0.3rem;
+    inset-inline: 0 auto;
+    width: 1px;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in oklch, var(--summit-moonlit) 40%, transparent),
+      color-mix(in oklch, var(--summit-moonlit) 4%, transparent)
+    );
+  }
+  .reviews-review blockquote {
+    display: grid;
+    gap: 0.75rem;
+    color: color-mix(in oklch, var(--color-fg) 82%, transparent);
+    font-size: 1.0625rem;
+    line-height: 1.7;
+  }
+  .reviews-review__title {
+    color: var(--color-fg);
+    font-weight: 600;
+  }
+  .reviews-review figcaption {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-block-start: 1.25rem;
+  }
+  .reviews-review__name {
+    color: var(--summit-text-muted);
+    font-weight: 500;
+  }
+  .reviews-review__stars {
+    display: inline-flex;
+    gap: 0.15rem;
+  }
+  .reviews-review__stars svg {
+    width: 0.8rem;
+    height: 0.8rem;
+    fill: oklch(0.904 0.046 262.5);
+  }
+</style>

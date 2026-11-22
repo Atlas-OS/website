@@ -4,7 +4,7 @@ metaDescription: "Use Atlas Manager to create a Windows 11 ISO with Atlas includ
 description: Create Windows installation media with Atlas Manager.
 order: 5
 sidebar:
-  label: "ISO and USB (Beta)"
+  label: "ISO and USB"
 ---
 
 import Callout from '@/components/docs/Callout.astro';
@@ -13,8 +13,7 @@ import Figure from '@/components/docs/Figure.astro';
 Atlas Manager can make a copy of a Windows 11 ISO with Atlas added, then write it to a USB drive.
 Use it to reinstall Windows with Atlas on this PC or another one.
 
-<Callout type="warning" title="Beta">
-  ISO creation and USB writing are in beta.
+<Callout type="warning" title="Before reinstalling Windows">
   Try the ISO in a virtual machine before using it on a PC, and back up your files before you reinstall Windows.
 </Callout>
 
@@ -25,14 +24,14 @@ Creating the ISO doesn't install anything on the PC that makes it, or change you
 ## What you need
 
 - **A Windows 11 ISO from Microsoft**, for a [supported release](https://github.com/Atlas-OS/Atlas/blob/main/docs/windows-release-policy.md#supported-releases).
-  It can be x64 or Arm64, and must contain at least one edition other than Home or LTSC.
+  Choose Microsoft's [x64 download](https://www.microsoft.com/software-download/windows11) or [Arm64 download](https://www.microsoft.com/software-download/windows11arm64) for the PC you will install on. The ISO must contain at least one edition other than Home or LTSC.
   Media with its own answer file or setup folder is refused.
 - **An Atlas package**: Atlas Manager can download the latest one for you.
 - **Free space on a local NTFS or ReFS drive** for the new ISO and its working files.
-  Allow about five times the size of the Windows ISO, plus a few more gigabytes.
+  Allow five times the size of the source ISO, plus twice the unpacked Atlas package size and another 4 GiB.
 - **Administrator permission.**
   Without it, the page offers only **Relaunch as administrator**.
-- **A USB drive** from 8 GB to 2 TB, if you want an installation USB.
+- **A USB drive** from 8 GiB to 2 TiB, if you want an installation USB.
   Writing it erases the drive.
 
 ## 1. Files
@@ -82,7 +81,7 @@ An older Atlas package may only offer **Make Atlas choices after sign-in**.
 Settings, Windows Security and Store apps work behind it.
 **Continue in Windows** lets you leave it whenever no update, installation, media job or restart countdown is running.
 
-<a href="/assets/images/manager/iso-preferences.png" target="_blank" rel="noopener noreferrer" aria-label="Open the ISO preferences screenshot at full size">
+<a href="/assets/images/manager/iso-preferences.png" target="_blank" rel="noopener noreferrer">
 <Figure
   src="/assets/images/manager/iso-preferences.png"
   alt="Atlas Manager's ISO creation, showing the driver choices and the three ways to set up Atlas."

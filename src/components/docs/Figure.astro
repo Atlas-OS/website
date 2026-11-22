@@ -27,12 +27,12 @@ const imageClass = 'block h-auto w-full rounded-[calc(var(--docs-radius-md)-1px)
       <Image src={src} alt={alt} width={width} height={height} loading={loading} class={imageClass} />
     )}
   </div>
-  {caption && <figcaption class="mt-3 text-center text-sm text-[var(--docs-text-muted)]">{caption}</figcaption>}
+  {caption && <figcaption class="mbs-3 text-center text-sm text-[var(--docs-text-muted)]">{caption}</figcaption>}
 </figure>
 
 <style>
   .docs-figure-frame {
-    overflow: hidden;
+    overflow: clip;
     border: 1px solid var(--docs-surface-border);
     border-radius: var(--docs-radius-md);
     background: var(--docs-surface-bg);

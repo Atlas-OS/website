@@ -1,134 +1,303 @@
 ---
+/**
+ * The site footer, open on the page itself: no band and no ground, just the last of the home hero's
+ * night drawn as a horizon line, like the section connectors grown wide. The Atlas summit stands
+ * small and far off on it with its flag, the hero's camp sits on the knoll to the right, asleep at
+ * the end of the page (FooterCamp.astro), a few last stars hang above, and the lines fade out
+ * towards both edges. The links sit below on the page background.
+ *
+ * Used on every page with the default layout and on the 404 page, so it relies on nothing from
+ * the homepage. Decorative SVG; the only script pauses the sleeping camp's loops off screen.
+ */
+import FooterCamp from '@/components/layout/FooterCamp.astro';
+import { BACK, CAMP, FLAG, HORIZON, NEAR, STARS, SUMMIT } from '@/utils/footer-horizon';
 import { Icon } from 'astro-icon/components';
 
 const year = new Date().getFullYear();
+const view = `0 0 ${HORIZON.width} ${HORIZON.height}`;
+
+const links = [
+  { href: 'https://github.com/orgs/Atlas-OS/discussions', label: 'Discussions', external: true },
+  { href: '/docs/', label: 'Documentation' },
+  { href: '/docs/faq/', label: 'FAQ' },
+  { href: '/about/', label: 'About' },
+  { href: '/contact/', label: 'Contact' },
+  { href: '/privacy-policy/', label: 'Privacy Policy' },
+  { href: 'https://ko-fi.com/atlasos', label: 'Support Us', external: true },
+  { href: 'https://eclean.gg/', label: 'eclean', external: true },
+];
+const socials = [
+  { href: 'https://github.com/Atlas-OS/Atlas', label: 'GitHub', icon: 'tabler:brand-github' },
+  { href: 'https://discord.com/invite/atlasos', label: 'Discord', icon: 'tabler:brand-discord' },
+  { href: 'https://x.com/atlasos', label: 'X (Twitter)', icon: 'tabler:brand-x' },
+];
+const externalAttrs = { target: '_blank', rel: 'noopener noreferrer' };
 ---
 
-<section class="relative mx-auto mt-32 bg-secondary">
-  <div class="relative mx-auto h-px max-w-7xl bg-linear-to-r from-transparent via-white/10 to-transparent px-4">
-    <div class="absolute top-0 left-1/2 h-px w-[30px] -translate-x-1/2 bg-white/70"></div>
-  </div>
-  <footer class="pb-6">
-    <div class="mx-auto mt-8 flex max-w-7xl flex-col items-center text-white">
-      <div class="mt-8 flex flex-wrap justify-center gap-6 text-sm text-white/70">
-        <a
-          href="https://github.com/orgs/Atlas-OS/discussions"
-          class="hover:text-primary"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Discussions
-        </a>
-        <a href="/docs/" class="hover:text-primary">
-          Documentation
-        </a>
-        <a href="/docs/faq/" class="hover:text-primary">
-          FAQ
-        </a>
-        <a href="/about/" class="hover:text-primary">
-          About
-        </a>
-        <a href="/contact/" class="hover:text-primary">
-          Contact
-        </a>
-        <a href="/privacy-policy/" class="hover:text-primary">
-          Privacy Policy
-        </a>
-        <a href="https://ko-fi.com/atlasos" class="hover:text-primary" rel="noopener noreferrer" target="_blank">
-          Support Us
-        </a>
-        <a href="https://eclean.gg/" class="hover:text-primary" rel="noopener noreferrer" target="_blank">
-          eclean
-        </a>
+<footer class="site-footer relative mbs-24">
+  <svg class="footer-horizon" viewBox={view} preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
+    <defs>
+      <!-- The summit shows only above the back range's line, and thins as it nears it. -->
+      <linearGradient id="footer-summit-fade" x1="0" x2="0" y1={SUMMIT.apex[1]} y2="96" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#FFFFFF"></stop>
+        <stop offset="0.55" stop-color="#FFFFFF" stop-opacity="0.9"></stop>
+        <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.25"></stop>
+      </linearGradient>
+      <mask
+        id="footer-above-range"
+        maskUnits="userSpaceOnUse"
+        x="0"
+        y="0"
+        width={HORIZON.width}
+        height={HORIZON.height}
+      >
+        <path d={`${BACK.edge}L${HORIZON.width + 40} -10L-40 -10Z`} fill="url(#footer-summit-fade)"></path>
+      </mask>
+      <linearGradient id="footer-back-rim" x1="0" x2={HORIZON.width} y1="0" y2="0" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#C9DFFF" stop-opacity="0.32"></stop>
+        <stop offset="0.4" stop-color="#A9CBFF" stop-opacity="0.2"></stop>
+        <stop offset="1" stop-color="#7FAAF0" stop-opacity="0.06"></stop>
+      </linearGradient>
+      <radialGradient id="footer-near-rim" cx={CAMP.fire[0]} cy={CAMP.fire[1]} r="300" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#E2B48E" stop-opacity="0.24"></stop>
+        <stop offset="0.25" stop-color="#B9A7B8" stop-opacity="0.13"></stop>
+        <stop offset="1" stop-color="#9DBDF2" stop-opacity="0.1"></stop>
+      </radialGradient>
+      <linearGradient
+        id="footer-summit-rim"
+        x1="0"
+        x2="0"
+        y1={SUMMIT.apex[1]}
+        y2={SUMMIT.apex[1] + 48}
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop offset="0" stop-color="#E6F1FF" stop-opacity="0.75"></stop>
+        <stop offset="1" stop-color="#E6F1FF" stop-opacity="0"></stop>
+      </linearGradient>
+    </defs>
+
+    {STARS.map(([x, y, r, o]) => (
+      <circle cx={x} cy={y} r={r} fill="#DDEBFF" fill-opacity={o} />
+    ))}
+
+    <!-- The summit, far off: the Atlas mark rising from the range's line, its left face to the moon -->
+    <g mask="url(#footer-above-range)">
+      <path d={SUMMIT.shade} fill="#14264A"></path>
+      <path d={SUMMIT.lit} fill="#1B3463"></path>
+      <path d={SUMMIT.capShade} fill="#3D5891"></path>
+      <path d={SUMMIT.capLit} fill="#5B78B2"></path>
+      <path d={SUMMIT.notch} fill="#081530" fill-opacity="0.75"></path>
+      <path d={SUMMIT.ledge} stroke="#B9D6FF" stroke-opacity="0.3" stroke-width="0.8"></path>
+      <path d={SUMMIT.rim} stroke="url(#footer-summit-rim)" stroke-width="1.1" stroke-linecap="round"></path>
+    </g>
+    <rect
+      x={FLAG.x - 0.6}
+      y={FLAG.top - 0.6}
+      width="1.2"
+      height={FLAG.bottom - FLAG.top + 0.6}
+      rx="0.6"
+      fill="#A9CEFF"
+      fill-opacity="0.55"
+    ></rect>
+    <path d={FLAG.cloth} fill="#2B9BFF"></path>
+    <path d={FLAG.fold} fill="#8CCBFF"></path>
+
+    <!-- The back range: a moonlit line, open below -->
+    <path
+      d={BACK.edge}
+      fill="none"
+      stroke="url(#footer-back-rim)"
+      stroke-width="1"
+      vector-effect="non-scaling-stroke"
+    ></path>
+
+    <!-- The near ridge: a fainter line, warming towards the camp -->
+    <path
+      d={NEAR.edge}
+      fill="none"
+      stroke="url(#footer-near-rim)"
+      stroke-width="1"
+      vector-effect="non-scaling-stroke"
+    ></path>
+
+    <!-- The camp on the knoll, the last warmth on the page -->
+    <FooterCamp />
+  </svg>
+
+  <div class="content-grid">
+    <div class="footer-inner">
+      <nav class="footer-nav" aria-label="Footer">
+        <ul class="footer-links">
+          {links.map(({ href, label, external }) => (
+            <li>
+              <a href={href} class="footer-link" {...(external ? externalAttrs : {})}>
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <div class="footer-socials">
+        {socials.map(({ href, label, icon }) => (
+          <a href={href} {...externalAttrs} aria-label={label} class="footer-social">
+            <Icon name={icon} class="h-5 w-5" />
+            <span class="sr-only">{label}</span>
+          </a>
+        ))}
       </div>
-    </div>
-    <div class="my-6 h-px bg-white/5"></div>
-    <div class="mx-auto flex max-w-7xl flex-col items-center justify-between px-4 text-xs text-white md:flex-row">
-      <p class="text-white/70">
-        &copy; {year} AtlasOS. Website under
-        <a
-          href="https://creativecommons.org/licenses/by-nc-nd/4.0/"
-          class="underline hover:text-primary"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+      <p class="footer-legal">
+        &copy; {year} AtlasOS. Website under{' '}
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" class="footer-license" {...externalAttrs}>
           CC BY-NC-ND 4.0
         </a>
       </p>
-      <div class="mt-4 flex items-center space-x-4 md:mt-0">
-        <a
-          href="https://github.com/Atlas-OS/Atlas"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="GitHub"
-          class="inline-flex min-h-10 min-w-10 items-center justify-center text-white hover:text-primary"
-        >
-          <Icon name="tabler:brand-github" class="h-5 w-5" />
-          <span class="sr-only">GitHub</span>
-        </a>
-        <a
-          href="https://discord.com/invite/atlasos"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Discord"
-          class="inline-flex min-h-10 min-w-10 items-center justify-center text-white hover:text-primary"
-        >
-          <Icon name="tabler:brand-discord" class="h-5 w-5" />
-          <span class="sr-only">Discord</span>
-        </a>
-        <a
-          href="https://x.com/atlasos"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="X (Twitter)"
-          class="inline-flex min-h-10 min-w-10 items-center justify-center text-white hover:text-primary"
-        >
-          <Icon name="tabler:brand-x" class="h-5 w-5" />
-          <span class="sr-only">X (Twitter)</span>
-        </a>
-      </div>
     </div>
-  </footer>
-  <div class="dot-pattern-container">
-    <canvas id="footer-dot-pattern" class="opacity-35"></canvas>
   </div>
-</section>
-
-<script>
-  import { initFooterDotPattern } from '@/utils/footer-dot-pattern';
-
-  document.addEventListener('astro:page-load', initFooterDotPattern);
-</script>
+</footer>
 
 <style>
-  footer {
-    position: relative;
-    z-index: 2;
-    pointer-events: none;
+  .site-footer {
+    /* The room above the links grows a little with the screen. */
+    --footer-top: clamp(1.75rem, 1.564rem + 0.763vw, 2.25rem);
   }
-  footer a,
-  footer button {
-    pointer-events: auto;
-  }
-  footer div,
-  footer p {
-    pointer-events: none;
-  }
-  .dot-pattern-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    pointer-events: auto;
-    z-index: 1;
-    mask-image: linear-gradient(to top, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 100%);
-    -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 100%);
-  }
-  #footer-dot-pattern {
-    width: 100%;
-    height: 100%;
+
+  /*
+   * The horizon is sliced to the footer's width, keeping its bottom and centre (see
+   * utils/footer-horizon.ts), so it grows with the screen but never crops the summit or the camp.
+   * Its height follows the width alone (no rem term) so the picture keeps its proportions.
+   */
+  .footer-horizon {
     display: block;
+    width: 100%;
+    height: clamp(5rem, 8.75vw, 9.375rem);
+    pointer-events: none;
+    user-select: none;
+    /* The lines fade out towards both edges instead of running off the page. */
+    mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+  }
+  @media (min-width: 768px) {
+    .footer-horizon {
+      mask-image: linear-gradient(to right, transparent, black 18%, black 82%, transparent);
+    }
+  }
+
+  .footer-inner {
+    display: grid;
+    grid-template-areas:
+      'links'
+      'socials'
+      'legal';
+    justify-items: center;
+    gap: 1.5rem;
+    padding-block-start: var(--footer-top);
+    /* Room at the very end of the page for the fixed Ask AI button. */
+    padding-block-end: 6.5rem;
+    text-align: center;
+  }
+  @media (min-width: 768px) {
+    .footer-inner {
+      grid-template-areas:
+        'links socials'
+        'legal legal';
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      justify-items: start;
+      gap: 1rem 2rem;
+      padding-block-end: 4rem;
+      text-align: start;
+    }
+  }
+
+  .footer-nav {
+    grid-area: links;
+  }
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.25rem 1.5rem;
+  }
+  @media (min-width: 768px) {
+    .footer-links {
+      justify-content: flex-start;
+    }
+  }
+
+  .footer-link {
+    display: inline-flex;
+    min-height: 2.5rem;
+    align-items: center;
+    color: var(--summit-text-muted);
+    font-size: 0.875rem;
+    transition: color 160ms var(--motion-ease-out);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .footer-link:hover {
+      color: var(--color-link);
+      opacity: 1;
+    }
+  }
+
+  .footer-socials {
+    grid-area: socials;
+    display: flex;
+    gap: 0.5rem;
+  }
+  @media (min-width: 768px) {
+    .footer-socials {
+      margin-inline-end: -0.625rem;
+    }
+  }
+  .footer-social {
+    position: relative;
+    display: inline-flex;
+    min-width: 2.5rem;
+    min-height: 2.5rem;
+    align-items: center;
+    justify-content: center;
+    color: var(--summit-text);
+    transition: color 160ms var(--motion-ease-out);
+  }
+  /* The icons sit in 2.5rem boxes; the target round each is a full 44px. */
+  .footer-social::after {
+    content: '';
+    position: absolute;
+    inset: min(0px, (100% - 44px) / 2);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .footer-social:hover {
+      color: var(--color-link);
+      opacity: 1;
+    }
+  }
+
+  .footer-legal {
+    grid-area: legal;
+    color: var(--summit-text-faint);
+    font-size: 0.75rem;
+  }
+  .footer-license {
+    color: var(--summit-text-muted);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in oklch, var(--color-fg) 30%, transparent);
+    text-underline-offset: 3px;
+    transition:
+      color 160ms var(--motion-ease-out),
+      text-decoration-color 160ms var(--motion-ease-out);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .footer-license:hover {
+      color: var(--color-link);
+      text-decoration-color: currentColor;
+      opacity: 1;
+    }
   }
 </style>
+
+<script>
+  import { pauseWhenOffscreen } from '@/utils/in-view';
+  import { onPageLoad } from '@/utils/page-lifecycle';
+
+  // The sleeping camp's loops (FooterCamp.astro) rest while the footer is off screen.
+  onPageLoad((signal) => pauseWhenOffscreen('[data-footer-camp]', signal));
+</script>

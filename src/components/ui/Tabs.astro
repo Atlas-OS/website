@@ -1,20 +1,18 @@
 ---
-import { stableId } from '@/utils/stable-id';
-
 interface Props {
   items: Array<{ label: string; value: string }>;
   defaultTab?: string;
-  /** Override the generated id when the same tab set appears more than once on a page. */
-  id?: string;
+  /** Namespace shared by this tab set and its panels. */
+  id: string;
 }
 
-const { items, defaultTab = items[0]?.value ?? '', id } = Astro.props;
-const tabsId = id ?? stableId('tabs', ...items.map((item) => item.value));
+const { items, defaultTab = items[0]?.value ?? '', id: tabsId } = Astro.props;
 ---
 
-<div class="tabs-container" data-tabs-id={tabsId} data-default-tab={defaultTab}>
+<div class="tabs-container" data-default-tab={defaultTab}>
   <div
-    class="tabs-list mb-4 flex flex-nowrap gap-2 overflow-x-auto border-b border-[var(--docs-surface-border)]"
+    class="tabs-list mbe-4 flex flex-nowrap gap-2 overflow-x-auto border-be border-[var(--docs-surface-border)]"
+    hidden
     role="tablist"
   >
     {items.map((item) => (
@@ -26,7 +24,7 @@ const tabsId = id ?? stableId('tabs', ...items.map((item) => item.value));
         aria-controls={`${tabsId}-panel-${item.value}`}
         aria-selected={item.value === defaultTab ? 'true' : 'false'}
         tabindex={item.value === defaultTab ? 0 : -1}
-        class="tab-button min-h-10 shrink-0 cursor-pointer border-b-2 border-transparent px-4 py-2 text-sm font-medium text-white/70 transition-[border-color,color] duration-200 outline-none hover:text-white/85 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none aria-selected:border-primary aria-selected:text-link"
+        class="tab-button min-h-10 shrink-0 cursor-pointer border-be-2 border-transparent px-4 py-2 text-sm font-medium text-fg/70 transition-[border-color,color] duration-200 hover:text-fg/85 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black aria-selected:border-primary aria-selected:text-link"
       >
         {item.label}
       </button>
@@ -42,19 +40,8 @@ const tabsId = id ?? stableId('tabs', ...items.map((item) => item.value));
   import { onPageLoad } from '@/utils/page-lifecycle';
 
   function initTabs(container: HTMLElement, signal: AbortSignal) {
-    const tabsId = container.dataset.tabsId;
-    if (!tabsId) return;
-
     const tabs = [...container.querySelectorAll<HTMLButtonElement>(':scope > .tabs-list > [role="tab"]')];
     const panels = [...container.querySelectorAll<HTMLElement>(':scope > .tab-content > [data-tab-panel]')];
-
-    for (const panel of panels) {
-      const value = panel.dataset.tabPanel;
-      if (!value) continue;
-      panel.id = `${tabsId}-panel-${value}`;
-      panel.setAttribute('aria-labelledby', `${tabsId}-tab-${value}`);
-      panel.tabIndex = 0;
-    }
 
     function select(value: string, focus = false) {
       for (const tab of tabs) {
@@ -91,6 +78,9 @@ const tabsId = id ?? stableId('tabs', ...items.map((item) => item.value));
       );
     });
 
+    const list = container.querySelector<HTMLElement>(':scope > .tabs-list');
+    if (list) list.hidden = false;
+    container.dataset.enhanced = '';
     select(container.dataset.defaultTab ?? tabs[0]?.dataset.tab ?? '');
   }
 
@@ -102,9 +92,13 @@ const tabsId = id ?? stableId('tabs', ...items.map((item) => item.value));
 </script>
 
 <style>
+  .tabs-list[hidden] {
+    display: none;
+  }
+
   .tabs-list {
     scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+    scrollbar-color: color-mix(in oklch, var(--color-fg) 10%, transparent) transparent;
   }
 
   .tabs-list::-webkit-scrollbar {
@@ -116,11 +110,13 @@ const tabsId = id ?? stableId('tabs', ...items.map((item) => item.value));
   }
 
   .tabs-list::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: color-mix(in oklch, var(--color-fg) 10%, transparent);
     border-radius: 3px;
   }
 
-  .tabs-list::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+  @media (hover: hover) and (pointer: fine) {
+    .tabs-list::-webkit-scrollbar-thumb:hover {
+      background-color: color-mix(in oklch, var(--color-fg) 20%, transparent);
+    }
   }
 </style>

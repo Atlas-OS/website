@@ -9,15 +9,16 @@ interface Props {
 
 const { prev, next } = Astro.props;
 
-const cardClass = 'page-nav-card docs-surface group flex items-start gap-3 p-5';
+// Each card navigates through its title link's overlay (`.docs-card`, docs.css).
+const cardClass = 'page-nav-card docs-surface docs-card group flex items-start gap-3 p-5';
 ---
 
 {(prev || next) && (
-  <nav class="page-nav not-prose mt-14" aria-label="Pagination" data-component="page-nav" data-pagefind-ignore>
+  <nav class="page-nav not-prose mbs-14" aria-label="Pagination" data-component="page-nav" data-pagefind-ignore>
     <div class:list={['grid gap-4', 'grid-cols-1 md:grid-cols-2']}>
       {prev && (
-        <a href={prev.href} rel="prev" data-astro-prefetch="hover" class={cardClass}>
-          <div class="docs-link-icon mt-1">
+        <div class={cardClass}>
+          <div class="docs-link-icon mbs-1">
             <Icon
               name="tabler:arrow-left"
               class="h-4 w-4 text-[var(--docs-text-muted)] group-hover:text-[var(--docs-text-primary)]"
@@ -25,32 +26,40 @@ const cardClass = 'page-nav-card docs-surface group flex items-start gap-3 p-5';
             />
           </div>
           <div class="min-w-0 flex-1">
-            <div class="mb-1 text-xs font-medium text-[var(--docs-text-muted)]">Previous</div>
-            <p class="mb-1 text-base font-semibold text-[var(--docs-text-primary)]">{prev.title}</p>
+            <div class="mbe-1 text-xs font-medium text-[var(--docs-text-muted)]">Previous</div>
+            <p class="mbe-1 text-base font-semibold text-[var(--docs-text-primary)]">
+              <a href={prev.href} rel="prev" data-astro-prefetch="hover" class="docs-card-link">
+                {prev.title}
+              </a>
+            </p>
             {prev.description && (
               <p class="text-sm leading-relaxed text-[var(--docs-text-secondary)]">{prev.description}</p>
             )}
           </div>
-        </a>
+        </div>
       )}
 
       {next && (
-        <a href={next.href} rel="next" data-astro-prefetch="hover" class:list={[cardClass, 'md:col-start-2']}>
+        <div class:list={[cardClass, 'md:col-start-2']}>
           <div class="min-w-0 flex-1 text-end">
-            <div class="mb-1 text-xs font-medium text-[var(--docs-text-muted)]">Next</div>
-            <p class="mb-1 text-base font-semibold text-[var(--docs-text-primary)]">{next.title}</p>
+            <div class="mbe-1 text-xs font-medium text-[var(--docs-text-muted)]">Next</div>
+            <p class="mbe-1 text-base font-semibold text-[var(--docs-text-primary)]">
+              <a href={next.href} rel="next" data-astro-prefetch="hover" class="docs-card-link">
+                {next.title}
+              </a>
+            </p>
             {next.description && (
               <p class="text-sm leading-relaxed text-[var(--docs-text-secondary)]">{next.description}</p>
             )}
           </div>
-          <div class="docs-link-icon mt-1">
+          <div class="docs-link-icon mbs-1">
             <Icon
               name="tabler:arrow-right"
               class="h-4 w-4 text-[var(--docs-text-muted)] group-hover:text-[var(--docs-text-primary)]"
               aria-hidden="true"
             />
           </div>
-        </a>
+        </div>
       )}
     </div>
   </nav>
@@ -58,11 +67,10 @@ const cardClass = 'page-nav-card docs-surface group flex items-start gap-3 p-5';
 
 <style is:global>
   .page-nav {
-    margin-top: 3rem;
-    margin-bottom: 2rem;
+    margin-block: 3rem 2rem;
   }
 
   .prose + .page-nav {
-    margin-top: 4.5rem;
+    margin-block-start: 4.5rem;
   }
 </style>

@@ -1,8 +1,8 @@
 /**
  * Cloudflare Worker for atlasos.net.
  *
- * Static assets are served by the platform; this Worker only runs for `/api/*`
- * (see `run_worker_first` in wrangler.jsonc) and serves clean Windows ISO links to clients such as
+ * Static assets are served by the platform. The Worker negotiates Markdown for docs
+ * and serves Windows ISO links to clients such as
  * Atlas Manager:
  *
  *   GET /api/ms-iso/skus?arch=x64|arm64&sessionId=…   → language list proxied from Microsoft
@@ -13,6 +13,7 @@
  *
  * Binding types (`Env`) are generated from wrangler.jsonc by `wrangler types`.
  */
+import Negotiator from 'negotiator';
 import puppeteer, { type Browser, type BrowserContext, type Page } from '@cloudflare/puppeteer';
 
 const MS_CONNECTOR_BASE = 'https://www.microsoft.com/software-download-connector/api';
@@ -685,12 +686,40 @@ async function refreshCachedLinks(env: Env): Promise<void> {
   }
 }
 
+/** Canonical article URLs can serve either representation. Asset URLs keep their normal cache keys. */
+async function serveDocs(request: Request, assets: Env['ASSETS']): Promise<Response> {
+  const url = new URL(request.url);
+  if (!url.pathname.endsWith('/') || !['GET', 'HEAD'].includes(request.method)) {
+    return assets.fetch(request);
+  }
+
+  const accept = request.headers.get('Accept') ?? '*/*';
+  const preferred = new Negotiator({ headers: { accept } }).mediaType([
+    'text/html',
+    'text/markdown',
+  ]);
+  let asset;
+  if (preferred === 'text/markdown') {
+    const markdownUrl = new URL(url);
+    markdownUrl.pathname =
+      url.pathname === '/docs/' ? '/docs/index.md' : url.pathname.slice(0, -1) + '.md';
+    const markdown = await assets.fetch(new Request(markdownUrl, request));
+    // Old guide URLs still need their redirects, and missing pages retain their HTTP status.
+    if (markdown.ok || markdown.status === 304) asset = markdown;
+  }
+  asset ??= await assets.fetch(request);
+  const response = new Response(asset.body, asset);
+  response.headers.append('Vary', 'Accept');
+  return response;
+}
+
 /* ------------------------------------------------------------------------- */
 /* Entry point                                                               */
 /* ------------------------------------------------------------------------- */
 
 export default {
   async fetch(request, env, ctx) {
+    if (new URL(request.url).pathname.startsWith('/docs/')) return serveDocs(request, env.ASSETS);
     if (request.method === 'OPTIONS') {
       return new Response(null, { status: 204, headers: corsHeaders(request) });
     }

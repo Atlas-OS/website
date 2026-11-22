@@ -1,76 +1,52 @@
 ---
-import { Icon } from 'astro-icon/components';
-import { Picture, Image } from 'astro:assets';
-import AtlasWallpaper from '@/assets/atlas-wallpaper.webp';
-import AtlasManagerHome from '@/assets/atlas-manager-home.png';
+import { Image } from 'astro:assets';
+import { managerPreview } from '@/utils/manager-preview';
 import ItsFOSSLogomark from '@/assets/itsfoss-logomark.svg';
 import PcGuideLogomark from '@/assets/pcguide-logomark.svg';
 import TechSpotLogomark from '@/assets/techspot-logomark.svg';
 import WePCLogomark from '@/assets/wepc-logomark.svg';
+import HeroBackdrop from '@/components/sections/hero/HeroBackdrop.astro';
+import SummitStage from '@/components/sections/hero/SummitStage.astro';
 import Button from '@/components/ui/Button.astro';
-import { ATLAS_GITHUB_LATEST_RELEASE_URL } from '@/constants';
+import { ATLAS_MANAGER_DOWNLOAD_URL } from '@/constants';
 import { latestReleaseLabel } from '@/utils/latest-release';
 
 // Fetched when the site is built; the script below refreshes it in the browser.
 const releaseLabel = await latestReleaseLabel();
 ---
 
-<section class="relative overflow-visible px-4 pt-14 md:pt-22" data-home-hero>
-  <div class="hero-glow pointer-events-none absolute inset-0 -z-10" aria-hidden="true"></div>
-  <div class="hero-grid pointer-events-none absolute inset-0 -z-10" aria-hidden="true"></div>
-
-  <div class="stars pointer-events-none absolute inset-0 z-[-5] translate-y-[-30%] overflow-hidden">
-    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
-    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
-    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
-    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
-    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
-    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
-    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
-    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
-    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
-    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
-    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
-    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
-    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
-    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
-    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
-    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
-    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
-    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
-    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
-    <span class="star absolute rounded-full bg-white/80 opacity-0"></span>
-  </div>
-
-  <div class="relative mx-auto max-w-7xl overflow-visible">
-    <div class="mx-auto max-w-4xl pb-12 text-center">
-      <div
-        class="isolation-isolate relative z-0 mb-4 inline-flex w-max items-center justify-center overflow-hidden rounded-full px-4 py-1.5 text-sm leading-5 font-medium shadow-inner shadow-primary/20 backdrop-blur-[6px]"
-        data-animate
-      >
-        <Icon name="tabler:users" class="mr-2 h-4 w-4 text-primary" />
-        <span class="text-sm text-white">
+<section class="relative overflow-visible" data-home-hero>
+  <HeroBackdrop>
+    <div class="hero-copy mx-auto max-w-4xl px-4 pbe-12 text-center" data-summit-avoid>
+      <!-- The count as an open line, led by the Atlas flag that flies on the summit below. -->
+      <p class="hero-stat" data-animate>
+        <svg class="hero-stat__flag" viewBox="0 0 14 16" aria-hidden="true">
+          <rect x="1" y="0.5" width="1.5" height="15" rx="0.75" class="hero-stat__pole"></rect>
+          <path d="M2.5 1H13L10.6 4.4L13 7.8H2.5Z" fill="#2B9BFF"></path>
+          <path d="M2.5 1H13L12.3 2H2.5Z" fill="#8CCBFF"></path>
+        </svg>
+        <span>
           Over{' '}
-          <span id="hero-download-count" class="font-semibold text-primary tabular-nums">
-            Loading...
+          <span id="hero-download-count" class="hero-stat__count">
+            2,000,000
           </span>{' '}
-          people using AtlasOS
+          AtlasOS downloads
         </span>
-      </div>
+      </p>
       <h1
         data-animate
-        class="mb-6 bg-linear-to-b from-white to-blue-200 bg-clip-text text-4xl font-semibold tracking-tight text-transparent md:text-7xl"
+        class="hero-title mbe-6 bg-linear-to-b from-fg to-blue-200 bg-clip-text font-semibold tracking-tight text-transparent"
       >
         Optimized Windows. <br /> Designed for enthusiasts.
       </h1>
-      <p data-animate class="mx-auto mb-10 max-w-2xl leading-relaxed text-white/70">
-        AtlasOS is creating a "kinder" Windows experience. Reducing bloatware and optimizing performance for
-        enthusiasts, gamers, and privacy-conscious individuals.
+      <p data-animate class="mx-auto mbe-10 max-w-2xl leading-relaxed text-pretty text-fg/70">
+        AtlasOS is a free, open-source Windows 11 modification. It cuts background activity, telemetry and ads, and
+        keeps your apps and games working.
       </p>
-      <p id="atlas-release" class="mb-4 text-sm text-white/70" data-animate>
+      <p id="atlas-release" class="mbe-4 text-sm text-fg/70" data-animate>
         {releaseLabel ? (
           <>
-            The latest version is <span class="font-semibold text-white">{releaseLabel}</span>
+            The latest version is <span class="font-semibold text-fg">{releaseLabel}</span>
           </>
         ) : (
           'Download the latest version'
@@ -78,7 +54,7 @@ const releaseLabel = await latestReleaseLabel();
       </p>
       <div class="flex flex-wrap items-center justify-center gap-4" data-animate>
         <Button
-          href={ATLAS_GITHUB_LATEST_RELEASE_URL}
+          href={ATLAS_MANAGER_DOWNLOAD_URL}
           variant="primary"
           size="lg"
           icon="tabler:download"
@@ -97,398 +73,389 @@ const releaseLabel = await latestReleaseLabel();
           Star on GitHub
         </Button>
       </div>
-      <p class="mt-4 text-sm text-white/60" data-animate>
-        Atlas works best on a fresh copy of Windows.{' '}
-        <a href="/docs/install/" class="text-[var(--color-link)] underline-offset-2 hover:text-white hover:underline">
+      <p class="mbs-4 text-sm text-fg/60" data-animate>
+        For a clean install, choose Create an Atlas ISO in Atlas Manager.{' '}
+        <a href="/docs/install/" class="text-[var(--color-link)] underline-offset-2 hover:text-fg hover:underline">
           Read the installation guide
         </a>
       </p>
     </div>
-  </div>
 
-  <div class="manager-showcase relative mx-auto mb-16 max-w-7xl px-0 md:px-4">
-    <div class="manager-intro" data-animate>
-      <div>
-        <p class="manager-eyebrow">Built for Atlas</p>
-        <h2>Meet Atlas Manager.</h2>
-      </div>
-      <a href="/docs/install/manager/" class="manager-guide">
-        A guided install, from start to finish <Icon name="tabler:arrow-up-right" class="h-4 w-4 shrink-0" />
-      </a>
-    </div>
-    <div class="manager-stage">
-      <div
-        class="wallpaper-container absolute inset-0 z-0 rounded-2xl"
-        data-animate
-        style="--motion-reveal-blur: 0px; --motion-reveal-distance: 16px; --motion-reveal-scale-start: 1;"
-      >
-        <div class="relative h-full overflow-hidden rounded-2xl">
-          <Picture
-            src={AtlasWallpaper}
-            alt=""
-            width={1920}
-            height={1080}
-            formats={['avif', 'webp']}
-            layout="full-width"
-            class="relative z-10 block h-full w-full object-cover select-none"
-            draggable={false}
-            loading="eager"
-            decoding="async"
-            fetchpriority="high"
-          />
+    <div class="manager-showcase relative mx-auto max-w-7xl px-4 md:px-8">
+      <div class="manager-stage">
+        <div class="manager-window">
+          <SummitStage />
+          <!-- Atlas Manager is new: a pennant in the summit flag's cloth, hung over the window's top edge. -->
+          <p class="manager-pennant">
+            <span class="manager-pennant__cloth" aria-hidden="true">
+              <svg viewBox="0 0 44 52">
+                <path d="M0 2Q0 0 2 0H42Q44 0 44 2V52L22 43L0 52Z" fill="#2B9BFF"></path>
+                <path d="M0 6H2V51.2L0 52Z" fill="#8CCBFF"></path>
+                <path d="M0 2Q0 0 2 0H42Q44 0 44 2V6.4H0Z" fill="#1A6FD0"></path>
+              </svg>
+              <span class="manager-pennant__label">New</span>
+            </span>
+            <span class="sr-only">New: Atlas Manager, a guided install from start to finish.</span>
+          </p>
+          <a class="manager-preview" href="/docs/install/manager/" aria-label="Read the Atlas Manager guide">
+            <Image
+              {...managerPreview}
+              alt="Atlas Manager's home page, with the guided installation and the option to create an Atlas ISO."
+              priority
+              class="block h-auto w-full"
+            />
+          </a>
         </div>
       </div>
+    </div>
+  </HeroBackdrop>
+  <section class="press" aria-labelledby="press-heading" data-animate>
+    <h2 id="press-heading" class="press-heading">
+      Featured in
+    </h2>
+    <div class="press-logos">
       <a
-        class="manager-preview"
-        href="/docs/install/manager/"
-        aria-label="Explore installation with Atlas Manager"
-        data-animate
+        href="https://www.techspot.com/news/97095-check-out-AtlasOS-redesigned-windows-10-version-gamers.html"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="press-logo"
       >
         <Image
-          src={AtlasManagerHome}
-          alt="Atlas Manager's home page, with the guided installation and the option to create an Atlas ISO."
-          width={902}
-          height={681}
-          widths={[450, 700, 902]}
-          sizes="(max-width: 767px) 92vw, (max-width: 1100px) 76vw, 800px"
-          format="webp"
+          src={TechSpotLogomark}
+          alt="TechSpot"
+          width={158}
+          height={48}
+          layout="constrained"
+          draggable={false}
+          class="max-h-8 w-auto select-none"
           loading="eager"
-          class="block h-auto w-full"
+          decoding="async"
+        />
+      </a>
+      <a href="https://www.pcguide.com/software/AtlasOS/" target="_blank" rel="noopener noreferrer" class="press-logo">
+        <Image
+          src={PcGuideLogomark}
+          alt="PC Guide"
+          width={158}
+          height={48}
+          layout="constrained"
+          draggable={false}
+          class="max-h-8 w-auto select-none"
+          loading="lazy"
+          decoding="async"
+        />
+      </a>
+      <a
+        href="https://www.wepc.com/tips/is-atlas-os-worth-it/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="press-logo"
+      >
+        <Image
+          src={WePCLogomark}
+          alt="WePC"
+          width={158}
+          height={48}
+          layout="constrained"
+          draggable={false}
+          class="max-h-8 w-auto select-none"
+          loading="lazy"
+          decoding="async"
+        />
+      </a>
+      <a href="https://news.itsfoss.com/atlas-os/" target="_blank" rel="noopener noreferrer" class="press-logo">
+        <Image
+          src={ItsFOSSLogomark}
+          alt="It's FOSS"
+          width={158}
+          height={48}
+          layout="constrained"
+          draggable={false}
+          class="max-h-8 w-auto select-none"
+          loading="lazy"
+          decoding="async"
         />
       </a>
     </div>
-  </div>
-
-  <div
-    class="mx-auto flex max-w-4xl flex-wrap items-center justify-center gap-x-8 gap-y-12 opacity-60 lg:gap-x-24"
-    data-animate
-  >
-    <a
-      href="https://www.techspot.com/news/97095-check-out-AtlasOS-redesigned-windows-10-version-gamers.html"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="inline-flex min-h-10 items-center transition-[opacity,scale] duration-200 hover:opacity-80 active:scale-[0.96]"
-    >
-      <Image
-        src={TechSpotLogomark}
-        alt="TechSpot"
-        width={158}
-        height={48}
-        layout="constrained"
-        draggable={false}
-        class="max-h-8 w-auto select-none"
-        loading="eager"
-        decoding="async"
-      />
-    </a>
-    <a
-      href="https://www.pcguide.com/software/AtlasOS/"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="inline-flex min-h-10 items-center transition-[opacity,scale] duration-200 hover:opacity-80 active:scale-[0.96]"
-    >
-      <Image
-        src={PcGuideLogomark}
-        alt="PC Guide"
-        width={158}
-        height={48}
-        layout="constrained"
-        draggable={false}
-        class="max-h-8 w-auto select-none"
-        loading="lazy"
-        decoding="async"
-      />
-    </a>
-    <a
-      href="https://www.wepc.com/tips/is-atlas-os-worth-it/"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="inline-flex min-h-10 items-center transition-[opacity,scale] duration-200 hover:opacity-80 active:scale-[0.96]"
-    >
-      <Image
-        src={WePCLogomark}
-        alt="WePC"
-        width={158}
-        height={48}
-        layout="constrained"
-        draggable={false}
-        class="max-h-8 w-auto select-none"
-        loading="lazy"
-        decoding="async"
-      />
-    </a>
-    <a
-      href="https://news.itsfoss.com/atlas-os/"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="inline-flex min-h-10 items-center transition-[opacity,scale] duration-200 hover:opacity-80 active:scale-[0.96]"
-    >
-      <Image
-        src={ItsFOSSLogomark}
-        alt="It's FOSS"
-        width={158}
-        height={48}
-        layout="constrained"
-        draggable={false}
-        class="max-h-8 w-auto select-none"
-        loading="lazy"
-        decoding="async"
-      />
-    </a>
-  </div>
+  </section>
 </section>
 
 <style>
+  /*
+   * The count: an open line, no capsule. The flag is the summit's own, in Atlas blue on a pole of
+   * ink; the number stands out in full ink and tabular figures, so the live count doesn't jitter.
+   */
+  .hero-stat {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-block-end: 1.25rem;
+    color: var(--summit-text-muted);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+  .hero-stat__flag {
+    width: 0.9rem;
+    height: 1.05rem;
+    flex: none;
+    overflow: visible;
+  }
+  .hero-stat__pole {
+    fill: color-mix(in oklch, var(--color-fg) 55%, transparent);
+  }
+  .hero-stat__count {
+    color: var(--summit-text);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
   [data-home-hero] {
+    /* The Atlas Manager window's width: the summit stage is measured in it, and the press row below rises into its fade. */
+    --window-w: min((min(100vw, 80rem) - 8rem) * 0.76, 800px);
     --motion-reveal-duration: 700ms;
     --motion-reveal-step: 110ms;
     --motion-reveal-distance: 24px;
     --motion-reveal-blur: 6px;
     --motion-reveal-scale-start: 0.98;
+    /* The headline and the sky above it grow with the screen. */
+    --hero-title-size: clamp(2.25rem, 1.4141rem + 3.429vw, 4.5rem);
+    --hero-title-leading: clamp(2.5rem, 1.757rem + 3.048vw, 4.5rem);
+    --hero-copy-top: clamp(3.5rem, 2.757rem + 3.048vw, 5.5rem);
   }
 
-  .star {
-    animation: star-fade 6s ease-in-out infinite;
+  /* The copy sits in the sky above the stage. */
+  .hero-copy {
+    position: relative;
+    z-index: 1;
+    padding-block-start: var(--hero-copy-top);
+  }
+  .hero-title {
+    font-size: var(--hero-title-size);
+    line-height: var(--hero-title-leading);
   }
 
-  .star:nth-child(1) {
-    width: 2px;
-    height: 2px;
-    top: 5%;
-    left: 20%;
-    animation-delay: 0s;
+  /*
+   * The stage: the window stands in the Atlas range (SummitStage). The bottom padding leaves room
+   * for the fog under the window and the long fade into the page: 35% of the window's width.
+   * `--window-w` comes from HeroBackdrop.
+   */
+  .manager-stage {
+    position: relative;
+    padding-block: clamp(2rem, 5.3svh, 3rem) calc(var(--window-w) * 0.35);
+    padding-inline: 2rem;
+    isolation: isolate;
   }
-  .star:nth-child(2) {
-    width: 3px;
-    height: 3px;
-    top: 15%;
-    left: 70%;
-    animation-delay: 1s;
+  .manager-window {
+    position: relative;
+    width: min(76%, 800px);
+    margin-block: 0;
+    margin-inline: auto;
+    container-type: inline-size;
   }
-  .star:nth-child(3) {
-    width: 1.5px;
-    height: 1.5px;
-    top: 30%;
-    left: 40%;
-    animation-delay: 2s;
+  /* The window's shadow, at rest and lifted (styles/daylight.css softens both by day). */
+  .manager-preview {
+    --window-glow: oklch(0.644 0.166 257.7);
+    --window-shadow:
+      0 24px 60px color-mix(in oklch, var(--summit-shadow) 55%, transparent),
+      0 0 90px color-mix(in oklch, var(--window-glow) 14%, transparent);
+    --window-shadow-lifted:
+      0 30px 70px color-mix(in oklch, var(--summit-shadow) 62%, transparent),
+      0 0 90px color-mix(in oklch, var(--window-glow) 14%, transparent);
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    overflow: clip;
+    border-radius: 0.65rem;
+    border: 1px solid color-mix(in oklch, var(--color-fg) 18%, transparent);
+    box-shadow: var(--window-shadow);
+    transition: box-shadow 400ms var(--motion-ease-out);
   }
-  .star:nth-child(4) {
-    width: 2.5px;
-    height: 2.5px;
-    top: 60%;
-    left: 10%;
-    animation-delay: 3s;
-  }
-  .star:nth-child(5) {
-    width: 1.8px;
-    height: 1.8px;
-    top: 75%;
-    left: 85%;
-    animation-delay: 4s;
-  }
-  .star:nth-child(6) {
-    width: 2px;
-    height: 2px;
-    top: 50%;
-    left: 55%;
-    animation-delay: 5s;
-  }
-  .star:nth-child(7) {
-    width: 1.2px;
-    height: 1.2px;
-    top: 25%;
-    left: 90%;
-    animation-delay: 2.5s;
-  }
-  .star:nth-child(8) {
-    width: 2.2px;
-    height: 2.2px;
-    top: 80%;
-    left: 30%;
-    animation-delay: 1.5s;
-  }
-  .star:nth-child(9) {
-    width: 1.7px;
-    height: 1.7px;
-    top: 40%;
-    left: 60%;
-    animation-delay: 3.5s;
-  }
-  .star:nth-child(10) {
-    width: 2.8px;
-    height: 2.8px;
-    top: 85%;
-    left: 50%;
-    animation-delay: 0.5s;
-  }
-  .star:nth-child(11) {
-    width: 1.5px;
-    height: 1.5px;
-    top: 10%;
-    left: 5%;
-    animation-delay: 0.2s;
-  }
-  .star:nth-child(12) {
-    width: 2.5px;
-    height: 2.5px;
-    top: 20%;
-    left: 80%;
-    animation-delay: 1.8s;
-  }
-  .star:nth-child(13) {
-    width: 1px;
-    height: 1px;
-    top: 35%;
-    left: 25%;
-    animation-delay: 2.7s;
-  }
-  .star:nth-child(14) {
-    width: 3px;
-    height: 3px;
-    top: 65%;
-    left: 15%;
-    animation-delay: 3.3s;
-  }
-  .star:nth-child(15) {
-    width: 2px;
-    height: 2px;
-    top: 70%;
-    left: 75%;
-    animation-delay: 4.1s;
-  }
-  .star:nth-child(16) {
-    width: 1.8px;
-    height: 1.8px;
-    top: 55%;
-    left: 45%;
-    animation-delay: 5.5s;
-  }
-  .star:nth-child(17) {
-    width: 1.4px;
-    height: 1.4px;
-    top: 22%;
-    left: 95%;
-    animation-delay: 2.1s;
-  }
-  .star:nth-child(18) {
-    width: 2.6px;
-    height: 2.6px;
-    top: 82%;
-    left: 35%;
-    animation-delay: 1.1s;
-  }
-  .star:nth-child(19) {
-    width: 1.9px;
-    height: 1.9px;
-    top: 45%;
-    left: 65%;
-    animation-delay: 3.9s;
-  }
-  .star:nth-child(20) {
-    width: 2.3px;
-    height: 2.3px;
-    top: 88%;
-    left: 52%;
-    animation-delay: 0.8s;
-  }
-
-  @keyframes star-fade {
-    0%,
-    100% {
-      opacity: 0;
+  /* Pointing at the window only lets its shadow fall a little deeper. The window itself stays put. */
+  @media (hover: hover) and (pointer: fine) {
+    .manager-preview:hover {
+      opacity: 1;
+      box-shadow: var(--window-shadow-lifted);
     }
-    50% {
+  }
+  .manager-preview:focus-visible {
+    opacity: 1;
+    box-shadow: var(--window-shadow-lifted);
+    outline: 2px solid var(--summit-blue);
+    outline-offset: 6px;
+  }
+
+  /*
+   * The pennant: the summit flag's cloth (Atlas blue, moonlit along its left edge) hung over the
+   * window's top edge in the empty stretch of its title bar, clear of the window's buttons. The
+   * darker strip above the edge is the cloth folding over from behind. It's sized in the window's
+   * width (cqw), so it sits in the same spot at every size, and lets clicks through to the window.
+   */
+  .manager-pennant {
+    --pennant-w: clamp(2.25rem, 5.6cqw, 2.75rem);
+    position: absolute;
+    z-index: 2;
+    /* The fold (the top 6.4 of the shape's 52) sits above the window's edge. */
+    inset-block-start: calc(var(--pennant-w) * -6.4 / 44);
+    inset-inline-end: 30cqw;
+    margin: 0;
+    pointer-events: none;
+    filter: drop-shadow(0 5px 8px color-mix(in oklch, var(--summit-shadow) 45%, transparent));
+  }
+  /*
+   * The cloth is drawn as a shape rather than clipped out of a box: a clip is painted as a separate
+   * mask that Chrome doesn't redraw while the cloth scales, so its edges would go blocky in the drop.
+   */
+  .manager-pennant__cloth {
+    position: relative;
+    display: block;
+    width: var(--pennant-w);
+    aspect-ratio: 44 / 52;
+    transform-origin: 50% 0;
+  }
+  .manager-pennant__cloth svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .manager-pennant__label {
+    position: absolute;
+    inset-block-start: 29.5%;
+    inset-inline: 0;
+    color: white;
+    font-size: clamp(0.6875rem, 1.5cqw, 0.75rem);
+    font-weight: 600;
+    line-height: 1;
+    text-align: center;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* It drops into place once the stage has arrived, before the summit flag unfurls. */
+    :global(html[data-motion]) .manager-pennant__cloth {
+      animation: pennant-drop 700ms cubic-bezier(0.23, 1, 0.32, 1) 1500ms backwards paused;
+    }
+    :global(html[data-motion] [data-summit-play]) .manager-pennant__cloth {
+      animation-play-state: running;
+    }
+  }
+  @keyframes pennant-drop {
+    from {
+      opacity: 0;
+      transform: scaleY(0.2);
+    }
+    40% {
       opacity: 1;
     }
   }
 
-  .hero-glow {
-    background: radial-gradient(ellipse 65% 45% at 50% 42%, var(--home-ambient-glow), transparent 100%);
-  }
-
-  .hero-grid {
-    background-image:
-      linear-gradient(rgb(255 255 255 / 0.018) 1px, transparent 1px),
-      linear-gradient(to right, rgb(255 255 255 / 0.018) 1px, transparent 1px);
-    background-size: 48px 48px;
-    mask-image: radial-gradient(ellipse 55% 35% at 50% 25%, rgb(0 0 0 / 0.45), transparent 100%);
-  }
-
-  .wallpaper-container {
-    /* A quiet backdrop: soften the sides and fade the lower edge into the page. */
-    border: 1px solid rgb(255 255 255 / 0.07);
-    mask-image: radial-gradient(ellipse 80% 95% at 50% 0%, black 35%, rgb(0 0 0 / 0.7) 62%, transparent 100%);
-  }
-
-  .manager-intro {
-    display: flex;
-    align-items: end;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 0 0.25rem 1.5rem;
-  }
-  .manager-eyebrow {
-    margin-bottom: 0.375rem;
-    color: var(--color-primary, #48a7ff);
-    font-size: 0.75rem;
-    font-weight: 600;
-  }
-  .manager-intro h2 {
-    font-size: clamp(1.25rem, 2vw, 1.75rem);
-    font-weight: 600;
-    letter-spacing: -0.025em;
-  }
-  .manager-guide {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: rgb(255 255 255 / 0.65);
-    font-size: 0.875rem;
-  }
-  .manager-guide:hover {
-    color: white;
-  }
-  .manager-stage {
-    position: relative;
-    padding: 3rem 2rem 1rem;
-    isolation: isolate;
-  }
-  .manager-stage .wallpaper-container {
-    opacity: 0.7;
-  }
-  .manager-preview {
-    position: relative;
-    z-index: 30;
-    display: block;
-    width: min(76%, 800px);
-    margin: 0 auto;
-    overflow: hidden;
-    border-radius: 0.65rem;
-    border: 1px solid rgb(255 255 255 / 0.18);
-    box-shadow:
-      0 32px 80px rgb(0 0 0 / 0.5),
-      0 0 60px rgb(48 126 210 / 0.1);
-  }
-  .manager-preview:focus-visible,
-  .manager-guide:focus-visible {
-    outline: 2px solid #48a7ff;
-    outline-offset: 6px;
-  }
-  @media (max-width: 767px) {
-    .manager-intro {
-      align-items: start;
-      flex-direction: column;
-      padding: 0 0.25rem 1rem;
-      gap: 0.75rem;
-    }
-    .manager-guide {
-      font-size: 0.8125rem;
+  /* Short desktop screens: tighten the spacing so the top of the window shows. */
+  @media (min-width: 768px) and (max-height: 820px) {
+    .hero-copy {
+      padding-block: 3rem 1.5rem;
     }
     .manager-stage {
-      padding: 1rem 0.375rem 0.5rem;
+      padding-block-start: 1.5rem;
+    }
+  }
+
+  /*
+   * Press coverage rises into the stage's fade, just below the fog, instead of waiting until the
+   * fade has finished: the stage reserves 35% of the window's width below it, and the fog has cleared by about 18%.
+   */
+  .press {
+    position: relative;
+    z-index: 1;
+    margin-block-start: calc(var(--window-w) * -0.17);
+    padding-block: 0;
+    padding-inline: 1rem;
+    text-align: center;
+  }
+  .press-heading {
+    margin-block-end: 1.25rem;
+    color: var(--summit-haze);
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  .press-logos {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    gap: 3.5rem;
+  }
+  /*
+   * The publications' marks in moonlight rather than their own greys: pale silhouettes, brightest at
+   * the top where the moon catches them, like the headings' light.
+   */
+  .press-logo :global(img) {
+    filter: brightness(0) invert(1);
+    opacity: 0.42;
+    mask-image: linear-gradient(to bottom, black 25%, color-mix(in oklch, black 60%, transparent));
+    transition: opacity 200ms var(--motion-ease-out);
+  }
+  .press-logo {
+    position: relative;
+    display: inline-flex;
+    min-height: 2.5rem;
+    flex-shrink: 0;
+    align-items: center;
+    transition: opacity 200ms var(--motion-ease-out);
+  }
+  /* The marks are 2rem tall in 2.5rem boxes; the target round each is at least 44px tall. */
+  .press-logo::after {
+    content: '';
+    position: absolute;
+    inset: min(0px, (100% - 44px) / 2);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .press-logo:hover {
+      opacity: 1;
+    }
+    .press-logo:hover :global(img) {
+      opacity: 0.8;
+    }
+  }
+  .press-logo:active {
+    scale: 0.96;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .press-logo {
+      transition:
+        opacity 200ms var(--motion-ease-out),
+        scale 200ms var(--motion-ease-out);
+    }
+  }
+  .press-logo:focus-visible {
+    outline: 2px solid var(--summit-blue);
+    outline-offset: 4px;
+    border-radius: 0.25rem;
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .press-logos {
+      gap: 2.25rem;
+    }
+  }
+
+  @media (max-width: 767px) {
+    [data-home-hero] {
+      --window-w: calc(100vw - 2.75rem);
+    }
+    .press-logos {
+      display: grid;
+      grid-template-columns: repeat(2, auto);
+      justify-content: center;
+      justify-items: center;
+      gap: 1.25rem 2.5rem;
+    }
+    .manager-stage {
+      padding-block: 2rem calc(var(--window-w) * 0.35);
+      padding-inline: 0.375rem;
+    }
+    .manager-window {
+      width: 100%;
     }
     .manager-preview {
-      width: 100%;
       border-radius: 0.375rem;
     }
   }
@@ -500,7 +467,6 @@ const releaseLabel = await latestReleaseLabel();
   import { isLocalhost, onPageLoad } from '@/utils/page-lifecycle';
 
   const FALLBACK_DOWNLOAD_COUNT = '2,000,000';
-  const MANAGER_ASSET = /^AtlasManager[\w.-]*\.exe$/i;
 
   async function updateLatestRelease(signal: AbortSignal): Promise<void> {
     try {
@@ -512,25 +478,18 @@ const releaseLabel = await latestReleaseLabel();
       const text = releaseLabel(release);
       if (paragraph && text) {
         const label = document.createElement('span');
-        label.className = 'font-semibold text-white';
+        label.className = 'font-semibold text-fg';
         label.textContent = text;
         paragraph.replaceChildren('The latest version is ', label);
       }
-
-      // Without a Manager asset the button keeps linking to the release page.
-      const manager = release.assets?.find((asset) => MANAGER_ASSET.test(asset.name ?? ''));
-      const button = document.getElementById('manager-download-btn');
-      if (manager?.browser_download_url && button instanceof HTMLAnchorElement) {
-        button.href = manager.browser_download_url;
-      }
     } catch {
-      // Keep the label and link rendered at build time.
+      // Keep the release label rendered at build time.
     }
   }
 
   function countDownloads(signal: AbortSignal): void {
     const button = document.getElementById('manager-download-btn');
-    if (!button || isLocalhost()) return;
+    if (!(button instanceof HTMLAnchorElement) || isLocalhost()) return;
 
     button.addEventListener(
       'click',

@@ -1,125 +1,457 @@
 ---
-import SectionTitle from '@/components/sections/common/SectionTitle.astro';
-import Button from '@/components/ui/Button.astro';
-import { Icon } from 'astro-icon/components';
+/**
+ * FAQ: lanterns on the way into camp. The questions hang as lanterns from a rope strung across the
+ * section, just before the campfire in Join community. Choosing one lights its lantern and its
+ * answer appears below in a pool of its light, which slides across to whichever lantern is lit.
+ * Below desktop width the lanterns become a list and each answer opens under its own question.
+ *
+ * The lanterns are disclosure buttons (aria-expanded), one lit at a time. Without JavaScript every
+ * lantern is lit and every answer shows. Light falls off with the shared glow curve (utils/glow.ts).
+ */
+import SectionHeading from '@/components/sections/common/SectionHeading.astro';
+import { cssGlow, glowStops } from '@/utils/glow';
+
+/*
+ * The questions people ask before they install. Each answer leads with the answer itself, in full
+ * ink, then a sentence or two and a link for more, checked against the docs (install requirements,
+ * the general and installation FAQ, reverting).
+ */
+const faqs = [
+  {
+    id: 'windows',
+    question: 'Which Windows can I install it on?',
+    answer:
+      '<strong>Windows 11 Pro, Education or Enterprise.</strong> Home, LTSC and Server aren’t supported, and Atlas doesn’t include a Windows licence. <a href="/docs/install/requirements/" class="summit-link">Check your PC first</a>.',
+  },
+  {
+    id: 'apps',
+    question: 'Will my apps and games still work?',
+    answer:
+      '<strong>Yes.</strong> Atlas focuses on compatibility and doesn’t strip out Windows components like other modifications, so your software, games, Windows Update and Microsoft Store keep working. Anything Atlas turns off can be switched back on from the <a href="/docs/atlas-configuration/" class="summit-link">Atlas folder</a>.',
+  },
+  {
+    id: 'security',
+    question: 'Does Atlas make Windows less secure?',
+    answer:
+      '<strong>No, unless you want it to.</strong> You choose whether to keep Microsoft Defender, processor protections and automatic updates during setup, and you can change them later in the <a href="/docs/atlas-configuration/security/" class="summit-link">security settings</a>.',
+  },
+  {
+    id: 'install',
+    question: 'How do I install AtlasOS?',
+    answer:
+      '<strong>For a first install, choose Create an Atlas ISO in Atlas Manager.</strong> Use the media to reinstall Windows 11. After sign-in, Manager guides you through updates and Atlas setup. <a href="/docs/install/" class="summit-link">Read the installation guide</a>.',
+  },
+  {
+    id: 'revert',
+    question: 'Can I go back to standard Windows?',
+    answer:
+      '<strong>Yes, by reinstalling Windows</strong> from Microsoft’s installation media. Reset this PC won’t undo Atlas, so follow the <a href="/docs/faq/reverting/" class="summit-link">guide to reverting Atlas</a>.',
+  },
+];
+
+/*
+ * The rope sags as a parabola between the row's ends; each lantern hangs where the rope crosses its
+ * column's centre, so its cord starts that far down (as a fraction of the full sag).
+ */
+const sagAt = (index: number) => {
+  const t = (index + 0.5) / faqs.length;
+  return Math.round(4 * t * (1 - t) * 1000) / 1000;
+};
+
+const lanternGlow = glowStops(0.42);
+/** The pool of light the lit lantern throws on its answer, in candlelight. */
+const pool = `--faq-pool: ${cssGlow('oklch(0.8313 0.1285 67.65)', 0.17, 'ellipse 50% 50% at 50% 50%')}`;
 ---
 
-<section id="faq" class="relative mx-auto mt-32 mb-32 max-w-6xl px-4">
-  <div class="mb-12 text-center" data-animate>
-    <SectionTitle>FAQ</SectionTitle>
-    <h2 class="mb-6 text-4xl font-semibold tracking-tight text-white md:text-5xl">Frequently asked questions</h2>
+<section id="faq" class="faq content-grid relative my-32" style={`${pool}; --count: ${faqs.length}`} data-faq>
+  <SectionHeading near="Frequently asked questions" align="center" />
+
+  <div class="faq-string" data-animate>
+    <svg class="faq-rope" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 0Q50 20 100 0" vector-effect="non-scaling-stroke"></path>
+    </svg>
+    <div class="faq-light" aria-hidden="true"></div>
+    <!-- The lanterns' light and lit glass, defined once and shared (every lantern has the same view box). -->
+    <svg class="faq-defs" width="0" height="0" aria-hidden="true">
+      <radialGradient id="lantern-glow" cx="20" cy="36" r="34" gradientUnits="userSpaceOnUse">
+        {lanternGlow.map(({ offset, opacity }) => (
+          <stop offset={offset} stop-color="#FFB766" stop-opacity={opacity} />
+        ))}
+      </radialGradient>
+      <radialGradient id="lantern-glass" cx="20" cy="32" r="19" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#FFE9B8"></stop>
+        <stop offset="0.3" stop-color="#FFCB7A"></stop>
+        <stop offset="0.7" stop-color="#F39A4A"></stop>
+        <stop offset="1" stop-color="#D97A3C"></stop>
+      </radialGradient>
+    </svg>
+
+    {faqs.map(({ id, question, answer }, index) => (
+      <>
+        <h3 class="faq-q" style={`--sag: ${sagAt(index)}`}>
+          <button
+            type="button"
+            id={`faq-q-${id}`}
+            aria-controls={`faq-a-${id}`}
+            aria-expanded="true"
+            data-faq-q={index}
+          >
+            <svg class="lantern" viewBox="0 0 40 72" aria-hidden="true">
+              <circle class="lantern-glow" cx="20" cy="36" r="34" fill="url(#lantern-glow)" />
+              <circle cx="20" cy="4.5" r="2.4" fill="none" stroke="#7F95BE" stroke-width="1.1" />
+              <path d="M16.5 7h7l5 7.5h-17Z" fill="#1F3D75" />
+              <path d="M16.5 7l-5 7.5" stroke="#B9D3FA" stroke-opacity="0.55" stroke-width="0.8" />
+              <rect x="10" y="14.5" width="20" height="3" rx="1" fill="#2A4E8C" />
+              <rect class="lantern-dark" x="12" y="17.5" width="16" height="29.5" fill="#13264D" />
+              <rect class="lantern-lit" x="12" y="17.5" width="16" height="29.5" fill="url(#lantern-glass)" />
+              <path class="lantern-dark" d="M13.6 19.5v25" stroke="#9DBDF2" stroke-opacity="0.3" stroke-width="0.9" />
+              <!-- The candle: dim through the dark glass, warm wax with a flame on its wick when lit -->
+              <g class="lantern-dark">
+                <rect x="17.3" y="37" width="5.4" height="10" fill="#2A3F68" />
+                <rect x="21" y="37" width="1.7" height="10" fill="#22365C" />
+                <ellipse cx="20" cy="37" rx="2.7" ry="0.8" fill="#34507F" />
+              </g>
+              <g class="lantern-lit">
+                <rect x="17.3" y="37" width="5.4" height="10" fill="#FFF1D6" />
+                <rect x="21" y="37" width="1.7" height="10" fill="#EBCF9F" />
+                <ellipse cx="20" cy="37" rx="2.7" ry="0.8" fill="#FFF8EA" />
+                <path d="M17.3 37.3h1.3v3.4a.65.65 0 0 1-1.3 0Z" fill="#FFF6E4" />
+              </g>
+              <path d="M20 37V34.6" stroke="#3A2A20" stroke-width="0.7" stroke-linecap="round" />
+              <g class="lantern-flame">
+                <path d="M20 27.4c1.3 1.9 2 3.3 2 4.6a2 2 0 0 1-4 0c0-1.3.7-2.7 2-4.6Z" fill="#FFA63D" />
+                <path d="M20 30.4c.55.8.85 1.4.85 2a.85.85 0 0 1-1.7 0c0-.6.3-1.2.85-2Z" fill="#FFF8DC" />
+              </g>
+              <rect x="10.5" y="17" width="2.4" height="30.5" fill="#1F3D75" />
+              <rect x="27.1" y="17" width="2.4" height="30.5" fill="#1A3466" />
+              <rect x="10" y="47" width="20" height="3.4" rx="1" fill="#2A4E8C" />
+              <path d="M14 50.4h12l-2.4 4h-7.2Z" fill="#1F3D75" />
+            </svg>
+            <span class="faq-q__text">{question}</span>
+          </button>
+        </h3>
+        <div class="faq-a" id={`faq-a-${id}`} role="region" aria-labelledby={`faq-q-${id}`}>
+          <p set:html={answer} />
+        </div>
+      </>
+    ))}
   </div>
 
-  <div class="space-y-6">
-    <details
-      class="faq-item group cursor-pointer rounded-lg bg-white/5 shadow-[var(--shadow-surface)] transition-[background-color,box-shadow] duration-200 hover:bg-white/10 hover:shadow-[var(--shadow-surface-hover)]"
-      data-animate
-    >
-      <summary class="flex w-full items-center justify-between px-6 py-5 text-lg font-semibold text-white select-none">
-        Which Windows versions are supported?
-        <Icon name="tabler:chevron-down" class="h-5 w-5 flex-shrink-0 transition-transform group-open:rotate-180" />
-      </summary>
-      <div class="faq-answer px-6">
-        <div class="faq-answer-inner pb-6">
-          <p class="leading-relaxed text-white/70">
-            AtlasOS officially supports <span class="font-semibold text-white">Windows 11</span>.
-          </p>
-        </div>
-      </div>
-    </details>
-
-    <details
-      class="faq-item group cursor-pointer rounded-lg bg-white/5 shadow-[var(--shadow-surface)] transition-[background-color,box-shadow] duration-200 hover:bg-white/10 hover:shadow-[var(--shadow-surface-hover)]"
-      data-animate
-    >
-      <summary class="flex w-full items-center justify-between px-6 py-5 text-lg font-semibold text-white select-none">
-        Will my apps keep working?
-        <Icon name="tabler:chevron-down" class="h-5 w-5 flex-shrink-0 transition-transform group-open:rotate-180" />
-      </summary>
-      <div class="faq-answer px-6">
-        <div class="faq-answer-inner pb-6">
-          <p class="leading-relaxed text-white/70">
-            Most apps and games work as they do on standard Windows. Atlas removes some built-in apps and turns off some
-            Windows features, and you can turn many of them back on from the Atlas folder.
-          </p>
-        </div>
-      </div>
-    </details>
-
-    <details
-      class="faq-item group cursor-pointer rounded-lg bg-white/5 shadow-[var(--shadow-surface)] transition-[background-color,box-shadow] duration-200 hover:bg-white/10 hover:shadow-[var(--shadow-surface-hover)]"
-      data-animate
-    >
-      <summary class="flex w-full items-center justify-between px-6 py-5 text-lg font-semibold text-white select-none">
-        How do I install AtlasOS?
-        <Icon name="tabler:chevron-down" class="h-5 w-5 flex-shrink-0 transition-transform group-open:rotate-180" />
-      </summary>
-      <div class="faq-answer px-6">
-        <div class="faq-answer-inner pb-6">
-          <p class="leading-relaxed text-white/70">
-            Download Atlas Manager and follow our
-            <a href="/docs/install/" class="text-primary hover:text-primary">
-              installation documentation
-            </a>
-            . Atlas Manager checks your PC, updates Windows and installs Atlas. Installations that don't follow the
-            documentation are unsupported.
-          </p>
-        </div>
-      </div>
-    </details>
-
-    <details
-      class="faq-item group cursor-pointer rounded-lg bg-white/5 shadow-[var(--shadow-surface)] transition-[background-color,box-shadow] duration-200 hover:bg-white/10 hover:shadow-[var(--shadow-surface-hover)]"
-      data-animate
-    >
-      <summary class="flex w-full items-center justify-between px-6 py-5 text-lg font-semibold text-white select-none">
-        Can I easily roll back to stock Windows?
-        <Icon name="tabler:chevron-down" class="h-5 w-5 flex-shrink-0 transition-transform group-open:rotate-180" />
-      </summary>
-      <div class="faq-answer px-6">
-        <div class="faq-answer-inner pb-6">
-          <p class="leading-relaxed text-white/70">
-            No, AtlasOS does not provide a rollback or recovery option. To return to standard Windows, reinstall Windows
-            from Microsoft's installation media. We have a guide on how to do this in our
-            <a href="/docs/faq/reverting/" class="text-primary hover:text-primary">
-              reverting AtlasOS documentation
-            </a>
-            .
-          </p>
-        </div>
-      </div>
-    </details>
-  </div>
-  <div class="mt-8 text-center" data-animate>
-    <Button href="/docs/faq/" icon="tabler:arrow-up-right" iconPosition="after" variant="tertiary" size="lg">
+  <p class="faq-more" data-animate>
+    <a href="/docs/faq/" class="summit-link">
       View more FAQs in our documentation
-    </Button>
-  </div>
+    </a>
+  </p>
 </section>
 
 <style>
-  .faq-answer {
+  /* The FAQ reads in a narrower column than the other sections. */
+  .faq {
+    --content: 70rem;
+  }
+
+  .faq-string {
+    --sag-px: 2.5rem;
+    --cord: 1.25rem;
+    /* The rope and the lanterns' cords. */
+    --rope: oklch(0.668 0.066 262.7);
+    position: relative;
     display: grid;
-    grid-template-rows: 0fr;
+    margin-block-start: 3rem;
+  }
+
+  /* ---- Phones: a list of lanterns, each answer opening under its question ---- */
+
+  .faq-rope,
+  .faq-light {
+    display: none;
+  }
+  .faq-defs {
+    position: absolute;
+  }
+  .faq-q button {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 1rem;
+    padding-block: 0.5rem;
+    padding-inline: 0;
+    color: var(--summit-text-muted);
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: start;
+    cursor: pointer;
+    transition: color 200ms var(--motion-ease-out);
+  }
+  .faq-q button[aria-expanded='true'] {
+    color: var(--color-fg);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .faq-q button:hover {
+      color: var(--color-fg);
+    }
+  }
+  .faq-q button:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 4px;
+    border-radius: 0.375rem;
+  }
+  .lantern {
+    flex: none;
+    width: 1.75rem;
+    overflow: visible;
+    transform-origin: 50% 6%;
+  }
+  .faq-a {
+    padding-block: 0.25rem 1.25rem;
+    padding-inline: 2.75rem 0;
+    color: var(--summit-text-muted);
+    line-height: 1.7;
+  }
+  .faq-a :global(strong) {
+    color: var(--color-fg);
+  }
+  .faq-a[hidden] {
+    display: none;
+  }
+
+  /* ---- The lantern's two states. Unlit: dark glass catching the moon. Lit: warm glass, a flame. ---- */
+
+  .lantern-lit,
+  .lantern-flame,
+  .lantern-glow {
     opacity: 0;
-    transform: translateY(-6px);
-    filter: blur(2px);
-    transition:
-      grid-template-rows var(--motion-duration-normal) var(--motion-ease-out),
-      opacity var(--motion-duration-normal) var(--motion-ease-out),
-      transform var(--motion-duration-normal) var(--motion-ease-out),
-      filter var(--motion-duration-normal) var(--motion-ease-out);
+    transition: opacity 320ms var(--motion-ease-out);
   }
-
-  .faq-answer-inner {
-    min-height: 0;
-    overflow: hidden;
+  .lantern-dark {
+    transition: opacity 320ms var(--motion-ease-out);
   }
-
-  .faq-item[open] .faq-answer {
-    grid-template-rows: 1fr;
+  [aria-expanded='true'] .lantern :is(.lantern-lit, .lantern-flame, .lantern-glow) {
     opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
+  }
+  [aria-expanded='true'] .lantern .lantern-dark {
+    opacity: 0;
+  }
+
+  /* ---- Desktop: the lanterns hang in a row from the rope, the answer below ---- */
+
+  @media (min-width: 1024px) {
+    .faq-string {
+      grid-template-columns: repeat(var(--count), minmax(0, 1fr));
+      column-gap: 1.5rem;
+      margin-block-start: 3.5rem;
+      padding-block-start: 0.25rem;
+    }
+
+    /* The rope sags between the row's ends and fades out into the night at both. */
+    .faq-rope {
+      position: absolute;
+      inset-block: 0 auto;
+      inset-inline: -4%;
+      display: block;
+      width: 108%;
+      height: calc(var(--sag-px) * 1.08);
+      overflow: visible;
+      mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    }
+    .faq-rope path {
+      fill: none;
+      stroke: var(--rope);
+      stroke-opacity: 0.45;
+      stroke-width: 1;
+    }
+
+    .faq-q {
+      grid-row: 1;
+      padding-block-start: calc(var(--sag-px) * var(--sag));
+    }
+    .faq-q button {
+      position: relative;
+      flex-direction: column;
+      gap: 1rem;
+      padding-block: var(--cord) 0;
+      padding-inline: 0;
+      text-align: center;
+    }
+    /* The cord from the rope down to the lantern's ring. */
+    .faq-q button::before {
+      content: '';
+      position: absolute;
+      inset-block-start: 0;
+      inset-inline-start: 50%;
+      width: 1px;
+      height: calc(var(--cord) + 2px);
+      background: color-mix(in oklch, var(--rope) 50%, transparent);
+    }
+    .lantern {
+      width: 3.25rem;
+    }
+    .faq-q__text {
+      max-width: 13rem;
+      text-wrap: balance;
+    }
+
+    .faq-a {
+      grid-row: 2;
+      grid-column: 1 / -1;
+      max-width: 40rem;
+      margin-block: 0;
+      margin-inline: auto;
+      padding-block: 3rem 0;
+      padding-inline: 0;
+      font-size: 1.0625rem;
+      text-align: center;
+    }
+
+    /* The lit lantern's light on the ground below it, sliding across to whichever one is lit. */
+    .faq-light {
+      position: absolute;
+      inset-block-start: -6rem;
+      inset-inline-start: calc((var(--lit, 0) + 0.5) * 100% / var(--count));
+      display: block;
+      width: 28rem;
+      height: 24rem;
+      translate: -50% 0;
+      background: var(--faq-pool);
+      pointer-events: none;
+    }
+  }
+  @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+    .faq-light {
+      transition: inset-inline-start 600ms var(--motion-ease-out);
+    }
+  }
+
+  /* Without JavaScript every answer shows, stacked under the row. */
+  @media (min-width: 1024px) {
+    .faq:not([data-ready]) .faq-a {
+      grid-row: auto;
+    }
+    .faq:not([data-ready]) .faq-light {
+      display: none;
+    }
+  }
+
+  .faq-more {
+    margin-block-start: 3rem;
+    text-align: center;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* A lantern answers the pointer with a small swing on its cord, and swings as it is lit. */
+    @media (hover: hover) and (pointer: fine) {
+      .faq-q button:hover .lantern {
+        animation: lantern-sway 1.4s ease-in-out;
+      }
+    }
+    .faq-q button[data-swing] .lantern {
+      animation: lantern-swing 1.6s cubic-bezier(0.3, 0.7, 0.4, 1);
+    }
+    .faq[data-ready] .faq-a:not([hidden]) {
+      animation: faq-answer 420ms var(--motion-ease-out);
+    }
+  }
+
+  /* The candle's flame stirs a little while it burns. */
+  .lantern-flame {
+    transform-box: view-box;
+    transform-origin: 20px 34px;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    [aria-expanded='true'] .lantern-flame {
+      animation: candle-flicker 2.4s ease-in-out infinite;
+    }
+    .faq[data-paused] .lantern-flame {
+      animation-play-state: paused;
+    }
+  }
+  @keyframes candle-flicker {
+    0%,
+    100% {
+      scale: 1 1;
+    }
+    30% {
+      scale: 0.94 1.06;
+    }
+    55% {
+      scale: 1.03 0.95;
+    }
+    80% {
+      scale: 0.97 1.03;
+    }
+  }
+
+  @keyframes lantern-sway {
+    0%,
+    100% {
+      rotate: 0deg;
+    }
+    30% {
+      rotate: 3deg;
+    }
+    65% {
+      rotate: -2deg;
+    }
+  }
+  @keyframes lantern-swing {
+    0% {
+      rotate: 0deg;
+    }
+    18% {
+      rotate: 7deg;
+    }
+    42% {
+      rotate: -4.5deg;
+    }
+    66% {
+      rotate: 2deg;
+    }
+    100% {
+      rotate: 0deg;
+    }
+  }
+  @keyframes faq-answer {
+    from {
+      opacity: 0;
+      translate: 0 6px;
+    }
   }
 </style>
+
+<script>
+  import { pauseWhenOffscreen } from '@/utils/in-view';
+  import { onPageLoad } from '@/utils/page-lifecycle';
+
+  onPageLoad((signal) => pauseWhenOffscreen('[data-faq]', signal));
+
+  onPageLoad((signal) => {
+    const section = document.querySelector<HTMLElement>('[data-faq]');
+    if (!section) return;
+    const buttons = [...section.querySelectorAll<HTMLButtonElement>('[data-faq-q]')];
+    const panels = buttons.map((button) => document.getElementById(button.getAttribute('aria-controls') ?? ''));
+
+    const light = (index: number, swing: boolean) => {
+      buttons.forEach((button, i) => {
+        const lit = i === index;
+        button.setAttribute('aria-expanded', String(lit));
+        panels[i]?.toggleAttribute('hidden', !lit);
+        if (lit && swing) {
+          button.removeAttribute('data-swing');
+          // Restart the swing even when the same lantern is chosen twice in a row.
+          void button.offsetWidth;
+          button.setAttribute('data-swing', '');
+        }
+      });
+      section.style.setProperty('--lit', String(index));
+    };
+
+    buttons.forEach((button, index) => {
+      button.addEventListener('click', () => light(index, true), { signal });
+      button.addEventListener('animationend', () => button.removeAttribute('data-swing'), { signal });
+    });
+
+    light(0, false);
+    section.setAttribute('data-ready', '');
+    signal.addEventListener('abort', () => section.removeAttribute('data-ready'), { once: true });
+  });
+</script>

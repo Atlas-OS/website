@@ -30,7 +30,7 @@ export const GET: APIRoute = async ({ site }) => {
     '',
     `> ${DEFAULT_META_DESCRIPTION}`,
     '',
-    'Every page below is also available as Markdown by appending `.md` to its URL.',
+    'Use these guides to install, configure, upgrade, or troubleshoot AtlasOS. For Markdown, replace the trailing slash with .md (for example, /docs/install/manager.md). The docs home is /docs/index.md.',
     '',
     ...sections.flatMap(renderSection),
   ].join('\n');
@@ -38,7 +38,6 @@ export const GET: APIRoute = async ({ site }) => {
   return new Response(body, {
     headers: {
       'Content-Type': 'text/plain; charset=utf-8',
-      'Cache-Control': 'public, max-age=3600',
     },
   });
 };

@@ -9,20 +9,22 @@ interface Props {
 const { summary, open = false } = Astro.props;
 ---
 
-<details class="details docs-surface not-prose my-4 overflow-hidden" data-component="details" open={open}>
+<!-- Opens and closes by easing its height (`::details-content`, docs.css). -->
+<details class="details docs-surface not-prose my-4 overflow-clip" data-component="details" open={open}>
   <summary
-    class="details-summary flex min-h-11 cursor-pointer items-center justify-between gap-3 rounded-[var(--docs-radius-md)] px-5 py-4 text-sm font-medium transition-colors hover:bg-white/[0.04] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+    class="details-summary flex min-h-11 cursor-pointer items-center justify-between gap-3 rounded-[var(--docs-radius-md)] px-5 py-4 text-sm font-medium transition-colors hover:bg-fg/[0.04] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary active:opacity-70"
     style="color: var(--docs-text-primary);"
   >
     <span>{summary}</span>
     <Icon
       name="tabler:chevron-down"
-      class="details-summary-icon h-4 w-4 shrink-0 transition-transform duration-200"
+      is:inline
+      class="details-summary-icon h-4 w-4 shrink-0 motion-safe:transition-transform motion-safe:duration-200"
       style="color: var(--docs-text-muted);"
       aria-hidden="true"
     />
   </summary>
-  <div class="details-content px-5 py-4" style="border-top: 1px solid var(--docs-surface-border);">
+  <div class="details-content px-5 py-4" style="border-block-start: 1px solid var(--docs-surface-border);">
     <slot />
   </div>
 </details>
@@ -46,29 +48,27 @@ const { summary, open = false } = Astro.props;
 
   .details-content ul,
   .details-content ol {
-    margin-top: 0.5rem;
-    margin-bottom: 0;
-    margin-left: 1.25rem;
-    padding-left: 0;
+    margin-block: 0.5rem 0;
+    margin-inline-start: 1.25rem;
+    padding-inline-start: 0;
   }
 
   .details-content li {
-    margin-bottom: 0.25rem;
+    margin-block-end: 0.25rem;
     color: var(--docs-text-secondary);
     font-size: 0.875rem;
     line-height: 1.6;
   }
 
   .details-content p {
-    margin-top: 0;
-    margin-bottom: 0.5rem;
+    margin-block: 0 0.5rem;
     font-size: 0.875rem;
     line-height: 1.6;
     color: var(--docs-text-secondary);
   }
 
   .details-content p:last-child {
-    margin-bottom: 0;
+    margin-block-end: 0;
   }
 
   .details-content a {
@@ -77,8 +77,10 @@ const { summary, open = false } = Astro.props;
     font-weight: 500;
   }
 
-  .details-content a:hover {
-    opacity: 0.85;
+  @media (hover: hover) and (pointer: fine) {
+    .details-content a:hover {
+      opacity: 0.85;
+    }
   }
 
   .details-content ul {

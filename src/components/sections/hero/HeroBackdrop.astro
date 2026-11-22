@@ -1,0 +1,248 @@
+---
+/**
+ * "Summit": the night sky over the home hero. It wraps the hero copy and the Atlas Manager
+ * showcase, so the sky above the copy and the range behind the window (SummitStage.astro) read as
+ * one continuous scene. Kept deliberately quiet: sparse stars that thin out behind the copy, and
+ * a faint aurora that rises at the sides and arcs away above the headline.
+ *
+ * Server-rendered and complete without JavaScript. utils/hero-summit.ts adds the rare shooting
+ * star, starts the stage's arrival when it scrolls into view, and pauses every loop off screen.
+ */
+import { scatterStars, STAR_VIEW, starsPath } from '@/utils/hero-summit-geometry';
+
+const stars = scatterStars();
+/** Group 0 holds still; groups 1 and 2 twinkle out of step. One path per colour per group. */
+const starGroups = [0, 1, 2].map((group) => {
+  const members = stars.filter((star) => star.group === group);
+  return {
+    warm: starsPath(members.filter((star) => !star.cool)),
+    cool: starsPath(members.filter((star) => star.cool)),
+  };
+});
+---
+
+<div class="summit-world" data-summit-world>
+  <div class="summit-sky" aria-hidden="true">
+    <div class="summit-sky__stars">
+      {starGroups.map((group, index) => (
+        <svg
+          class:list={['summit-stars', `summit-stars--${index}`, { 'summit-loop': index > 0 }]}
+          viewBox={`0 0 ${STAR_VIEW.width} ${STAR_VIEW.height}`}
+          preserveAspectRatio="xMidYMin slice"
+        >
+          <path d={group.warm} fill="#EEF5FF" />
+          <path d={group.cool} fill="#A9CBFF" />
+        </svg>
+      ))}
+    </div>
+
+    <!-- Aurora: strongest at the sides, faint where it arcs over the copy. Baked once, only moved. -->
+    <div class="summit-aurora-in">
+      <svg class="summit-aurora summit-loop" viewBox="0 0 1600 600" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="summit-aurora-a" x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0" stop-color="#1A91FF" stop-opacity="0"></stop>
+            <stop offset="0.16" stop-color="#1A91FF" stop-opacity="0.9"></stop>
+            <stop offset="0.36" stop-color="#5CC8FF" stop-opacity="0.18"></stop>
+            <stop offset="0.64" stop-color="#5CC8FF" stop-opacity="0.18"></stop>
+            <stop offset="0.84" stop-color="#1A91FF" stop-opacity="0.85"></stop>
+            <stop offset="1" stop-color="#1A91FF" stop-opacity="0"></stop>
+          </linearGradient>
+          <linearGradient id="summit-aurora-b" x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0" stop-color="#7B6CFF" stop-opacity="0"></stop>
+            <stop offset="0.2" stop-color="#7B6CFF" stop-opacity="0.8"></stop>
+            <stop offset="0.4" stop-color="#4D7DFF" stop-opacity="0.12"></stop>
+            <stop offset="0.6" stop-color="#4D7DFF" stop-opacity="0.12"></stop>
+            <stop offset="0.8" stop-color="#7B6CFF" stop-opacity="0.75"></stop>
+            <stop offset="1" stop-color="#7B6CFF" stop-opacity="0"></stop>
+          </linearGradient>
+          <filter id="summit-aurora-blur" x="-20%" y="-60%" width="140%" height="220%">
+            <feGaussianBlur stdDeviation="26"></feGaussianBlur>
+          </filter>
+        </defs>
+        <g filter="url(#summit-aurora-blur)" fill="none" stroke-linecap="round">
+          <path
+            d="M-160 620C60 330 360 0 800 -60S1540 320 1760 620"
+            stroke="url(#summit-aurora-a)"
+            stroke-width="80"
+            opacity="0.85"
+          ></path>
+          <path
+            class="summit-aurora__violet"
+            d="M-160 540C100 260 400 -40 820 -90S1520 240 1760 540"
+            stroke="url(#summit-aurora-b)"
+            stroke-width="44"
+            opacity="0.6"
+          ></path>
+        </g>
+      </svg>
+    </div>
+
+    <span class="summit-meteor" data-summit-meteor></span>
+  </div>
+
+  <slot />
+</div>
+
+<style>
+  /* `--window-w`, the Atlas Manager window's width that the stage is measured in, is set in Hero.astro. */
+  .summit-world {
+    position: relative;
+    isolation: isolate;
+  }
+
+  /*
+   * Night deepens down the page towards the range. Both ends start from nothing: the top meets the
+   * header without a seam, and the sky is fully transparent before the stage fades into the page
+   * (where the stage's hills hide it), so the page background is all that remains below.
+   */
+  .summit-sky {
+    --sky: oklch(0.2 0.038 262);
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    overflow: clip;
+    pointer-events: none;
+    user-select: none;
+    background:
+      radial-gradient(ellipse 50% 280px at 50% 280px, oklch(0.42 0.12 253 / 0.08), transparent 100%),
+      linear-gradient(
+        to bottom,
+        transparent 0,
+        var(--sky) 560px,
+        var(--sky) calc(100% - var(--window-w) * 0.5),
+        transparent calc(100% - var(--window-w) * 0.36)
+      );
+  }
+  .summit-sky__stars {
+    position: absolute;
+    inset-block: 0 auto;
+    inset-inline: 0;
+    height: min(100%, 860px);
+  }
+
+  .summit-stars {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .summit-stars--1 {
+    opacity: 0.8;
+  }
+  .summit-stars--2 {
+    opacity: 0.6;
+  }
+
+  .summit-aurora {
+    position: absolute;
+    inset-inline-start: -10%;
+    inset-block-start: 0;
+    width: 120%;
+    height: 640px;
+    overflow: visible;
+    opacity: 0.32;
+    /* Rises out of nothing, so the ribbons are never cut off against the header. */
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0,
+      color-mix(in oklch, black 10%, transparent) 40px,
+      color-mix(in oklch, black 45%, transparent) 90px,
+      color-mix(in oklch, black 85%, transparent) 140px,
+      black 180px
+    );
+  }
+
+  .summit-meteor {
+    /* The meteor's pale blue trail. */
+    --trail: oklch(0.84 0.08 257.3);
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: -140px;
+    width: 140px;
+    height: 1.5px;
+    border-radius: 999px;
+    opacity: 0;
+    transform-origin: 100% 50%;
+    background: linear-gradient(
+      in srgb 90deg,
+      transparent,
+      color-mix(in oklch, var(--trail) 45%, transparent) 55%,
+      white
+    );
+    box-shadow: 0 0 6px color-mix(in oklch, var(--trail) 50%, transparent);
+  }
+  .summit-meteor::after {
+    content: '';
+    position: absolute;
+    inset-inline-end: -1px;
+    inset-block-start: 50%;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    translate: 0 -50%;
+    background: white;
+    box-shadow: 0 0 8px 2px oklch(0.884 0.058 252.4 / 0.7);
+  }
+
+  @media (max-width: 767px) {
+    .summit-stars--2,
+    .summit-aurora-in {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .summit-sky__stars {
+      animation: summit-fade 1800ms ease-out 200ms backwards;
+    }
+    .summit-aurora-in {
+      animation: summit-fade 2600ms ease-out 900ms backwards;
+    }
+
+    /* Slow ambient loops; none pulses faster than once every few seconds. */
+    .summit-stars--1 {
+      animation: summit-twinkle 6.4s ease-in-out -2.4s infinite alternate;
+    }
+    .summit-stars--2 {
+      animation: summit-twinkle 9.2s ease-in-out -5.1s infinite alternate;
+    }
+    .summit-aurora {
+      animation: summit-aurora 56s ease-in-out infinite alternate;
+    }
+
+    .summit-world[data-summit-paused] .summit-loop {
+      animation-play-state: paused;
+    }
+  }
+
+  @keyframes summit-fade {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @keyframes summit-twinkle {
+    to {
+      opacity: 0.3;
+    }
+  }
+
+  @keyframes summit-aurora {
+    from {
+      opacity: 0.24;
+      transform: translate3d(-2%, 1%, 0) scaleY(0.94);
+    }
+    to {
+      opacity: 0.4;
+      transform: translate3d(2%, -1%, 0) scaleY(1.06);
+    }
+  }
+</style>
+
+<script>
+  import { initSummit } from '@/utils/hero-summit';
+  import { onPageLoad } from '@/utils/page-lifecycle';
+
+  onPageLoad(initSummit);
+</script>

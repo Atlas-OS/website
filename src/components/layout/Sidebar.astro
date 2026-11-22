@@ -1,5 +1,6 @@
 ---
 import { DOCS_ROOT, getDocsTree, normalizeDocsPath, type DocsNavItem } from '@/utils/docs';
+import SocialIconLink from '@/components/ui/SocialIconLink.astro';
 import { Icon } from 'astro-icon/components';
 import '@/styles/sidebar.css';
 
@@ -41,20 +42,15 @@ const listId = (href: string) => `sidebar-list-${href.replace(/[^a-z0-9]+/gi, '-
     <aside
       id="sidebar"
       data-pagefind-ignore
-      class="fixed left-0 z-40 transition-transform duration-[250ms] lg:translate-x-0"
-      style="top: var(--docs-header-height); width: min(var(--docs-sidebar-width), 86vw); height: calc(100vh - var(--docs-header-height));"
+      class="fixed start-0 z-40 lg:translate-x-0 motion-safe:transition-transform motion-safe:duration-[250ms]"
+      style="inset-block-start: var(--site-header-height); width: min(var(--docs-sidebar-width), 86vw); height: calc(100dvh - var(--site-header-height));"
       transition:persist="docs-sidebar"
     >
       <div class="flex h-full flex-col">
-        <div class="flex items-center justify-between border-b border-white/[0.06] px-4 py-3 lg:hidden">
-          <h2 class="text-sm font-semibold text-white">Documentation</h2>
-          <button
-            id="sidebar-close-button"
-            type="button"
-            aria-label="Close sidebar"
-            class="inline-flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-md bg-[var(--bg-primary)] text-sm font-medium text-white shadow-[var(--shadow-surface)] transition-[background-color,box-shadow,opacity,scale] duration-200 outline-none hover:bg-white/[0.04] hover:opacity-80 hover:shadow-[var(--shadow-surface-hover)] active:scale-[0.96]"
-          >
-            <Icon name="tabler:x" is:inline class="h-5 w-5" aria-hidden="true" />
+        <div class="flex items-center justify-between border-be border-fg/[0.06] px-4 py-3 lg:hidden">
+          <h2 class="text-sm font-semibold text-fg">Documentation</h2>
+          <button id="sidebar-close-button" type="button" aria-label="Close sidebar" class="nav-icon -me-2 inline-flex">
+            <Icon name="tabler:x" is:inline class="nav-icon__glyph" aria-hidden="true" />
           </button>
         </div>
 
@@ -95,7 +91,7 @@ const listId = (href: string) => `sidebar-list-${href.replace(/[^a-z0-9]+/gi, '-
                   data-sidebar-default="closed"
                   data-sidebar-open-on-home={openOnHome ? '' : undefined}
                 >
-                  <div class="group flex items-center gap-1 rounded-md transition-colors duration-200 hover:bg-white/5">
+                  <div class="group flex items-center gap-1 rounded-md transition-colors duration-200 hover:bg-fg/5">
                     <a
                       href={section.href}
                       data-astro-prefetch="viewport"
@@ -116,7 +112,7 @@ const listId = (href: string) => `sidebar-list-${href.replace(/[^a-z0-9]+/gi, '-
                     {hasItems && (
                       <button
                         type="button"
-                        class="sidebar-toggle inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md text-white/60 transition-colors duration-150 outline-none hover:text-white"
+                        class="sidebar-toggle inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md text-fg/60 transition-colors duration-150 hover:text-fg"
                         aria-label={`Toggle ${section.title} pages`}
                         aria-expanded={isOpen}
                         aria-controls={sectionListId}
@@ -124,7 +120,8 @@ const listId = (href: string) => `sidebar-list-${href.replace(/[^a-z0-9]+/gi, '-
                         <Icon
                           name="tabler:chevron-down"
                           is:inline
-                          class="sidebar-arrow pointer-events-none h-4 w-4 transition-transform duration-200"
+                          is:inline
+                          class="sidebar-arrow pointer-events-none h-4 w-4 motion-safe:transition-transform motion-safe:duration-200"
                           aria-hidden="true"
                         />
                       </button>
@@ -145,7 +142,7 @@ const listId = (href: string) => `sidebar-list-${href.replace(/[^a-z0-9]+/gi, '-
                               data-sidebar-group={hasChildren ? '' : undefined}
                               data-sidebar-key={hasChildren ? item.href : undefined}
                             >
-                              <div class="group flex items-center gap-1 rounded-md transition-colors duration-200 hover:bg-white/5">
+                              <div class="group flex items-center gap-1 rounded-md transition-colors duration-200 hover:bg-fg/5">
                                 <a
                                   href={item.href}
                                   data-astro-prefetch="viewport"
@@ -161,7 +158,7 @@ const listId = (href: string) => `sidebar-list-${href.replace(/[^a-z0-9]+/gi, '-
                                 {hasChildren && (
                                   <button
                                     type="button"
-                                    class="sidebar-toggle inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md text-white/60 transition-colors duration-150 outline-none hover:text-white"
+                                    class="sidebar-toggle inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md text-fg/60 transition-colors duration-150 hover:text-fg"
                                     aria-label={`Toggle ${item.title} pages`}
                                     aria-expanded={itemOpen}
                                     aria-controls={childListId}
@@ -169,7 +166,8 @@ const listId = (href: string) => `sidebar-list-${href.replace(/[^a-z0-9]+/gi, '-
                                     <Icon
                                       name="tabler:chevron-down"
                                       is:inline
-                                      class="sidebar-arrow pointer-events-none h-4 w-4 transition-transform duration-200"
+                                      is:inline
+                                      class="sidebar-arrow pointer-events-none h-4 w-4 motion-safe:transition-transform motion-safe:duration-200"
                                       aria-hidden="true"
                                     />
                                   </button>
@@ -209,6 +207,24 @@ const listId = (href: string) => `sidebar-list-${href.replace(/[^a-z0-9]+/gi, '-
               );
             })}
           </nav>
+        </div>
+
+        <!-- Phones only: the links the docs navbar has no room for there -->
+        <div class="sidebar-drawer-footer lg:hidden">
+          <a
+            href="https://ko-fi.com/atlasos"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="sidebar-drawer-footer__link"
+          >
+            <Icon name="tabler:heart" is:inline class="h-4 w-4" aria-hidden="true" />
+            Support us
+          </a>
+          <div class="flex items-center">
+            <SocialIconLink href="https://github.com/Atlas-OS/Atlas" icon="tabler:brand-github" label="GitHub" />
+            <SocialIconLink href="https://discord.com/invite/atlasos" icon="tabler:brand-discord" label="Discord" />
+            <SocialIconLink href="https://x.com/atlasos" icon="tabler:brand-x" label="X (Twitter)" />
+          </div>
         </div>
       </div>
     </aside>

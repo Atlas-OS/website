@@ -23,7 +23,7 @@ const structuredData = {
 ---
 
 {breadcrumbs.length > 1 && (
-  <nav aria-label="Breadcrumb" class="mb-6" data-pagefind-ignore>
+  <nav aria-label="Breadcrumb" class="mbe-6" data-pagefind-ignore>
     <ol class="flex flex-wrap items-center text-sm text-[var(--docs-text-muted)]">
       {breadcrumbs.map((crumb, index) => (
         <li class="breadcrumb-item flex items-center" data-breadcrumb-path={crumb.href}>
@@ -38,7 +38,7 @@ const structuredData = {
           ) : (
             <a
               href={crumb.href}
-              class="breadcrumb-label inline-block rounded-[var(--docs-radius-sm)] py-1 transition-opacity duration-200 hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+              class="breadcrumb-label inline-block rounded-[var(--docs-radius-sm)] py-1 transition-opacity duration-200 hover:opacity-80 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             >
               {crumb.title}
             </a>

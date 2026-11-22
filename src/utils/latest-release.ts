@@ -4,7 +4,6 @@ import { ATLAS_GITHUB_LATEST_RELEASE_API_URL } from '@/constants';
 export interface GitHubRelease {
   tag_name?: string;
   name?: string;
-  assets?: Array<{ name?: string; browser_download_url?: string }>;
 }
 
 /**

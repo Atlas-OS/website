@@ -1,4 +1,5 @@
 ---
+import DocsSummit from '@/components/docs/DocsSummit.astro';
 import { SITE_URL } from '@/constants';
 import DocsLayout from '@/layouts/DocsLayout.astro';
 import { DOCS_ROOT, getDocsIndex } from '@/utils/docs';
@@ -22,5 +23,6 @@ const { Content, headings } = await render(entry);
   landing
   showPageNav={false}
 >
+  <DocsSummit slot="header" />
   <Content />
 </DocsLayout>

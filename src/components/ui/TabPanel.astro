@@ -1,12 +1,26 @@
 ---
 interface Props {
+  group: string;
   value: string;
-  default?: boolean;
+  label: string;
 }
 
-const { value, default: isDefault = false } = Astro.props;
+const { group, value, label } = Astro.props;
 ---
 
-<div data-tab-panel={value} role="tabpanel" hidden={!isDefault}>
+<div
+  id={`${group}-panel-${value}`}
+  data-tab-panel={value}
+  role="tabpanel"
+  aria-labelledby={`${group}-tab-${value}`}
+  tabindex="0"
+>
+  <h4 class="tab-panel-label">{label}</h4>
   <slot />
 </div>
+
+<style>
+  :global([data-enhanced]) .tab-panel-label {
+    display: none;
+  }
+</style>

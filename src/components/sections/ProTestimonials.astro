@@ -1,193 +1,589 @@
 ---
+/**
+ * Peak performance: the pros at the top. The slideshow's frame is the summit: the moon rises
+ * behind it, and on its top edge stand three poles in silhouette, one per pro, with the hero's
+ * pennant. The flag of the pro on screen is unfurled at the top of its pole while the others wait
+ * furled at the foot; they are the slideshow's controls (utils/slideshow.ts builds them as buttons,
+ * the styles below dress them as flags).
+ *
+ * The moon rises once, as the summit reveals. Without JavaScript the first pro shows with their
+ * flag raised and the moon up. The raised flag's flutter is a slow CSS loop, paused off screen and
+ * still under reduced motion.
+ */
 import Al0ranteImage from '@/assets/al0rante.webp';
 import MisticImage from '@/assets/mistic.webp';
 import StarwraithImage from '@/assets/starwraith.webp';
-import SectionTitle from '@/components/sections/common/SectionTitle.astro';
+import SectionHeading from '@/components/sections/common/SectionHeading.astro';
 import { Icon } from 'astro-icon/components';
 import { Image } from 'astro:assets';
+import { glowStops } from '@/utils/glow';
+
+const pros = [
+  {
+    name: 'Mistic',
+    game: 'Valorant',
+    image: MisticImage,
+    alt: 'Mistic adjusting his glasses on stage in a Fnatic jersey',
+    position: 'center',
+    x: 'https://x.com/misticjk',
+    twitch: 'https://www.twitch.tv/mistic',
+  },
+  {
+    name: 'al0rante',
+    game: 'Valorant',
+    image: Al0ranteImage,
+    alt: 'al0rante smiling at his monitor before a Valorant match',
+    position: 'center',
+    x: 'https://x.com/al0rante',
+    twitch: 'https://www.twitch.tv/al0rante',
+  },
+  {
+    name: 'Starwraith',
+    game: 'Valorant (Former Pro)',
+    image: StarwraithImage,
+    alt: 'Valorant creator Starwraith',
+    position: 'center 35%',
+    x: 'https://x.com/StarWraith',
+    twitch: 'https://www.twitch.tv/starwraith',
+  },
+];
+
+/** The moon's halo: faint, and thinning from its rim to nothing with no edge to see. */
+const moonHalo = glowStops(0.3, { hold: 0.32 });
+
+const points = [
+  {
+    glyph: 'smooth',
+    title: 'Smooth performance',
+    text: 'Maintain focus with consistent, hitch-free gameplay.',
+  },
+  {
+    glyph: 'instant',
+    title: 'Instant input',
+    text: 'React faster with reduced input lag for critical moments.',
+  },
+  {
+    glyph: 'response',
+    title: 'Optimized response',
+    text: 'Maximize hardware potential for a tangible competitive edge.',
+  },
+];
 ---
 
-<section class="relative mx-auto mt-32 mb-32 max-w-7xl px-4">
-  <div class="grid grid-cols-1 items-center gap-16 md:grid-cols-2 md:gap-24">
-    <div class="order-1 md:order-1" data-animate>
-      <SectionTitle>Trusted by the Pros</SectionTitle>
-      <h2 class="mb-6 text-4xl font-semibold tracking-tight text-white md:text-5xl">
-        The choice for <span class="text-primary">peak performance</span>
-      </h2>
-      <p class="mb-8 leading-relaxed text-white/70">
-        Milliseconds decide matches. Top competitors rely on AtlasOS for the ultra-stable, low-latency environment
-        needed to perform at their peak. Gain the edge that comes from eliminating system hitches and ensuring instant
-        response, crucial in both practice and pro play.
-      </p>
-      <ul class="space-y-6 leading-relaxed text-white/70">
-        <li class="flex items-start" data-animate>
-          <Icon name="tabler:clock-pause" class="text-primary-300 mt-1 mr-3 h-5 w-5 shrink-0" />
-          <div class="grow">
-            <h3 class="mb-1 font-semibold text-white">Smooth performance</h3>
-            <p class="text-sm">Maintain focus with consistent, hitch-free gameplay.</p>
-          </div>
-        </li>
-        <li class="flex items-start" data-animate>
-          <Icon name="tabler:pointer" class="text-primary-300 mt-1 mr-3 h-5 w-5 shrink-0" />
-          <div class="grow">
-            <h3 class="mb-1 font-semibold text-white">Instant input</h3>
-            <p class="text-sm">React faster with reduced input lag for critical moments.</p>
-          </div>
-        </li>
-        <li class="flex items-start" data-animate>
-          <Icon name="tabler:cpu" class="text-primary-300 mt-1 mr-3 h-5 w-5 shrink-0" />
-          <div class="grow">
-            <h3 class="mb-1 font-semibold text-white">Optimized response</h3>
-            <p class="text-sm">Maximize hardware potential for a tangible competitive edge.</p>
-          </div>
-        </li>
-      </ul>
-    </div>
+<section class="pros relative mx-auto my-32 max-w-7xl px-4" data-pros>
+  <div class="pros-intro">
+    <SectionHeading near="The choice for peak performance" />
+    <p class="summit-lede mbs-6" data-animate>
+      Milliseconds decide matches. Top competitors rely on AtlasOS for the ultra-stable, low-latency environment needed
+      to perform at their peak. Gain the edge that comes from eliminating system hitches and ensuring instant response,
+      crucial in both practice and pro play.
+    </p>
+  </div>
 
-    <div class="order-2 overflow-hidden md:order-2" data-animate>
-      <p class="mb-4 text-xs text-white/50">
-        Are you a pro who uses Atlas or wants to get started?{' '}
-        <a href="mailto:contact@atlasos.net" class="text-primary-300 font-semibold hover:underline">
-          Get in touch
-        </a>
-        .
-      </p>
-      <div id="player-slideshow-container" class="relative">
-        <div id="player-slideshow" class="relative h-80 w-full overflow-hidden rounded-lg">
-          <div
-            class="player-slide group absolute inset-0 p-4 opacity-100 transition-opacity duration-1000"
-            style="z-index: 10;"
-          >
-            <Image
-              src={MisticImage}
-              alt="Pro Valorant player Mistic"
-              width={800}
-              height={600}
-              class="absolute inset-0 -z-10 h-full w-full rounded-lg object-cover"
-              quality={80}
-              loading="lazy"
-            />
-            <div class="absolute inset-0 z-0 rounded-lg bg-linear-to-t from-black/70 to-transparent"></div>
-            <div class="absolute bottom-4 left-4 z-10">
-              <p class="font-semibold text-white">Mistic</p>
-              <p class="mb-1 text-sm text-white/90">Valorant</p>
-              <div class="flex items-center space-x-2">
-                <a
-                  href="https://x.com/misticjk"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Mistic X"
-                  class="text-white/70 transition hover:text-white"
-                >
-                  <Icon name="tabler:brand-x" class="h-4 w-4" aria-hidden="true" />
-                  <span class="sr-only">Mistic X</span>
-                </a>
-                <a
-                  href="https://www.twitch.tv/mistic"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Mistic Twitch"
-                  class="text-white/70 transition hover:text-white"
-                >
-                  <Icon name="tabler:brand-twitch" class="h-4 w-4" aria-hidden="true" />
-                  <span class="sr-only">Mistic Twitch</span>
-                </a>
-              </div>
-            </div>
-          </div>
-          <div
-            class="player-slide group absolute inset-0 p-4 opacity-0 transition-opacity duration-1000"
-            style="z-index: 0;"
-          >
-            <Image
-              src={Al0ranteImage}
-              alt="Pro Valorant player al0rante"
-              width={800}
-              height={600}
-              class="absolute inset-0 -z-10 h-full w-full rounded-lg object-cover"
-              style="object-position: center 12%;"
-              quality={80}
-              loading="lazy"
-            />
-            <div class="absolute inset-0 z-0 rounded-lg bg-linear-to-t from-black/70 to-transparent"></div>
-            <div class="absolute bottom-4 left-4 z-10">
-              <p class="font-semibold text-white">al0rante</p>
-              <p class="mb-1 text-sm text-white/90">Valorant</p>
-              <div class="flex items-center space-x-2">
-                <a
-                  href="https://x.com/al0rante"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="al0rante X"
-                  class="text-white/70 transition hover:text-white"
-                >
-                  <Icon name="tabler:brand-x" class="h-4 w-4" aria-hidden="true" />
-                  <span class="sr-only">al0rante X</span>
-                </a>
-                <a
-                  href="https://www.twitch.tv/al0rante"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="al0rante Twitch"
-                  class="text-white/70 transition hover:text-white"
-                >
-                  <Icon name="tabler:brand-twitch" class="h-4 w-4" aria-hidden="true" />
-                  <span class="sr-only">al0rante Twitch</span>
-                </a>
-              </div>
-            </div>
-          </div>
-          <div
-            class="player-slide group absolute inset-0 p-4 opacity-0 transition-opacity duration-1000"
-            style="z-index: 0;"
-          >
-            <Image
-              src={StarwraithImage}
-              alt="Valorant creator Starwraith"
-              width={800}
-              height={600}
-              class="absolute inset-0 -z-10 h-full w-full rounded-lg object-cover"
-              quality={80}
-              loading="lazy"
-            />
-            <div class="absolute inset-0 z-0 rounded-lg bg-linear-to-t from-black/70 to-transparent"></div>
-            <div class="absolute bottom-4 left-4 z-10">
-              <p class="font-semibold text-white">Starwraith</p>
-              <p class="mb-1 text-sm text-white/90">Valorant (Former Pro)</p>
-              <div class="flex items-center space-x-2">
-                <a
-                  href="https://x.com/StarWraith"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Starwraith X"
-                  class="text-white/70 transition hover:text-white"
-                >
-                  <Icon name="tabler:brand-x" class="h-4 w-4" aria-hidden="true" />
-                  <span class="sr-only">Starwraith X</span>
-                </a>
-                <a
-                  href="https://www.twitch.tv/starwraith"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Starwraith Twitch"
-                  class="text-white/70 transition hover:text-white"
-                >
-                  <Icon name="tabler:brand-twitch" class="h-4 w-4" aria-hidden="true" />
-                  <span class="sr-only">Starwraith Twitch</span>
-                </a>
-              </div>
-            </div>
-          </div>
+  <ul class="pros-points">
+    {points.map(({ glyph, title, text }) => (
+      <li class="pros-point" data-animate>
+        <svg class="pros-point__icon" viewBox="0 0 32 32" aria-hidden="true">
+          {glyph === 'smooth' && (
+            <>
+              <path d="M3 27H29" stroke="#DDEBFF" stroke-opacity="0.22" />
+              <path
+                d="M3 20L6.5 13L9.5 19L12.5 9.5L15.5 18L18.5 11.5L21.5 19L24.5 12.5L29 18"
+                fill="none"
+                stroke="#7088B8"
+                stroke-opacity="0.6"
+                stroke-width="1.2"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M3 18.5C10 17.6 20 17.4 29 16.6"
+                fill="none"
+                stroke="#6BB8FF"
+                stroke-width="2.2"
+                stroke-linecap="round"
+              />
+            </>
+          )}
+          {glyph === 'instant' && (
+            <>
+              <defs>
+                <linearGradient id="pros-glyph-streak" x1="3" y1="4" x2="14" y2="13" gradientUnits="userSpaceOnUse">
+                  <stop offset="0" stop-color="#DDEBFF" stop-opacity="0" />
+                  <stop offset="1" stop-color="#FFFFFF" />
+                </linearGradient>
+              </defs>
+              <path d="M3 4L14 13" stroke="url(#pros-glyph-streak)" stroke-width="1.6" stroke-linecap="round" />
+              <path d="M7.5 3.5L11 6.4" stroke="#6BB8FF" stroke-opacity="0.7" stroke-width="1" stroke-linecap="round" />
+              <path d="M14 11.5V27.5L18 23.8L21 29.6L23.8 28.3L20.9 22.6L26 22.2Z" fill="#EAF3FF" />
+              <path d="M18 23.8L21 29.6L23.8 28.3L20.9 22.6L26 22.2L14 11.5Z" fill="#A9C6F2" />
+            </>
+          )}
+          {glyph === 'response' && (
+            <>
+              <path
+                d="M11.5 4v4M16 4v4M20.5 4v4M11.5 24v4M16 24v4M20.5 24v4M4 11.5h4M4 16h4M4 20.5h4M24 11.5h4M24 16h4M24 20.5h4"
+                stroke="#7F95BE"
+                stroke-width="1.4"
+                stroke-linecap="round"
+              />
+              <rect x="8" y="8" width="16" height="16" rx="2.5" fill="#1F3D75" />
+              <path d="M8 22V10.5A2.5 2.5 0 0 1 10.5 8H22" fill="none" stroke="#B9D3FA" stroke-opacity="0.6" />
+              <path
+                d="M12 20L16 12.5L20 20"
+                fill="none"
+                stroke="#6BB8FF"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </>
+          )}
+        </svg>
+        <div>
+          <h3>{title}</h3>
+          <p>{text}</p>
         </div>
-        <div id="slideshow-dots" class="mt-4 flex justify-center space-x-1"></div>
+      </li>
+    ))}
+  </ul>
+
+  <div class="pros-summit" data-animate>
+    <div id="player-slideshow-container" class="pros-stage">
+      <!-- The moon, rising behind the summit: the frame hides its lower half, the flags stand against it. -->
+      <svg class="pros-moon" viewBox="-60 -60 120 120" aria-hidden="true">
+        <defs>
+          <radialGradient id="pros-moon-halo" r="60" cx="0" cy="0" gradientUnits="userSpaceOnUse">
+            {moonHalo.map(({ offset, opacity }) => (
+              <stop offset={offset} stop-color="#A9CBFF" stop-opacity={opacity} />
+            ))}
+          </radialGradient>
+          <clipPath id="pros-moon-disc">
+            <circle r="20"></circle>
+          </clipPath>
+        </defs>
+        <circle r="60" fill="url(#pros-moon-halo)"></circle>
+        <circle r="20" fill="#DDEBFF"></circle>
+        <g clip-path="url(#pros-moon-disc)">
+          <circle cx="7.5" cy="5.4" r="20" fill="#C3D8F7"></circle>
+          <circle cx="5" cy="-6.2" r="3.1" fill="#B5CDF2"></circle>
+          <circle cx="-2" cy="7" r="2.1" fill="#B1C9EF"></circle>
+        </g>
+      </svg>
+      <!--
+        The pennants. utils/slideshow.ts replaces these placeholders with real buttons on load; the
+        placeholders only show the composition (first flag raised) when scripts don't run.
+      -->
+      <div id="slideshow-dots" class="pros-flags">
+        {pros.map((_, index) => (
+          <span class="nav-dot-button" aria-hidden="true">
+            <span class:list={['line-indicator', index === 0 ? 'bg-white' : 'bg-white/30']} />
+          </span>
+        ))}
+      </div>
+
+      <div id="player-slideshow" class="pros-frame">
+        {pros.map((pro, index) => (
+          <div
+            class:list={[
+              'player-slide absolute inset-0 transition-opacity duration-1000',
+              index === 0 ? 'opacity-100' : 'opacity-0',
+            ]}
+            style={`z-index: ${index === 0 ? 10 : 0};`}
+            data-pro-name={pro.name}
+          >
+            <Image
+              src={pro.image}
+              alt={pro.alt}
+              widths={[640, 960, 1280]}
+              sizes="(min-width: 1024px) 42rem, (min-width: 768px) 58vw, 92vw"
+              class="pros-photo"
+              style={`object-position: ${pro.position};`}
+              quality={80}
+              loading="lazy"
+            />
+            <div class="pros-plate">
+              <p class="pros-plate__name">{pro.name}</p>
+              <p class="pros-plate__game">{pro.game}</p>
+              <div class="pros-plate__links">
+                <a href={pro.x} target="_blank" rel="noopener noreferrer" aria-label={`${pro.name} on X`}>
+                  <Icon name="tabler:brand-x" aria-hidden="true" />
+                </a>
+                <a href={pro.twitch} target="_blank" rel="noopener noreferrer" aria-label={`${pro.name} on Twitch`}>
+                  <Icon name="tabler:brand-twitch" aria-hidden="true" />
+                </a>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
+
+    <p class="pros-contact">
+      Are you a pro who uses Atlas or wants to get started?{' '}
+      <a href="mailto:contact@atlasos.net" class="summit-link">
+        Get in touch
+      </a>
+      .
+    </p>
   </div>
 </section>
 
+<style>
+  /* ---- Layout: copy on the left, the summit on the right; on phones the photo comes before the points. */
+
+  .pros {
+    display: grid;
+    grid-template-areas: 'intro' 'summit' 'points';
+    gap: 3.5rem;
+  }
+  .pros-intro {
+    grid-area: intro;
+  }
+  .pros-points {
+    grid-area: points;
+  }
+  .pros-summit {
+    grid-area: summit;
+  }
+
+  @media (min-width: 768px) {
+    .pros {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      grid-template-rows: auto 1fr;
+      grid-template-areas: 'intro summit' 'points summit';
+      gap: 2.75rem 4rem;
+      align-items: start;
+    }
+    .pros-summit {
+      align-self: center;
+    }
+  }
+  @media (min-width: 1024px) {
+    .pros {
+      column-gap: 6rem;
+    }
+  }
+
+  .pros-points {
+    display: grid;
+    gap: 1.5rem;
+  }
+  .pros-point {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.875rem;
+  }
+  .pros-point__icon {
+    flex: none;
+    width: 2.25rem;
+    height: 2.25rem;
+    margin-block-start: -0.35rem;
+    overflow: visible;
+  }
+  .pros-point h3 {
+    margin-block-end: 0.25rem;
+    color: var(--summit-text);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+  }
+  .pros-point p {
+    color: var(--summit-text-muted);
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+
+  /* ---- The summit: the frame, with the pennants planted on its top edge. ---- */
+
+  .pros-summit {
+    position: relative;
+    /* Room above the frame for the moon and the flagpoles. */
+    padding-block-start: 4.5rem;
+  }
+
+  .pros-stage {
+    position: relative;
+  }
+
+  /* The disc is a third of the box: 9rem across, centred on the frame's top edge behind the flags. */
+  .pros-moon {
+    position: absolute;
+    inset-block-start: 0.5rem;
+    inset-inline-start: 6.25rem;
+    width: 27rem;
+    height: 27rem;
+    translate: -50% -50%;
+    pointer-events: none;
+  }
+
+  .pros-frame {
+    position: relative;
+    z-index: 1;
+    aspect-ratio: 4 / 3;
+    overflow: clip;
+    border-radius: var(--summit-radius);
+    background: var(--summit-abyss);
+    /* Shadow falls down and to the right, away from the moon. */
+    box-shadow:
+      14px 28px 60px color-mix(in oklch, var(--summit-shadow) 55%, transparent),
+      0 0 0 1px var(--summit-rim-faint);
+  }
+  /* The moonlit rim: brightest along the top and left edges, drawn over the photos. */
+  .pros-frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    border-radius: inherit;
+    box-shadow:
+      inset 1px 1px 0 oklch(0.935 0.032 255.6 / 0.28),
+      inset -1px -1px 0 oklch(0.794 0.083 260.4 / 0.08);
+    pointer-events: none;
+  }
+
+  .pros-photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* The name plate, over a fall of night from the bottom of the photo. */
+  .player-slide::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+      to top,
+      color-mix(in oklch, var(--summit-abyss) 88%, transparent),
+      color-mix(in oklch, var(--summit-abyss) 35%, transparent) 32%,
+      transparent 58%
+    );
+    pointer-events: none;
+  }
+  .pros-plate {
+    position: absolute;
+    inset-block-end: 1.25rem;
+    inset-inline-start: 1.5rem;
+    z-index: 2;
+  }
+  /* The plate sits on the photo, so it stays white in both themes. */
+  .pros-plate__name {
+    color: white;
+    font-family: var(--font-display);
+    font-size: 1.375rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+  }
+  .pros-plate__game {
+    color: color-mix(in oklch, white 80%, transparent);
+    font-size: 0.875rem;
+  }
+  .pros-plate__links {
+    display: flex;
+    gap: 0.25rem;
+    margin-block: 0.375rem 0;
+    margin-inline: -0.5rem 0;
+  }
+  .pros-plate__links a {
+    position: relative;
+    display: inline-grid;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
+    border-radius: 0.5rem;
+    color: color-mix(in oklch, white 75%, transparent);
+    transition:
+      color 160ms var(--motion-ease-out),
+      background-color 160ms var(--motion-ease-out);
+  }
+  /* A 44px tall target round each 2rem icon; sideways it reaches only halfway into the gap between them. */
+  .pros-plate__links a::after {
+    content: '';
+    position: absolute;
+    inset-block: min(0px, (100% - 44px) / 2);
+    inset-inline: -0.125rem;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .pros-plate__links a:hover {
+      opacity: 1;
+      color: white;
+      background: color-mix(in oklch, var(--summit-moonlight) 10%, transparent);
+    }
+  }
+  .pros-plate__links :global(svg) {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  .pros-contact {
+    margin-block-start: 1.25rem;
+    color: var(--summit-text-faint);
+    font-size: 0.875rem;
+  }
+
+  /*
+   * The pennants. Each control is a pole planted on the frame's top edge with the hero's flag shape
+   * on it. slideshow.ts marks the current pro's flag `bg-white` and the rest `bg-white/30`; here
+   * that means unfurled at the top of the pole, or waiting furled at its foot.
+   */
+  .pros-flags {
+    position: absolute;
+    inset-block-end: 100%;
+    inset-inline-start: 1.75rem;
+    z-index: 2;
+    display: flex;
+    align-items: flex-end;
+    gap: 0.25rem;
+  }
+  .pros-flags :global(.nav-dot-button) {
+    --pole: 3.5rem;
+    --pole-x: 0.5rem;
+    --flag-w: 1.875rem;
+    --flag-h: 1.125rem;
+    /* The pole and its finial, in silhouette. */
+    --pole-dark: oklch(0.207 0.054 264.8);
+    position: relative;
+    display: block;
+    width: 2.625rem;
+    height: calc(var(--pole) + 0.375rem);
+    padding: 0;
+    border-radius: 0.375rem;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .pros-flags :global(.nav-dot-button:hover) {
+      opacity: 1;
+    }
+  }
+  /* The pole: a dark silhouette against the moon, its left edge catching the light. */
+  .pros-flags :global(.nav-dot-button)::before {
+    content: '';
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline-start: var(--pole-x);
+    width: 3px;
+    height: var(--pole);
+    border-start-start-radius: 1.5px;
+    border-start-end-radius: 1.5px;
+    background: linear-gradient(
+      in srgb to right,
+      color-mix(in oklch, var(--summit-moonlight) 70%, transparent) 0 1px,
+      var(--pole-dark) 1px
+    );
+  }
+  .pros-flags :global(.nav-dot-button)::after {
+    content: '';
+    position: absolute;
+    inset-block-end: calc(var(--pole) - 2px);
+    inset-inline-start: calc(var(--pole-x) - 1px);
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--pole-dark);
+    box-shadow: inset 1px 1px 0 color-mix(in oklch, var(--summit-moonlight) 60%, transparent);
+  }
+  .pros-flags :global(.line-indicator) {
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline-start: calc(var(--pole-x) + 3px);
+    width: var(--flag-w);
+    height: var(--flag-h);
+    /* The hero's pennant: a swallowtail notch on the fly end, a lit strip along its top. */
+    clip-path: polygon(0 0, 100% 0, 76.7% 50%, 100% 100%, 0 100%);
+    background: linear-gradient(in srgb to bottom, oklch(0.663 0.097 262.5) 0 15%, oklch(0.485 0.113 261.7) 15%);
+    /* Waiting: furled at the foot of the pole. */
+    scale: 0.16 1;
+    transform-origin: 0 50%;
+    transition: background 300ms var(--motion-ease-out);
+  }
+  /* The pro on screen: their flag unfurled and raised to the top, in the hero's blue. */
+  .pros-flags :global(.line-indicator.bg-white) {
+    translate: 0 calc((var(--pole) - var(--flag-h) - 2px) * -1);
+    scale: 1;
+    background: linear-gradient(in srgb to bottom, oklch(0.819 0.098 244.3) 0 15%, oklch(0.678 0.176 250.6) 15%);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .pros-flags :global(.nav-dot-button:hover .line-indicator:not(.bg-white)) {
+      translate: 0 -0.75rem;
+      scale: 0.5 1;
+      transition-delay: 0ms;
+    }
+  }
+  .pros-flags :global(.nav-dot-button:focus-visible) {
+    outline-offset: 0;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* The flags run up and unfurl, and lift a little when pointed at. */
+    .pros-flags :global(.line-indicator) {
+      transition:
+        translate 800ms cubic-bezier(0.22, 1, 0.36, 1),
+        scale 500ms cubic-bezier(0.22, 1, 0.36, 1) 250ms,
+        background 300ms var(--motion-ease-out);
+    }
+
+    /*
+     * The one orchestrated moment: as the summit reveals, the moon rises from behind the frame.
+     * `html[data-motion]` is only set with scripts on and motion allowed, so otherwise it is up.
+     */
+    :global(html[data-motion]) .pros-moon {
+      transition:
+        translate 2200ms cubic-bezier(0.23, 1, 0.32, 1) 350ms,
+        opacity 900ms var(--motion-ease-out) 350ms;
+    }
+    :global(html[data-motion]) .pros-summit:not(:global(.animate-in)) .pros-moon {
+      translate: -50% -12%;
+      opacity: 0;
+    }
+
+    /* The raised flag stirs in the wind on the summit, slowly. */
+    .pros-flags :global(.line-indicator.bg-white) {
+      animation: pros-flutter 3.2s ease-in-out 700ms infinite;
+    }
+    .pros[data-paused] .pros-flags :global(.line-indicator) {
+      animation-play-state: paused;
+    }
+  }
+
+  @keyframes pros-flutter {
+    0%,
+    100% {
+      transform: skewY(0deg) scaleX(1);
+    }
+    30% {
+      transform: skewY(-4deg) scaleX(0.94);
+    }
+    60% {
+      transform: skewY(2deg) scaleX(1);
+    }
+    80% {
+      transform: skewY(-2deg) scaleX(0.97);
+    }
+  }
+</style>
+
 <script>
+  import { pauseWhenOffscreen } from '@/utils/in-view';
   import { onPageLoad } from '@/utils/page-lifecycle';
   import { initSlideshow } from '@/utils/slideshow';
 
-  onPageLoad(initSlideshow);
+  /** Name each pennant after its pro, so the controls say who they show. */
+  function nameFlags(): void {
+    const names = [...document.querySelectorAll<HTMLElement>('#player-slideshow [data-pro-name]')].map(
+      (slide) => slide.dataset.proName
+    );
+    document.querySelectorAll<HTMLButtonElement>('#slideshow-dots button').forEach((button, index) => {
+      const name = names[index];
+      if (name) button.setAttribute('aria-label', `Show ${name}`);
+    });
+  }
+
+  onPageLoad((signal) => {
+    initSlideshow(signal);
+    nameFlags();
+    pauseWhenOffscreen('[data-pros]', signal);
+  });
 </script>
