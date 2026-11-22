@@ -1,0 +1,72 @@
+---
+title: "Fix Microsoft Store and Xbox app downloads"
+metaDescription: "Fix Microsoft Store and Xbox app download errors 0x80070490 and 0x80073CF9 on AtlasOS. Repair the Store or reinstall Windows from an ISO while keeping your apps and files."
+description: Fix Store and Xbox app downloads, including with an in-place Windows repair.
+order: 34
+sidebar:
+  label: "Microsoft Store and Xbox downloads"
+---
+
+import Callout from '@/components/docs/Callout.astro';
+
+Use this guide if Microsoft Store or the Xbox app fails to download, install or update apps and games on your Atlas PC.
+You might see `0x80070490` or `0x80073CF9`.
+
+The community traced some of these failures on older Atlas installations to the version of AME Wizard used to install them.
+See the [community report](https://discord.com/channels/795710270000332800/795721804760743956/1481283903527583826).
+
+## Try the Atlas repairs first
+
+1. If you used **Toggle Windows Updates** to turn Windows Update off, run it again and choose **Enable Windows Updates**.
+   See [Toggle Windows Updates](/docs/atlas-configuration/advanced/#toggle-windows-updates).
+2. If you're on a version that can update, [update Atlas with Atlas Manager](/docs/upgrade/upgrade/).
+   If Store updates block **Get ready**, choose **Repair Microsoft Store** when it appears.
+3. If Atlas is already up to date, open **9. Troubleshooting** in the Atlas folder and run `Fix MS Store Issues.cmd`.
+   Try the failed download again. See [Microsoft Store troubleshooting tools](/docs/atlas-configuration/troubleshooting/#microsoft-store).
+
+If downloads still fail, or you need to stay on an older Atlas release, try the in-place Windows repair below.
+
+## Repair Windows with an ISO
+
+An in-place repair reinstalls Windows from your desktop and keeps your personal files and installed apps when you choose to keep both.
+Back up your important files first and allow time for several restarts.
+Windows can restore some default apps or settings during the repair, so check your Atlas choices afterwards.
+See [Microsoft's in-place reinstallation instructions](https://support.microsoft.com/en-us/windows/deployment/install-upgrade/reinstall-windows-with-the-installation-media#in-place-upgrade).
+
+### Get a matching Windows ISO
+
+Use a standard Windows ISO that matches your installed Windows release, edition, installation language and processor architecture.
+
+- Press **Win + R**, enter `winver` and check the Windows version and OS build.
+- Open **Settings** > **System** > **About** to check **Edition** and **System type**.
+  Choose x64 (also called AMD64) or Arm64 to match your PC.
+- Use the language Windows was installed in.
+  If you're unsure, open Terminal as administrator, run `DISM.exe /Online /Get-Intl /English` and read **Default system UI language**.
+
+Check Microsoft's Windows 11 downloads for a matching ISO. [x64 download](https://www.microsoft.com/en-us/software-download/windows11) · [Arm64 download](https://www.microsoft.com/en-us/software-download/windows11arm64)
+
+If you're repairing Windows 11 25H2 and Microsoft's download pages offer a newer release, you can use the Microsoft-hosted 25H2 ISO for [English (United States), x64](https://software-static.download.prss.microsoft.com/dbazure/888969d5-f34g-4e03-ac9d-1f9786c66749/26200.6584.250915-1905.25h2_ge_release_svc_refresh_CLIENT_CONSUMER_x64FRE_en-us.iso).
+For other languages and architectures, open the matching ISO in the third-party index and choose **Download file directly from Microsoft's servers**. [25H2 download index](https://files.rg-adguard.net/language/4a6851f0-5170-1d80-41c5-27b604bd64a5)
+For Enterprise, get media for your edition from your organisation or Microsoft subscription.
+
+### Run Windows Setup
+
+<Callout type="warning" title="Check what Windows Setup keeps">
+  Continue only when **Ready to install** shows **Keep personal files and apps**.
+  If that option is unavailable, close Setup and check that the ISO matches your installation.
+  If Setup offers **Custom** or asks where to install Windows, close it and start from the Windows desktop as described below.
+</Callout>
+
+1. While signed in to Windows, open File Explorer and find the ISO.
+   Right-click it and select **Mount**.
+   If **Mount** is missing, choose **Open with** > **Windows Explorer**.
+2. Open the new drive under **This PC** and run the top-level `setup.exe`, alongside the `sources` folder.
+3. Choose **Change how Windows Setup downloads updates**, then **Not right now**.
+   This skips downloading extra updates, drivers and optional features during the repair.
+4. On **Ready to install**, use **Change what to keep** if needed and select **Keep personal files and apps**.
+   Check the summary, select **Install** and let Windows restart as needed.
+
+### Check the repair
+
+Sign in to the account that had the problem and retry the same app or game in Microsoft Store or the Xbox app.
+If the download still fails, [report the problem](/docs/faq/report-a-problem/) with the error code, your Atlas version, your Windows version and build, and the steps you've tried.
