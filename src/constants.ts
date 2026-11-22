@@ -19,6 +19,6 @@ export const CONTACT_EMAIL = 'contact@atlasos.net' as const;
 
 export const SOCIAL_LINKS = {
   github: 'https://github.com/Atlas-OS/Atlas',
-  discord: 'https://discord.com/invite/atlasos',
+  discord: 'https://discord.com/invite/atlasos-795710270000332800',
   x: 'https://x.com/atlasos',
 } as const;
