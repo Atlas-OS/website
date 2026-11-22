@@ -1,7 +1,7 @@
 ---
 /**
  * Peak performance: the pros at the top. The slideshow's frame is the summit: the moon rises
- * behind it, and on its top edge stand three poles in silhouette, one per pro, with the hero's
+ * behind it, and on its top edge stand poles in silhouette, one per pro, with the hero's
  * pennant. The flag of the pro on screen is unfurled at the top of its pole while the others wait
  * furled at the foot; they are the slideshow's controls (utils/slideshow.ts builds them as buttons,
  * the styles below dress them as flags).
@@ -11,6 +11,7 @@
  * still under reduced motion.
  */
 import Al0ranteImage from '@/assets/al0rante.webp';
+import FlehImage from '@/assets/fleh.webp';
 import MisticImage from '@/assets/mistic.webp';
 import StarwraithImage from '@/assets/starwraith.webp';
 import SectionHeading from '@/components/sections/common/SectionHeading.astro';
@@ -45,6 +46,15 @@ const pros = [
     position: 'center 35%',
     x: 'https://x.com/StarWraith',
     twitch: 'https://www.twitch.tv/starwraith',
+  },
+  {
+    name: 'Fleh',
+    game: 'osu! World Cup player',
+    image: FlehImage,
+    alt: 'Fleh holding a phone at an osu! event',
+    position: 'center',
+    x: 'https://x.com/FLEHius',
+    twitch: 'https://www.twitch.tv/FLEH_',
   },
 ];
 
