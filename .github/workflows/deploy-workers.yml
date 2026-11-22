@@ -7,7 +7,7 @@ name: Deploy to Cloudflare Workers
 
 on:
   push:
-    branches: [main, feat/native-docs]
+    branches: [main]
   workflow_dispatch:
 
 concurrency:
