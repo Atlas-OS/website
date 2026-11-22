@@ -19,18 +19,12 @@ const assets = Promise.all([
   file('public/fonts/inter-latin-500-normal.ttf'),
   file('public/fonts/inter-latin-700-normal.woff'),
   file('src/assets/atlas-logomark.svg'),
-  // The right-hand portion contains only contours, outside the wallpaper's wordmark.
-  file('src/assets/atlas-wallpaper.webp').then(bytes =>
-    sharp(bytes)
-      .extract({ left: 1200, top: 0, width: 720, height: 740 })
-      .resize(620, 638)
-      .png()
-      .toBuffer(),
-  ),
+  // Atlas 0.6 Maia Dark lock screen with brighter stars for small social previews.
+  file('src/assets/maia-og-background.png').then(bytes => dataUri(bytes, 'image/png')),
 ]);
 
 export async function renderOgImage({ title, section }: { title: string; section?: string }) {
-  const [regular, bold, wordmark, contours] = await assets;
+  const [regular, bold, wordmark, background] = await assets;
   const fonts: Font[] = [
     { name: 'Inter', data: regular, weight: 500, style: 'normal' },
     { name: 'Inter', data: bold, weight: 700, style: 'normal' },
@@ -49,27 +43,17 @@ export async function renderOgImage({ title, section }: { title: string; section
           display: 'flex',
           position: 'relative',
           overflow: 'hidden',
-          backgroundColor: '#0c1017',
+          backgroundColor: '#070d19',
           color: '#f0f6ff',
           fontFamily: 'Inter',
         },
         [
-          image(dataUri(contours, 'image/png'), {
-            position: 'absolute',
-            right: 0,
-            top: 0,
-            width: 620,
-            height: 638,
-            opacity: 0.8,
-          }),
-          el('div', {
+          image(background, {
             position: 'absolute',
             left: 0,
             top: 0,
             width: 1200,
             height: 630,
-            backgroundImage:
-              'linear-gradient(90deg, #0c1017 0%, #0c1017 40%, rgba(12,16,23,0.87) 65%, rgba(12,16,23,0.12) 100%)',
           }),
           el(
             'div',
