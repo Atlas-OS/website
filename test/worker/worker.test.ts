@@ -99,7 +99,10 @@ function skuResponse(skus: { Id: string; LocalizedLanguage: string }[]): Respons
 }
 
 async function seedSkus(arch: 'x64' | 'arm64', skus: { id: string; language: string }[]) {
-  await env.MS_ISO_LINKS.put(`ms-iso-skus:${arch}`, JSON.stringify(skus));
+  await env.MS_ISO_LINKS.put(
+    `ms-iso-skus:${arch}:${arch === 'x64' ? 3813 : 3816}`,
+    JSON.stringify(skus),
+  );
 }
 
 function linksJson(uri: string, label = '64-bit Download'): string {
@@ -208,7 +211,7 @@ describe('GET /api/ms-iso/skus', () => {
     expect(response.headers.get('Access-Control-Allow-Origin')).toBe(ORIGIN);
 
     const url = requestedUrl(fetchSpy.mock.calls[0]);
-    expect(url.searchParams.get('ProductEditionId')).toBe('3265');
+    expect(url.searchParams.get('ProductEditionId')).toBe('3816');
     expect(url.searchParams.get('sessionID')).toBe('abc');
   });
 
@@ -325,7 +328,7 @@ describe('GET /api/ms-iso/links', () => {
   });
 
   it('fetches and caches the SKU list when it is not cached yet', async () => {
-    await env.MS_ISO_LINKS.delete('ms-iso-skus:x64');
+    await env.MS_ISO_LINKS.delete('ms-iso-skus:x64:3813');
     fetchSpy.mockImplementation(() =>
       Promise.resolve(
         skuResponse([
@@ -339,7 +342,7 @@ describe('GET /api/ms-iso/links', () => {
     await (await callWorker('/api/ms-iso/links?arch=x64&skuId=19676')).text();
 
     expect(fetchSpy).toHaveBeenCalledTimes(1);
-    expect(await env.MS_ISO_LINKS.get('ms-iso-skus:x64', 'json')).toEqual([
+    expect(await env.MS_ISO_LINKS.get('ms-iso-skus:x64:3813', 'json')).toEqual([
       { id: '19675', language: ENGLISH },
       { id: '19676', language: 'English International' },
     ]);
@@ -347,14 +350,14 @@ describe('GET /api/ms-iso/links', () => {
   });
 
   it('fails without a browser when the SKU list is unavailable', async () => {
-    await env.MS_ISO_LINKS.delete('ms-iso-skus:x64');
+    await env.MS_ISO_LINKS.delete('ms-iso-skus:x64:3813');
     fetchSpy.mockResolvedValue(new Response('busy', { status: 503 }));
 
     const response = await callWorker('/api/ms-iso/links?arch=x64&skuId=19675');
     expect(response.status).toBe(502);
     expect(await response.json()).toEqual({ error: 'Microsoft API returned HTTP 503.' });
     expect(mocks.launch).not.toHaveBeenCalled();
-    expect(await env.MS_ISO_LINKS.get('ms-iso-skus:x64')).toBeNull();
+    expect(await env.MS_ISO_LINKS.get('ms-iso-skus:x64:3813')).toBeNull();
   });
 
   it('retries three times, returns the error envelope and remembers the failure', async () => {
@@ -501,7 +504,7 @@ describe('scheduled refresh', () => {
 
     // Only arm64 needed Microsoft: the x64 list came from the KV cache.
     expect(fetchSpy).toHaveBeenCalledTimes(1);
-    expect(requestedUrl(fetchSpy.mock.calls[0]).searchParams.get('ProductEditionId')).toBe('3265');
+    expect(requestedUrl(fetchSpy.mock.calls[0]).searchParams.get('ProductEditionId')).toBe('3816');
     expect(errorLog.mock.calls.map(([line]) => JSON.parse(String(line)) as unknown)).toEqual([
       {
         level: 'error',

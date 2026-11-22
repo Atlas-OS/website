@@ -60,12 +60,12 @@ const WARM_LANGUAGE = 'English (United States)';
 
 const ARCHITECTURES = {
   x64: {
-    productId: 3262, // Windows 11 25H2
+    productId: 3813, // Windows 11 26H2
     downloadPage: 'https://www.microsoft.com/en-us/software-download/windows11',
     linkText: '64-bit Download',
   },
   arm64: {
-    productId: 3265, // Windows 11 25H2 ARM64
+    productId: 3816, // Windows 11 26H2 ARM64
     downloadPage: 'https://www.microsoft.com/en-us/software-download/windows11arm64',
     linkText: 'ARM64 Download',
   },
@@ -215,7 +215,7 @@ async function requestSkus(arch: Arch, sessionId: string): Promise<SkuResponse> 
  * The connector only needs some session id, like the random one clients send to `/skus`.
  */
 async function getSkus(env: Env, arch: Arch): Promise<SkuList> {
-  const key = `ms-iso-skus:${arch}`;
+  const key = `ms-iso-skus:${arch}:${ARCHITECTURES[arch].productId}`;
   try {
     const cached = await env.MS_ISO_LINKS.get<Sku[]>(key, 'json');
     if (cached?.length) return { ok: true, skus: cached };
@@ -324,8 +324,8 @@ async function settleNetwork(page: Page): Promise<void> {
     .catch(() => {});
 }
 
-/** Select the `<select>` option whose value equals or contains `needle`, then press the last "Confirm" button. */
-async function chooseOptionAndConfirm(page: Page, needle: string): Promise<void> {
+/** Select the `<select>` option whose value equals or contains `needle`, then submit that step. */
+async function chooseOptionAndConfirm(page: Page, needle: string, submitId: string): Promise<void> {
   const hasOption = (value: string) =>
     [...document.querySelectorAll('select')].some(select =>
       [...select.options].some(option => option.value === value || option.value.includes(value)),
@@ -333,22 +333,28 @@ async function chooseOptionAndConfirm(page: Page, needle: string): Promise<void>
 
   await page.waitForFunction(hasOption, { timeout: BROWSER_STEP_TIMEOUT_MS }, needle);
 
-  await page.evaluate(value => {
-    const select = [...document.querySelectorAll('select')].find(candidate =>
-      [...candidate.options].some(option => option.value === value || option.value.includes(value)),
-    );
-    const option =
-      select && [...select.options].find(o => o.value === value || o.value.includes(value));
-    if (!select || !option) return;
+  await page.evaluate(
+    (value, buttonId) => {
+      const select = [...document.querySelectorAll('select')].find(candidate =>
+        [...candidate.options].some(
+          option => option.value === value || option.value.includes(value),
+        ),
+      );
+      const option =
+        select && [...select.options].find(o => o.value === value || o.value.includes(value));
+      if (!select || !option) return;
 
-    select.value = option.value;
-    select.dispatchEvent(new Event('change', { bubbles: true }));
+      select.value = option.value;
+      select.dispatchEvent(new Event('change', { bubbles: true }));
 
-    const confirmButtons = [...document.querySelectorAll('button')].filter(
-      button => button.textContent?.trim() === 'Confirm',
-    );
-    confirmButtons.at(-1)?.click();
-  }, needle);
+      const submit = document.getElementById(buttonId);
+      if (!(submit instanceof HTMLButtonElement))
+        throw new Error('Microsoft download form is missing its submit button.');
+      submit.click();
+    },
+    needle,
+    submitId,
+  );
 
   await settleNetwork(page);
 }
@@ -376,9 +382,9 @@ async function resolveIsoLinkOnce(
     await page.goto(downloadPage, { waitUntil: 'domcontentloaded' });
     await sleep(BROWSER_ANTI_BOT_SETTLE_MS);
 
-    await chooseOptionAndConfirm(page, String(productId));
+    await chooseOptionAndConfirm(page, String(productId), 'submit-product-edition');
     // Language option values are JSON blobs containing the SKU id.
-    await chooseOptionAndConfirm(page, `"id":"${skuId}"`);
+    await chooseOptionAndConfirm(page, `"id":"${skuId}"`, 'submit-sku');
 
     const findLink = (text: string) =>
       [...document.querySelectorAll('a')].find(
