@@ -104,7 +104,9 @@ Open the NVIDIA Control Panel by right-clicking on the desktop and configure:
   code={`for /f "tokens=*" %a in ('reg query "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Class\\{4d36e968-e325-11ce-bfc1-08002be10318}" /t REG_SZ /s /e /f "NVIDIA" ^| findstr "HK"') do (reg add "%a" /v "DisableDynamicPstate" /t REG_DWORD /d "1" /f)`}
 />
 
-After running this command, download and extract [NVIDIA Profile Inspector](https://github.com/Orbmu2k/nvidiaProfileInspector). Open the tool, scroll down to **5 - Common** section and set **CUDA - Force P2 State** to OFF. Press **Apply changes** and restart your device.
+1. Download and extract [NVIDIA Profile Inspector](https://github.com/Orbmu2k/nvidiaProfileInspector).
+2. Open the tool. Under **5 - Common**, set **CUDA - Force P2 State** to **OFF**.
+3. Select **Apply changes** and restart your PC.
 
 ## AMD drivers
 

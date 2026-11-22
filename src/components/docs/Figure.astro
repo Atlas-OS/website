@@ -38,6 +38,10 @@ const imageClass = 'block h-auto w-full rounded-[calc(var(--docs-radius-md)-1px)
     background: var(--docs-surface-bg);
   }
 
+  :global(html[data-theme='light']) .docs-figure-frame {
+    box-shadow: 0 2px 8px rgb(15 23 42 / 6%);
+  }
+
   .docs-figure-frame :global(img) {
     background: var(--docs-panel-bg);
   }

@@ -8,10 +8,9 @@ sidebar:
 ---
 
 import Callout from '@/components/docs/Callout.astro';
-import Figure from '@/components/docs/Figure.astro';
+import ManagerScreenshot from '@/components/docs/ManagerScreenshot.astro';
 
-This guide walks you through installing Atlas with Atlas Manager, from a fresh installation of Windows to the first restart.
-Read [Before you install](/docs/install/requirements/) first.
+Start with a fresh installation of Windows 11 that meets the [installation requirements](/docs/install/requirements/).
 If Atlas is already installed, follow [Update Atlas](/docs/upgrade/) instead.
 
 Atlas Manager installs Atlas in four steps: **Get ready**, **Your choices**, **Windows Security** and **Install**.
@@ -33,19 +32,24 @@ When Windows asks whether to let Atlas make changes, choose **Yes**.
 ## 3. Get ready
 
 **Get ready** checks your PC, prepares the installation files and updates Windows.
-The bar at the top of the page always names the next thing to do.
+Follow the message at the top of the page.
+
+<ManagerScreenshot
+  screen="get-ready"
+  alt="Get ready with PC checks passed and Continue available."
+  caption="When the checks and updates finish, choose Continue to make your choices."
+/>
 
 ### Installation files
 
-Atlas Manager downloads the latest Atlas release under **Installation files**.
-If the download doesn't start, choose **Download latest version**.
-If you already have an Atlas package (`.atlaspkg`), choose **Open package file** instead.
+Atlas Manager downloads the installation files automatically.
+If the download doesn't start, choose **Download latest version** under **Installation files**.
 
 ### PC checks
 
 **PC checks** lists the [checks Atlas Manager runs](/docs/install/requirements/#what-atlas-manager-checks).
 Fix anything marked, then choose **Check again**.
-A check that fails offers the Windows Settings page that fixes it, such as **Open installed apps** for other antivirus software.
+Some checks link to the Windows settings you need. For example, **Open installed apps** takes you to the list of installed antivirus software and other apps.
 
 If Atlas Manager says **Windows on this PC looks used**, back up your files and reinstall Windows first.
 You can choose **Continue anyway**, but installing on a used Windows is unsupported.
@@ -111,15 +115,11 @@ You can change Microsoft Defender, processor protections and update settings lat
 To get Microsoft Edge back, run `Install or Remove Edge.cmd` in the Atlas folder's `1. Software` folder.
 Snipping Tool can be installed again from Microsoft Store.
 
-<a href="/assets/images/manager/defender-choice.png" target="_blank" rel="noopener noreferrer">
-<Figure
-  src="/assets/images/manager/defender-choice.png"
-  alt="Atlas Manager's Your choices step, with Keep Microsoft Defender selected and its explanation visible."
-  caption="Each choice explains what it means for your PC. Select the image to enlarge."
-  width={902}
-  height={681}
+<ManagerScreenshot
+  screen="defender-choice"
+  alt="Keep Microsoft Defender (recommended) selected on the first Your choices screen."
+  caption="Read what each choice changes before you continue."
 />
-</a>
 
 ## 5. Windows Security
 
@@ -136,7 +136,8 @@ If Atlas Manager couldn't read a switch, check it in Windows Security yourself, 
 If Microsoft Defender isn't on the PC, there's nothing to turn off, and Atlas Manager says so.
 
 If you keep Microsoft Defender, turn the switches back on after installation finishes.
-If you stop before installing, turn them back on straight away; Home reminds you which are still off.
+If you stop before installing, turn the switches back on straight away.
+Home shows which switches are still off.
 
 ## 6. Install and restart
 

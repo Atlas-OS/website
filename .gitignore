@@ -34,3 +34,6 @@ nul
 
 # jampack optimizer cache
 .jampack/
+
+# Local wallpaper working files and concept exports
+/design/wallpapers/

@@ -108,7 +108,7 @@ const releaseLabel = await latestReleaseLabel();
                 loading="lazy"
                 fetchpriority="high"
                 data-preview-theme={src === managerLight ? 'light' : 'dark'}
-                alt="Atlas Manager 0.6.0 on Windows 11 Pro, with options to create an ISO or install Atlas."
+                alt="Atlas Manager Home with options to create an Atlas ISO or install Atlas on this PC."
                 class="block h-auto w-full"
               />
             ))}
@@ -275,7 +275,6 @@ const releaseLabel = await latestReleaseLabel();
     width: 100%;
     overflow: clip;
     border-radius: 0.65rem;
-    border: 1px solid color-mix(in oklch, var(--color-fg) 18%, transparent);
     box-shadow: var(--window-shadow);
     transition: box-shadow 400ms var(--motion-ease-out);
   }

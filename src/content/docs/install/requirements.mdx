@@ -9,13 +9,13 @@ sidebar:
 
 import Callout from '@/components/docs/Callout.astro';
 
-This page lists what Atlas needs before you install it.
-Atlas Manager checks most of these for you on its **Get ready** page, so you can also open the app and read its **PC checks**.
+Before you reinstall Windows, check your Windows edition and back up your files.
+Atlas Manager checks your PC on the **Get ready** page.
 
 ## Windows release
 
 Atlas installs on public releases of Windows 11 that the Atlas package supports.
-The list of supported releases and builds is kept in one place: the [supported releases table](https://github.com/Atlas-OS/Atlas/blob/main/docs/windows-release-policy.md#supported-releases), which follows `supportedBuilds` in the package's [`atlas.json`](https://github.com/Atlas-OS/Atlas/blob/main/package/atlas.json).
+Look up your release and build in the [supported releases table](https://github.com/Atlas-OS/Atlas/blob/main/docs/windows-release-policy.md#supported-releases).
 
 - Insider, Release Preview and other preview builds aren't supported.
 - A build that Microsoft hasn't listed as a public release yet can't take Atlas until it's listed.
@@ -36,7 +36,9 @@ To check your edition, open **Settings** > **System** > **About**.
 
 Install Atlas on a fresh installation of Windows from Microsoft's installation media, before you restore your apps and files.
 If Windows on your PC was installed at least a week ago or already has several apps, Atlas Manager warns that **Windows on this PC looks used**.
-Installing there is unsupported: apps and settings you already have may not work as expected, and Atlas removes OneDrive, so files in it stop syncing.
+
+If you see this warning, back up your files and reinstall Windows first.
+Installing on a used PC is unsupported. Existing apps and settings may stop working, and removing OneDrive stops your files syncing.
 
 For a first install, we recommend [creating an Atlas ISO](/docs/install/iso/). Windows setup runs first, and Atlas Manager guides you through installing Atlas after sign-in.
 
