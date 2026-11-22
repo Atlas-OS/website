@@ -55,7 +55,14 @@ const preview = await loadPreview?.();
   )}
   <div class="mbs-4 grid grid-cols-2 gap-2 md:grid-cols-4">
     {downloadButtons.map((button) => (
-      <Button href={button.href} download={button.href.startsWith('/')} external={button.external} variant="secondary" size="sm" fw>
+      <Button
+        href={button.href}
+        download={button.href.startsWith('/')}
+        external={button.external}
+        variant="secondary"
+        size="sm"
+        fw
+      >
         {button.label}
       </Button>
     ))}

@@ -31,7 +31,7 @@
     "dev": "astro dev",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "lint": "eslint .",
+    "lint": "astro sync && eslint .",
     "postinstall": "wrangler types",
     "preview": "astro preview",
     "test": "vitest run",
