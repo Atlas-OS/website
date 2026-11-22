@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
-import { managerPreview } from '@/utils/manager-preview';
+import managerDark from '@/assets/atlas-manager-home-dark.png';
+import managerLight from '@/assets/atlas-manager-home-light.png';
 import ItsFOSSLogomark from '@/assets/itsfoss-logomark.svg';
 import PcGuideLogomark from '@/assets/pcguide-logomark.svg';
 import TechSpotLogomark from '@/assets/techspot-logomark.svg';
@@ -98,12 +99,19 @@ const releaseLabel = await latestReleaseLabel();
             <span class="sr-only">New: Atlas Manager, a guided install from start to finish.</span>
           </p>
           <a class="manager-preview" href="/docs/install/manager/" aria-label="Read the Atlas Manager guide">
-            <Image
-              {...managerPreview}
-              alt="Atlas Manager's home page, with the guided installation and the option to create an Atlas ISO."
-              priority
-              class="block h-auto w-full"
-            />
+            {[managerDark, managerLight].map((src) => (
+              <Image
+                src={src}
+                widths={[450, 700, 966]}
+                sizes="(max-width: 767px) 92vw, (max-width: 1100px) 76vw, 800px"
+                format="avif"
+                loading="lazy"
+                fetchpriority="high"
+                data-preview-theme={src === managerLight ? 'light' : 'dark'}
+                alt="Atlas Manager 0.6.0 on Windows 11 Pro, with options to create an ISO or install Atlas."
+                class="block h-auto w-full"
+              />
+            ))}
           </a>
         </div>
       </div>
@@ -283,6 +291,10 @@ const releaseLabel = await latestReleaseLabel();
     box-shadow: var(--window-shadow-lifted);
     outline: 2px solid var(--summit-blue);
     outline-offset: 6px;
+  }
+  :global(html:not([data-theme='light'])) [data-preview-theme='light'],
+  :global(html[data-theme='light']) [data-preview-theme='dark'] {
+    display: none;
   }
 
   /*

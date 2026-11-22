@@ -1,7 +1,6 @@
 ---
 import KapaWidget from '@/components/ui/KapaWidget.astro';
-import { Font, getImage } from 'astro:assets';
-import { managerPreview } from '@/utils/manager-preview';
+import { Font } from 'astro:assets';
 import { ClientRouter } from 'astro:transitions';
 import '@/styles/global.css';
 
@@ -10,7 +9,6 @@ interface Props {
 }
 
 const isHomePage = Astro.props.currentPath === '/';
-const heroImage = isHomePage ? await getImage(managerPreview) : null;
 const isDocsPage = Astro.props.currentPath?.startsWith('/docs/') ?? false;
 ---
 
@@ -43,15 +41,6 @@ const isDocsPage = Astro.props.currentPath?.startsWith('/docs/') ?? false;
         });
       })();
     </script>
-    {heroImage && (
-      <link
-        rel="preload"
-        as="image"
-        imagesrcset={heroImage.srcSet.attribute}
-        imagesizes={managerPreview.sizes}
-        fetchpriority="high"
-      />
-    )}
     <ClientRouter fallback="swap" />
     <Font cssVariable="--font-sans-source" preload={[{ weight: 400, style: 'normal', subset: 'latin' }]} />
     <Font cssVariable="--font-display-source" preload={[{ weight: 600, style: 'normal', subset: 'latin' }]} />
