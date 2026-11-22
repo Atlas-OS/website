@@ -60,12 +60,12 @@ const WARM_LANGUAGE = 'English (United States)';
 
 const ARCHITECTURES = {
   x64: {
-    productId: 3262, // Windows 11 25H2
+    productId: 3813, // Windows 11 26H2
     downloadPage: 'https://www.microsoft.com/en-us/software-download/windows11',
     linkText: '64-bit Download',
   },
   arm64: {
-    productId: 3265, // Windows 11 25H2 ARM64
+    productId: 3816, // Windows 11 26H2 ARM64
     downloadPage: 'https://www.microsoft.com/en-us/software-download/windows11arm64',
     linkText: 'ARM64 Download',
   },
@@ -215,7 +215,7 @@ async function requestSkus(arch: Arch, sessionId: string): Promise<SkuResponse> 
  * The connector only needs some session id, like the random one clients send to `/skus`.
  */
 async function getSkus(env: Env, arch: Arch): Promise<SkuList> {
-  const key = `ms-iso-skus:${arch}`;
+  const key = `ms-iso-skus:${arch}:${ARCHITECTURES[arch].productId}`;
   try {
     const cached = await env.MS_ISO_LINKS.get<Sku[]>(key, 'json');
     if (cached?.length) return { ok: true, skus: cached };
