@@ -1,6 +1,6 @@
 ---
 title: "Fix Microsoft Store and Xbox app downloads"
-metaDescription: "Fix Microsoft Store and Xbox app download errors 0x80070490 and 0x80073CF9 on AtlasOS. Repair the Store or reinstall Windows from an ISO while keeping your apps and files."
+metaDescription: "Fix Microsoft Store and Xbox app download errors 0x80070490 and 0x80073CF9 on AtlasOS. Repair Windows through Settings, with an ISO as a fallback."
 description: Fix Store and Xbox app downloads, including with an in-place Windows repair.
 order: 34
 sidebar:
@@ -24,10 +24,71 @@ See the [community report](https://discord.com/channels/795710270000332800/79572
 3. If Atlas is already up to date, open **9. Troubleshooting** in the Atlas folder and run `Fix MS Store Issues.cmd`.
    Try the failed download again. See [Microsoft Store troubleshooting tools](/docs/atlas-configuration/troubleshooting/#microsoft-store).
 
-If downloads still fail, or you need to stay on an older Atlas release, try the in-place Windows repair below.
+If downloads still fail, try repairing Windows through Settings below.
+A community member reported that this resolved the Store update check in Atlas Manager.
+If the option isn't available, use the [ISO repair](#repair-windows-with-an-iso).
+
+## Repair Windows through Settings
+
+This downloads a repair copy of your current Windows version and keeps your files, apps and settings.
+You don't need to find an ISO or make a USB drive.
+Back up important files, save your work and keep your PC connected to power and the internet.
+
+### Open Recovery
+
+1. Right-click **Start** (the Windows logo on the taskbar) and select **Settings**.
+2. Select **System**, then **Recovery**.
+   If **Recovery** is missing, follow [Show the Recovery page](#show-the-recovery-page) below, then return here.
+
+### Start the repair
+
+<Callout type="warning" title="Choose Reinstall now, not Reset this PC">
+  Under **Fix problems using Windows Update**, select **Reinstall now**.
+  **Reset this PC** is a different option and can remove your installed apps.
+</Callout>
+
+1. Select **Reinstall now** beside **Fix problems using Windows Update**.
+2. Read the confirmation and select **OK**.
+   You can leave automatic restart unticked if you want to restart yourself.
+3. Wait while Windows Update downloads and installs the repair.
+4. Restart when prompted, then sign in to the same Windows account.
+5. Open **Atlas Manager** again and resume setup if it was waiting for Store updates.
+   Let it check the updates again. Also retry the failed download in Microsoft Store or the Xbox app.
+
+If **Fix problems using Windows Update** is missing or the repair fails, use the [ISO repair](#repair-windows-with-an-iso).
+Some Windows Update policies make this option unavailable, even when Recovery is visible.
+See [Microsoft's Windows Update repair guide](https://support.microsoft.com/en-gb/windows/deployment/install-upgrade/fix-issues-by-reinstalling-the-current-version-of-windows).
+
+### Show the Recovery page
+
+Only follow these steps if **Recovery** is missing from Settings.
+Some Atlas installations hide this page. The steps below make it visible again; they don't start a repair.
+
+1. Close Settings.
+2. Press **Win + R** (hold the Windows key and press R), type `regedit` and press **Enter**.
+   Select **Yes** if Windows asks to allow changes.
+3. Click the address bar at the top of Registry Editor, replace its contents with the path below, then press **Enter**:
+
+   ```text
+   HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer
+   ```
+
+4. In the right-hand pane, double-click **SettingsPageVisibility**.
+   Copy the text in **Value data** into Notepad and save it so you have the original value.
+5. If the text starts with `hide:`, remove only the `recovery` entry from that list.
+   Leave `hide:` and the other entries in place, with a single semicolon (`;`) between entries.
+   For example, `hide:recovery;windowsupdate` becomes `hide:windowsupdate`.
+   If the entire value is `hide:recovery`, clear **Value data** instead.
+6. Select **OK**, close Registry Editor and open **Settings** > **System** > **Recovery** again.
+   Continue with [Start the repair](#start-the-repair).
+
+If **SettingsPageVisibility** is missing, doesn't start with `hide:`, or doesn't contain `recovery`, leave it unchanged.
+If Recovery is still hidden, use the [ISO repair](#repair-windows-with-an-iso) or [ask for help](/docs/faq/report-a-problem/).
+Don't delete the Explorer key or the other entries in the list.
 
 ## Repair Windows with an ISO
 
+Use this method if the Settings repair is unavailable or didn't fix the problem.
 An in-place repair reinstalls Windows from your desktop and keeps your personal files and installed apps when you choose to keep both.
 Back up your important files first and allow time for several restarts.
 Windows can restore some default apps or settings during the repair, so check your Atlas choices afterwards.
@@ -69,4 +130,5 @@ For Enterprise, get media for your edition from your organisation or Microsoft s
 ### Check the repair
 
 Sign in to the account that had the problem and retry the same app or game in Microsoft Store or the Xbox app.
+If Atlas Manager was waiting for Store updates, open it again and resume setup so it can check them again.
 If the download still fails, [report the problem](/docs/faq/report-a-problem/) with the error code, your Atlas version, your Windows version and build, and the steps you've tried.
