@@ -386,13 +386,26 @@ async function resolveIsoLinkOnce(
     // Language option values are JSON blobs containing the SKU id.
     await chooseOptionAndConfirm(page, `"id":"${skuId}"`, 'submit-sku');
 
-    const findLink = (text: string) =>
-      [...document.querySelectorAll('a')].find(
-        anchor => anchor.textContent?.includes(text) && anchor.href,
-      )?.href ?? null;
+    // Microsoft renders the signed ISO in this container. The button label varies by architecture.
+    const findLink = (architecture: string) => {
+      for (const anchor of document.querySelectorAll<HTMLAnchorElement>(
+        '#download-links a[href]',
+      )) {
+        const url = new URL(anchor.href);
+        const path = url.pathname.toLowerCase();
+        if (
+          url.protocol === 'https:' &&
+          url.hostname.endsWith('.microsoft.com') &&
+          path.endsWith('.iso') &&
+          path.includes(architecture)
+        )
+          return url.href;
+      }
+      return null;
+    };
 
-    await page.waitForFunction(findLink, { timeout: BROWSER_LINK_TIMEOUT_MS }, linkText);
-    const href = await page.evaluate(findLink, linkText);
+    await page.waitForFunction(findLink, { timeout: BROWSER_LINK_TIMEOUT_MS }, arch);
+    const href = await page.evaluate(findLink, arch);
 
     if (!href) return { ok: false, error: 'Microsoft page did not expose a download link.' };
     return { ok: true, href, label: linkText };
