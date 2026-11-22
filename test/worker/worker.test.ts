@@ -20,9 +20,9 @@ const mocks = vi.hoisted(() => {
     goto: vi.fn<(url: string, options?: unknown) => Promise<unknown>>(() => Promise.resolve(null)),
     waitForFunction: vi.fn(() => Promise.resolve()),
     waitForNetworkIdle: vi.fn(() => Promise.resolve()),
-    // The worker's last evaluate() call reads the download link; its argument is the link text.
+    // The worker's last evaluate() call reads the download link; its argument is the architecture.
     evaluate: vi.fn((_fn: unknown, arg: unknown) =>
-      Promise.resolve(typeof arg === 'string' && arg.endsWith('Download') ? isoUrl : undefined),
+      Promise.resolve(arg === 'x64' || arg === 'arm64' ? isoUrl : undefined),
     ),
   };
   const context = {
