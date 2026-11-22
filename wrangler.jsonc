@@ -22,6 +22,6 @@
   // so preview code never writes into the production cache.
   "previews": {
     "browser": { "binding": "BROWSER" },
-    "kv_namespaces": [{ "binding": "MS_ISO_LINKS", "id": "4b1a3c4ca06142ce8d931de14fe1b1d7" }]
+    "kv_namespaces": [{ "binding": "MS_ISO_LINKS", "id": "74b0a67cb294499885be805902c1a1a9" }]
   }
 }
