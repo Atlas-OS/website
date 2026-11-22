@@ -1,0 +1,57 @@
+---
+/**
+ * Switches between the night and day themes (utils/theme.ts). Shows the sun by night and the moon
+ * by day: the one you'd switch to. One of the navbar's open icons (styles/navbar.css).
+ */
+import { Icon } from 'astro-icon/components';
+---
+
+<button
+  type="button"
+  class="nav-icon theme-toggle inline-flex"
+  data-theme-toggle
+  aria-label="Switch theme"
+  title="Switch theme"
+>
+  <Icon name="tabler:sun" class="nav-icon__glyph theme-toggle__icon theme-toggle__sun" aria-hidden="true" />
+  <Icon name="tabler:moon" class="nav-icon__glyph theme-toggle__icon theme-toggle__moon" aria-hidden="true" />
+</button>
+
+<style>
+  /* Styled as one of the navbar's open icons (styles/navbar.css); here only the sun and moon swap. */
+  .theme-toggle {
+    position: relative;
+  }
+
+  .theme-toggle :global(.theme-toggle__icon) {
+    transition: opacity 240ms var(--motion-ease-out);
+  }
+  .theme-toggle :global(.theme-toggle__moon) {
+    position: absolute;
+  }
+
+  /* The turn is movement, so it plays only where motion is welcome; everyone gets the fade. */
+  @media (prefers-reduced-motion: no-preference) {
+    .theme-toggle :global(.theme-toggle__icon) {
+      transition:
+        opacity 240ms var(--motion-ease-out),
+        rotate 400ms var(--motion-ease-out),
+        scale 400ms var(--motion-ease-out);
+    }
+  }
+
+  /* By night the sun is offered; by day the moon. The one leaving turns away as it fades. */
+  :global(:root:not([data-theme='light'])) .theme-toggle :global(.theme-toggle__moon),
+  :global(:root[data-theme='light']) .theme-toggle :global(.theme-toggle__sun) {
+    opacity: 0;
+    rotate: -60deg;
+    scale: 0.6;
+  }
+</style>
+
+<script>
+  import { onPageLoad } from '@/utils/page-lifecycle';
+  import { initThemeToggle } from '@/utils/theme';
+
+  onPageLoad(initThemeToggle);
+</script>

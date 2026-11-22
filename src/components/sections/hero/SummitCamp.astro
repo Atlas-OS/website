@@ -1,0 +1,645 @@
+---
+/**
+ * The camp beside the Atlas Manager window: two A-frame tents glowing from inside, a campfire in
+ * a ring of stones, a log to sit on, and the fire's light pooled on the ground.
+ *
+ * The fire flickers the cartoon way: four hand-drawn frames swapped at 9 fps. The ground light
+ * steps with it. Each animated piece is its own small layer, so only opacity and transform move.
+ * Placed by SummitStage.astro, whose `--u` (px per stage unit) sizes the camp box.
+ *
+ * Easter egg: click the fire to put it out, and the tents fall asleep ("zzZ"); click again to light
+ * it. `data-camp-out` drives it all from CSS; utils/hero-camp.ts only toggles the attribute.
+ */
+import {
+  CAMP_GROUND_PATH,
+  CAMP_VIEW,
+  DOUSE_PUFF,
+  EMBERS,
+  FIRE,
+  FLAME_FRAMES,
+  LOGS,
+  SEAT,
+  SLEEP,
+  SMOKE,
+  STONES,
+  TENTS,
+} from '@/utils/hero-camp-geometry';
+import { CAMP_GROUND, CAMP_GROUND_NARROW, STAGE_VIEW } from '@/utils/hero-summit-geometry';
+
+const view = `0 0 ${CAMP_VIEW.width} ${CAMP_VIEW.height}`;
+const tents = [
+  {
+    key: 'big',
+    tent: TENTS.big,
+    side: '#1C3361',
+    front: '#33528F',
+    lining: '#C9783F',
+    liningNight: '#2B3352',
+    seam: '#1A2D55',
+    glowR: 26,
+  },
+  {
+    key: 'small',
+    tent: TENTS.small,
+    side: '#3B2F45',
+    front: '#93664A',
+    lining: '#D98A4C',
+    liningNight: '#3A3146',
+    seam: '#523629',
+    glowR: 19,
+  },
+];
+const stonesBehind = STONES.filter((stone) => stone.behind);
+const stonesFront = STONES.filter((stone) => !stone.behind);
+const seatEnd = SEAT.from;
+/** The camp box sits on the near range, right of the window (left of it on narrower screens). */
+const top = (ground: number) => Math.round((ground - CAMP_VIEW.ground) * 10) / 10;
+const placement = [
+  `--camp-x: ${CAMP_GROUND.x}`,
+  `--camp-y: ${top(CAMP_GROUND.y)}`,
+  `--camp-x-narrow: ${CAMP_GROUND_NARROW.x}`,
+  `--camp-y-narrow: ${top(CAMP_GROUND_NARROW.y)}`,
+  `--stage-top: ${-STAGE_VIEW.y}`,
+].join('; ');
+/** Percent position of a camp point within the camp box. */
+const pct = (x: number, y: number) =>
+  `--px: ${Math.round((x / CAMP_VIEW.width) * 10000) / 100}%; --py: ${Math.round((y / CAMP_VIEW.height) * 10000) / 100}%`;
+const fireOrigin = `${Math.round((FIRE.x / CAMP_VIEW.width) * 10000) / 100}% ${Math.round(((FIRE.y - 1) / CAMP_VIEW.height) * 10000) / 100}%`;
+---
+
+<div class="summit-camp" style={`${placement}; --fire-origin: ${fireOrigin}`} data-camp>
+  <!-- The ground the camp stands on, matching the near range -->
+  <svg class="camp-layer" viewBox={view}>
+    <path d={CAMP_GROUND_PATH} fill="#0B1428"></path>
+  </svg>
+
+  <!-- Firelight pooled on the ground: a warm core falling off into the blue night -->
+  <div class="camp-light">
+    <svg class="camp-layer camp-pool summit-loop" viewBox={view}>
+      <defs>
+        <radialGradient
+          id="camp-pool"
+          cx={FIRE.x}
+          cy={FIRE.y + 3}
+          r="104"
+          gradientUnits="userSpaceOnUse"
+          gradientTransform={`translate(0 ${(FIRE.y + 3) * 0.84}) scale(1 0.16)`}
+        >
+          <stop offset="0" stop-color="#FFD28C" stop-opacity="0.9"></stop>
+          <stop offset="0.3" stop-color="#FF9F4A" stop-opacity="0.42"></stop>
+          <stop offset="0.55" stop-color="#7C6FB0" stop-opacity="0.12"></stop>
+          <stop offset="1" stop-color="#3B5BA8" stop-opacity="0"></stop>
+        </radialGradient>
+      </defs>
+      <radialGradient id="camp-air" cx={FIRE.x} cy={FIRE.y - 12} r="30" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#FFB35A" stop-opacity="0.32"></stop>
+        <stop offset="1" stop-color="#FF8A3D" stop-opacity="0"></stop>
+      </radialGradient>
+      <ellipse cx={FIRE.x} cy={FIRE.y + 3} rx="108" ry="19" fill="url(#camp-pool)"></ellipse>
+      <circle cx={FIRE.x} cy={FIRE.y - 12} r="30" fill="url(#camp-air)"></circle>
+    </svg>
+  </div>
+
+  <!--
+    Tents, stones behind the fire, logs. Each warm touch (the glow inside, the lit doorway and lining,
+    the rim light facing the fire) sits in a `camp-warm` group over a night-toned base, so dousing
+    the fire only has to fade those groups out and the cool `camp-night` tint in.
+  -->
+  <svg class="camp-layer" viewBox={view}>
+    <defs>
+      <linearGradient id="camp-doorway" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0" stop-color="#FFF3D2"></stop>
+        <stop offset="1" stop-color="#FF9F45"></stop>
+      </linearGradient>
+      {tents.map(({ key, tent, glowR }) => (
+        <radialGradient
+          id={`camp-glow-${key}`}
+          cx={tent.glow[0]}
+          cy={tent.glow[1]}
+          r={glowR}
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop offset="0" stop-color="#FFB76A" stop-opacity="0.75" />
+          <stop offset="0.5" stop-color="#FF9A4F" stop-opacity="0.28" />
+          <stop offset="1" stop-color="#FF9A4F" stop-opacity="0" />
+        </radialGradient>
+      ))}
+    </defs>
+
+    {tents.map(({ key, tent, side, front, lining, liningNight, seam }) => (
+      <g>
+        <path d={tent.groundsheet} fill="#08101E" />
+        <path d={tent.guys} fill="none" stroke="#9FB4D8" stroke-opacity="0.38" stroke-width="0.5" />
+        <path d={tent.pegs} fill="none" stroke="#C3CFE6" stroke-opacity="0.55" stroke-width="0.6" />
+        <path d={tent.side} fill={side} />
+        <path d={tent.front} fill={front} />
+        <path d={tent.doorway} fill="#131D38" />
+        <path d={tent.flap} fill={liningNight} />
+        <g class="camp-warm">
+          <path d={tent.front} fill={`url(#camp-glow-${key})`} />
+          <path d={tent.doorway} fill="url(#camp-doorway)" />
+          <path d={tent.flap} fill={lining} />
+        </g>
+        <g class="camp-night">
+          <path d={tent.front} fill="#0A1430" fill-opacity="0.45" />
+        </g>
+        <path d={tent.seams} fill="none" stroke={seam} stroke-opacity="0.85" stroke-width="0.7" />
+        <path
+          d={tent.ridge}
+          fill="none"
+          stroke="#9DBDF2"
+          stroke-opacity="0.4"
+          stroke-width="0.6"
+          stroke-linejoin="round"
+        />
+        <g class="camp-warm">
+          <path d={tent.rim} fill="none" stroke="#FFBE78" stroke-opacity="0.85" stroke-width="0.9" />
+        </g>
+      </g>
+    ))}
+
+    {stonesBehind.map((stone) => (
+      <ellipse cx={stone.x} cy={stone.y} rx={stone.rx} ry={stone.ry} fill="#283149" />
+    ))}
+    <g class="camp-warm">
+      {stonesBehind.map((stone) => (
+        <ellipse
+          cx={stone.hx}
+          cy={stone.hy}
+          rx={stone.rx * 0.6}
+          ry={stone.ry * 0.55}
+          fill="#E7A062"
+          fill-opacity="0.6"
+        />
+      ))}
+    </g>
+
+    {LOGS.map(({ from, to }) => (
+      <path d={`M${from[0]} ${from[1]}L${to[0]} ${to[1]}`} stroke="#4A2E22" stroke-width="3.6" stroke-linecap="round" />
+    ))}
+    <g class="camp-warm" stroke-linecap="round">
+      {LOGS.map(({ from, to }) => (
+        <path
+          d={`M${from[0]} ${from[1] - 1.2}L${to[0]} ${to[1] - 1.2}`}
+          stroke="#FFB466"
+          stroke-opacity="0.75"
+          stroke-width="0.9"
+        />
+      ))}
+    </g>
+  </svg>
+
+  <!-- Four flame frames, shown one at a time. Dousing freezes the frame and collapses the fire. -->
+  <div class="camp-fire">
+    {FLAME_FRAMES.map((frame, index) => (
+      <svg
+        class:list={['camp-layer camp-flame summit-loop', { 'camp-flame--lead': index === 0 }]}
+        style={`--frame: ${index}`}
+        viewBox={view}
+      >
+        <path d={frame.outer} fill="#FF7A2E" />
+        <path d={frame.middle} fill="#FFB03D" />
+        <path d={frame.inner} fill="#FFF1B8" />
+      </svg>
+    ))}
+  </div>
+
+  <!-- Stones in front of the fire, and the log seat -->
+  <svg class="camp-layer" viewBox={view}>
+    {stonesFront.map((stone) => (
+      <ellipse cx={stone.x} cy={stone.y} rx={stone.rx} ry={stone.ry} fill="#222A40" />
+    ))}
+    <g class="camp-warm">
+      {stonesFront.map((stone) => (
+        <path
+          d={`M${stone.x - stone.rx * 0.7} ${stone.y - stone.ry * 0.55}Q${stone.x} ${stone.y - stone.ry * 1.15} ${stone.x + stone.rx * 0.7} ${stone.y - stone.ry * 0.55}`}
+          fill="none"
+          stroke="#E9A86A"
+          stroke-opacity="0.55"
+          stroke-width="0.7"
+        />
+      ))}
+    </g>
+    <path
+      d={`M${SEAT.from[0]} ${SEAT.from[1]}L${SEAT.to[0]} ${SEAT.to[1]}`}
+      stroke="#33241F"
+      stroke-width={SEAT.thickness}
+      stroke-linecap="round"
+    ></path>
+    <g class="camp-warm">
+      <path
+        d={`M${SEAT.from[0] + 1} ${SEAT.from[1] - 1.9}L${SEAT.to[0]} ${SEAT.to[1] - 1.9}`}
+        stroke="#E7A160"
+        stroke-opacity="0.6"
+        stroke-width="1.1"
+        stroke-linecap="round"
+      ></path>
+    </g>
+    <ellipse cx={seatEnd[0]} cy={seatEnd[1]} rx="1.8" ry="2.5" fill="#A87650"></ellipse>
+    <ellipse
+      cx={seatEnd[0]}
+      cy={seatEnd[1]}
+      rx="0.8"
+      ry="1.2"
+      fill="none"
+      stroke="#6E4A33"
+      stroke-width="0.4"
+    ></ellipse>
+  </svg>
+
+  <div class="camp-embers">
+    {EMBERS.map((ember) => (
+      <span
+        class="camp-ember summit-loop"
+        style={`--drift: ${ember.drift}%; --duration: ${ember.duration}s; --delay: ${ember.delay}s`}
+      />
+    ))}
+  </div>
+
+  <div class="camp-smokes">
+    {[0, 1].map((index) => (
+      <svg class="camp-layer camp-smoke summit-loop" style={`--delay: ${index * -3.6}s`} viewBox={view}>
+        <path d={SMOKE} fill="none" stroke="#B7C3DC" stroke-opacity="0.22" stroke-width="1.6" stroke-linecap="round" />
+      </svg>
+    ))}
+  </div>
+
+  <!-- Doused: a puff of grey smoke, then a thin wisp that lingers while the fire is out -->
+  <svg class="camp-layer camp-douse" viewBox={view}>
+    {DOUSE_PUFF.map(({ cx, cy, r }) => (
+      <circle cx={cx} cy={cy} r={r} fill="#9AA6BD" fill-opacity="0.5" />
+    ))}
+  </svg>
+  <svg class="camp-layer camp-wisp summit-loop" viewBox={view}>
+    <path d={SMOKE} fill="none" stroke="#AEB9CF" stroke-opacity="0.3" stroke-width="1" stroke-linecap="round"></path>
+  </svg>
+
+  <!-- Asleep: "zzZ" rising from each tent's ridge while the fire is out -->
+  {SLEEP.origins.map((origin, t) => (
+    <span class="camp-zs" style={pct(origin.at[0], origin.at[1])}>
+      {SLEEP.letters.map((letter, i) => (
+        <span
+          class="camp-z summit-loop"
+          style={`--size: ${letter.size}; --sx: ${letter.at[0]}; --sy: ${letter.at[1]}; --cycle: ${SLEEP.cycle}s; --delay: ${i * SLEEP.stagger + t * SLEEP.tentOffset}s`}
+        >
+          {letter.char}
+        </span>
+      ))}
+    </span>
+  ))}
+
+  <!-- The fire's hit area: invisible, at least 44px, and only live once JavaScript has bound it -->
+  <span class="camp-hit" style={pct(FIRE.x, FIRE.y - 10)} data-camp-toggle></span>
+</div>
+
+<style>
+  .summit-camp {
+    --camp-scale: 1;
+    /* The embers' spark and its glow. */
+    --ember: oklch(0.879 0.117 80.6);
+    --ember-glow: oklch(0.805 0.144 64.5);
+    position: absolute;
+    inset-inline-start: calc(50% + var(--u) * var(--camp-x));
+    inset-block-start: calc(var(--u) * (var(--camp-y) + var(--stage-top)));
+    width: calc(var(--u) * 240);
+    height: calc(var(--u) * 100);
+  }
+
+  .camp-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .camp-light,
+  .camp-fire,
+  .camp-embers,
+  .camp-smokes {
+    position: absolute;
+    inset: 0;
+  }
+
+  /*
+   * Light adds to whatever it falls on, so the ground warms without greying. The blend sits on the
+   * wrapper that fades, so it holds while the light fades out and back.
+   */
+  .camp-light {
+    mix-blend-mode: screen;
+  }
+
+  .camp-flame {
+    opacity: 0;
+  }
+  .camp-flame--lead {
+    opacity: 1;
+  }
+
+  /* An ember box spans its climb; the spark sits at its foot and the box travels up by its height. */
+  .camp-ember {
+    position: absolute;
+    inset-inline-start: calc(100% * 122 / 240);
+    inset-block-start: calc(100% * 34 / 100);
+    width: calc(100% * 12 / 240);
+    height: calc(100% * 36 / 100);
+    opacity: 0;
+  }
+  .camp-ember::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 50%;
+    inset-block-end: 0;
+    width: max(1.5px, calc(var(--u) * 1.6));
+    aspect-ratio: 1;
+    border-radius: 50%;
+    translate: -50% 0;
+    background: var(--ember);
+    box-shadow: 0 0 3px color-mix(in oklch, var(--ember-glow) 80%, transparent);
+  }
+
+  .camp-smoke {
+    opacity: 0;
+    transform-origin: calc(100% * 128 / 240) 50%;
+  }
+
+  /* ---- Douse and relight -------------------------------------------------------------------- */
+
+  /* Lit: the light, the warm touches and the fire come back; the fire flares up from a spark. */
+  .camp-light,
+  .camp-warm,
+  .camp-embers,
+  .camp-smokes {
+    transition: opacity 600ms ease;
+  }
+  .camp-night {
+    opacity: 0;
+    transition: opacity 600ms ease;
+  }
+  .camp-fire {
+    transform-origin: var(--fire-origin);
+    transition: opacity 160ms ease-out;
+  }
+
+  /* Out: the fire dies down fast, the embers and smoke stop, and the light fades to night. */
+  .summit-camp[data-camp-out] .camp-fire {
+    opacity: 0;
+    transform: scale(0.3, 0.12);
+    transition: opacity 300ms ease-out;
+  }
+
+  /* Pressing the fire tamps it down a touch, on top of whatever it is doing (by `scale`). */
+  .summit-camp[data-camp-ready]:has(.camp-hit:active) .camp-fire {
+    scale: 0.96;
+  }
+
+  /* The fire collapses and flares by transform only where motion is welcome; otherwise it fades. */
+  @media (prefers-reduced-motion: no-preference) {
+    .camp-fire {
+      transition:
+        transform 560ms cubic-bezier(0.34, 1.56, 0.64, 1),
+        opacity 160ms ease-out,
+        scale 160ms var(--motion-ease-out);
+    }
+    .summit-camp[data-camp-out] .camp-fire {
+      transition:
+        transform 340ms cubic-bezier(0.23, 1, 0.32, 1),
+        opacity 300ms ease-out,
+        scale 160ms var(--motion-ease-out);
+    }
+  }
+  .summit-camp[data-camp-out] :is(.camp-light, .camp-warm, .camp-embers, .camp-smokes) {
+    opacity: 0;
+  }
+  .summit-camp[data-camp-out] :is(.camp-embers, .camp-smokes) {
+    transition-duration: 250ms;
+  }
+  .summit-camp[data-camp-out] .camp-night {
+    opacity: 1;
+  }
+  .summit-camp[data-camp-out] :is(.camp-flame, .camp-pool, .camp-ember, .camp-smoke) {
+    animation-play-state: paused;
+  }
+
+  .camp-douse,
+  .camp-wisp {
+    opacity: 0;
+    transform-origin: var(--fire-origin);
+  }
+
+  /* The tents' "zzZ". The static layout (reduced motion) rests each letter at its offset. */
+  .camp-zs {
+    position: absolute;
+    inset-inline-start: var(--px);
+    inset-block-start: var(--py);
+    opacity: 0;
+    transition: opacity 300ms ease;
+  }
+  .summit-camp[data-camp-out] .camp-zs {
+    opacity: 1;
+    transition: opacity 400ms ease 600ms;
+  }
+  .camp-z {
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-end: 0;
+    color: oklch(0.921 0.038 259.3 / 0.75);
+    font-size: calc(var(--u) * var(--size));
+    font-weight: 600;
+    line-height: 1;
+    transform-origin: 0 100%;
+    translate: calc(var(--u) * var(--sx)) calc(var(--u) * var(--sy));
+  }
+
+  /* An invisible, comfortable target over the fire and its stones: never smaller than 44px. */
+  .camp-hit {
+    position: absolute;
+    inset-inline-start: var(--px);
+    inset-block-start: var(--py);
+    width: max(calc(44px / var(--camp-scale)), calc(var(--u) * 40));
+    aspect-ratio: 1;
+    border-radius: 50%;
+    translate: -50% -50%;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .summit-camp[data-camp-ready] .camp-hit {
+    pointer-events: auto;
+    cursor: pointer;
+  }
+
+  /*
+   * The camp keeps out of the page's fixed Ask AI button (bottom right). Up to 1599px it shrinks a
+   * little towards the window; below 1440px it moves to the left foreground, under the summit.
+   * Phones: no camp.
+   */
+  @media (max-width: 1599px) {
+    .summit-camp {
+      --camp-scale: 0.8;
+      scale: var(--camp-scale);
+      transform-origin: 0% 100%;
+    }
+  }
+  @media (max-width: 1439px) {
+    .summit-camp {
+      inset-inline-start: calc(50% + var(--u) * var(--camp-x-narrow));
+      inset-block-start: calc(var(--u) * (var(--camp-y-narrow) + var(--stage-top)));
+      transform-origin: 100% 100%;
+    }
+  }
+  @media (max-width: 767px) {
+    .summit-camp {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* Each frame shows for a quarter of the cycle; the offsets hand the turn to the next one. */
+    .camp-flame {
+      animation: camp-frame 0.44s step-end calc((var(--frame) - 4) * 0.11s) infinite;
+    }
+    .camp-pool {
+      animation: camp-pool 0.44s step-end infinite;
+    }
+    .camp-ember {
+      animation: camp-ember var(--duration) cubic-bezier(0.33, 1, 0.68, 1) var(--delay) infinite;
+    }
+    .camp-smoke {
+      animation: camp-smoke 7.2s ease-out var(--delay) infinite;
+    }
+
+    .summit-camp[data-camp-out] .camp-douse {
+      animation: camp-douse 1.8s cubic-bezier(0.33, 1, 0.68, 1) both;
+    }
+    .summit-camp[data-camp-out] .camp-wisp {
+      animation: camp-wisp 6.5s ease-out 1.4s infinite backwards;
+    }
+
+    /* Each letter rises and fades in turn, starting once the fire has gone out. */
+    .camp-z {
+      opacity: 0;
+      translate: none;
+    }
+    .summit-camp[data-camp-out] .camp-z {
+      animation: camp-z var(--cycle) ease-out calc(600ms + var(--delay)) infinite backwards;
+    }
+
+    /* As specific as the douse rules above, and after them, so the camp pauses with the scene. */
+    :global([data-summit-paused]) .summit-camp .summit-loop {
+      animation-play-state: paused;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .camp-smoke {
+      opacity: 0.6;
+    }
+    .summit-camp[data-camp-out] .camp-wisp {
+      opacity: 0.6;
+    }
+  }
+
+  @keyframes camp-frame {
+    0% {
+      opacity: 1;
+    }
+    25%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes camp-pool {
+    0% {
+      opacity: 1;
+    }
+    25% {
+      opacity: 0.86;
+    }
+    50% {
+      opacity: 0.95;
+    }
+    75% {
+      opacity: 0.9;
+    }
+  }
+
+  @keyframes camp-ember {
+    0% {
+      opacity: 0;
+      transform: translate(0, 0);
+    }
+    15% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translate(var(--drift), -100%);
+    }
+  }
+
+  @keyframes camp-smoke {
+    0% {
+      opacity: 0;
+      transform: translateY(6%) scaleX(0.8);
+    }
+    30% {
+      opacity: 0.7;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-22%) scaleX(1.35);
+    }
+  }
+
+  @keyframes camp-douse {
+    0% {
+      opacity: 0;
+      transform: translateY(0) scale(0.5);
+    }
+    18% {
+      opacity: 0.85;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-30%) scale(1.7);
+    }
+  }
+
+  @keyframes camp-wisp {
+    0% {
+      opacity: 0;
+      transform: translateY(8%) scaleX(0.7);
+    }
+    35% {
+      opacity: 0.7;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-18%) scaleX(1.2);
+    }
+  }
+
+  @keyframes camp-z {
+    0% {
+      opacity: 0;
+      transform: translate(0, 0) scale(0.6);
+    }
+    20% {
+      opacity: 1;
+    }
+    70% {
+      opacity: 0.8;
+    }
+    100% {
+      opacity: 0;
+      transform: translate(calc(var(--u) * 14), calc(var(--u) * -30)) scale(1.05);
+    }
+  }
+</style>
+
+<script>
+  import { initCamp } from '@/utils/hero-camp';
+  import { onPageLoad } from '@/utils/page-lifecycle';
+
+  onPageLoad(initCamp);
+</script>

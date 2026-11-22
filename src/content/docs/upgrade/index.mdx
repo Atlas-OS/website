@@ -1,0 +1,34 @@
+---
+title: "Update Atlas"
+metaDescription: "Update Atlas to a newer release with Atlas Manager, keeping your files, apps and choices, without reinstalling Windows."
+description: Move an installed Atlas to a newer release.
+order: 7
+---
+
+import QuickLinkCard from '@/components/docs/QuickLinkCard.astro';
+import QuickLinksGrid from '@/components/docs/QuickLinksGrid.astro';
+
+Atlas Manager updates an installed Atlas to a newer release without reinstalling Windows.
+Your files and apps stay, and you choose whether to keep your Atlas choices or make them again.
+
+When a newer release is out, Atlas Manager's Home page says so and offers an **Update to Atlas** button for it.
+
+## Which installations can update
+
+Two things decide whether Atlas Manager can update your PC:
+
+- **Your installed Atlas version.**
+  Each release lists the versions it can update from as `updatableFrom` in its [`atlas.json`](https://github.com/Atlas-OS/Atlas/blob/main/package/atlas.json).
+  From any other version, back up your files and reinstall Windows.
+- **Your Windows release.**
+  It must be one the release supports, as listed in the [supported releases table](https://github.com/Atlas-OS/Atlas/blob/main/docs/windows-release-policy.md#supported-releases).
+  If it's older, Atlas Manager can [move Windows to a newer release](/docs/upgrade/windows-release/) as part of the update.
+
+Atlas Manager checks both for you and explains what to do when it can't update.
+
+<QuickLinksGrid columns={{ md: 2 }}>
+  <QuickLinkCard href="/docs/upgrade/requirements/" icon="tabler:checklist" title="Before updating" description="Check eligibility, back up and see what an update keeps." />
+  <QuickLinkCard href="/docs/upgrade/upgrade/" icon="tabler:arrow-up" title="Update instructions" description="Update with Atlas Manager, then check the result." />
+  <QuickLinkCard href="/docs/upgrade/windows-release/" icon="tabler:brand-windows" title="Move Windows to a newer release" description="How Atlas Manager moves Windows before installing Atlas." />
+  <QuickLinkCard href="/docs/upgrade/whats-new/" icon="tabler:notes" title="Release notes" description="Find out what changed in each Atlas release." />
+</QuickLinksGrid>

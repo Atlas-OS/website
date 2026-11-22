@@ -1,6 +1,9 @@
 {
-  "name": "AtlasOS",
-  "short_name": "Atlas",
+  "name": "AtlasOS - Optimized Windows for Gaming and Performance",
+  "short_name": "AtlasOS",
+  "description": "AtlasOS is an optimized version of Windows, designed for enthusiasts and gamers. Experience faster performance, better privacy, and enhanced gaming capabilities.",
+  "start_url": "/",
+  "scope": "/",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
@@ -13,9 +16,32 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
+    },
+    {
+      "src": "/favicon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
     }
   ],
-  "theme_color": "#ffffff",
-  "background_color": "#1990fe",
-  "display": "standalone"
+  "theme_color": "#1990fe",
+  "background_color": "#0a0e1a",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "categories": ["utilities", "productivity"],
+  "lang": "en-US",
+  "dir": "ltr",
+  "shortcuts": [
+    {
+      "name": "Documentation",
+      "short_name": "Docs",
+      "description": "View AtlasOS documentation",
+      "url": "/docs/",
+      "icons": [{ "src": "/favicon-96x96.png", "sizes": "96x96" }]
+    }
+  ]
 }

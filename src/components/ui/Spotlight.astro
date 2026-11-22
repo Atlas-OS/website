@@ -1,0 +1,362 @@
+---
+import { docsSectionKey, getDocsTree } from '@/utils/docs';
+import { Icon } from 'astro-icon/components';
+
+// Section labels in sidebar order, so search results can be grouped the same way the docs are.
+const sectionLabels = Object.fromEntries(
+  (await getDocsTree()).map((section) => [docsSectionKey(section.href) ?? '', section.title])
+);
+---
+
+<!--
+  A modal <dialog> (utils/spotlight.ts opens it with showModal()): the browser keeps focus inside it,
+  makes the page behind it inert, closes it on Escape and draws its backdrop.
+-->
+<dialog
+  id="spotlight-modal"
+  class="fixed w-[90vw] max-w-xl flex-col overflow-clip rounded-2xl border border-fg/[0.12] bg-[var(--modal-surface)] shadow-2xl shadow-black/50"
+  aria-labelledby="spotlight-title"
+  style="max-block-size: min(520px, 80vh);"
+>
+  <h2 id="spotlight-title" class="sr-only">
+    Search documentation
+  </h2>
+
+  <div id="spotlight-input-container" class="flex flex-shrink-0 cursor-text items-center gap-3 px-5 py-4">
+    <Icon name="tabler:search" class="h-[18px] w-[18px] flex-shrink-0 text-fg/55" aria-hidden="true" />
+    <label for="spotlight-input" class="sr-only">
+      Search documentation
+    </label>
+    <input
+      type="text"
+      id="spotlight-input"
+      role="combobox"
+      aria-autocomplete="list"
+      aria-controls="spotlight-list"
+      aria-expanded="false"
+      class="flex-1 border-none bg-transparent text-base text-fg/90 shadow-none outline-hidden placeholder:text-fg/45 focus:ring-0 sm:text-[15px]"
+      placeholder="Search documentation…"
+      autocomplete="off"
+      autocorrect="off"
+      spellcheck="false"
+    />
+    <kbd class="hidden flex-shrink-0 items-center rounded-md border border-fg/[0.08] bg-fg/[0.04] px-2 py-1 font-mono text-xs text-fg/55 sm:inline-flex">
+      Esc
+    </kbd>
+  </div>
+
+  <div class="h-px w-full flex-shrink-0 bg-fg/[0.06]"></div>
+
+  <div id="spotlight-results" class="min-h-0 flex-1 overflow-y-auto">
+    <div id="spotlight-idle" class="flex flex-col items-center justify-center px-6 py-10 text-center">
+      <div class="mbe-3 flex h-10 w-10 items-center justify-center rounded-xl border border-fg/[0.06] bg-fg/[0.03]">
+        <Icon name="tabler:book" class="h-5 w-5 text-fg/50" aria-hidden="true" />
+      </div>
+      <p class="text-sm font-medium text-fg/70">Search the docs</p>
+      <p class="mbs-1 text-xs text-fg/45">Pages, guides, and reference</p>
+    </div>
+
+    <div id="spotlight-empty" class="hidden px-6 py-10 text-center">
+      <div role="status" aria-live="polite">
+        <p class="text-sm text-fg/70">
+          No results for “<span id="spotlight-empty-query"></span>”
+        </p>
+        <p class="mbs-1 text-xs text-fg/45">Try another search term.</p>
+      </div>
+      <button
+        type="button"
+        id="spotlight-clear-search"
+        class="mbs-4 inline-flex min-h-10 items-center justify-center rounded-md bg-fg/[0.05] px-3 text-sm font-medium text-fg/70 transition-[background-color,color] duration-150 hover:bg-fg/[0.08] hover:text-fg active:scale-[0.96] motion-safe:transition-[background-color,color,scale]"
+      >
+        Clear search
+      </button>
+    </div>
+
+    <div
+      id="spotlight-loading"
+      class="hidden items-center justify-center gap-2.5 px-6 py-10 text-sm text-fg/60 [&:not(.hidden)]:flex"
+      role="status"
+      aria-live="polite"
+    >
+      <span class="loading-spinner h-4 w-4 flex-shrink-0" aria-hidden="true"></span>
+      <span>Searching&hellip;</span>
+    </div>
+
+    <ul
+      id="spotlight-list"
+      class="m-0 list-none p-2"
+      role="listbox"
+      aria-label="Search results"
+      data-sections={JSON.stringify(sectionLabels)}
+    ></ul>
+  </div>
+
+  <div id="spotlight-footer" class="hidden flex-shrink-0 border-bs border-fg/[0.06] px-5 py-2.5">
+    <div class="flex items-center gap-4">
+      <span class="flex items-center gap-1.5 text-xs text-fg/50">
+        <kbd class="rounded border border-fg/[0.08] bg-fg/[0.04] px-1.5 py-0.5 font-mono text-[10px]">↑↓</kbd>
+        Navigate
+      </span>
+      <span class="flex items-center gap-1.5 text-xs text-fg/50">
+        <kbd class="rounded border border-fg/[0.08] bg-fg/[0.04] px-1.5 py-0.5 font-mono text-[10px]">↵</kbd>
+        Open
+      </span>
+      <span class="flex items-center gap-1.5 text-xs text-fg/50">
+        <kbd class="rounded border border-fg/[0.08] bg-fg/[0.04] px-1.5 py-0.5 font-mono text-[10px]">Esc</kbd>
+        Close
+      </span>
+    </div>
+  </div>
+</dialog>
+
+<style is:global>
+  /*
+   * A fifth of the way down and centred. It is `fixed` in its own right (not only while `:modal`), so
+   * it stays put through the fade after it closes. Closed, it fades out with a soft blur; open, it is
+   * sharp. Its text takes the page's colour, not the browser's dialog default.
+   */
+  #spotlight-modal {
+    inset-block: 20% auto;
+    inset-inline: 0;
+    margin-inline: auto;
+    color: inherit;
+    opacity: 0;
+    pointer-events: none;
+    filter: blur(6px);
+  }
+
+  #spotlight-modal[open] {
+    display: flex;
+    opacity: 1;
+    pointer-events: auto;
+    filter: blur(0);
+  }
+
+  @starting-style {
+    #spotlight-modal[open] {
+      opacity: 0;
+      filter: blur(6px);
+    }
+  }
+
+  #spotlight-modal::backdrop {
+    background-color: oklch(0 0 none / 0.702);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    opacity: 0;
+  }
+
+  #spotlight-modal[open]::backdrop {
+    opacity: 1;
+  }
+
+  @starting-style {
+    #spotlight-modal[open]::backdrop {
+      opacity: 0;
+    }
+  }
+
+  /* It opens and closes as a fade that settles from a touch smaller, where motion is welcome. */
+  @media (prefers-reduced-motion: no-preference) {
+    #spotlight-modal {
+      scale: 0.97;
+      transition:
+        opacity var(--motion-duration-normal) var(--motion-ease-out),
+        scale var(--motion-duration-normal) var(--motion-ease-out),
+        filter var(--motion-duration-normal) var(--motion-ease-out),
+        display var(--motion-duration-normal) allow-discrete,
+        overlay var(--motion-duration-normal) allow-discrete;
+    }
+
+    #spotlight-modal[open] {
+      scale: 1;
+    }
+
+    @starting-style {
+      #spotlight-modal[open] {
+        scale: 0.97;
+      }
+    }
+
+    #spotlight-modal::backdrop {
+      transition:
+        opacity var(--motion-duration-normal) var(--motion-ease-out),
+        display var(--motion-duration-normal) allow-discrete,
+        overlay var(--motion-duration-normal) allow-discrete;
+    }
+  }
+
+  /* The page behind holds still while search is open. */
+  body:has(#spotlight-modal:modal) {
+    overflow: hidden;
+  }
+
+  #spotlight-results {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in oklch, var(--color-fg) 7%, transparent) transparent;
+  }
+
+  #spotlight-results::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  #spotlight-results::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  #spotlight-results::-webkit-scrollbar-thumb {
+    background-color: color-mix(in oklch, var(--color-fg) 7%, transparent);
+    border-radius: 2px;
+  }
+
+  .spotlight-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding-block: 0.625rem;
+    padding-inline: 0.875rem;
+    border: 1px solid transparent;
+    border-radius: 0.625rem;
+    cursor: pointer;
+    transition:
+      background-color 120ms ease,
+      border-color 120ms ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .spotlight-item:hover {
+      background-color: color-mix(in oklch, var(--color-fg) 4%, transparent);
+      border-color: color-mix(in oklch, var(--color-fg) 5%, transparent);
+    }
+  }
+
+  .spotlight-item.selected {
+    background-color: color-mix(in oklch, var(--color-fg) 6%, transparent);
+    border-color: color-mix(in oklch, var(--color-fg) 7%, transparent);
+  }
+
+  /* A result gives a little under a press, as the navbar's icons do. */
+  .spotlight-item:active {
+    scale: 0.98;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .spotlight-item {
+      transition:
+        background-color 120ms ease,
+        border-color 120ms ease,
+        scale 120ms var(--motion-ease-out);
+    }
+  }
+
+  .spotlight-item-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.5rem;
+    border: 1px solid color-mix(in oklch, var(--color-fg) 6%, transparent);
+    background-color: color-mix(in oklch, var(--color-fg) 3%, transparent);
+    color: color-mix(in oklch, var(--color-fg) 50%, transparent);
+  }
+
+  .spotlight-item-icon svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .spotlight-item.selected .spotlight-item-icon {
+    border-color: var(--color-primary);
+    background-color: color-mix(in oklch, var(--color-primary) 10%, transparent);
+    color: var(--color-primary);
+  }
+
+  .spotlight-item-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .spotlight-item-title {
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.4;
+    color: color-mix(in oklch, var(--color-fg) 90%, transparent);
+    white-space: nowrap;
+    overflow: clip;
+    text-overflow: ellipsis;
+  }
+
+  .spotlight-item-separator {
+    margin-inline: 0.375rem;
+    color: color-mix(in oklch, var(--color-fg) 40%, transparent);
+  }
+
+  .spotlight-item-section {
+    color: color-mix(in oklch, var(--color-fg) 72%, transparent);
+  }
+
+  .spotlight-item-excerpt {
+    margin: 0;
+    margin-block-start: 0.125rem;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: clip;
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    color: color-mix(in oklch, var(--color-fg) 62%, transparent);
+  }
+
+  .spotlight-item-excerpt mark {
+    background: transparent;
+    color: var(--color-link);
+    font-weight: 500;
+  }
+
+  /*
+   * Keep the input caret without adding a ring or underline to the dialog. The ring stays,
+   * transparent, so forced-colours mode can still draw it.
+   */
+  #spotlight-input:focus-visible {
+    outline: 2px solid transparent;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .spotlight-group {
+    margin-block: 0.5rem 0.25rem;
+    margin-inline: 0.875rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: color-mix(in oklch, var(--color-fg) 50%, transparent);
+  }
+
+  .spotlight-group:first-child {
+    margin-block-start: 0.25rem;
+  }
+
+  .spotlight-item-arrow {
+    flex-shrink: 0;
+    width: 0.875rem;
+    height: 0.875rem;
+    color: transparent;
+    transition: color 120ms ease;
+  }
+
+  .spotlight-item.selected .spotlight-item-arrow {
+    color: color-mix(in oklch, var(--color-fg) 30%, transparent);
+  }
+</style>
+
+<script>
+  import { onPageLoad } from '@/utils/page-lifecycle';
+  import { initSpotlight } from '@/utils/spotlight';
+
+  onPageLoad(initSpotlight);
+</script>

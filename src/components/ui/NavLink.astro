@@ -1,0 +1,23 @@
+---
+interface Props {
+  href: string;
+  isActive?: boolean;
+  external?: boolean;
+  class?: string;
+}
+
+const { href, isActive = false, external = false, class: className = '' } = Astro.props;
+const prefetchStrategy = !external && href.startsWith('/') ? 'hover' : undefined;
+---
+
+<a
+  href={href}
+  data-astro-prefetch={prefetchStrategy}
+  target={external ? '_blank' : undefined}
+  rel={external ? 'noopener noreferrer' : undefined}
+  aria-current={isActive ? 'page' : undefined}
+  class={`nav-link ${className}`}
+>
+  <slot />
+  <span class="nav-link-underline" aria-hidden="true"></span>
+</a>

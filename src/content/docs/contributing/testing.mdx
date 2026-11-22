@@ -1,0 +1,99 @@
+---
+title: "Testing guide"
+metaDescription: "AtlasOS testing guide: test builds, updates, Windows features, apps, Windows Update and the Atlas folder."
+description: Testing guide for AtlasOS contributors.
+order: 44
+---
+
+import Callout from '@/components/docs/Callout.astro';
+
+Use this checklist to test Atlas test builds and release candidates.
+[Report every problem you can reproduce](/docs/contributing/reporting/).
+
+Follow [Test a built package](/docs/contributing/atlas-package/#test-a-built-package) to set up a virtual machine.
+Test release candidates on real hardware as well.
+
+<Callout type="info" title="Test on unmodified Windows first">
+  Check that a problem you find on Atlas doesn't also happen on unmodified Windows in the same
+  environment. This avoids reports of problems Atlas didn't cause.
+</Callout>
+
+## Test builds
+
+A test build of Atlas Manager installs only the Atlas package bundled with it.
+Its banner names the test build, and it never downloads or opens another Atlas package.
+
+Every candidate of a release has the same version, so moving to the next candidate is a reinstall.
+On Home, choose **Reinstall Atlas**, then test both **Keep my choices** and **Choose again**.
+
+## Windows releases and editions
+
+- Test on each [supported Windows release](https://github.com/Atlas-OS/Atlas/blob/main/docs/windows-release-policy.md#supported-releases).
+- Test the editions Atlas supports, such as Pro, Education and Enterprise.
+- Test moving Windows to a newer release from the **Get ready** page, on a PC with an older release that Atlas Manager can move.
+- Test the ISO and USB flow on UEFI PCs, with both x64 and Arm64 media where you can.
+
+## Windows features you use
+
+Test the features you use, especially if your setup differs from most people's. For example:
+
+- Languages other than English
+  - Several languages and keyboard layouts, with each answer to the keyboard languages choice
+- Touchscreen support
+- Accessibility features
+- Hyper-V and WSL
+
+## Updates from an earlier Atlas
+
+Update from each Atlas release that can update directly, and from a reinstall of the same version.
+For each, test:
+
+- **Keep my choices**, and check that every choice stays as it was.
+- **Choose again** with different answers, and check that each change takes effect after the restart.
+- A PC with choices changed in the Atlas folder since the last installation.
+
+## User accounts
+
+Create new accounts and sign in to them, and check that every tweak applies.
+On an update, sign in to other existing accounts as well and check their settings.
+
+## Apps and games you use
+
+Test the software and games you use in a realistic setup.
+Install the right drivers first.
+Check that you can't reproduce a problem on unmodified Windows in the same environment.
+
+## Windows Update
+
+Atlas supports Windows Update. Consider testing:
+
+- Windows and Store app updates on the **Get ready** page, starting from Microsoft's ISO
+- Update failures, required restarts and continuing setup after signing in
+- Windows and Store updates after installing Atlas
+- Language pack installation
+- Optional Windows features
+- Installing and updating Store and Xbox games
+
+## Remote access and file sharing
+
+Consider testing local network features such as:
+
+- Windows file sharing
+  - Turn it on with the [Atlas script](/docs/atlas-configuration/settings/#network-discovery) first
+  - Check that it works on unmodified Windows
+- Screen casting
+- Remote Desktop
+
+## Atlas folder
+
+Test the Atlas folder thoroughly:
+
+- Run each script and check that it does what its name says
+  - Pay most attention to significant scripts, such as **Toggle Defender**
+  - If a script asks for input, try different answers
+  - Restart when prompted
+- Run **9. Troubleshooting → Check Atlas Health.cmd** before and after your changes
+- Look for improvements to:
+  - Structure
+  - Ease of use
+  - Folder organisation

@@ -1,15 +1,16 @@
 ---
 import { Icon } from 'astro-icon/components';
+import type { HTMLAttributes } from 'astro/types';
 
-interface Props {
+interface Props extends Omit<HTMLAttributes<'button'>, 'type' | 'class'> {
   variant?: 'primary' | 'secondary' | 'tertiary';
   size?: 'sm' | 'md' | 'lg';
   fw?: boolean;
   icon?: string;
   iconPosition?: 'before' | 'after';
-  id?: string;
   class?: string;
   href?: string;
+  download?: boolean;
   external?: boolean;
   type?: 'button' | 'submit' | 'reset';
   loading?: boolean;
@@ -22,58 +23,45 @@ const {
   fw = false,
   icon = '',
   iconPosition = 'before',
-  id,
   class: className = '',
   href,
   external = false,
   type = 'button',
   loading = false,
   disabled = false,
+  ...rest
 } = Astro.props;
 
-const isLink = !!href;
-
-const externalAttrs = external ? { target: '_blank', rel: 'noopener noreferrer' } : {};
-
-const baseClasses = [
-  'inline-flex items-center justify-center font-medium whitespace-nowrap relative box-border',
-  'focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black',
-  'transition-colors duration-200 transition-transform duration-100 ease-out',
-  'cursor-pointer',
-];
+const isLink = Boolean(href);
 
 const sizeClasses = {
-  sm: 'text-xs px-3 py-1 gap-1.5 rounded-md',
-  md: 'text-sm px-4 py-1.5 gap-2 md:text-xs md:px-4 md:py-1.5 rounded-md',
-  lg: 'text-sm px-5 py-2 gap-2 md:py-2 rounded-lg',
+  sm: 'min-h-10 text-xs px-3 py-1 gap-1.5 rounded-md',
+  md: 'min-h-10 text-sm px-4 py-1.5 gap-2 md:text-xs rounded-md',
+  lg: 'min-h-10 text-sm px-5 py-2 gap-2 rounded-lg',
 };
 
 const variantClasses = {
-  primary: [
-    'relative isolate',
-    'text-white font-medium',
-    'button-gradient-border-primary',
-    'backdrop-blur-sm',
-    '!disabled:hover:bg-primary/80',
-    'shadow-sm shadow-primary/10',
-    'active:scale-98',
-  ],
-  secondary: [
-    'relative isolate',
-    'text-white font-medium',
-    'button-gradient-border-secondary',
-    'backdrop-blur-sm',
-    '!disabled:hover:bg-white/10',
-    'shadow-sm shadow-black/5',
-    'active:scale-98',
-  ],
-  tertiary: [
-    'py-0.5 px-0',
-    'relative',
-    'text-sm text-primary hover:text-primary focus-visible:text-primary',
-    'tertiary-link',
-    'after:bg-current',
-  ],
+  primary: 'relative isolate text-white font-medium backdrop-blur-sm shadow-sm shadow-primary/10 active:scale-[0.96]',
+  secondary: 'relative isolate text-fg font-medium backdrop-blur-sm shadow-sm shadow-black/5 active:scale-[0.96]',
+  tertiary: 'py-0.5 px-0 min-h-10 relative text-sm text-primary tertiary-link',
+};
+
+/*
+ * The primary button's blue runs from a bright top to a deep bottom, and its shadow is the deep
+ * blue, faint. The gradient blends in sRGB, as it always has, so its middle stays the same blue.
+ */
+const variantStyles = {
+  primary: {
+    '--button-primary-deep': 'oklch(0.424 0.181 265.6)',
+    background: 'linear-gradient(180deg in srgb, oklch(0.546 0.215 262.9) 0%, var(--button-primary-deep) 100%)',
+    boxShadow:
+      '0 4px 6px -1px color-mix(in oklch, var(--button-primary-deep) 10%, transparent), 0 2px 4px -2px color-mix(in oklch, var(--button-primary-deep) 10%, transparent)',
+  },
+  secondary: {
+    background: 'var(--button-secondary-bg)',
+    boxShadow: 'var(--button-secondary-shadow)',
+  },
+  tertiary: {},
 };
 
 const iconSize = {
@@ -83,93 +71,88 @@ const iconSize = {
 };
 
 const classes = [
-  ...baseClasses,
-  variant !== 'tertiary' ? sizeClasses[size] : '',
-  ...variantClasses[variant],
-  fw ? 'w-full' : '',
-  isLink && disabled ? 'disabled-link' : '',
+  'inline-flex items-center justify-center font-medium whitespace-nowrap relative box-border cursor-pointer',
+  'focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black',
+  'transition-[background-color,box-shadow,color,opacity] duration-200 ease-out',
+  'motion-safe:transition-[background-color,box-shadow,color,opacity,scale,transform]',
+  variant !== 'tertiary' && sizeClasses[size],
+  variantClasses[variant],
+  fw && 'w-full',
+  isLink && disabled && 'disabled-link',
   className,
-].join(' ');
+];
+
+const style = variantStyles[variant];
+const externalAttrs = external ? { target: '_blank', rel: 'noopener noreferrer' } : {};
 ---
 
-{
-  isLink ? (
-    <a href={href} class={classes} {...externalAttrs} aria-disabled={disabled ? 'true' : undefined} id={id}>
-      {icon && iconPosition === 'before' && <Icon name={icon} class={iconSize[size]} />}
-      <slot />
+{isLink ? (
+  <a
+    href={href}
+    class:list={classes}
+    style={style}
+    aria-disabled={disabled ? 'true' : undefined}
+    {...externalAttrs}
+    {...rest}
+  >
+    {icon && iconPosition === 'before' && <Icon name={icon} class={iconSize[size]} />}
+    <slot />
+    {icon && iconPosition === 'after' && <Icon name={icon} class={iconSize[size]} />}
+  </a>
+) : (
+  <button type={type} class:list={classes} style={style} disabled={disabled || loading} {...rest}>
+    {loading ? (
+      <span class="loading-spinner" aria-hidden="true" />
+    ) : (
+      icon && iconPosition === 'before' && <Icon name={icon} class={iconSize[size]} />
+    )}
+    <slot />
+    {!loading && icon && iconPosition === 'after' && <Icon name={icon} class={iconSize[size]} />}
+  </button>
+)}
 
-      {icon && iconPosition === 'after' && <Icon name={icon} class={iconSize[size]} />}
-    </a>
-  ) : (
-    <button type={type} class={classes} disabled={disabled || loading} id={id}>
-      {loading ? (
-        <span class="loading-spinner" aria-hidden="true" />
-      ) : (
-        <>{icon && iconPosition === 'before' && <Icon name={icon} class={iconSize[size]} />}</>
-      )}
-
-      <slot />
-
-      {!loading && icon && iconPosition === 'after' && <Icon name={icon} class={iconSize[size]} />}
-    </button>
-  )
-}
-
-<style>
-  .button-gradient-border-primary {
-    position: relative;
-    background: linear-gradient(180deg, #2563eb 0%, #1e40af 100%);
-    box-shadow:
-      0 4px 6px -1px rgba(30, 64, 175, 0.1),
-      0 2px 4px -2px rgba(30, 64, 175, 0.1);
-    z-index: 0;
-  }
-
-  .button-gradient-border-secondary {
-    position: relative;
-    background: linear-gradient(0deg, hsla(0, 0%, 100%, 0), hsla(0, 0%, 100%, 0.09)), hsla(0, 0%, 100%, 0.12);
-    box-shadow:
-      0 1px 2px 0 rgba(0, 0, 0, 0.13),
-      inset 0 1px 0 0 hsla(0, 0%, 100%, 0.07);
-    z-index: 0;
-  }
-
-  .tertiary-link {
-    position: relative;
-  }
-
+<style is:global>
   .tertiary-link::after {
     content: '';
     position: absolute;
-    bottom: -1px;
-    left: 0;
-    right: 0;
+    inset-block-end: -1px;
+    inset-inline: 0;
     height: 1px;
     transform: scaleX(0);
     transform-origin: left;
-    transition: transform 0.2s ease-out;
     background: currentColor;
   }
 
-  .tertiary-link:hover::after {
-    transform: scaleX(1);
+  @media (prefers-reduced-motion: no-preference) {
+    .tertiary-link::after {
+      transition: transform var(--motion-duration-fast) var(--motion-ease-out);
+    }
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .tertiary-link:hover::after {
+      transform: scaleX(1);
+    }
   }
 
   .loading-spinner {
     width: 1.2em;
     height: 1.2em;
     border: 2px solid currentColor;
-    border-bottom-color: transparent;
+    border-block-end-color: transparent;
     border-radius: 50%;
     display: inline-block;
-    animation: spinner 0.75s linear infinite;
+  }
+
+  /* It turns only where motion is welcome; otherwise it holds still as an open ring. */
+  @media (prefers-reduced-motion: no-preference) {
+    .loading-spinner {
+      animation: spinner 0.75s linear infinite;
+    }
   }
 
   @keyframes spinner {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
+    to {
       transform: rotate(360deg);
     }
   }

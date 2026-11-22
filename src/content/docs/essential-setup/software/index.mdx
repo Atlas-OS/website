@@ -1,0 +1,96 @@
+---
+title: "Software"
+metaDescription: "Install software on AtlasOS with WinGet and the Atlas folder: browsers, antivirus, media players, text editors and more."
+description: Recommended software and installation.
+order: 1
+---
+
+import CodeBlock from '@/components/docs/CodeBlock.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+import QuickLinkCard from '@/components/docs/QuickLinkCard.astro';
+import QuickLinksGrid from '@/components/docs/QuickLinksGrid.astro';
+
+This page explains how to install software on AtlasOS and lists apps we recommend.
+Install software with WinGet, from the Atlas folder, or from the publisher's official website.
+
+## What is WinGet?
+
+WinGet is Microsoft's Windows Package Manager.
+Windows installs it as part of App Installer, and the community maintains its package repository.
+
+Atlas's software tools use WinGet.
+If one says WinGet is missing or out of date, update or install App Installer from the Microsoft Store, then try again.
+
+## The 1. Software folder
+
+The Atlas folder's <CodeInline text="1. Software" /> folder has these tools:
+
+| File | What it does |
+| --- | --- |
+| <CodeInline text="Install Software.cmd" /> | Opens Atlas's software picker, which installs the apps you select through WinGet. |
+| <CodeInline text="Install or Remove Edge.cmd" /> | Installs Microsoft Edge, or removes it. |
+| <CodeInline text="Remove Python Store Prompt.cmd" /> | Opens App execution aliases, so you can turn off only the App Installer prompts that offer Python from the Microsoft Store. Python you've installed is kept. |
+
+## Install software with WinGet
+
+To install a package directly, run:
+
+<CodeBlock
+  title="Install with winget:"
+  code="winget install -e --id VideoLAN.VLC"
+/>
+
+Replace <CodeInline text="VideoLAN.VLC" /> with the package ID from [winstall.app](https://winstall.app/).
+
+## Recommended software
+
+<QuickLinksGrid columns={{ md: 2 }}>
+  <QuickLinkCard
+    href="/docs/essential-setup/software/anti-virus/"
+    icon="tabler:shield"
+    title="Antivirus"
+    description="Microsoft Defender and other antivirus options"
+  />
+
+  <QuickLinkCard
+    href="/docs/essential-setup/software/browsers/"
+    icon="tabler:world"
+    title="Web browsers"
+    description="Browsers compared by privacy and features"
+  />
+
+  <QuickLinkCard
+    href="/docs/essential-setup/software/media-playback/"
+    icon="tabler:player-play"
+    title="Media playback"
+    description="VLC, mpv and music players"
+  />
+
+  <QuickLinkCard
+    href="/docs/essential-setup/software/text-editors/"
+    icon="tabler:file-code"
+    title="Text editors"
+    description="Notepad++, VS Code and more"
+  />
+
+  <QuickLinkCard
+    href="/docs/essential-setup/software/screenshotting/"
+    icon="tabler:camera"
+    title="Screenshotting"
+    description="Snipping Tool, ShareX and alternatives"
+  />
+
+  <QuickLinkCard
+    href="/docs/essential-setup/software/system-info/"
+    icon="tabler:chart-dots"
+    title="System information"
+    description="HWiNFO, CPU-Z and GPU-Z"
+  />
+
+  <QuickLinkCard
+    href="/docs/essential-setup/software/image-viewer/"
+    icon="tabler:photo"
+    title="Image viewer"
+    description="qView, IrfanView and more"
+  />
+</QuickLinksGrid>

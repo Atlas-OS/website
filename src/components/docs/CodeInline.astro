@@ -1,0 +1,11 @@
+---
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+---
+
+<code class="code-inline-wrapper docs-inline not-prose" data-component="code-inline">
+  {text.trim()}
+</code>

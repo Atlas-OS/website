@@ -1,0 +1,26 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<div
+  class={`directory-tree docs-surface not-prose mbe-6 overflow-x-auto overscroll-x-contain p-5 font-mono text-sm leading-relaxed ${className}`}
+  style="color: var(--docs-text-primary);"
+  data-component="directory-tree"
+>
+  <pre class="m-0 font-mono text-sm leading-relaxed whitespace-pre"><slot /></pre>
+</div>
+
+<style>
+  .directory-tree pre {
+    font-family: var(--font-mono);
+    color: var(--docs-text-primary);
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: none;
+  }
+</style>

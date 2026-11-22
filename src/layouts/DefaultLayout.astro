@@ -1,131 +1,58 @@
 ---
-import '@fontsource-variable/archivo';
-import '@fontsource-variable/fira-code';
-import '@fontsource-variable/inter';
+import SEO from '@/components/core/SEO.astro';
 import Footer from '@/components/layout/Footer.astro';
 import Navbar from '@/components/layout/Navbar.astro';
-import '@/styles/global.css';
+import { DEFAULT_OG_IMAGE, SITE_URL } from '@/constants';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'AtlasOS | Optimized Windows for enthusiasts',
+  description = 'AtlasOS is an optimized Windows experience for enthusiasts and gamers, with stronger performance, better privacy, and cleaner defaults.',
+} = Astro.props;
+
+const currentPath = Astro.url.pathname;
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="generator" content={Astro.generator} />
-    
-    <!-- Preconnect to external domains for performance -->
-    <link rel="preconnect" href="https://pla.atlasos.net" crossorigin />
-    <link rel="preconnect" href="https://api.atlasos.net" crossorigin />
-    <link rel="dns-prefetch" href="https://pla.atlasos.net" />
-    <link rel="dns-prefetch" href="https://api.atlasos.net" />
-  
-    <!-- Favicons -->
-    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="shortcut icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-title" content="AtlasOS" />
-    <link rel="manifest" href="/site.webmanifest" />
-
-    <!-- SEO -->
-    <title>AtlasOS - Optimized Windows, designed for enthusiasts.</title>
-    <meta
-      name="description"
-      content="AtlasOS is an optimized version of Windows, designed for enthusiasts and gamers. Experience faster performance, better privacy, and enhanced gaming capabilities."
+<BaseLayout currentPath={currentPath}>
+  <Fragment slot="head">
+    <SEO
+      title={title}
+      description={description}
+      image={DEFAULT_OG_IMAGE}
+      canonicalURL={new URL(currentPath, Astro.site ?? SITE_URL).href}
+      type="website"
+      softwareApp={currentPath === '/'}
     />
-    <meta name="keywords" content="AtlasOS, Windows optimization, gaming performance, privacy-focused OS, Windows debloat, gaming Windows, performance optimization" />
     <meta name="author" content="AtlasOS Community" />
-    <meta name="robots" content="index, follow" />
-    <meta name="language" content="English" />
-    <meta name="theme-color" content="#1990fe" />
-    <link rel="canonical" href="https://atlasos.net/" />
+    <meta name="format-detection" content="telephone=no" />
+  </Fragment>
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://atlasos.net/" />
-    <meta property="og:title" content="AtlasOS - Optimized Windows, designed for enthusiasts." />
-    <meta property="og:description" content="AtlasOS is an optimized version of Windows, designed for enthusiasts and gamers. Experience faster performance, better privacy, and enhanced gaming capabilities." />
-    <meta property="og:image" content="https://atlasos.net/defaultimg.png" />
-    <meta property="og:image:alt" content="AtlasOS - Optimized Windows for Gaming and Performance" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:site_name" content="AtlasOS" />
-    <meta property="og:locale" content="en_US" />
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://atlasos.net/" />
-    <meta property="twitter:title" content="AtlasOS - Optimized Windows, designed for enthusiasts." />
-    <meta property="twitter:description" content="AtlasOS is an optimized version of Windows, designed for enthusiasts and gamers. Experience faster performance, better privacy, and enhanced gaming capabilities." />
-    <meta property="twitter:image" content="https://atlasos.net/defaultimg.png" />
-    <meta property="twitter:image:alt" content="AtlasOS - Optimized Windows for Gaming and Performance" />
-    <meta property="twitter:site" content="@atlasos" />
-    <meta property="twitter:creator" content="@atlasos" />
-
-    <!-- Schema.org -->
-    <script type="application/ld+json" is:inline>
-    {
-      "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "AtlasOS",
-        "alternateName": "Atlas OS",
-        "url": "https://atlasos.net/",
-        "description": "AtlasOS is an optimized version of Windows, designed for enthusiasts and gamers. Experience faster performance, better privacy, and enhanced gaming capabilities.",
-        "image": "https://atlasos.net/defaultimg.png",
-        "sameAs": [
-          "https://github.com/Atlas-OS/Atlas",
-          "https://discord.com/invite/atlasos-795710270000332800",
-          "https://x.com/atlasos"
-        ],
-        "publisher": {
-          "@type": "Organization",
-          "name": "AtlasOS Community",
-          "url": "https://atlasos.net/"
-        },
-        "potentialAction": {
-          "@type": "DownloadAction",
-          "target": "https://docs.atlasos.net/getting-started/installation/",
-          "description": "Download and install AtlasOS for optimized Windows performance"
-        },
-        "applicationCategory": "UtilitiesApplication",
-        "operatingSystem": "Windows",
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "USD"
-        },
-        "featureList": [
-          "Performance optimization",
-          "Privacy enhancement",
-          "Gaming improvements",
-          "Reduced bloatware",
-          "Better usability"
-        ]
-      }
-    </script>
-
-    <!-- Partytown -->
-    <script is:inline type="text/partytown" src="https://pla.atlasos.net/js/script.js" data-domain="atlasos.net"
-    ></script>
-  </head>
-  <body class="overflow-x-hidden">
-    <header>
-      <a href="#main-content" class="sr-only focus:not-sr-only">Skip to main content</a>
-      <Navbar />
-    </header>
-    <main id="main-content" role="main">
+  <Fragment slot="body">
+    <a href="#main-content" class="sr-only focus:not-sr-only">
+      Skip to main content
+    </a>
+    <Navbar currentPath={currentPath} isDocsPage={false} />
+    <main id="main-content">
       <slot />
     </main>
     <Footer />
-  </body>
-</html>
+  </Fragment>
+</BaseLayout>
 
-<style>
-  html,
-  body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
+<style is:global>
+  :root {
+    /* The text pages' title: 36px on a phone (390px) growing to 48px on a desktop (1440px). */
+    --text-page-title: clamp(2.25rem, 1.9714rem + 1.1429vw, 3rem);
+    --leading-page-title: clamp(2.5rem, 2.3142rem + 0.762vw, 3rem);
+  }
+
+  .content-grid--reading {
+    --content: 54rem;
+    --breakout: 64rem;
   }
 </style>

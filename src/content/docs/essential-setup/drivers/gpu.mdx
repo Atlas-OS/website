@@ -1,0 +1,231 @@
+---
+title: "Graphics drivers"
+metaDescription: "AtlasOS graphics drivers: NVIDIA (NVCleanstall), AMD (RadeonSoftwareSlimmer), Intel. GPU optimisation."
+description: Install and configure graphics drivers.
+order: 1
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeBlock from '@/components/docs/CodeBlock.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+import Details from '@/components/docs/Details.astro';
+import IconArrow from '@/components/ui/IconArrow.astro';
+
+This guide covers installing and configuring NVIDIA, AMD and Intel graphics drivers.
+Install them first, because your display and games depend on them.
+
+The Atlas folder's <CodeInline text="2. Drivers" /><IconArrow /><CodeInline text="GPU Drivers" /> folder has shortcuts to NVCleanstall and Display Driver Uninstaller (DDU).
+
+<Callout type="warning" title="Multiple graphics cards">
+  If you have integrated and dedicated graphics, you must install both drivers. For example, if you
+  have an Intel CPU with integrated graphics and an NVIDIA GPU, install both Intel and NVIDIA
+  drivers.
+</Callout>
+
+## Quick check
+
+First, check if Windows Update has already installed your graphics drivers:
+
+1. Open **Settings**<IconArrow />**Windows Update**
+2. Click **Check for updates**
+3. Install any available optional updates
+
+<Callout type="tip">
+  Windows Update often installs basic graphics drivers. For better performance, install
+  manufacturer-specific drivers afterward.
+</Callout>
+
+## NVIDIA drivers
+
+Most users should install the latest NVIDIA driver from NVIDIA. NVCleanstall is an optional advanced tool for users who want to customise which NVIDIA components are installed.
+
+### Installation steps
+
+1. **Download the driver or NVCleanstall**
+   - Standard path: use [NVIDIA's driver download page](https://www.nvidia.com/download/find.aspx)
+   - Advanced path: use [TechPowerUp NVCleanstall](https://www.techpowerup.com/download/techpowerup-nvcleanstall)
+   - If using NVCleanstall, download and open the application, then click **Next**
+
+<Callout type="info" title="Slow download?">
+  If the download is unusually slow or stuck, go to [NVIDIA's advanced driver
+  search](https://www.nvidia.com/download/find.aspx) and download the latest Game Ready Driver after
+  selecting your hardware and operating system. Launch NVCleanstall, choose **Use driver files on
+  disk** and locate the previously downloaded driver.
+</Callout>
+
+2. **Select components**
+   - **For desktops:** Select only **Display Driver**, then click **Next**
+   - **For Laptops:** Check **Display Driver** and **Optimus** and click **Next** (More info on [NVIDIA's Website](https://www.nvidia.com/en-us/geforce/technologies/optimus))
+
+3. **Configure installation**
+   After the driver is downloaded, tick the following:
+   - Disable Installer Telemetry & Advertising
+   - Perform a Clean Installation
+   - Disable Multiplane Overlay (MPO)
+   - Disable Driver Telemetry in **Show Expert Tweaks**
+   - Use method compatible with Easy-Anti-Cheat
+     - Automatically accept the "driver unsigned" warning
+
+4. Click **Install** and continue with the NVIDIA driver installation as usual.
+
+### NVIDIA Control Panel configuration
+
+Open the NVIDIA Control Panel by right-clicking on the desktop and configure:
+
+<Details summary="3D settings">
+- Anisotropic filtering - Off
+- Antialiasing - Gamma correction - Off
+- Low Latency Mode - On (This setting limits pre-rendered frames to 1)
+- Power management mode - Prefer maximum performance
+- Shader Cache Size - Unlimited
+- Texture filtering - Quality - High performance
+- Threaded Optimization - Off (if CPU bottlenecked)
+- Vertical sync - Off
+</Details>
+
+<Details summary="Display settings">
+- Configure your monitor resolution and refresh rate
+- Output dynamic range - Full
+- Output color depth - Value matching your monitor specification
+</Details>
+
+**Optional:** Increase **Digital vibrance** in Display<IconArrow />Adjust desktop color settings for better colour saturation. For an alternative way to adjust digital vibrance, check out [VibranceGUI](https://vibrancegui.com).
+
+### Force P-State 0 (advanced)
+
+<Callout type="danger" title="Warning">
+  This will force P-State 0 on your NVIDIA card **AT ALL TIMES**, making it always run at full
+  power. Not recommended if you leave your computer idle for long periods, have poor cooling,
+  or use a laptop.
+</Callout>
+
+<CodeBlock
+  title="Run the following command in CMD as administrator:"
+  code={`for /f "tokens=*" %a in ('reg query "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Class\\{4d36e968-e325-11ce-bfc1-08002be10318}" /t REG_SZ /s /e /f "NVIDIA" ^| findstr "HK"') do (reg add "%a" /v "DisableDynamicPstate" /t REG_DWORD /d "1" /f)`}
+/>
+
+1. Download and extract [NVIDIA Profile Inspector](https://github.com/Orbmu2k/nvidiaProfileInspector).
+2. Open the tool. Under **5 - Common**, set **CUDA - Force P2 State** to **OFF**.
+3. Select **Apply changes** and restart your PC.
+
+## AMD drivers
+
+Most users should install the latest recommended AMD driver from AMD. RadeonSoftwareSlimmer is an optional advanced tool for users who want to remove AMD driver components before installation.
+
+### Installation steps
+
+1. **Download Drivers**
+   - Download the latest WHQL recommended driver from the [AMD Drivers and Support page](https://www.amd.com/en/support)
+   - Download [RadeonSoftwareSlimmer](https://github.com/GSDragoon/RadeonSoftwareSlimmer) - choose the latest release matching your .NET version, such as <CodeInline text="RadeonSoftwareSlimmer_1.x.x_net8.zip" /> or <CodeInline text="RadeonSoftwareSlimmer_1.x.x_net9.zip" />
+
+2. **Configure installation**
+   - Open the application and go to the **Pre-Install** tab
+   - Select your installer file by clicking **Browse** and then confirm by double-clicking **Next**
+   - After the extraction process, untick everything in the **Packages** tab apart from:
+     - AMD Display Driver
+     - AMD Settings (Required for Radeon Software)
+     - These settings might be required for monitor sound:
+       - AMD Audio CoProcessor Bus Driver
+       - AMD Audio filter driver
+       - AMD HDMI Audio driver
+       - AMD High-Definition Audio Controller
+       - AMD Streaming Audio Filter Driver
+
+3. **Finish the installation**
+   - Untick everything in the **Scheduled Tasks** tab
+   - Untick everything in the **Display Driver Components**. If you use audio from your monitor, don't remove **High Definition Audio Bus**
+   - Click **Modify Installer** and **Run Installer**, then continue with driver setup as usual
+
+### Radeon Software configuration
+
+1. Open Radeon Software by right-clicking on the desktop
+2. Accept the terms and click the Settings icon in the top-right
+
+<Details summary="Graphics tab">
+- Wait for Vertical Refresh - Always Off
+- Texture Filtering Quality - Performance
+- Tessellation Mode - Override application settings
+- Maximum Tessellation Level - Off
+</Details>
+
+<Details summary="Display tab">
+- AMD FreeSync - Off (recommended for competitive gaming; it can increase input latency due to extra processing)
+- GPU Scaling - Off
+- Color Depth - Value that matches your monitor's specifications
+</Details>
+
+3. Disable all settings in **Hotkeys** and **Preferences** tabs
+4. Configure your refresh rate and resolution by typing the following command in <CodeInline text="Win + R" />:
+
+   <CodeBlock
+     title="Run in Win + R:"
+     code="rundll32 display.dll,ShowAdapterSettings 0"
+   />
+
+5. Advanced users can disable residual AMD services and drivers such as **AMD Crash Defender**. Do not disable **AMD External Events Utility** if you use FreeSync/VRR or other AMD display features that depend on it.
+
+### Disable Multi-Plane Overlay (MPO)
+
+Disabling Multi-plane Overlay (MPO) can fix flickering or stuttering in desktop apps during hardware-accelerated video playback in browsers.
+
+<CodeBlock
+  title="Run the following command in CMD (run as administrator):"
+  code={`reg add "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\Dwm" /v "OverlayTestMode" /t REG_DWORD /d "5" /f`}
+/>
+
+### Force P-State 0 (advanced)
+
+AMD Force P-State 0 is an advanced optimisation similar to NVIDIA's, keeping the GPU at maximum performance. Community guides may be available for specific AMD cards. [Contributions](/docs/contributing/docs/) to this documentation are welcome.
+
+## Intel graphics
+
+Install Intel graphics drivers from one of these sources:
+
+1. **Official Intel Website**
+   - Visit the [official Intel website](https://www.intel.com/content/www/us/en/support/articles/000005629/graphics/processor-graphics.html)
+
+2. **Device/Motherboard Support Page**
+   - **Recommended search query:** <CodeInline text="manufacturer" /> + <CodeInline text="model" /> + driver
+   - **Example:** MSI B450-A PRO driver
+
+3. **Snappy Driver Installer Origin (SDIO)**
+   - Visit [SDIO website](https://www.glenn.delahoy.com/snappy-driver-installer-origin)
+
+## Troubleshooting
+
+### Driver installation fails
+
+- **Disable antivirus temporarily:** Some antivirus blocks driver installations
+- **Run installer as administrator:** Right-click installer<IconArrow />**Run as administrator**
+- **Clean previous drivers:** Use [Display Driver Uninstaller (DDU)](https://www.wagnardsoft.com/display-driver-uninstaller-ddu) for NVIDIA or AMD
+
+### Games not performing well
+
+- **Update to latest drivers:** Newer drivers often include game optimisations
+- **Check GPU power settings:** Set GPU to maximum performance
+- **Verify GPU is being used:** Some systems use integrated graphics instead of dedicated GPU
+
+### Multiple GPUs
+
+If you have both integrated and dedicated graphics:
+
+1. Install drivers for both GPUs
+2. Configure in BIOS/UEFI to use dedicated GPU for gaming
+3. Set preferred GPU in Windows graphics settings
+
+## Best practices
+
+- **Download from official sources only:** Avoid third-party driver sites
+- **Keep drivers updated:** Check monthly or when you have issues
+- **Prefer manufacturer sites if unsure:** NVIDIA, AMD, Intel, and your device manufacturer provide the safest baseline installers
+- **Treat slimming tools as optional:** NVCleanstall and RadeonSoftwareSlimmer are for advanced users who understand the support trade-offs
+- **Avoid beta drivers:** use stable releases unless you need a specific feature
+
+## Next steps
+
+After installing graphics drivers:
+
+1. **[Install network drivers](/docs/essential-setup/drivers/network/)** and **[audio drivers](/docs/essential-setup/drivers/audio/)** if not yet done - Required for internet and sound
+2. **[Install chipset drivers](/docs/essential-setup/drivers/chipset/)** - Important for system stability
+3. **[Install other drivers](/docs/essential-setup/drivers/other/)** - Bluetooth, printers, etc. if needed
+4. **[Optimise hardware](/docs/essential-setup/hardware/)** (optional): enable XMP/DOCP and Resizable BAR

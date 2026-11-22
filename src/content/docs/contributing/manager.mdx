@@ -1,0 +1,49 @@
+---
+title: "Contributing to Atlas Manager"
+metaDescription: "Contribute to Atlas Manager development, interface copy, accessibility and translations. Find the source, build instructions and review guidance."
+description: Improve the app and its translations.
+order: 42
+sidebar:
+  label: "Manager and translations"
+---
+
+This guide is for contributors who work on Atlas Manager's code, interface copy or translations.
+Read the [contribution guide](/docs/contributing/) first, then choose the part you want to improve.
+
+Atlas Manager lives in the [Atlas repository's app directory](https://github.com/Atlas-OS/Atlas/tree/main/app).
+It's a Rust app built with GPUI.
+
+## App development
+
+Use the [Atlas Manager README](https://github.com/Atlas-OS/Atlas/blob/main/app/README.md) for build prerequisites, the pinned toolchain, local runs and required checks.
+Treat it as the source of truth, rather than copying an old build command from an issue.
+
+The app handles preparation, choices, progress and recovery.
+The Atlas package's PowerShell modules apply the changes to Windows.
+If your change alters installation behaviour, read [Contributing to the Atlas package](/docs/contributing/atlas-package/) as well.
+
+Keep each pull request focused.
+Explain the problem people see, how the app behaves after your change, and how you checked it.
+
+For interface changes, include screenshots, and test keyboard navigation, focus, scrolling and long translated text.
+For installation changes, follow the [testing guide](/docs/contributing/testing/) and record the Windows build and Atlas package you tested.
+
+## Interface copy and translations
+
+Atlas Manager uses Fluent catalogs under `app/i18n`.
+The source catalog is British English (`en-GB`), and `en-US` supplies the US spelling differences.
+Start with:
+
+- [Language implementation and checks](https://github.com/Atlas-OS/Atlas/blob/main/app/docs/i18n.md): catalog structure, fallback behaviour and validation.
+- [Translation guidance](https://github.com/Atlas-OS/Atlas/blob/main/app/docs/translating.md): locale conventions and Windows terminology to verify.
+- [Writing guidance](https://github.com/Atlas-OS/Atlas/blob/main/app/docs/writing.md): shared wording and interface conventions.
+
+Keep message identifiers, variables and Fluent syntax exactly as they are.
+Translate the meaning, including distinctions such as restarting the PC versus relaunching the app, and turning off protection for installation versus removing Microsoft Defender.
+
+Check the wording against Windows in the target language, and review it in the app.
+Look for clipped buttons, awkward line breaks, plural forms and unclear recovery steps.
+Automated catalog checks can't establish translation quality, so preview translations need review by a native speaker.
+
+In your pull request, name the locale, list the screens you reviewed, and note any terminology you couldn't verify.
+If you find a translation problem but don't have a fix, [report it](/docs/contributing/reporting/) with the language, screen, current wording and suggested correction.

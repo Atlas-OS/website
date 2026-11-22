@@ -1,0 +1,45 @@
+---
+title: "Contributing to the Atlas Toolbox"
+metaDescription: "Contribute to Atlas Toolbox: C#, WinUI 3, development tools, building and translations."
+description: Contribute to the Atlas Toolbox.
+order: 43
+sidebar:
+  label: "Toolbox"
+---
+
+import CodeBlock from '@/components/docs/CodeBlock.astro';
+
+This guide is for contributors who want to change, build or test Atlas Toolbox.
+Read the [contribution guide](/docs/contributing/) first.
+
+Clone the [Atlas Toolbox repository](https://github.com/Atlas-OS/atlas-toolbox) before you continue.
+Its README is the source of truth for build requirements and release rules.
+
+## What Atlas Toolbox is built with
+
+Atlas Toolbox is a C# app built with [WinUI 3](https://learn.microsoft.com/windows/apps/winui/winui3/) and the [Windows App SDK](https://learn.microsoft.com/windows/apps/windows-app-sdk/), on [.NET](https://learn.microsoft.com/dotnet/csharp/tour-of-csharp/).
+
+Development tools:
+
+- [Visual Studio](https://visualstudio.microsoft.com/vs/) with the WinUI application development workload. The repository restores the NuGet packages it needs.
+- Or the .NET SDK on its own, which can build the app from the command line.
+
+<CodeBlock
+  title="Build from the command line:"
+  code="dotnet build AtlasToolbox\AtlasToolbox.csproj -p:Platform=x64"
+/>
+
+## Test your changes
+
+The Toolbox reads the toggles that Atlas installs and applies them the way the Atlas folder's launchers do.
+It needs a PC with Atlas installed, so run it in a virtual machine.
+The README explains which Atlas files it reads and where it keeps its own settings and logs.
+
+## Translations
+
+Translate the Toolbox through its [Crowdin project](https://crowdin.com/project/atlas-toolbox-test-1), not through pull requests to the language files.
+
+## Design references
+
+- [WinUI 3 Gallery](https://apps.microsoft.com/detail/9p3jfpwwdzrc)
+- [Windows Community Toolkit Gallery](https://apps.microsoft.com/detail/9nblggh4tlcq)

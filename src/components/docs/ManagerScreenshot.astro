@@ -1,0 +1,33 @@
+---
+import Figure from './Figure.astro';
+
+interface Props {
+  screen: 'get-ready' | 'defender-choice' | 'iso-files' | 'iso-preferences';
+  alt: string;
+  caption: string;
+}
+
+const { screen, alt, caption } = Astro.props;
+---
+
+{(['dark', 'light'] as const).map((theme) => {
+  const src = `/assets/images/manager/${screen}-${theme}.png`;
+  return (
+    <a
+      href={src}
+      data-shot-theme={theme}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`Enlarge screenshot: ${alt}`}
+    >
+      <Figure {src} {alt} {caption} width={994} height={727} />
+    </a>
+  );
+})}
+
+<style>
+  :global(html[data-theme='light']) [data-shot-theme='dark'],
+  :global(html:not([data-theme='light'])) [data-shot-theme='light'] {
+    display: none;
+  }
+</style>

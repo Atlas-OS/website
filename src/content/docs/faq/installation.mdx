@@ -1,0 +1,133 @@
+---
+title: "Installation FAQ"
+metaDescription: "Answers about installing Atlas with Atlas Manager: requirements, Windows updates, restarts, Windows Security, failed installations and what Atlas removes."
+description: Installation questions and recovery steps.
+order: 27
+---
+
+Answers to common questions about installing Atlas with Atlas Manager.
+
+## What do I need before installing?
+
+A supported release and edition of Windows 11, freshly installed, an administrator account with UAC on, a backup, an internet connection and a power supply.
+See [Before you install](/docs/install/requirements/) for the full list.
+
+## Who is Atlas designed for?
+
+Atlas is for people who want to choose how Windows handles background activity, privacy and system features, and who are comfortable troubleshooting those changes.
+Use a PC you own and can modify.
+Be prepared to reinstall Windows if you want to remove Atlas.
+
+## Which app installs Atlas?
+
+[Atlas Manager](/docs/install/manager/) is the only way to install Atlas.
+It downloads Atlas, updates Windows and installs Atlas itself, so you don't need any other tools.
+
+## Can I install on a virtual machine?
+
+Yes.
+Use a supported Windows installation and follow the same steps as on a physical PC.
+A virtual machine is useful for trying Atlas and testing an Atlas ISO, but it doesn't tell you how Atlas performs or which drivers work on your hardware.
+
+## Where is the Atlas ISO file?
+
+Atlas doesn't distribute a ready-made Windows ISO.
+You can [create one with Atlas Manager](/docs/install/iso/) from Microsoft's Windows 11 ISO.
+See [Where is the Atlas ISO file?](/docs/faq/atlas-iso-files/)
+
+## How long does installation take?
+
+Allow time for Windows updates, Store app updates and any restarts, as well as Atlas itself.
+The total depends on your hardware, your connection and how many updates Windows needs.
+Atlas Manager's **Install** step shows an estimate for Atlas itself.
+A stage without a percentage may still be working.
+
+## What if Windows Update fails?
+
+Read the message on the **Update Windows and Store apps** card before you retry.
+
+- **Connection problem:** use Wi-Fi or Ethernet that isn't metered, and sign in to the network if it asks.
+  If you don't see any Wi-Fi networks, install your network driver first.
+- **Metered connection:** connect to an unmetered network, or turn off **Metered connection** in network settings.
+- **Updates started earlier are still running:** let them finish.
+  Atlas Manager waits for them; don't end Windows servicing processes.
+- **Restart needed:** choose **Restart and continue**, then **Continue updates** after you sign in to the same account.
+- **Microsoft Store can't update apps:** Atlas Manager repairs Microsoft Store once by itself.
+  If that fails, choose **Repair Microsoft Store** to try again.
+- **Windows reports damage:** Atlas Manager repairs Windows' component store first, which can take half an hour or more.
+
+If it still fails, choose **Send a report**, or [export diagnostics](/docs/faq/report-a-problem/#export-diagnostics) to share when you ask for help.
+If Windows keeps asking for the same restart, check Windows Update for unfinished work instead of restarting again and again.
+
+## Atlas Manager didn't open after restarting
+
+Open Atlas Manager yourself and choose **Continue setup** on Home.
+Then choose **Continue updates**; a check before the restart doesn't replace the next one.
+
+Use the same Windows account you started with.
+If Atlas Manager can't continue, [report the problem](/docs/faq/report-a-problem/) before you clear its data.
+
+## Why does Atlas Manager ask me to turn off protection?
+
+Microsoft Defender can block the changes Atlas makes.
+The **Windows Security** step asks you to turn off four protection switches for the installation only.
+Your choice to keep or remove Microsoft Defender afterwards is separate.
+
+If you stop setup, turn the switches back on; Home reminds you which are still off.
+After installing, check that Windows Security matches the choices you made.
+
+## What if I get a BitLocker error?
+
+Keep your recovery key available before you reinstall Windows.
+If Windows setup asks you to suspend BitLocker, return to Windows and manage the drive in **Control Panel** > **BitLocker Drive Encryption**.
+Resume protection after the operation that needed it.
+Don't turn off encryption to fix an unrelated Atlas error.
+
+## What was removed from Windows?
+
+Atlas removes selected built-in apps and OneDrive, removes Windows telemetry components, and changes services, policies and interface defaults.
+Some removals are your choice during installation, such as Microsoft Edge, Snipping Tool and Microsoft Defender.
+
+The exact list comes from Atlas's source:
+
+- The [install tweaks catalog](https://github.com/Atlas-OS/Atlas/blob/main/docs/catalog/tweaks.md) lists every change Atlas makes during installation.
+- The [toggles catalog](https://github.com/Atlas-OS/Atlas/blob/main/docs/catalog/toggles.md) lists every setting the Atlas folder can change back.
+
+Not every removal can be undone on its own.
+The [configuration guide](/docs/atlas-configuration/) explains the controls in the Atlas folder.
+
+## Do I need to disconnect from the internet during Windows setup?
+
+No.
+Atlas Manager asks **How should drivers be installed?** before it updates Windows, and it needs the internet to update Windows and install Atlas.
+Choosing **Install drivers myself** doesn't remove drivers Windows already installed.
+
+## What if installation fails?
+
+1. Read the message under **Installation didn't finish**.
+   It says whether Atlas had started making changes.
+2. Choose **Send a report**, or export diagnostics, before you retry, clear app data or reinstall Windows.
+   See [Report a problem](/docs/faq/report-a-problem/).
+3. Fix the cause it names, then choose **Try again**.
+   If you opened a saved Atlas package, keep it; finishing the installation needs the same package.
+4. If Atlas Manager closed, open it again.
+   Home offers to finish the installation that stopped.
+5. If you stop here, turn the Windows Security protection switches back on, if they're still available.
+
+If the same error repeats, Atlas Manager says another try is unlikely to help and points you to **Send a report**.
+
+## How do I remove Windows.old?
+
+Recover any files you need from it first.
+Then open **Settings** > **System** > **Storage** > **Temporary files** and remove **Previous version of Windows**, if it's listed.
+Don't treat Windows.old as your only backup.
+
+## What should I do after installation?
+
+Follow [First setup](/docs/install/setup/) to check protection, updates, drivers and Atlas health.
+
+## How do I uninstall AtlasOS?
+
+Reinstall Windows from Microsoft's installation media.
+Deleting Atlas Manager or the Atlas folder doesn't undo Atlas's changes.
+Follow [Reverting Atlas](/docs/faq/reverting/).

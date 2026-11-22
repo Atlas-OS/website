@@ -1,0 +1,64 @@
+---
+title: "Image viewer"
+metaDescription: "AtlasOS image viewers: qView, IrfanView, Nomacs, Microsoft Photos."
+description: Recommended image viewers.
+order: 8
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeBlock from '@/components/docs/CodeBlock.astro';
+
+This page lists image viewers that work well on AtlasOS.
+
+## qView
+
+qView is a minimal, lightweight open-source image viewer with a clean interface. Choose it if you only need to view images.
+
+<CodeBlock
+  title="Install with winget:"
+  code="winget install -e --id jurplel.qView"
+/>
+
+[Download qView](https://interversehq.com/qview/download/)
+
+## IrfanView
+
+IrfanView is a lightweight, easy-to-use image viewer with many features, and plugins add more. It suits viewing and editing.
+
+<CodeBlock
+  title="Install with winget:"
+  code="winget install -e --id IrfanSkiljan.IrfanView"
+/>
+
+[Download IrfanView](https://www.irfanview.com/64bit.htm)
+
+## Nomacs (Preview)
+
+Nomacs is a simple open-source image viewer for viewing and basic editing. The latest official release is outdated; use the latest preview build.
+
+[Download Nomacs](https://github.com/nomacs/nomacs/releases/)
+
+## Microsoft Photos
+
+Microsoft Photos comes with Windows, and you can install it again from the Microsoft Store. It has a modern interface and works with OneDrive and iCloud.
+
+<Callout type="info" title="Codec extensions">
+  Microsoft Photos doesn't support every image and video format by default. For HEVC video and HEIF
+  images, download the HEVC Video Extensions and HEIF Image Extensions from the Microsoft Store.
+</Callout>
+
+<CodeBlock
+  title="Install with winget:"
+  code="winget install -e --id 9WZDNCRFJBH4"
+/>
+
+[Download Microsoft Photos](https://apps.microsoft.com/store/detail/9WZDNCRFJBH4) (Microsoft Store)
+
+[Download HEVC Video Extensions](https://apps.microsoft.com/store/detail/9NMZLZ57R3T7) (Microsoft Store)
+
+[Download HEIF Image Extensions](https://apps.microsoft.com/store/detail/9PMMSR1CGPWG) (Microsoft Store)
+
+## Next steps
+
+- **[Software overview](/docs/essential-setup/software/):** more recommended apps
+- **[Configure Atlas](/docs/atlas-configuration/):** customise your installation

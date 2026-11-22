@@ -1,18 +1,245 @@
-@import 'tailwindcss';
+@import 'tailwindcss' source('../');
+@import './docs.css';
+@import './summit.css';
+@import './daylight.css';
 
-@plugin "@tailwindcss/typography";
+@plugin '@tailwindcss/typography';
+
+/*
+ * Tailwind's `hover:` wraps itself in `(hover: hover)` only. With the full query a tap on a touch
+ * screen never leaves a hover state stuck; touch gets its feedback from `:active` instead.
+ */
+@custom-variant hover {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @slot;
+    }
+  }
+}
 
 @theme {
-  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  --font-display: 'Archivo Variable', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  --font-mono: 'Fira Code Variable', ui-monospace, monospace, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  --color-primary: oklch(0.65 0.1907 252.91);
-  --bg-primary: oklch(0.12 0.0421 264.82);
-  --color-secondary: oklch(0.12 0.0421 264.82);
+  --font-sans: var(
+    --font-sans-source,
+    ui-sans-serif,
+    system-ui,
+    sans-serif,
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+    'Segoe UI Symbol',
+    'Noto Color Emoji'
+  );
+  --font-display: var(
+    --font-display-source,
+    ui-sans-serif,
+    system-ui,
+    sans-serif,
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+    'Segoe UI Symbol',
+    'Noto Color Emoji'
+  );
+  --font-mono: var(
+    --font-mono-source,
+    ui-monospace,
+    monospace,
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+    'Segoe UI Symbol',
+    'Noto Color Emoji'
+  );
+  /*
+   * One set of colour tokens for both themes. Each holds its day and night value in `light-dark()`
+   * (day first), and the theme switches by `color-scheme` alone (see below), never by redefining
+   * a token. Derive a tint or a transparent version with `color-mix(in oklch, …)`.
+   */
+  /* Atlas blue, deeper by day so accents keep AA contrast on the light page. */
+  --color-primary: light-dark(oklch(0.56 0.2 256), oklch(0.65 0.1907 252.91));
+  /* Blue for text on the page: links, active tabs, inline code (lighter by night, deeper by day). */
+  --color-link: light-dark(oklch(0.5 0.17 254), oklch(0.78 0.14 252.91));
+  /*
+   * The page's foreground: deep navy ink by day, white by night. Use it as `text-fg`, `bg-fg/5`,
+   * `border-fg/10`... and in CSS as `color-mix(in oklch, var(--color-fg) 70%, transparent)`. Keep
+   * `white` only for text that sits on a fixed dark or coloured surface (photos, primary buttons).
+   */
+  --color-fg: light-dark(var(--ink), oklch(1 0 none));
+  /* Shared cool canvas keeps the website and docs visually connected. */
+  --bg-primary: light-dark(oklch(0.985 0.006 248), oklch(0.17 0.014 265));
+  --bg-secondary: light-dark(oklch(0.955 0.014 248), oklch(0.15 0.012 265));
+  /* Status colours: Tailwind's 300 shades read as text by night, but are too pale by day, so their deep shades. */
+  --color-red-300: light-dark(oklch(0.505 0.213 27.518), oklch(80.8% 0.114 19.571));
+  --color-amber-300: light-dark(oklch(0.555 0.163 48.998), oklch(87.9% 0.169 91.605));
+  --color-emerald-300: light-dark(oklch(0.508 0.118 165.612), oklch(84.5% 0.143 164.978));
+}
+
+/*
+ * Themes. `<html data-theme>` is set before first paint by an inline script in BaseLayout, from
+ * the visitor's choice (the navbar toggle) or else their system setting. Night is the default.
+ */
+:root {
+  --site-header-height: 3.5rem;
+  color-scheme: dark;
+}
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+
+/*
+ * Switching themes changes the whole page as one (utils/theme.ts). While it switches, no element
+ * runs its own transition (links, icons and buttons would otherwise catch up a beat late), and
+ * where view transitions are supported the old and new pages crossfade. These rules are unlayered,
+ * so they win over the ClientRouter's own root transition, which turns animation off.
+ */
+:root[data-theme-switching] *,
+:root[data-theme-switching] *::before,
+:root[data-theme-switching] *::after {
+  transition: none !important;
+}
+:root[data-theme-switching]::view-transition-old(root) {
+  opacity: 1;
+  animation: theme-fade-out 450ms var(--motion-ease-out) both;
+}
+:root[data-theme-switching]::view-transition-new(root) {
+  animation: theme-fade-in 450ms var(--motion-ease-out) both;
+}
+@keyframes theme-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes theme-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+:root {
+  /* The day's navy ink: the foreground by day, and the base of its shadows. */
+  --ink: oklch(0.225 0.044 263.9);
+
+  /* Motion design tokens */
+  --motion-duration-fast: 180ms;
+  --motion-duration-normal: 250ms;
+  --motion-ease-out: cubic-bezier(0.33, 1, 0.68, 1);
+
+  /* Surfaces */
+  --modal-surface: light-dark(oklch(0.995 0.003 250), oklch(0.21 0.012 265));
+  --nav-bg-translucent: color-mix(in oklch, var(--bg-primary) 85%, transparent);
+  --nav-menu-bg: color-mix(
+    in oklch,
+    light-dark(oklch(0.985 0.006 248), oklch(0.19 0.014 265)) 97%,
+    transparent
+  );
+  --docs-panel-bg: light-dark(oklch(0.97 0.008 252), oklch(0.1 0.04 265));
+  --code-block-bg: light-dark(oklch(0.97 0.008 252), oklch(0.11 0.04 265));
+  /* A raised card: a highlight along its top, a hairline ring and a soft drop shadow. */
+  --shadow-surface:
+    inset 0 1px 0
+      light-dark(
+        color-mix(in oklch, white 70%, transparent),
+        color-mix(in oklch, white 4%, transparent)
+      ),
+    0 0 0 1px
+      light-dark(
+        color-mix(in oklch, var(--ink) 8%, transparent),
+        color-mix(in oklch, white 8%, transparent)
+      ),
+    0 10px 30px
+      light-dark(
+        color-mix(in oklch, var(--ink) 6%, transparent),
+        color-mix(in oklch, black 14%, transparent)
+      );
+  --image-outline: 1px solid color-mix(in oklch, var(--color-fg) 10%, transparent);
+  /* The secondary button's glassy fill. Its two shadows differ in shape by theme (see below). */
+  --button-secondary-bg:
+    linear-gradient(
+      0deg,
+      light-dark(
+        color-mix(in oklch, white 40%, transparent),
+        color-mix(in oklch, white 0%, transparent)
+      ),
+      light-dark(
+        color-mix(in oklch, white 90%, transparent),
+        color-mix(in oklch, white 9%, transparent)
+      )
+    ),
+    light-dark(
+      color-mix(in oklch, var(--ink) 4%, transparent),
+      color-mix(in oklch, white 12%, transparent)
+    );
+  --button-secondary-shadow:
+    0 1px 2px 0 color-mix(in oklch, black 13%, transparent),
+    inset 0 1px 0 0 color-mix(in oklch, white 7%, transparent);
+
+  /* Prose spacing scale */
+  --prose-tight: 0.25rem;
+  --prose-normal: 0.5rem;
+  --prose-relaxed: 1rem;
+
+  /* Docs surface tokens */
+  --docs-surface-bg: color-mix(in oklch, var(--color-fg) 4%, transparent);
+  --docs-surface-border: color-mix(in oklch, var(--color-fg) 6%, transparent);
+  --docs-radius-sm: 0.375rem;
+  --docs-radius-md: 0.5rem;
+  --docs-text-muted: color-mix(in oklch, var(--color-fg) 70%, transparent);
+  --docs-text-secondary: color-mix(in oklch, var(--color-fg) 80%, transparent);
+  --docs-text-primary: color-mix(in oklch, var(--color-fg) 92%, transparent);
+}
+/* `light-dark()` takes colours only, so a shadow whose shape differs by theme needs its own rule. */
+:root[data-theme='light'] {
+  --button-secondary-shadow:
+    0 1px 2px color-mix(in oklch, var(--ink) 8%, transparent),
+    inset 0 0 0 1px color-mix(in oklch, var(--ink) 12%, transparent);
+}
+
+/*
+ * The base, from the skill's reset where it fits this site. Fonts load every weight in use but no
+ * italics, so only weight synthesis is off: `<em>` still slants. Tailwind's preflight covers the rest.
+ */
+:root {
+  interpolate-size: allow-keywords;
+  scrollbar-gutter: stable;
+  text-wrap: pretty;
+  overflow-wrap: break-word;
+  font-synthesis: style;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+@media (prefers-reduced-motion: no-preference) {
+  :root {
+    scroll-behavior: smooth;
+  }
 }
 
 body {
-  background-color: var(--bg-primary);
+  position: relative;
+  min-height: 100svh;
+  color: var(--color-fg);
+  background: linear-gradient(to bottom right, var(--bg-primary), var(--bg-secondary));
+  background-attachment: fixed;
+}
+
+*,
+*::before,
+*::after {
+  min-width: 0;
+}
+
+input,
+textarea,
+select {
+  font-size: max(16px, 1rem);
+}
+button,
+a,
+[role='button'] {
+  touch-action: manipulation;
+}
+button,
+[role='button'] {
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 h1,
@@ -22,24 +249,176 @@ h4,
 h5,
 h6 {
   @apply font-display;
+  text-wrap: balance;
 }
 
+/* Links and buttons dim a little when pointed at, and a little more when pressed (on touch too). */
 a,
 button {
-  transition: opacity 0.1s ease-in-out;
+  transition-property: opacity;
+  transition-duration: var(--motion-duration-fast);
+  transition-timing-function: var(--motion-ease-out);
 
-  &:hover {
-    @apply opacity-80;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      opacity: 0.8;
+    }
   }
 
   &:active {
-    @apply opacity-70;
+    opacity: 0.7;
   }
 }
 
-/* Custom utilities */
-@layer utilities {
-  .bg-gradient-radial {
-    background-image: radial-gradient(var(--tw-gradient-stops));
+*:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Search results mark focus with a fill; the ring stays (transparent) so forced colours can draw it. */
+#spotlight-modal :is(a, button):focus-visible {
+  outline: 2px solid transparent;
+  background-color: color-mix(in oklch, var(--color-fg) 9%, transparent);
+}
+
+/*
+ * A page section as a content grid: the section spans the page, and each child sits in the
+ * centred content column (`--content` wide, at least `--gutter` from either edge) unless it takes
+ * `breakout` (up to `--breakout`) or `full-width`. Set the widths on the section, never a new
+ * column template. An absolutely positioned child is placed against the grid area it names.
+ */
+.content-grid {
+  --gutter: 1rem;
+  --content: 78rem;
+  --breakout: calc(var(--content) + var(--gutter) * 2);
+
+  display: grid;
+  grid-template-columns:
+    [full-width-start] minmax(var(--gutter), 1fr)
+    [breakout-start] minmax(0, calc((var(--breakout) - var(--content)) / 2))
+    [content-start] min(100% - var(--gutter) * 2, var(--content)) [content-end]
+    minmax(0, calc((var(--breakout) - var(--content)) / 2)) [breakout-end]
+    minmax(var(--gutter), 1fr) [full-width-end];
+}
+:is(.content-grid, .full-width) > * {
+  grid-column: content;
+}
+:is(.content-grid, .full-width) > .breakout {
+  grid-column: breakout;
+}
+:is(.content-grid, .full-width) > .full-width {
+  grid-column: full-width;
+  display: grid;
+  grid-template-columns: inherit;
+}
+
+main,
+[role='main'] {
+  position: relative;
+  z-index: 1;
+}
+
+.media-outline,
+.prose img:not(.not-prose *),
+.prose video:not(.not-prose *) {
+  outline: var(--image-outline);
+  outline-offset: -1px;
+}
+
+.media-outline {
+  box-shadow: 0 20px 60px color-mix(in oklch, black 22%, transparent);
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.not-prose,
+.prose > .not-prose {
+  contain: layout style;
+  isolation: isolate;
+}
+
+@layer components {
+  [data-component] {
+    contain: layout style;
+  }
+}
+
+.skip-link {
+  position: absolute;
+  inset-block-start: -40px;
+  inset-inline-start: 0;
+  z-index: 100;
+  padding-block: 8px;
+  padding-inline: 16px;
+  background: var(--color-primary);
+  color: white;
+  text-decoration: none;
+  border-end-end-radius: 4px;
+}
+.skip-link:focus {
+  inset-block-start: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .skip-link {
+    transition: inset-block-start var(--motion-duration-normal) var(--motion-ease-out);
+  }
+}
+
+/* Copy buttons: icon swaps to a check mark while `data-copied="true"` (see utils/clipboard.ts) */
+.copy-code-btn,
+.code-block-copy {
+  .copy-code-check {
+    display: none;
+  }
+
+  &[data-copied='true'] {
+    .copy-code-icon {
+      display: none;
+    }
+
+    .copy-code-check {
+      display: block;
+    }
+  }
+}
+
+/*
+ * Scroll reveal. `<html data-motion>` is set by an inline script in BaseLayout only when the
+ * user has not requested reduced motion, so content is never hidden without JavaScript.
+ * Stagger comes from `--animate-delay`, set by utils/scroll-animations.ts.
+ */
+html[data-motion] [data-animate] {
+  opacity: 0;
+  transform: translateY(var(--motion-reveal-distance, 20px))
+    scale(var(--motion-reveal-scale-start, 1));
+  filter: blur(var(--motion-reveal-blur, 4px));
+  will-change: opacity, transform, filter;
+  transition:
+    opacity var(--motion-reveal-duration, var(--motion-duration-normal))
+      var(--motion-reveal-ease, var(--motion-ease-out)),
+    transform var(--motion-reveal-duration, var(--motion-duration-normal))
+      var(--motion-reveal-ease, var(--motion-ease-out)),
+    filter var(--motion-reveal-duration, var(--motion-duration-normal))
+      var(--motion-reveal-ease, var(--motion-ease-out));
+  transition-delay: calc(var(--motion-reveal-step, 100ms) * var(--animate-delay, 0));
+}
+
+html[data-motion] [data-animate].animate-in {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+  will-change: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

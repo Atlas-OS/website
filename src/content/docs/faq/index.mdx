@@ -1,0 +1,87 @@
+---
+title: "Frequently asked questions"
+metaDescription: "Answers about installing, updating, configuring and troubleshooting AtlasOS, and how to report a problem."
+description: Frequently asked questions about AtlasOS.
+order: 26
+sidebar:
+  label: "FAQ"
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import QuickLinkCard from '@/components/docs/QuickLinkCard.astro';
+import QuickLinksGrid from '@/components/docs/QuickLinksGrid.astro';
+
+Find answers about installing, configuring and troubleshooting AtlasOS.
+If the docs don't solve your problem, [report it](/docs/faq/report-a-problem/) or ask the [community](/docs/install/#get-help).
+
+<QuickLinksGrid columns={{ md: 2 }}>
+  <QuickLinkCard
+    href="/docs/faq/installation/"
+    icon="tabler:download"
+    title="Installation FAQ"
+    description="Questions about installing Atlas"
+  />
+
+  <QuickLinkCard
+    href="/docs/faq/post-install/"
+    icon="tabler:settings"
+    title="Post-install FAQ"
+    description="Questions after installation"
+  />
+
+  <QuickLinkCard
+    href="/docs/faq/general/"
+    icon="tabler:question-mark"
+    title="General FAQ"
+    description="General questions about AtlasOS"
+  />
+
+  <QuickLinkCard
+    href="/docs/faq/report-a-problem/"
+    icon="tabler:bug"
+    title="Report a problem"
+    description="Send a report or export diagnostics"
+  />
+
+  <QuickLinkCard
+    href="/docs/faq/atlas-iso-files/"
+    icon="tabler:disc"
+    title="Atlas ISO files"
+    description="Where to get Windows media for Atlas"
+  />
+
+  <QuickLinkCard
+    href="/docs/faq/itunes-compatibility/"
+    icon="tabler:brand-apple"
+    title="iTunes and Apple devices"
+    description="Fix iTunes not recognising Apple devices"
+  />
+
+  <QuickLinkCard
+    href="/docs/faq/reverting/"
+    icon="tabler:arrow-back"
+    title="Reverting Atlas"
+    description="How to return to standard Windows"
+  />
+</QuickLinksGrid>
+
+## Quick answers
+
+### What is AtlasOS?
+
+AtlasOS is an open-source project that configures Windows for privacy, usability and performance, while keeping Windows features available.
+
+### Is AtlasOS safe?
+
+AtlasOS publishes its source code on GitHub, including every change it makes to Windows.
+Review those changes and the [security settings](/docs/atlas-configuration/security/) before you decide whether Atlas suits you.
+
+### Which Windows versions are supported?
+
+Atlas supports public releases of Windows 11 listed in the [supported releases table](https://github.com/Atlas-OS/Atlas/blob/main/docs/windows-release-policy.md#supported-releases), in editions such as Pro, Education and Enterprise.
+See [Before you install](/docs/install/requirements/).
+
+<Callout type="warning" title="Windows 11 Home isn't supported">
+  Windows 11 Home, LTSC and Server editions can't take Atlas.
+  Use an edition such as Pro that you have a Windows licence for.
+</Callout>

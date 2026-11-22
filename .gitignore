@@ -3,6 +3,7 @@ dist/
 
 # generated types
 .astro/
+worker-configuration.d.ts
 
 # dependencies
 node_modules/
@@ -16,12 +17,23 @@ pnpm-debug.log*
 # environment variables
 .env
 .env.production
+.dev.vars
 
 # macOS-specific files
 .DS_Store
 
+# Windows shell redirect artifacts
+nul
+
 # jetbrains setting folder
 .idea/
 
-# jampack cache
+# Cloudflare local state
+.wrangler/
+.wrangler-dry-run/
+
+# jampack optimizer cache
 .jampack/
+
+# Local wallpaper working files and concept exports
+/design/wallpapers/

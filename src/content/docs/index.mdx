@@ -1,0 +1,107 @@
+---
+title: "AtlasOS Documentation"
+metaDescription: "AtlasOS documentation: install Atlas with Atlas Manager, keep it up to date, and configure Windows for privacy, performance and usability."
+description: AtlasOS documentation.
+order: 1
+sidebar:
+  label: "Home"
+---
+
+import CommunityLink from '@/components/docs/CommunityLink.astro';
+import QuickLinkCard from '@/components/docs/QuickLinkCard.astro';
+import QuickLinksGrid from '@/components/docs/QuickLinksGrid.astro';
+import Grid from '@/components/ui/Grid.astro';
+
+AtlasOS configures Windows to reduce background activity and distractions, with controls for privacy, performance and system features.
+These guides cover installing Atlas with **Atlas Manager**, keeping it up to date and changing its settings afterwards.
+
+## Quick links
+
+<QuickLinksGrid columns={{ md: 2 }}>
+  <QuickLinkCard
+    href="/docs/install/"
+    icon="tabler:rocket"
+    title="Install Atlas"
+    description="Prepare Windows and install with Atlas Manager"
+  />
+
+  <QuickLinkCard
+    href="/docs/upgrade/"
+    icon="tabler:arrow-up"
+    title="Update Atlas"
+    description="Move to a newer Atlas release with Atlas Manager"
+  />
+
+  <QuickLinkCard
+    href="/docs/essential-setup/"
+    icon="tabler:cpu"
+    title="Essential setup"
+    description="Install drivers, software and optional hardware settings"
+  />
+
+  <QuickLinkCard
+    href="/docs/atlas-configuration/"
+    icon="tabler:settings"
+    title="Atlas configuration"
+    description="Change Atlas settings and Windows features"
+  />
+
+  <QuickLinkCard
+    href="/docs/faq/"
+    icon="tabler:help-circle"
+    title="FAQ"
+    description="Common questions and troubleshooting"
+  />
+
+  <QuickLinkCard
+    href="/docs/contributing/"
+    icon="tabler:code"
+    title="Contributing"
+    description="Contribute to AtlasOS"
+  />
+</QuickLinksGrid>
+
+## What is AtlasOS?
+
+AtlasOS, also called Atlas, is an open-source project that configures Windows.
+It turns off selected telemetry, removes selected apps and changes interface defaults.
+Its source is public, so you can read every change it makes on GitHub.
+
+### Key features
+
+- **Privacy:** Atlas turns off selected Windows telemetry and configures policies to reduce data collection.
+- **Less background activity:** Atlas configures services, background apps and power settings.
+- **Control:** The Atlas folder lets you turn individual features and settings back on or off.
+- **Transparency:** Every script and setting is in the Atlas repository on GitHub.
+
+### Learn more
+
+<Grid columns={{ md: 2 }} gap="4" spacing>
+  <CommunityLink
+    href="https://github.com/Atlas-OS/Atlas"
+    icon="tabler:brand-github"
+    title="GitHub repository"
+    description="Browse the source code and documentation"
+  />
+
+  <CommunityLink
+    href="/"
+    icon="tabler:world"
+    title="Official website"
+    description="General overview and download links"
+  />
+
+  <CommunityLink
+    href="https://discord.com/invite/atlasos-795710270000332800"
+    icon="tabler:brand-discord"
+    title="Discord community"
+    description="Connect with the community and get support"
+  />
+
+  <CommunityLink
+    href="https://github.com/Atlas-OS/Atlas/tree/main/package"
+    icon="tabler:code"
+    title="Atlas package source"
+    description="See what Atlas changes in Windows"
+  />
+</Grid>

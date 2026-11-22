@@ -1,0 +1,69 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image as AstroImage } from 'astro:assets';
+import { publicImageSize } from '@/utils/public-image-size';
+
+interface Props {
+  src: string | ImageMetadata;
+  alt: string;
+  width?: number;
+  height?: number;
+  loading?: 'lazy' | 'eager';
+  fetchpriority?: 'high' | 'low' | 'auto';
+  decoding?: 'sync' | 'async' | 'auto';
+  /** Above-the-fold image: load eagerly with high priority. */
+  priority?: boolean;
+  outlined?: boolean;
+  class?: string;
+}
+
+const {
+  src,
+  alt,
+  priority = false,
+  loading = priority ? 'eager' : 'lazy',
+  decoding = priority ? 'sync' : 'async',
+  fetchpriority = priority || loading === 'eager' ? 'high' : undefined,
+  outlined = false,
+  class: className = '',
+} = Astro.props;
+
+/*
+ * Every image reserves its space before it loads, so nothing shifts when it arrives. Images from
+ * `public/` given without dimensions have them read from the file at build time.
+ */
+const intrinsic =
+  typeof src === 'string' && !(Astro.props.width && Astro.props.height) ? await publicImageSize(src) : undefined;
+const width = Astro.props.width ?? intrinsic?.width;
+const height = Astro.props.height ?? intrinsic?.height;
+
+const classes = [outlined && 'media-outline', className].filter(Boolean).join(' ');
+const style = width && height ? `aspect-ratio: ${width} / ${height}` : undefined;
+---
+
+{typeof src === 'string' ? (
+  <img
+    src={src}
+    alt={alt}
+    width={width}
+    height={height}
+    loading={loading}
+    decoding={decoding}
+    fetchpriority={fetchpriority}
+    class={classes}
+    style={style}
+  />
+) : (
+  <AstroImage
+    src={src}
+    alt={alt}
+    width={width}
+    height={height}
+    priority={priority}
+    loading={loading}
+    decoding={decoding}
+    fetchpriority={fetchpriority}
+    class={classes}
+    style={style}
+  />
+)}

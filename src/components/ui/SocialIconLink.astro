@@ -1,0 +1,17 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  href: string;
+  icon: string;
+  label: string;
+  class?: string;
+}
+
+const { href, icon, label, class: className = '' } = Astro.props;
+---
+
+<a href={href} target="_blank" rel="noopener noreferrer" aria-label={label} class={`nav-icon inline-flex ${className}`}>
+  <Icon name={icon} class="nav-icon__glyph" aria-hidden="true" />
+  <span class="sr-only">{label}</span>
+</a>

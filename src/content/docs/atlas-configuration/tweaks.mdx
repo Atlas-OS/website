@@ -1,0 +1,187 @@
+---
+title: "Optional tweaks"
+metaDescription: "Atlas interface tweaks: context menus, File Explorer, keyboard language shortcuts, lock screen, flyouts, shortcut arrows, Start menu alternatives and visual effects."
+description: Personalise the Windows interface.
+order: 23
+---
+
+import AtlasFolderRestoreLink from '@/components/docs/AtlasFolderRestoreLink.astro';
+import Callout from '@/components/docs/Callout.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+import IconArrow from '@/components/ui/IconArrow.astro';
+
+This page lists the interface tweaks in <CodeInline text="4. Interface Tweaks" /> in the Atlas folder, at <CodeInline text="%windir%\AtlasDesktop" />.
+They're optional preferences; you don't need any of them to finish setting up Atlas.
+If the Atlas folder is missing, follow <AtlasFolderRestoreLink />.
+
+A file name ending in <CodeInline text="(default)" /> marks what Atlas applies on a first installation, not what's active on your PC; see [Before you start](/docs/atlas-configuration/settings/#before-you-start).
+
+<Callout type="info" title="Restarts">
+  Some tweaks restart File Explorer, ask you to sign out, or recommend a restart. Each file tells
+  you which, so save your work first. <CodeInline text="Restart Explorer.cmd" /> in
+  <CodeInline text="4. Interface Tweaks" /> restarts File Explorer whenever you need it.
+</Callout>
+
+## Context menus
+
+<CodeInline text="4. Interface Tweaks" /><IconArrow /><CodeInline text="Context Menus" /> changes what appears when you right-click.
+
+### Windows 11 context menu
+
+Atlas uses the full context menu from earlier versions of Windows, so every option shows at once.
+In <CodeInline text="Windows 11" />:
+
+- <CodeInline text="New Context Menu.cmd" /> switches to the Windows 11 menu, which hides some options behind **Show more options**.
+- <CodeInline text="Old Context Menu (default).cmd" /> switches back to the full menu.
+
+Both restart File Explorer.
+
+### Extract
+
+Atlas removes **Extract All** from the right-click menu of archives.
+In <CodeInline text="Extract" />, <CodeInline text="Add Extract.cmd" /> adds it back, and <CodeInline text="Remove Extract (default).cmd" /> removes it.
+
+### Run with priority
+
+<CodeInline text="Run With Priority" /><IconArrow /><CodeInline text="Add Run With Priority In Context Menu.cmd" /> adds a **Run with priority** menu to programs (`.exe` files), so you can start a program with a higher or lower priority.
+<CodeInline text="Remove Run With Priority In Context Menu (default).cmd" /> removes it.
+
+### Send to
+
+<CodeInline text="Send To" /><IconArrow /><CodeInline text="Debloat Send To Context Menu.cmd" /> lets you choose which items appear in the **Send to** menu for your account.
+
+### Take ownership
+
+<CodeInline text="Take Ownership" /><IconArrow /><CodeInline text="Add Take Ownership to Context Menu.cmd" /> adds a **Take Ownership** option that makes your account the owner of a file or folder, with full control over it.
+<CodeInline text="Remove Take Ownership to Context Menu (default).cmd" /> removes it.
+Take ownership of system files only when you know why you need to.
+
+### Terminals
+
+<CodeInline text="Terminals" /> adds a **Terminals** menu that opens Command Prompt, PowerShell or Windows Terminal in the current folder, normally or as administrator:
+
+- <CodeInline text="Add Terminals.cmd" /> adds the menu with Windows Terminal.
+- <CodeInline text="Add Terminals (no Windows Terminal).cmd" /> adds it without Windows Terminal.
+- <CodeInline text="Remove Terminals Context Menu (default).cmd" /> removes it.
+
+## File Explorer
+
+<CodeInline text="4. Interface Tweaks" /><IconArrow /><CodeInline text="File Explorer Customization" /> holds a subfolder for each of these.
+
+| Subfolder | What it controls | Atlas default |
+| --- | --- | --- |
+| <CodeInline text="App Icons on Thumbnails" /> | The app icon shown on file thumbnails | Shown |
+| <CodeInline text="Automatic Folder Discovery" /> | File Explorer guessing each folder's type, such as pictures, from its contents | Off, which makes folders open faster |
+| <CodeInline text="Compact View" /> | Reduced spacing between items | On |
+| <CodeInline text="Gallery" /> | **Gallery** in the navigation pane | Hidden |
+| <CodeInline text="Home" /> | **Home** in the navigation pane | Hidden, and File Explorer opens to **This PC** |
+| <CodeInline text="Quick Access" /> | **Quick Access** in the navigation pane | Shown |
+| <CodeInline text="Removable Drives in Sidebar" /> | USB drives and other removable drives as separate items in the navigation pane | Hidden; they appear under **This PC** |
+
+Each subfolder has one file to turn the item on and one to turn it off, such as <CodeInline text="Enable Gallery.cmd" /> and <CodeInline text="Disable Gallery (default).cmd" />.
+You can also toggle compact view in File Explorer from **View**<IconArrow />**Compact view**.
+
+## Keyboard languages
+
+During installation, Atlas Manager asks **Do you use multiple keyboard languages?**:
+
+- **Yes, with keyboard shortcuts** keeps Alt+Shift to switch languages and Ctrl+Shift to switch layouts.
+- **Yes, with the taskbar selector** turns off Alt+Shift and Ctrl+Shift, to avoid accidental switches while gaming.
+- **No, I use one keyboard layout** turns them off too.
+
+To change this later, open <CodeInline text="4. Interface Tweaks" /><IconArrow /><CodeInline text="Keyboard Languages" />:
+
+- <CodeInline text="Enable Language Shortcuts.cmd" /> turns on Alt+Shift and Ctrl+Shift switching.
+- <CodeInline text="Disable Language Shortcuts.cmd" /> turns them off.
+
+These files change the account you run them from.
+Your installed layouts, Windows+Space and input method (IME) shortcuts stay as they are.
+Restart or sign out afterwards.
+
+## Lock screen
+
+Atlas keeps the lock screen.
+In <CodeInline text="Lock Screen" />, <CodeInline text="Hide Lock Screen.cmd" /> skips it and goes straight to sign-in, and <CodeInline text="Show Lock Screen (default).cmd" /> restores it.
+
+## Old flyouts
+
+<CodeInline text="Old Flyouts" /> switches the battery, date and time, and volume flyouts on the taskbar to their Windows 8 style.
+Each subfolder has a file for the old flyout and one for the modern flyout:
+
+- <CodeInline text="Battery Flyout" />: <CodeInline text="Old Battery Flyout.cmd" /> or <CodeInline text="Modern Battery Flyout (default).cmd" />.
+- <CodeInline text="Date and Time Flyout" />: <CodeInline text="Old Date and Time Flyout.cmd" /> or <CodeInline text="Modern Date and Time Flyout (default).cmd" />.
+- <CodeInline text="Volume Flyout" />: <CodeInline text="Old Volume Flyout.cmd" /> or <CodeInline text="Modern Volume Flyout (default).cmd" />.
+
+## Shortcut icon
+
+<CodeInline text="Shortcut Icon" /> changes the arrow on shortcut icons:
+
+- <CodeInline text="Default Windows (default).cmd" /> shows the Windows arrow.
+- <CodeInline text="Classic.cmd" /> shows the classic arrow from earlier versions of Windows.
+- <CodeInline text="None (security risk).cmd" /> removes the arrow.
+
+<Callout type="warning" title="Removing the arrow is a security risk">
+  Without the arrow, you can't tell a shortcut from the file it points to. A malicious shortcut can
+  then pass for a harmless file.
+</Callout>
+
+## Shortcut text
+
+Atlas stops Windows adding " - Shortcut" to the names of new shortcuts.
+<CodeInline text="Shortcut Text" /><IconArrow /><CodeInline text="Restore Shortcut Text.cmd" /> brings the suffix back, and <CodeInline text="Disable Shortcut Text (default).cmd" /> removes it again.
+Neither renames existing shortcuts.
+
+## Snap layouts
+
+Snap layouts appear when you hover over a window's maximise button or drag a window to the top of the screen.
+In <CodeInline text="Snap Layouts" />, <CodeInline text="Disable Snap Layouts.cmd" /> turns them off, and <CodeInline text="Enable Snap Layouts (default).cmd" /> turns them back on.
+
+## Start menu
+
+<CodeInline text="4. Interface Tweaks" /><IconArrow /><CodeInline text="Start Menu" /> offers alternatives to the Windows 11 Start menu:
+
+- <CodeInline text="Install Open-Shell.cmd" /> installs [Open-Shell](https://github.com/Open-Shell/Open-Shell-Menu), a customisable classic Start menu. To use Atlas's layout, import <CodeInline text="Atlas Open-Shell Preset.xml" /> in Open-Shell's settings.
+- <CodeInline text="ExplorerPatcher.url" /> opens the [ExplorerPatcher](https://github.com/valinet/ExplorerPatcher) project, a free tool that changes the taskbar and Start menu.
+- <CodeInline text="StartAllBack.url" /> opens [StartAllBack](https://www.startallback.com/), a paid tool that restores a classic taskbar and Start menu.
+
+ExplorerPatcher and StartAllBack are third-party tools that Atlas doesn't install.
+Check that they support your Windows release before installing them.
+On Arm64 PCs, Atlas removes the Open-Shell files from this folder.
+
+## Touch screen edge swipes
+
+On touch screens, swiping in from an edge of the screen opens Windows panels.
+In <CodeInline text="Edge Swipe" />, <CodeInline text="Disallow Edge Swipe.cmd" /> turns these gestures off, and <CodeInline text="Allow Edge Swipe (default).cmd" /> turns them back on.
+
+## Recent items
+
+Atlas turns off recent items and the tracking of apps and documents you open.
+In <CodeInline text="Unlock Recent Items" />:
+
+- <CodeInline text="Unlock Recent Items.cmd" /> removes Atlas's restrictions, so you can turn recent items on in Windows Settings. It doesn't turn tracking on by itself.
+- <CodeInline text="Disable Recent Items (default).cmd" /> turns tracking off again.
+
+Both restart File Explorer.
+
+## Verbose status messages
+
+<CodeInline text="Verbose Status Messages" /><IconArrow /><CodeInline text="Enable Verbose Messages.cmd" /> makes Windows show detailed status messages while it starts up, shuts down, signs in and signs out.
+<CodeInline text="Disable Verbose Messages (default).cmd" /> returns to the standard messages.
+
+## Visual effects
+
+Windows animates menus, tooltips and windows.
+Atlas applies a reduced set of visual effects.
+
+In <CodeInline text="Visual Effects (Animations)" />:
+
+- <CodeInline text="Default Windows Visual Effects.cmd" /> restores the Windows visual effects.
+- <CodeInline text="Atlas Visual Effects (default).cmd" /> applies Atlas's reduced set.
+- <CodeInline text="Visual Effect Settings.lnk" /> opens Windows' **Performance Options**, where you can choose individual effects.
+
+Both files offer to sign you out, which applies the change.
+
+## Related pages
+
+- [Basic settings](/docs/atlas-configuration/settings/): Windows updates, drivers, power and privacy settings.
+- [Windows settings](/docs/atlas-configuration/windows/): shortcuts to Windows Settings pages.

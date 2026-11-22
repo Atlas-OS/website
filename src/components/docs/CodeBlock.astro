@@ -1,0 +1,77 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  /** Optional title/label above the code (e.g. "Run the following command in CMD as administrator:") */
+  title?: string;
+  /** The code content to display and copy */
+  code: string;
+}
+
+const { title, code } = Astro.props;
+
+// The press shrinks the button; only the colour and opacity fade without a motion preference.
+const copyButtonClass =
+  'code-block-copy flex size-10 shrink-0 items-center justify-center rounded-[var(--docs-radius-md)] text-[var(--docs-text-muted)] opacity-60 transition-[background-color,opacity] duration-150 group-hover:opacity-100 hover:bg-fg/10 focus:opacity-100 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-primary)] active:scale-[0.96] motion-safe:transition-[background-color,opacity,scale]';
+---
+
+<div class="code-block docs-surface not-prose group relative my-6 overflow-clip" data-component="code-block">
+  {title && (
+    <div class="code-block-title flex items-center justify-between gap-3 border-be border-[var(--docs-surface-border)] px-5 py-2 text-sm font-medium text-[var(--docs-text-secondary)]">
+      <span>{title}</span>
+      <button type="button" class:list={[copyButtonClass, 'relative']} aria-label="Copy code">
+        <Icon name="tabler:copy" class="copy-code-icon h-4 w-4" aria-hidden="true" />
+        <Icon name="tabler:check" class="copy-code-check h-4 w-4" aria-hidden="true" />
+      </button>
+    </div>
+  )}
+  <div class="relative">
+    <pre
+      class:list={[
+        !title && 'pe-16',
+        'code-block-pre m-0 overflow-x-auto p-5 font-mono text-sm leading-relaxed whitespace-pre text-[var(--docs-text-primary)]',
+      ]}
+    ><code>{code}</code></pre>
+    {!title && (
+      <button type="button" class:list={[copyButtonClass, 'absolute inset-bs-2 inset-e-2']} aria-label="Copy code">
+        <Icon name="tabler:copy" class="copy-code-icon h-4 w-4" aria-hidden="true" />
+        <Icon name="tabler:check" class="copy-code-check h-4 w-4" aria-hidden="true" />
+      </button>
+    )}
+  </div>
+  <span class="sr-only" role="status" aria-live="polite" data-copy-status></span>
+</div>
+
+<style is:global>
+  .code-block-pre {
+    font-family: var(--font-mono);
+    overscroll-behavior-x: contain;
+  }
+
+  .code-block-pre code {
+    background: transparent;
+    border: none;
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+  }
+</style>
+
+<script>
+  import { bindCopyButton } from '@/utils/clipboard';
+  import { onPageLoad } from '@/utils/page-lifecycle';
+
+  onPageLoad((signal) => {
+    for (const block of document.querySelectorAll<HTMLElement>('.code-block')) {
+      const button = block.querySelector<HTMLElement>('.code-block-copy');
+      const code = block.querySelector('.code-block-pre code');
+      if (!button || !code) continue;
+
+      bindCopyButton(button, {
+        getText: () => code.textContent ?? '',
+        status: block.querySelector<HTMLElement>('[data-copy-status]'),
+        signal,
+      });
+    }
+  });
+</script>

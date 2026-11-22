@@ -1,6 +1,7 @@
 ---
-import SectionSeparator from '@/components/common/SectionSeparator.astro';
 import Benchmarks from '@/components/sections/Benchmarks.astro';
+import SectionSeparator from '@/components/sections/common/SectionSeparator.astro';
+import EcleanNote from '@/components/sections/EcleanNote.astro';
 import FAQ from '@/components/sections/FAQ.astro';
 import Features from '@/components/sections/Features.astro';
 import Hero from '@/components/sections/Hero.astro';
@@ -23,16 +24,45 @@ const sections = [
   OpenSource,
   FAQ,
   JoinCommunity,
+  EcleanNote,
 ];
 ---
 
 <DefaultLayout>
-  {
-    sections.map((Section, index) => (
+  <div class="homepage-motion">
+    {sections.map((Section, index) => (
       <>
         <Section />
-        {index < sections.length - 1 && <SectionSeparator />}
+        {index < sections.length - 1 && (
+          <div data-animate>
+            <SectionSeparator />
+          </div>
+        )}
       </>
-    ))
-  }
+    ))}
+  </div>
 </DefaultLayout>
+
+<style>
+  .homepage-motion {
+    --motion-reveal-duration: 520ms;
+    --motion-reveal-step: 110ms;
+    --motion-reveal-distance: 28px;
+    --motion-reveal-blur: 6px;
+    --motion-reveal-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --motion-reveal-scale-start: 0.985;
+    /*
+     * The scenes' glows, ropes and skies fade out past the content's edges by design; clip them at
+     * the screen so they never make the page scroll sideways. `clip` (unlike `hidden`) makes no
+     * scroll container, so sticky headings still stick and vertical overflow still shows.
+     */
+    overflow-x: clip;
+  }
+</style>
+
+<script>
+  import { onPageLoad } from '@/utils/page-lifecycle';
+  import { initScrollAnimations } from '@/utils/scroll-animations';
+
+  onPageLoad(initScrollAnimations);
+</script>

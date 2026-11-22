@@ -1,0 +1,78 @@
+---
+title: "System information"
+metaDescription: "AtlasOS system info tools: HWiNFO, CPU-Z, GPU-Z, MSI Afterburner. Monitor temperatures and performance."
+description: Recommended system information software.
+order: 7
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeBlock from '@/components/docs/CodeBlock.astro';
+
+This page lists system information tools, which show temperatures, CPU and memory usage and more. They help with troubleshooting.
+
+<Callout type="tip" title="Built-in option">
+  Windows Task Manager (below) is pre-installed and may be sufficient for basic monitoring. Use the
+  dedicated tools for detailed hardware data like temperatures.
+</Callout>
+
+## Task Manager
+
+Task Manager comes with Windows. It shows system performance and CPU and memory usage, and helps you find problems. It shows less than dedicated tools, such as temperatures.
+
+## HWiNFO
+
+HWiNFO gives in-depth details of your system, such as temperatures and CPU and memory usage. It's a lightweight, customisable alternative to Task Manager.
+
+<CodeBlock
+  title="Install with winget:"
+  code="winget install -e --id REALiX.HWiNFO"
+/>
+
+[Download HWiNFO](https://www.hwinfo.com/)
+
+## CPU-Z
+
+CPU-Z shows CPU sensors, usage, and other details. Useful for debugging CPU issues.
+
+<CodeBlock
+  title="Install with winget:"
+  code="winget install -e --id CPUID.CPU-Z"
+/>
+
+[Download CPU-Z](https://www.cpuid.com/softwares/cpu-z.html)
+
+## GPU-Z
+
+GPU-Z shows GPU sensors, usage, and other details. Useful for debugging GPU issues.
+
+<CodeBlock
+  title="Install with winget:"
+  code="winget install -e --id TechPowerUp.GPU-Z"
+/>
+
+[Download GPU-Z](https://www.techpowerup.com/gpuz/)
+
+## MSI Afterburner
+
+MSI Afterburner is for overclocking but also displays GPU stats while gaming: FPS, CPU%, GPU%, RAM. For info only (no overclocking), HWiNFO or GPU-Z may be better.
+
+<CodeBlock
+  title="Install with winget:"
+  code="winget install -e --id Guru3D.Afterburner"
+/>
+
+[Download MSI Afterburner](https://www.msi.com/Landing/afterburner)
+
+## eclean
+
+Open **Your PC** in eclean to see your hardware, live sensor readings and disk health.
+
+eclean is a free maintenance app from the Atlas team for AtlasOS and unmodified Windows.
+You can also use it to clean up files, manage startup apps and uninstall software.
+
+[Download eclean](https://eclean.gg/)
+
+## Next steps
+
+- **[Software overview](/docs/essential-setup/software/):** more recommended apps
+- **[Configure Atlas](/docs/atlas-configuration/):** customise your installation

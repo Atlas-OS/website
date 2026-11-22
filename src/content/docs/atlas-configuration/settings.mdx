@@ -1,0 +1,368 @@
+---
+title: "Basic settings"
+metaDescription: "Change Atlas's general settings after installation: Windows updates, drivers, AI features, power, privacy, search, file sharing, Bluetooth and printing."
+description: Change Windows features and Atlas's general settings.
+order: 21
+---
+
+import AtlasFolderRestoreLink from '@/components/docs/AtlasFolderRestoreLink.astro';
+import Callout from '@/components/docs/Callout.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+import IconArrow from '@/components/ui/IconArrow.astro';
+
+This page lists the general settings you can change after installing Atlas.
+It's a reference: find the setting you want, then run the file it names.
+
+Most of these files are in <CodeInline text="3. General Configuration" /> in the Atlas folder.
+Driver settings are in <CodeInline text="2. Drivers" />, and services such as Bluetooth and printing are in <CodeInline text="6. Advanced Configuration" /><IconArrow /><CodeInline text="Services" />.
+Open the Atlas folder from your desktop or the Start menu, or go to <CodeInline text="%windir%\AtlasDesktop" />.
+If it's missing, follow <AtlasFolderRestoreLink />.
+
+## Before you start
+
+- A file name ending in <CodeInline text="(default)" /> marks the setting Atlas applies on a first installation. It doesn't tell you which setting is active on your PC.
+- Your installation choices, and any changes you've made since, decide what's active.
+- Each file asks for administrator permission, applies the change and records your choice. When you update or reinstall Atlas, it applies your recorded choices again.
+- Change one setting at a time. Follow the file's prompt to restart, sign out or restart File Explorer, then check the result.
+- [Check Atlas health](/docs/atlas-configuration/troubleshooting/#check-atlas-health) lists recorded choices that have changed since.
+
+<Callout type="info" title="Restarts">
+  Each file tells you when a change needs a restart or a sign-out. Save your work before you
+  accept.
+</Callout>
+
+## Windows Update
+
+<span id="automatic-updates"></span>
+
+### Automatic Windows updates
+
+During installation, Atlas Manager asks **How should Windows install updates?**, with the answers **Install updates myself** and **Install updates automatically**.
+Either way, Atlas keeps Windows on its current version, which gets security fixes until Microsoft ends support for it.
+Atlas also turns off automatic updates for Microsoft Store apps, so update them in Microsoft Store from **Library**<IconArrow />**Get updates**.
+
+To change your choice, open <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="Automatic Updates" />:
+
+- <CodeInline text="Disable Automatic Updates (default).cmd" /> makes Windows tell you about updates and wait for you to install them. It matches **Install updates myself**.
+- <CodeInline text="Enable Automatic Updates.cmd" /> lets Windows download and install updates automatically. It matches **Install updates automatically**.
+
+If you install updates yourself, open **Settings**<IconArrow />**Windows Update** regularly.
+Security fixes only reach your PC when you install them.
+
+### Pause updates
+
+<CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="Pause Updates" /> holds two files:
+
+- <CodeInline text="Pause Windows Updates.cmd" /> pauses Windows updates. While they're paused, security and driver updates don't install.
+- <CodeInline text="Unpause Windows Updates.cmd" /> resumes them.
+
+Pausing is the safe way to hold updates for a while.
+[Toggle Windows Updates](/docs/atlas-configuration/advanced/#toggle-windows-updates) turns Windows Update off completely and can break Microsoft Store.
+
+### Update notifications
+
+<CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="Update Notifications" /> controls Windows Update's notifications:
+
+- <CodeInline text="Enable Update Notifications (default).cmd" /> keeps them, including restart notifications.
+- <CodeInline text="Disable Update Notifications.cmd" /> turns off update notifications and restart warnings.
+
+If you install updates yourself, keep notifications on so you know when updates are waiting.
+
+### Delivery Optimization
+
+Delivery Optimization can download update content from other PCs and share yours with them.
+Atlas turns off this peer-to-peer sharing.
+Windows still downloads updates from Microsoft.
+
+In <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="Delivery Optimization" />:
+
+- <CodeInline text="Disable Delivery Optimization (default).cmd" /> applies Atlas's download-mode policy.
+- <CodeInline text="Enable Delivery Optimization.cmd" /> removes that policy. Then choose whether to allow sharing, and with which PCs, in **Settings**<IconArrow />**Windows Update**<IconArrow />**Advanced options**<IconArrow />**Delivery Optimization**.
+
+Microsoft's [download mode reference](https://learn.microsoft.com/windows/win32/delivery_optimization/downloadmode) explains each mode.
+
+## Drivers
+
+### Driver updates
+
+During installation, Atlas Manager asks **How should drivers be installed?**, with the answers **Get drivers through Windows Update** and **Install drivers myself**.
+Neither answer removes drivers that are already installed.
+
+To switch later, open <CodeInline text="2. Drivers" /><IconArrow /><CodeInline text="Drivers from Windows Update" />, run one of these files, then restart:
+
+- <CodeInline text="Enable Drivers from Windows Update.reg" /> lets Windows Update install drivers for your hardware. It matches **Get drivers through Windows Update**.
+- <CodeInline text="Disable Drivers from Windows Update.reg" /> stops Windows searching Windows Update for drivers. It matches **Install drivers myself**.
+
+<CodeInline text="Run Update Drivers.cmd" /> in <CodeInline text="2. Drivers" /> searches Microsoft Update for driver updates your PC hasn't installed, and installs the ones you pick.
+The [drivers guide](/docs/essential-setup/drivers/) explains how to find drivers from your PC or device maker.
+
+## AI features
+
+<CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="AI Features" /> holds the Windows AI features.
+Atlas turns each one off.
+
+### Microsoft Copilot
+
+- <CodeInline text="Disable Microsoft Copilot (default).cmd" /> removes the Copilot app and taskbar button, and turns Copilot off by policy.
+- <CodeInline text="Enable Microsoft Copilot.cmd" /> installs Copilot for your account. Copilot needs Microsoft Edge, so if you removed Edge, install it first with <CodeInline text="1. Software" /><IconArrow /><CodeInline text="Install or Remove Edge.cmd" />.
+
+Both files restart File Explorer so the taskbar updates.
+
+### Recall
+
+- <CodeInline text="Disable Recall Support (default).cmd" /> turns off Recall and Windows AI data analysis by policy.
+- <CodeInline text="Enable Recall Support.cmd" /> removes that policy. Windows offers Recall only on PCs that support it.
+
+Restart after either change.
+
+### Click To Do
+
+- <CodeInline text="Disable Click To Do (default).cmd" /> turns off Click To Do by policy.
+- <CodeInline text="Enable Click To Do.cmd" /> removes that policy.
+
+## Power
+
+### Power saving
+
+During installation, **Turn off power saving** switches your PC to the Atlas Power Scheme.
+It's a copy of the Balanced plan with four plugged-in settings changed, including never turning off the display.
+Battery settings stay as Balanced has them.
+If you leave the check box clear, Atlas uses Balanced.
+
+To change it, open <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="Power-saving" />:
+
+- <CodeInline text="Disable Power-saving.cmd" /> applies the Atlas Power Scheme. It matches **Turn off power saving**.
+- <CodeInline text="Default Power-saving (default).cmd" /> goes back to your previous power plan, or to Balanced if there isn't one, and deletes the Atlas plan.
+
+Turning off power saving can raise power use and heat, and shorten battery life.
+The [power-saving policy](https://github.com/Atlas-OS/Atlas/blob/main/docs/power-saving-policy.md) lists each setting it changes.
+
+### Hibernation
+
+During installation, **Turn off hibernation** frees the disk space Windows uses to save your session.
+Hibernate and Fast Startup are then unavailable.
+
+In <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="Hibernation" />:
+
+- <CodeInline text="Disable Hibernation (default).cmd" /> turns hibernation off and asks you to restart. It matches **Turn off hibernation**.
+- <CodeInline text="Enable Hibernation.cmd" /> turns hibernation on and adds Hibernate to the power menu.
+
+### Sleep
+
+In <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="Sleep" />:
+
+- <CodeInline text="Enable Sleep (default).cmd" /> keeps sleep available in your power plan.
+- <CodeInline text="Disable Sleep.cmd" /> turns sleep off in your power plan, and asks whether to turn off hibernation too.
+
+### CPU idle
+
+Keep CPU idle on for normal use, especially on a laptop.
+Turning it off stops the processor's idle power saving, which adds heat and power use without a guaranteed performance gain.
+
+In <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="CPU Idle" />:
+
+- <CodeInline text="Enable Idle (default).cmd" /> keeps idle states on.
+- <CodeInline text="Disable Idle.cmd" /> turns them off. Atlas refuses on processors with Hyper-Threading or SMT turned on, because it would slow them down. Change C-states in your firmware settings instead.
+
+The <CodeInline text="Desktop Context Menu" /> subfolder adds both actions to the desktop's right-click menu with <CodeInline text="Add Idle Toggle in Desktop Context Menu.cmd" />, or removes them with <CodeInline text="Remove Idle Toggle in Desktop Context Menu (default).cmd" />.
+
+### Timer resolution
+
+Atlas leaves its timer resolution task off.
+Turn it on only to investigate a specific timing problem, and compare the result in the affected app.
+A forced high timer resolution can increase power use, and any latency benefit depends on the workload.
+
+In <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="Timer Resolution" />:
+
+- <CodeInline text="Enable timer resolution.cmd" /> adds a scheduled task that forces a high timer resolution. Restart afterwards.
+- <CodeInline text="Disable timer resolution (default).cmd" /> removes the task.
+- <CodeInline text="! MeasureSleep.exe" /> measures how precisely Windows wakes from short sleeps, so you can compare before and after.
+
+### Sleep Study
+
+Sleep Study records power events that Windows uses for sleep diagnostics reports.
+In <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="Sleep Study" />:
+
+- <CodeInline text="Disable Sleep Study (default).cmd" /> turns off its event logs and the Power Efficiency Diagnostics task.
+- <CodeInline text="Enable Sleep Study.cmd" /> turns them back on. Use it if you need `powercfg /sleepstudy` reports.
+
+## Privacy and search
+
+### Background apps
+
+Atlas turns off background access for Microsoft Store apps.
+Some apps need it to work fully, such as Phone Link or mail notifications.
+This setting doesn't stop desktop programs or startup apps.
+
+In <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="Background Apps" />, run <CodeInline text="Enable Background Apps.cmd" /> to allow background access, or <CodeInline text="Disable Background Apps (default).cmd" /> to turn it off again.
+
+### Location
+
+In <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="Location" />:
+
+- <CodeInline text="Disable Location (default).cmd" /> turns off location services and Find My Device.
+- <CodeInline text="Enable Location.cmd" /> turns location services back on and asks whether to allow Find My Device. It then opens **Settings**<IconArrow />**Privacy & security**<IconArrow />**Location**, where you choose which apps may use your location.
+
+### Mobile devices (Phone Link)
+
+In <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="Mobile Devices (Phone Link)" />:
+
+- <CodeInline text="Disable Mobile Device Settings (default).cmd" /> turns off Phone Link, cross-device features and the services they use.
+- <CodeInline text="Enable Mobile Device Settings.cmd" /> turns them back on. It asks about settings Phone Link may need, such as Microsoft account sign-in on this PC and automatic updates for Store apps.
+
+### Search indexing
+
+Search indexing makes file searches faster by indexing files in the background.
+In <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="Search Indexing" />:
+
+- <CodeInline text="Minimal Search Indexing (default).cmd" /> indexes the Start menu and the Atlas folder, but not your user folders.
+- <CodeInline text="Enable Search Indexing.cmd" /> also indexes your user folders, and asks whether to pause indexing on battery power or while gaming.
+- <CodeInline text="Disable Search Indexing.cmd" /> stops the Windows Search service.
+
+### Web search
+
+In <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="Web Search (includes Search Highlights)" />:
+
+- <CodeInline text="Disable Web Search (default).cmd" /> turns off web results and Search Highlights in Windows search.
+- <CodeInline text="Enable Web Search.cmd" /> turns them back on and installs the Bing search provider. It asks whether web search may use your location. If search indexing is off, it offers to turn on full indexing, which avoids a display problem in web search.
+
+Both files restart File Explorer.
+
+### Widgets
+
+In <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="Widgets (News and Interests)" />:
+
+- <CodeInline text="Disable Widgets (default).cmd" /> turns off the Widgets board and its feeds.
+- <CodeInline text="Enable Widgets.cmd" /> turns them back on. Widgets needs Microsoft Edge, so the file offers to install it if it's missing.
+
+Both files restart File Explorer.
+
+### Windows Spotlight
+
+In <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="Windows Spotlight" />:
+
+- <CodeInline text="Disable Windows Spotlight (default).cmd" /> turns off Spotlight images, tips and suggestions on the lock screen and desktop.
+- <CodeInline text="Enable Windows Spotlight.cmd" /> turns them back on.
+- <CodeInline text="Dynamic Theme (Alternative).url" /> opens the Dynamic Theme app in Microsoft Store, which can change your background and lock screen images without Spotlight.
+
+### Workplace
+
+<CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="Workplace" /> controls the **Access work or school** page in Settings:
+
+- <CodeInline text="Disable Workplace.cmd" /> hides the page. While it's hidden, you can't connect this PC to a work or school account from Settings.
+- <CodeInline text="Enable Workplace.cmd" /> shows it again.
+
+### Store app archiving
+
+Windows can archive Microsoft Store apps you rarely use, removing their files until you open them again.
+In <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="Store App Archiving" />, <CodeInline text="Disable Store App Archiving (default).cmd" /> stops this, and <CodeInline text="Enable Store App Archiving.cmd" /> allows it.
+
+## Gaming
+
+### FSO and Game Bar
+
+Game Bar records gameplay, takes screenshots and shows performance.
+It relies on fullscreen optimisations (FSO), which Atlas keeps on.
+
+In <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="FSO and Game Bar" />:
+
+- <CodeInline text="Enable FSO and Game Bar Support (default).cmd" /> turns them on, and installs Game Bar from Microsoft Store if it's missing.
+- <CodeInline text="Disable FSO and Game Bar Support.cmd" /> turns off fullscreen optimisations, Game Bar and game recording. Game Bar shortcuts stop working while they're off.
+
+Turn FSO off only if you prefer fullscreen exclusive mode in your games.
+Read more about [fullscreen optimisations](https://devblogs.microsoft.com/directx/demystifying-full-screen-optimizations/) and [presentation modes](https://wiki.special-k.info/en/SwapChain).
+
+## Sharing and network
+
+### File sharing
+
+Atlas turns off file sharing on a first installation.
+Your networks use the Public profile, and the File and Printer Sharing and Network Discovery firewall rules are off.
+
+In <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="File Sharing" />, <CodeInline text="Enable File Sharing.cmd" /> turns sharing support back on, including network discovery and SMB.
+It then asks:
+
+1. Whether to switch your active networks to the Private profile and turn on the sharing firewall rules for Private networks. Only choose this for networks you trust.
+2. Whether to restore the **Give access to** context menu.
+3. Whether to add **Network** to File Explorer's navigation pane.
+
+Restart when prompted.
+Then choose the folders and people to share with in Windows; turning on sharing support doesn't share anything by itself.
+
+<CodeInline text="Disable File Sharing (default).cmd" /> turns sharing off again, sets every network to Public and turns the sharing firewall rules off.
+
+Two subfolders control parts of File Explorer on their own:
+
+- <CodeInline text="Give Access To Menu" />: <CodeInline text="Enable Give Access To Menu.cmd" /> or <CodeInline text="Disable Give Access To Menu (default).cmd" />.
+- <CodeInline text="Network Navigation Pane" />: <CodeInline text="Enable Network Navigation Pane.cmd" /> or <CodeInline text="Disable Network Navigation Pane (default).cmd" />. Showing **Network** doesn't turn sharing on.
+
+### Network discovery
+
+Network discovery lets this PC find other devices on your network, and be found by them.
+Atlas keeps its services on.
+
+In <CodeInline text="6. Advanced Configuration" /><IconArrow /><CodeInline text="Services" /><IconArrow /><CodeInline text="Network Discovery" />:
+
+- <CodeInline text="Enable Network Discovery Services (default).cmd" /> turns the services on, along with SMB.
+- <CodeInline text="Disable Network Discovery Services.cmd" /> turns them off. This PC then can't find or be found by other devices.
+
+Restart afterwards.
+Network profiles and firewall rules are separate; see [File sharing](#file-sharing).
+
+### Lanman Workstation (SMB)
+
+Lanman Workstation is the SMB client, which connects to shared folders on other PCs.
+Keep it on if you use network shares, mapped drives or network printers, or software that needs it, such as AMD Ryzen Master.
+
+In <CodeInline text="6. Advanced Configuration" /><IconArrow /><CodeInline text="Services" /><IconArrow /><CodeInline text="Lanman Workstation (SMB)" />, run <CodeInline text="Disable Lanman Workstation.cmd" /> or <CodeInline text="Enable Lanman Workstation (default).cmd" />, then restart.
+
+## Devices
+
+### Bluetooth
+
+Atlas keeps Bluetooth on.
+Turn it off only if you don't use Bluetooth devices such as headphones, speakers or game controllers.
+
+In <CodeInline text="6. Advanced Configuration" /><IconArrow /><CodeInline text="Services" /><IconArrow /><CodeInline text="Bluetooth" />:
+
+- <CodeInline text="Disable Bluetooth.cmd" /> turns off Bluetooth services and drivers, and disables every Bluetooth device. It also removes Bluetooth from the **Send to** menu.
+- <CodeInline text="Enable Bluetooth (default).cmd" /> turns them back on.
+
+Restart afterwards.
+If Bluetooth still doesn't work, install its driver from your PC or device maker; see [other drivers](/docs/essential-setup/drivers/other/).
+
+### Printing
+
+Atlas keeps printing on, and removes **Print** from right-click menus, since most people print from apps.
+
+In <CodeInline text="6. Advanced Configuration" /><IconArrow /><CodeInline text="Services" /><IconArrow /><CodeInline text="Printing" />:
+
+- <CodeInline text="Disable Printing.cmd" /> turns off printing services and features. Printers, Microsoft Print to PDF, XPS and Print Management stop working.
+- <CodeInline text="Enable Printing (default).cmd" /> turns them back on.
+
+Restart afterwards.
+
+## Recovery
+
+### System Restore
+
+System Restore uses restore points to roll back some system changes.
+
+In <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="System Restore" />:
+
+- <CodeInline text="Enable System Restore (default).cmd" /> turns on protection for the Windows drive. It doesn't create a restore point or protect other drives.
+- <CodeInline text="Disable System Restore.cmd" /> turns System Restore off.
+
+Check protection and your restore points in **System Properties**<IconArrow />**System Protection** before you rely on them.
+A restore point doesn't replace a backup of your files.
+
+<Callout type="warning" title="Before you turn off System Restore">
+  Without System Restore, you can't roll Windows back to a restore point. Turn it off only if you
+  have another way to recover.
+</Callout>
+
+## Related pages
+
+- [Optional tweaks](/docs/atlas-configuration/tweaks/): File Explorer, context menus, keyboard languages and visual effects.
+- [Security settings](/docs/atlas-configuration/security/): Microsoft Defender, processor protections and VBS.
+- [Advanced configuration](/docs/atlas-configuration/advanced/): boot settings, services and driver tools.

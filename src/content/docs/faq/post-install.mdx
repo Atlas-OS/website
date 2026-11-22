@@ -1,0 +1,89 @@
+---
+title: "Post-install FAQ"
+metaDescription: "After installing AtlasOS: find or restore the Atlas folder, install drivers, and turn Bluetooth, driver updates and visual effects back on."
+description: Questions after installing Atlas.
+order: 28
+---
+
+import AtlasFolderRestoreLink from '@/components/docs/AtlasFolderRestoreLink.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+import IconArrow from '@/components/ui/IconArrow.astro';
+
+Find the Atlas folder, install drivers and restore common settings after installing Atlas.
+
+## Atlas folder
+
+### Where is the Atlas folder?
+
+The Atlas folder is at <CodeInline text="%windir%\AtlasDesktop" />.
+You can open it from the shortcut on your desktop or in the Start menu, or enter that path in File Explorer's address bar.
+
+### I can't find the Atlas folder
+
+See <AtlasFolderRestoreLink samePage={true} /> below.
+
+### Restoring the Atlas folder
+
+First, check whether only the shortcut is missing, or the folder itself.
+
+**If only the desktop shortcut is missing:** enter <CodeInline text="%windir%" /> in File Explorer's address bar.
+Right-click <CodeInline text="AtlasDesktop" />, then select **Send to**<IconArrow />**Desktop (create shortcut)**.
+
+**If <CodeInline text="%windir%\AtlasDesktop" /> is missing:** open Atlas Manager and check what Home shows.
+If an installation didn't finish, choose the option Home offers to finish it.
+If Atlas is installed, choose **Reinstall Atlas** to put the folder back; **Keep my choices** keeps your settings.
+If that doesn't help, [report the problem](/docs/faq/report-a-problem/).
+
+### What's in the Atlas folder?
+
+The Atlas folder contains launchers that turn Windows features and Atlas settings on or off, shortcuts to Windows Settings pages, driver options and troubleshooting tools.
+See the [Atlas folder overview](/docs/atlas-configuration/atlas-folder/).
+
+## Drivers
+
+### Do I need to install drivers myself?
+
+It depends on what you chose for **How should drivers be installed?** in Atlas Manager:
+
+- **Get drivers through Windows Update:** Windows installs drivers for you.
+- **Install drivers myself:** install drivers from your PC, motherboard or device maker.
+
+See the [drivers guide](/docs/essential-setup/drivers/).
+
+### Which drivers do I need?
+
+Most PCs need drivers for:
+
+- Graphics (GPU)
+- Network and Wi-Fi
+- Audio
+- Bluetooth, if you use it
+- Chipset
+
+## Configuration
+
+### How do I turn Bluetooth back on?
+
+Atlas leaves Bluetooth on by default.
+If you turned it off:
+
+1. Open the Atlas folder.
+2. Go to <CodeInline text="6. Advanced Configuration" /><IconArrow /><CodeInline text="Services" /><IconArrow /><CodeInline text="Bluetooth" />.
+3. Run <CodeInline text="Enable Bluetooth (default).cmd" />.
+4. Restart your PC.
+
+### How do I get drivers from Windows Update?
+
+1. Open the Atlas folder.
+2. Go to <CodeInline text="2. Drivers" /><IconArrow /><CodeInline text="Drivers from Windows Update" />.
+3. Run <CodeInline text="Enable Drivers from Windows Update.reg" />.
+4. Restart your PC, then check for updates in Windows Update.
+
+See [driver updates](/docs/atlas-configuration/settings/#driver-updates).
+
+### How do I restore Windows visual effects?
+
+1. Open the Atlas folder.
+2. Go to <CodeInline text="4. Interface Tweaks" /><IconArrow /><CodeInline text="Visual Effects (Animations)" />.
+3. Run <CodeInline text="Default Windows Visual Effects.cmd" />.
+4. Sign out and back in when it asks, so the change applies.

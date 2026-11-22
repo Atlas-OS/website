@@ -1,0 +1,52 @@
+---
+/**
+ * The connector between homepage sections: a faint moonlit horizon that rises in the centre into a
+ * small peak at the Atlas mark's true slope, its left face catching the moon, with one star above.
+ * It threads the page together after the hero, so it stays quiet. Decorative and static.
+ */
+import { CONNECTOR } from '@/utils/feature-vignettes';
+---
+
+<div class="connector" aria-hidden="true">
+  <span class="connector-line connector-line--left"></span>
+  <svg
+    class="connector-peak"
+    width={CONNECTOR.width}
+    height={CONNECTOR.height}
+    viewBox={`0 0 ${CONNECTOR.width} ${CONNECTOR.height}`}
+  >
+    <path d={CONNECTOR.horizon} stroke="#FFFFFF" stroke-opacity="0.1"></path>
+    <path d={CONNECTOR.shadedFace} stroke="#DDEBFF" stroke-opacity="0.2" stroke-linecap="round"></path>
+    <path d={CONNECTOR.litFace} stroke="#DDEBFF" stroke-opacity="0.62" stroke-linecap="round"></path>
+    <circle cx={CONNECTOR.star[0]} cy={CONNECTOR.star[1]} r="0.9" fill="#DDEBFF" fill-opacity="0.75"></circle>
+  </svg>
+  <span class="connector-line connector-line--right"></span>
+</div>
+
+<style>
+  .connector {
+    display: flex;
+    align-items: flex-end;
+    max-width: 80rem;
+    margin-block: 8rem;
+    margin-inline: auto;
+  }
+
+  /* The horizon either side meets the peak's baseline: the last pixel row of the peak's box. */
+  .connector-line {
+    flex: 1;
+    height: 1px;
+  }
+  .connector-line--left {
+    background: linear-gradient(to right, transparent, color-mix(in oklch, var(--color-fg) 10%, transparent));
+  }
+  .connector-line--right {
+    background: linear-gradient(to right, color-mix(in oklch, var(--color-fg) 10%, transparent), transparent);
+  }
+
+  .connector-peak {
+    flex: none;
+    display: block;
+    overflow: visible;
+  }
+</style>

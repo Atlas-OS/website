@@ -1,0 +1,104 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  type?: 'info' | 'warning' | 'tip' | 'danger';
+  title?: string;
+}
+
+const { type = 'info', title } = Astro.props;
+
+const variants = {
+  info: { icon: 'tabler:info-circle', color: 'text-link', title: 'Info' },
+  tip: { icon: 'tabler:bulb', color: 'text-link', title: 'Tip' },
+  warning: {
+    icon: 'tabler:alert-triangle',
+    color: 'text-amber-300',
+    title: 'Warning',
+  },
+  danger: { icon: 'tabler:alert-circle', color: 'text-red-300', title: 'Important' },
+} as const;
+
+const variant = variants[type];
+const displayTitle = title ?? variant.title;
+---
+
+<div
+  class="callout not-prose my-6 rounded-[var(--docs-radius-md)] border border-[var(--docs-surface-border)] bg-[var(--docs-surface-bg)] p-5"
+  data-component="callout"
+  data-type={type}
+>
+  <div class="flex items-start gap-3">
+    <Icon name={variant.icon} class:list={['mbs-0.5 h-5 w-5 shrink-0', variant.color]} aria-hidden="true" />
+    <div class="min-w-0 flex-1">
+      <p class:list={['mbe-1 text-sm font-semibold', variant.color]}>{displayTitle}</p>
+      <div class="callout-content text-sm leading-relaxed text-[var(--docs-text-secondary)]">
+        <slot />
+      </div>
+    </div>
+  </div>
+</div>
+
+<style is:global>
+  .callout-content p {
+    margin-block: 0 0.5rem;
+    margin-inline: 0;
+    color: var(--docs-text-secondary);
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+
+  .callout-content p:last-child {
+    margin-block-end: 0;
+  }
+
+  .callout-content strong {
+    color: var(--color-fg);
+    font-weight: 600;
+  }
+
+  .callout-content a {
+    color: var(--color-link);
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity var(--motion-duration-fast) var(--motion-ease-out);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .callout-content a:hover {
+      opacity: 0.8;
+    }
+  }
+
+  .callout-content ul,
+  .callout-content ol {
+    margin-block: 0.5rem;
+    margin-inline: 0;
+    padding-inline-start: 1.25rem;
+    list-style: none;
+  }
+
+  .callout-content ol {
+    list-style: decimal outside;
+  }
+
+  .callout-content li {
+    margin-block-end: 0.25rem;
+    color: var(--docs-text-secondary);
+  }
+
+  .callout-content ul li {
+    position: relative;
+  }
+
+  .callout-content ul li::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: -1.25rem;
+    inset-block-start: 0.65em;
+    width: 0.35em;
+    height: 0.35em;
+    background: var(--color-primary);
+    border-radius: 2px;
+  }
+</style>

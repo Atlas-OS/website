@@ -1,43 +1,38 @@
 import js from '@eslint/js';
-import tseslint from 'typescript-eslint';
+import prettier from 'eslint-config-prettier';
 import astro from 'eslint-plugin-astro';
-import astroParser from 'astro-eslint-parser';
-import prettierConfig from 'eslint-config-prettier';
+import { defineConfig, globalIgnores } from 'eslint/config';
+import tseslint from 'typescript-eslint';
 
-export default [
+export default defineConfig([
+  globalIgnores([
+    '.claude/worktrees/',
+    'dist/',
+    '.astro/',
+    '.jampack/',
+    '.wrangler/',
+    '.wrangler-dry-run/',
+    'node_modules/',
+    'worker-configuration.d.ts',
+  ]),
   js.configs.recommended,
-  ...tseslint.configs.recommended,
-  ...astro.configs['flat/recommended'],
-
+  tseslint.configs.recommended,
+  astro.configs['flat/recommended'],
+  astro.configs['flat/jsx-a11y-recommended'],
   {
-    files: ['**/*.astro'],
+    // Type-aware rules catch unhandled promises and deprecated platform APIs in the Worker,
+    // client utilities, config and tests. Each tsconfig covers a different runtime.
+    files: ['**/*.ts'],
+    extends: [tseslint.configs.recommendedTypeCheckedOnly],
     languageOptions: {
-      globals: {
-        Astro: 'readonly',
-        Fragment: 'readonly',
-      },
-      parser: astroParser,
       parserOptions: {
-        parser: tseslint.parser,
-        extraFileExtensions: ['.astro'],
-        project: './tsconfig.json',
+        project: ['./tsconfig.json', './tsconfig.worker.json', './test/worker/tsconfig.json'],
+        tsconfigRootDir: import.meta.dirname,
       },
     },
-    processor: astro.processors.astro,
-  },
-
-  {
-    files: ['src/**/*.ts'],
-    languageOptions: {
-      parser: tseslint.parser,
-      parserOptions: {
-        project: './tsconfig.json',
-      },
+    rules: {
+      '@typescript-eslint/no-deprecated': 'error',
     },
   },
-
-  prettierConfig,
-  {
-    ignores: ['dist/', '.astro/', 'node_modules/'],
-  },
-];
+  prettier,
+]);

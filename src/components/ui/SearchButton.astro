@@ -1,0 +1,39 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  id?: string;
+  mobile?: boolean;
+  class?: string;
+}
+
+const { id, mobile = false, class: className = '' } = Astro.props;
+---
+
+{mobile ? (
+  <button
+    id={id || 'navbar-search-button-mobile'}
+    type="button"
+    aria-label="Search"
+    aria-expanded="false"
+    aria-haspopup="dialog"
+    class={`nav-icon inline-flex sm:hidden ${className}`}
+  >
+    <Icon name="tabler:search" class="nav-icon__glyph" aria-hidden="true" />
+  </button>
+) : (
+  <button
+    id={id || 'navbar-search-button'}
+    type="button"
+    aria-expanded="false"
+    aria-haspopup="dialog"
+    class={`nav-search hidden sm:inline-flex ${className}`}
+  >
+    <Icon name="tabler:search" class="nav-search__icon" aria-hidden="true" />
+    <span class="nav-search__label">Search docs…</span>
+    <kbd class="nav-search__keys">
+      <span>Ctrl</span>
+      <span>K</span>
+    </kbd>
+  </button>
+)}

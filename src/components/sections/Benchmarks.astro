@@ -1,22 +1,335 @@
 ---
-import { Icon } from 'astro-icon/components';
-import SectionTitle from '@/components/common/SectionTitle.astro';
+/**
+ * AtlasOS vs. Stock Windows. Each result is drawn as a piece of the hero's night, on a true
+ * zero-based scale: stock Windows stands in the far ranges' haze, AtlasOS in the near, moonlit
+ * colours. Background CPU is one timeline, a jagged ridge of spikes that settles into a calm line
+ * at 0% once AtlasOS takes over; RAM is two ranges layered like the hero's, the night between their
+ * crests the memory AtlasOS frees; framerate is two peaks, the Atlas one taller and flying the flag.
+ *
+ * The charts are decorative: every figure they show is also in the text. When a column scrolls
+ * into view the AtlasOS shapes rise into place (CSS on the reveal's `.animate-in`); without
+ * JavaScript, or with reduced motion, they are simply drawn.
+ */
+import SectionHeading from '@/components/sections/common/SectionHeading.astro';
 import Button from '@/components/ui/Button.astro';
+import { MARK_SLOPE, polygon, type Point } from '@/utils/hero-summit-geometry';
+
+/* Every chart shares one box: the scale runs from the baseline (zero) up to TOP; labels sit below. */
+const W = 240;
+const VIEW_H = 140;
+const TOP = 18;
+const BASE = 108;
+const SCALE = BASE - TOP;
+const view = `0 0 ${W} ${VIEW_H}`;
+
+const r1 = (value: number) => Math.round(value * 10) / 10;
+const lerp = (a: Point, b: Point, t: number): Point => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
+const poly = (points: readonly Point[]) => polygon(points.map(([x, y]) => [r1(x), r1(y)] as Point));
+
+/*
+ * ---- Background CPU: one timeline ----
+ * Stock Windows spikes between 2 and 10% on the left, a jagged range in the far haze; where AtlasOS
+ * takes over the line settles flat at 0% and runs on calm, in Atlas blue, to the right.
+ */
+const cpuY = (percent: number) => BASE - (percent / 10) * SCALE;
+const CPU_CALM = 134;
+const cpuSamples: Point[] = (
+  [
+    [4, 2.6],
+    [14, 6.2],
+    [24, 3],
+    [35, 9.6],
+    [46, 4],
+    [56, 7],
+    [67, 2.4],
+    [78, 10],
+    [89, 3.4],
+    [99, 5.8],
+    [110, 2.2],
+    [121, 8.4],
+  ] as const
+).map(([x, percent]) => [x, cpuY(percent)]);
+const cpuRidge = `M4 ${BASE}${cpuSamples.map(([x, y]) => `L${x} ${r1(y)}`).join('')}L${CPU_CALM} ${BASE}Z`;
+const cpuRim = `${cpuSamples.map(([x, y], i) => `${i ? 'L' : 'M'}${x} ${r1(y)}`).join('')}L${CPU_CALM} ${BASE}`;
+/* The tallest spikes carry snow, like the hero's ranges. */
+const cpuCaps = [...cpuSamples, [CPU_CALM, BASE] as Point].flatMap((apex, i, all) => {
+  const left = all[i - 1];
+  const right = all[i + 1];
+  if (!left || !right || apex[1] > cpuY(8)) return [];
+  return [poly([apex, lerp(apex, left, 0.3), lerp(apex, right, 0.3)])];
+});
+/** AtlasOS's calm line, a hair above the horizon so it reads as its own. */
+const cpuCalm = `M${CPU_CALM} ${BASE - 1}H236`;
+
+/*
+ * ---- RAM on boot: two ranges, layered like the hero's ----
+ * Usage climbs as the system boots and levels off: stock Windows as the far range at 2.9 GB,
+ * AtlasOS as the near range in front at ~1.4 GB. The night between their crests is the memory
+ * AtlasOS frees, measured off at the right.
+ */
+const ramY = (gb: number) => BASE - (gb / 3) * SCALE;
+/** A faceted range that rises from the horizon to `gb` by `rise` and holds it, with a gentle wobble. */
+const ramRange = (gb: number, rise: number, wobble: readonly number[]) => {
+  const xs = [4, 16, 28, 40, 52, 64, 78, 92, 106, 120, 134, 148, 162, 176, 190, 204, 218, 236];
+  const points = xs.map((x, i): Point => {
+    const t = Math.min(1, (x - 4) / (rise - 4));
+    const eased = t * t * (3 - 2 * t);
+    return [x, r1(ramY(gb * eased + (wobble[i % wobble.length] ?? 0) * eased))];
+  });
+  const edge = points.map(([x, y], i) => `${i ? 'L' : 'M'}${x} ${y}`).join('');
+  return { edge, shape: `${edge}L236 ${BASE}L4 ${BASE}Z` };
+};
+const ramWindows = ramRange(2.9, 70, [0, 0.07, -0.03, 0.06, -0.05, 0.03, 0.08, -0.02, 0.04, -0.06]);
+const ramAtlas = ramRange(1.4, 58, [0.04, -0.03, 0.06, -0.01, -0.04, 0.05, -0.02, 0.03, 0.06, -0.03]);
+/** The measure of the freed memory, between the two crests at the right. */
+const freed = { x: 214, top: r1(ramY(2.9) + 3), bottom: r1(ramY(1.4) - 3) };
+const freedMid = r1((freed.top + freed.bottom) / 2);
+/** A few stars in the open night between the ranges. */
+const freedStars: Array<[number, number, number]> = [
+  [104, 44, 0.9],
+  [138, 56, 0.8],
+  [160, 38, 1],
+  [84, 58, 0.7],
+];
+/** The AtlasOS shapes rise from the baseline. */
+const riseOrigin = `transform-origin: 0 ${BASE}px`;
+
+/* ---- Framerate: two peaks at the Atlas mark's slope, the AtlasOS one taller and flagged ---- */
+const fpsY = (fps: number) => BASE - (fps / 400) * SCALE;
+const peak = (cx: number, top: number) => {
+  const half = (BASE - top) * MARK_SLOPE;
+  const apex: Point = [cx, top];
+  const left: Point = [cx - half, BASE];
+  const right: Point = [cx + half, BASE];
+  const cap = (BASE - top) * 0.2;
+  const capHalf = cap * MARK_SLOPE;
+  return {
+    apex,
+    shape: poly([left, apex, right]),
+    litFace: poly([left, apex, [cx, BASE]]),
+    capLit: poly([apex, [cx - capHalf, top + cap], [cx - capHalf * 0.45, top + cap * 1.3], [cx, top + cap * 0.95]]),
+    capShade: poly([apex, [cx, top + cap * 0.95], [cx + capHalf * 0.45, top + cap * 1.28], [cx + capHalf, top + cap]]),
+    rim: `M${r1(cx)} ${r1(top)}L${r1(cx - half * 0.55)} ${r1(top + (BASE - top) * 0.55)}`,
+  };
+};
+const FPS_WINDOWS_X = 82;
+const FPS_ATLAS_X = 152;
+const fpsWindows = peak(FPS_WINDOWS_X, fpsY(217.5));
+const fpsAtlas = peak(FPS_ATLAS_X, fpsY(365.91));
+const pole = { x: FPS_ATLAS_X, top: r1(fpsAtlas.apex[1] - 15), bottom: r1(fpsAtlas.apex[1]) };
+const flagCloth = `M${pole.x + 0.6} ${pole.top}h11l-3 3.6 3 3.6h-11Z`;
+
+/** A label below the baseline: the system's name over its figure, centred on `x` (or anchored). */
+interface ChartLabel {
+  x: number;
+  name: string;
+  value: string;
+  atlas?: boolean;
+  anchor?: 'start' | 'middle' | 'end';
+}
+
+interface Metric {
+  id: 'cpu' | 'ram' | 'fps';
+  title: string;
+  result: string;
+  baseline: string;
+  description: string;
+  note?: string;
+  labels: ChartLabel[];
+}
+
+const metrics: Metric[] = [
+  {
+    id: 'cpu',
+    title: 'Background CPU usage',
+    result: '0%',
+    baseline: 'down from 2–10%',
+    description:
+      "We've reduced background CPU spikes significantly. Nothing that you don't need will run in the background.",
+    labels: [
+      { x: 4, name: 'Stock Windows', value: '2–10%', anchor: 'start' },
+      { x: CPU_CALM + 4, name: 'AtlasOS', value: '0%', atlas: true, anchor: 'start' },
+    ],
+  },
+  {
+    id: 'ram',
+    title: 'RAM usage on boot',
+    result: '~1.4 GB',
+    baseline: 'down from 2.9 GB',
+    description:
+      'Thanks to Atlas we’ve seen ~1.5 GB of RAM usage freed on boot, which can then be allocated to other tasks.',
+    labels: [
+      { x: 4, name: 'Stock Windows', value: '2.9 GB', anchor: 'start' },
+      { x: 236, name: 'AtlasOS', value: '~1.4 GB', atlas: true, anchor: 'end' },
+    ],
+  },
+  {
+    id: 'fps',
+    title: 'Average FPS in games',
+    result: '365.91',
+    baseline: 'up from 217.5 FPS',
+    description: 'Higher average framerates observed in competitive titles like Valorant on Windows 11.',
+    note: 'Ryzen 7 5800X3D, 16GB 3600MHz, RTX 2070 Super',
+    labels: [
+      { x: FPS_WINDOWS_X - 6, name: 'Stock Windows', value: '217.5 FPS' },
+      { x: FPS_ATLAS_X + 4, name: 'AtlasOS', value: '365.91 FPS', atlas: true },
+    ],
+  },
+];
 ---
 
-<section class="relative mx-auto mt-32 mb-32 max-w-7xl px-4">
-  <div class="mb-8 text-center">
-    <SectionTitle>Benchmarks</SectionTitle>
-    <h2 class="mb-6 text-4xl font-semibold tracking-tight text-white md:text-5xl">
-      <span class="text-primary">AtlasOS</span> vs. <span class="text-white/70">Stock Windows</span>
-    </h2>
-    <p class="mx-auto max-w-2xl leading-relaxed text-white/70">
+<section class="bench content-grid relative my-32">
+  <div class="bench-intro">
+    <SectionHeading near="AtlasOS vs. Stock Windows" align="center" />
+    <p class="summit-lede mx-auto text-center" data-animate>
       With reduced resource utilization, improved privacy, usability, and performance, why wouldn't you consider making
       the switch?
     </p>
   </div>
 
-  <div class="mb-12 text-center">
+  <div class="bench-grid">
+    {metrics.map((metric) => (
+      <article class="bench-metric" data-animate>
+        <svg class="bench-chart" viewBox={view} aria-hidden="true">
+          <defs>
+            <linearGradient id={`bench-horizon-${metric.id}`} x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0" stop-color="#DDEBFF" stop-opacity="0"></stop>
+              <stop offset="0.5" stop-color="#DDEBFF" stop-opacity="0.32"></stop>
+              <stop offset="1" stop-color="#DDEBFF" stop-opacity="0"></stop>
+            </linearGradient>
+          </defs>
+
+          {metric.id === 'cpu' && (
+            <>
+              <path class="bench-grid-line" d={`M4 ${TOP}H236`}></path>
+              <text class="bench-axis" x="236" y={TOP - 4} text-anchor="end">
+                10%
+              </text>
+              {/* The range rises out of the night on the left rather than starting on a line. */}
+              <linearGradient id="bench-cpu-fade-ramp" gradientUnits="userSpaceOnUse" x1="4" x2="236" y1="0" y2="0">
+                <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.1"></stop>
+                <stop offset="0.12" stop-color="#FFFFFF"></stop>
+                <stop offset="1" stop-color="#FFFFFF"></stop>
+              </linearGradient>
+              <mask id="bench-cpu-fade" maskUnits="userSpaceOnUse" x="0" y="0" width={W} height={BASE + 1}>
+                <rect width={W} height={BASE + 1} fill="url(#bench-cpu-fade-ramp)"></rect>
+              </mask>
+              <linearGradient id="bench-cpu-calm" gradientUnits="userSpaceOnUse" x1={CPU_CALM} x2="236" y1="0" y2="0">
+                <stop offset="0" stop-color="#6BB8FF"></stop>
+                <stop offset="0.75" stop-color="#6BB8FF"></stop>
+                <stop offset="1" stop-color="#6BB8FF" stop-opacity="0.15"></stop>
+              </linearGradient>
+              <g mask="url(#bench-cpu-fade)">
+                <path d={cpuRidge} fill="#1A2F5C"></path>
+                {cpuCaps.map((cap) => (
+                  <path d={cap} fill="#4B69A7" fill-opacity="0.75" />
+                ))}
+                <path
+                  d={cpuRim}
+                  fill="none"
+                  stroke="#7F95BE"
+                  stroke-opacity="0.55"
+                  stroke-width="0.8"
+                  stroke-linejoin="round"
+                ></path>
+              </g>
+              <path class="bench-draw bench-calm" d={cpuCalm} pathLength="1"></path>
+            </>
+          )}
+
+          {metric.id === 'ram' && (
+            <>
+              <path d={ramWindows.shape} fill="#1A2F5C"></path>
+              <path
+                d={ramWindows.edge}
+                fill="none"
+                stroke="#7F95BE"
+                stroke-opacity="0.55"
+                stroke-width="0.8"
+                stroke-linejoin="round"
+              ></path>
+              {freedStars.map(([x, y, r]) => (
+                <circle class="bench-open" cx={x} cy={y} r={r} fill="#DDEBFF" fill-opacity="0.6" />
+              ))}
+              <g class="bench-rise" style={riseOrigin}>
+                <path d={ramAtlas.shape} fill="#24467F"></path>
+                <path
+                  d={ramAtlas.edge}
+                  fill="none"
+                  stroke="#BFD8FF"
+                  stroke-opacity="0.8"
+                  stroke-width="1"
+                  stroke-linejoin="round"
+                ></path>
+              </g>
+              <g class="bench-open">
+                <path
+                  class="bench-measure"
+                  d={`M${freed.x} ${freed.top}V${freed.bottom}M${freed.x - 3} ${freed.top}h6M${freed.x - 3} ${freed.bottom}h6`}
+                ></path>
+                <text class="bench-freed-label" x={freed.x - 7} y={freedMid - 2} text-anchor="end">
+                  ~1.5 GB
+                </text>
+                <text class="bench-freed-label" x={freed.x - 7} y={freedMid + 8} text-anchor="end">
+                  freed
+                </text>
+              </g>
+            </>
+          )}
+          {metric.id === 'fps' && (
+            <>
+              <path d={fpsWindows.shape} fill="#1A2F5C"></path>
+              <path d={fpsWindows.litFace} fill="#22396B"></path>
+              <path d={fpsWindows.capLit} fill="#4B69A7" fill-opacity="0.8"></path>
+              <path d={fpsWindows.capShade} fill="#3A5690" fill-opacity="0.8"></path>
+              <g class="bench-rise" style={riseOrigin}>
+                <path d={fpsAtlas.shape} fill="#1F3D75"></path>
+                <path d={fpsAtlas.litFace} fill="#2A5296"></path>
+                <path d={fpsAtlas.capLit} fill="#A9C6F2"></path>
+                <path d={fpsAtlas.capShade} fill="#6F8FCB"></path>
+                <path
+                  d={fpsAtlas.rim}
+                  fill="none"
+                  stroke="#E6F0FF"
+                  stroke-opacity="0.7"
+                  stroke-width="0.9"
+                  stroke-linecap="round"
+                ></path>
+                <rect x={pole.x - 0.5} y={pole.top} width="1" height={pole.bottom - pole.top} fill="#C9DCF7"></rect>
+                <path class="bench-flag" d={flagCloth} fill="#2B9BFF"></path>
+              </g>
+            </>
+          )}
+
+          <path d={`M0 ${BASE}H${W}`} stroke={`url(#bench-horizon-${metric.id})`} stroke-width="1"></path>
+
+          {metric.labels.map((label) => (
+            <text
+              class:list={['bench-label', { 'bench-label--atlas': label.atlas }]}
+              text-anchor={label.anchor ?? 'middle'}
+            >
+              <tspan x={label.x} y={BASE + 15}>
+                {label.name}
+              </tspan>
+              <tspan class="bench-label__value" x={label.x} y={BASE + 27}>
+                {label.value}
+              </tspan>
+            </text>
+          ))}
+        </svg>
+
+        <h3>{metric.title}</h3>
+        <p class="bench-result">
+          <span class="bench-figure">{metric.result}</span>
+          <span class="bench-baseline">{metric.baseline}</span>
+        </p>
+        <p class="bench-description">{metric.description}</p>
+        {metric.note && <p class="bench-note">{metric.note}</p>}
+      </article>
+    ))}
+  </div>
+
+  <div class="bench-cta" data-animate>
     <Button
       href="https://github.com/orgs/Atlas-OS/discussions/1161"
       icon="tabler:arrow-up-right"
@@ -28,52 +341,168 @@ import Button from '@/components/ui/Button.astro';
       View detailed benchmark
     </Button>
   </div>
-
-  <div class="grid grid-cols-1 gap-16 md:grid-cols-3 md:gap-20">
-    <div class="relative py-2">
-      <div class="flex h-12 w-12 items-center justify-center rounded-md bg-white/5">
-        <Icon name="tabler:cpu" class="h-6 w-6 text-white/80" />
-      </div>
-      <h3 class="mt-5 mb-3 text-xl font-semibold tracking-tight text-white">CPU usage</h3>
-      <p class="leading-relaxed text-white/70">
-        We've reduced background CPU spikes significantly. Nothing that you don't need will run in the background.
-      </p>
-      <div class="mt-4 flex items-baseline gap-2">
-        <span class="text-2xl font-semibold text-white/70">2‑10%</span>
-        <Icon name="tabler:arrow-narrow-right" class="h-5 w-5 text-white/70" aria-hidden="true" />
-        <span class="text-primary text-2xl font-semibold">0%</span>
-      </div>
-    </div>
-
-    <div class="relative py-2">
-      <div class="flex h-12 w-12 items-center justify-center rounded-md bg-white/5">
-        <Icon name="tabler:database" class="h-6 w-6 text-white/80" />
-      </div>
-      <h3 class="mt-5 mb-3 text-xl font-semibold tracking-tight text-white">RAM usage</h3>
-      <p class="leading-relaxed text-white/70">
-        Thanks to Atlas we've seen ~1.5 GB of RAM usage freed on boot, which can then be allocated to other tasks.
-      </p>
-      <div class="mt-4 flex items-baseline gap-2">
-        <span class="text-2xl font-semibold text-white/70">2.9 GB</span>
-        <Icon name="tabler:arrow-narrow-right" class="h-5 w-5 text-white/70" aria-hidden="true" />
-        <span class="text-primary text-2xl font-semibold">~1.4 GB</span>
-      </div>
-    </div>
-
-    <div class="relative py-2">
-      <div class="flex h-12 w-12 items-center justify-center rounded-md bg-white/5">
-        <Icon name="tabler:gauge" class="h-6 w-6 text-white/80" />
-      </div>
-      <h3 class="mt-5 mb-3 text-xl font-semibold tracking-tight text-white">Higher FPS in games</h3>
-      <p class="leading-relaxed text-white/70">
-        Higher average framerates observed in competitive titles like Valorant on Windows 11.
-      </p>
-      <p class="mt-2 text-sm leading-relaxed text-white/50">Ryzen 7 5800X3D, 16GB 3600MHz, RTX 2070 Super</p>
-      <div class="mt-4 flex items-baseline gap-2">
-        <span class="text-2xl font-semibold text-white/70">217.5 FPS</span>
-        <Icon name="tabler:arrow-narrow-right" class="h-5 w-5 text-white/70" aria-hidden="true" />
-        <span class="text-primary text-2xl font-semibold">365.91 FPS</span>
-      </div>
-    </div>
-  </div>
 </section>
+
+<style>
+  .bench-intro .summit-lede {
+    margin-block-start: 1.5rem;
+    max-width: 38rem;
+  }
+
+  /* The full width of the content column, centred in it while it is capped at one column's width. */
+  .bench-grid {
+    display: grid;
+    gap: 4.5rem;
+    width: 100%;
+    max-width: 26rem;
+    margin-block: 5rem 0;
+    margin-inline: auto;
+  }
+  @media (min-width: 1024px) {
+    .bench-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 3.5rem;
+      max-width: none;
+    }
+  }
+  @media (min-width: 1280px) {
+    .bench-grid {
+      gap: 5rem;
+    }
+  }
+
+  .bench-metric {
+    position: relative;
+  }
+
+  /* ---- Charts --------------------------------------------------------------------------------- */
+
+  .bench-chart {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-block-end: 1.75rem;
+    overflow: visible;
+  }
+  .bench-grid-line {
+    stroke: color-mix(in oklch, var(--summit-moonlit) 14%, transparent);
+    stroke-width: 0.8;
+    stroke-dasharray: 2 3;
+  }
+  .bench-axis {
+    fill: color-mix(in oklch, var(--color-fg) 40%, transparent);
+    font-size: 8px;
+  }
+  .bench-label {
+    fill: oklch(0.713 0.059 262.6);
+    font-size: 9px;
+  }
+  .bench-label__value {
+    fill: color-mix(in oklch, var(--color-fg) 75%, transparent);
+    font-size: 10px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .bench-label--atlas,
+  .bench-label--atlas .bench-label__value {
+    fill: oklch(0.762 0.128 248);
+  }
+
+  /* AtlasOS at 0%: one calm line where the spikes end, in Atlas blue. */
+  .bench-calm {
+    fill: none;
+    stroke: url(#bench-cpu-calm);
+    stroke-width: 2;
+    stroke-linecap: round;
+  }
+
+  /* The memory AtlasOS frees: the open night between the two ranges, measured off. */
+  .bench-measure {
+    fill: none;
+    stroke: var(--summit-blue);
+    stroke-width: 1;
+    stroke-opacity: 0.8;
+  }
+  .bench-freed-label {
+    fill: oklch(0.812 0.1 247);
+    font-size: 9px;
+    font-weight: 600;
+  }
+
+  /*
+   * The arrival moment: when a column scrolls into view, the AtlasOS shapes rise from the baseline,
+   * the measure of what it frees appears above them, and the calm 0% line draws across. Only while
+   * reveals run (html[data-motion]); otherwise everything is simply drawn.
+   */
+  .bench-open {
+    transition: opacity 500ms var(--motion-ease-out) 1100ms;
+  }
+  :global(html[data-motion]) .bench-metric:not(.animate-in) .bench-open {
+    opacity: 0;
+  }
+  .bench-rise {
+    transform-box: view-box;
+  }
+  .bench-draw {
+    stroke-dasharray: 1;
+  }
+  :global(html[data-motion]) .bench-rise {
+    transition: transform 1100ms var(--motion-ease-out) 250ms;
+  }
+  :global(html[data-motion]) .bench-draw {
+    transition: stroke-dashoffset 1200ms var(--motion-ease-out) 250ms;
+  }
+  :global(html[data-motion]) .bench-metric:not(.animate-in) .bench-rise {
+    transform: scaleY(0);
+  }
+  :global(html[data-motion]) .bench-metric:not(.animate-in) .bench-draw {
+    stroke-dashoffset: 1;
+  }
+
+  /* ---- Text ----------------------------------------------------------------------------------- */
+
+  .bench-metric h3 {
+    color: var(--color-fg);
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .bench-result {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 0.75rem;
+    margin-block-start: 0.5rem;
+  }
+  .bench-figure {
+    padding-block-end: 0.06em;
+    background: linear-gradient(in srgb to bottom, var(--summit-lit) 35%, var(--summit-lit-end));
+    background-clip: text;
+    color: transparent;
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+  }
+  .bench-baseline {
+    color: var(--summit-text-faint);
+  }
+  .bench-description {
+    margin-block-start: 1rem;
+    max-width: 24rem;
+    color: var(--summit-text-muted);
+    line-height: 1.7;
+  }
+  .bench-note {
+    margin-block-start: 0.75rem;
+    color: var(--summit-text-faint);
+    font-size: 0.875rem;
+  }
+
+  .bench-cta {
+    margin-block-start: 5rem;
+    text-align: center;
+  }
+</style>

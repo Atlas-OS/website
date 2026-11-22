@@ -1,0 +1,92 @@
+---
+title: "Media playback"
+metaDescription: "AtlasOS media players: VLC, mpv, Windows Media Player, foobar2000, MusicBee, Dopamine, Elisa."
+description: Recommended media players.
+order: 4
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeBlock from '@/components/docs/CodeBlock.astro';
+
+This page lists video and music players that work well on AtlasOS.
+
+## VLC Media Player
+
+VLC is a simple, well-known media player. It includes the codecs you need for playback.
+
+<CodeBlock
+  title="Install with winget:"
+  code="winget install -e --id VideoLAN.VLC"
+/>
+
+[Download VLC Media Player](https://www.videolan.org/vlc/) (Microsoft Store also available)
+
+## mpv
+
+mpv is a minimal player that supports almost every codec. Advanced users can customise it and extend it with scripts.
+
+[Download mpv](https://mpv.io/installation/)
+
+### mpv.net
+
+mpv.net is a fork of mpv with a more user-friendly graphical interface.
+
+<CodeBlock
+  title="Install with winget:"
+  code="winget install -e --id mpv.net"
+/>
+
+## Windows Media Player
+
+Windows Media Player is Microsoft's modern media app. Atlas removes it when you install Atlas, so install it again from the Microsoft Store if you want it.
+
+<Callout type="info" title="Codec support">
+  Unlike mpv or VLC, Windows Media Player doesn't support every codec by default. You may need to
+  install the HEVC codec from the Microsoft Store for some video files.
+</Callout>
+
+<CodeBlock
+  title="Install with winget:"
+  code="winget install -e --id 9WZDNCRFJ3PT"
+/>
+
+[Download HEVC Codec](https://apps.microsoft.com/store/detail/9NMZLZ57R3T7) (Microsoft Store)
+
+## foobar2000
+
+foobar2000 plays local and online music. It handles multi-track audio and is easy to use.
+
+<CodeBlock
+  title="Install with winget:"
+  code="winget install -e --id PeterPawlowski.foobar2000"
+/>
+
+[Download foobar2000](https://www.foobar2000.org/)
+
+## MusicBee
+
+MusicBee is a lightweight alternative to foobar2000 with a more modern feel.
+
+<CodeBlock
+  title="Install with winget:"
+  code="winget install -e --id MusicBee.MusicBee"
+/>
+
+[Download MusicBee](https://www.getmusicbee.com/)
+
+## Dopamine 2
+
+Dopamine 2 is an audio player for organising and listening to music. It's simple and attractive, with many features.
+
+[Download Dopamine 2](https://github.com/digimezzo/dopamine-windows/releases/latest)
+
+## Elisa
+
+Elisa is a KDE music player with a simple interface and internet radio support.
+
+[Download Elisa](https://apps.microsoft.com/store/detail/9pb5md7zh8tl) (Microsoft Store)
+
+## Next steps
+
+- **[Software overview](/docs/essential-setup/software/):** more recommended apps
+- **[Configure Atlas](/docs/atlas-configuration/):** customise your installation

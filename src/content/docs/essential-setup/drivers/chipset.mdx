@@ -1,0 +1,51 @@
+---
+title: "Chipset drivers"
+metaDescription: "AtlasOS chipset drivers: find motherboard model, install from manufacturer or generic sources."
+description: Install chipset drivers for stability and performance.
+order: 4
+---
+
+import Callout from '@/components/docs/Callout.astro';
+
+This guide helps you install chipset drivers, which help your CPU communicate with memory, storage and USB devices.
+Install them if your PC isn't performing as expected or has a recent CPU.
+
+## Finding your motherboard model
+
+1. Download [HWiNFO](https://www.hwinfo.com/)
+2. Open the application and click **Start** to view your motherboard model and other system information
+
+## Installing from manufacturer website
+
+Download chipset drivers from your motherboard manufacturer's support page, because they're tested for your model.
+
+1. Search for "_your motherboard model_ support" to find the manufacturer's support page
+2. Find and download the chipset driver
+3. Run the installer and follow the setup instructions
+
+<Callout type="info" title="Can't find manufacturer drivers?">
+  If you can't find chipset drivers from your motherboard manufacturer, use the generic chipset
+  drivers from your CPU manufacturer below.
+</Callout>
+
+## Generic chipset drivers
+
+### AMD
+
+1. Visit [TechPowerUp's AMD Chipset](https://www.techpowerup.com/download/amd-ryzen-chipset-drivers/) and click the download button
+   - Or use [AMD's Official Website](https://www.amd.com/en/support), though TechPowerUp is simpler
+2. Run the installer and complete the installation process
+3. Restart your computer if prompted
+
+### Intel
+
+1. Visit [Intel's Official Website](https://www.intel.com/content/www/us/en/download/19347/chipset-inf-utility.html) and click the download button
+2. Run the installer and complete the installation process
+3. Restart your computer if prompted
+
+## Next steps
+
+After installing chipset drivers:
+
+1. **[Install other drivers](/docs/essential-setup/drivers/other/)** - Bluetooth, printers, etc. if needed
+2. **[Optimise hardware](/docs/essential-setup/hardware/)** (optional): enable XMP/DOCP and Resizable BAR

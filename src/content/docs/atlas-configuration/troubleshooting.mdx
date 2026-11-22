@@ -1,0 +1,110 @@
+---
+title: "Troubleshooting tools"
+metaDescription: "Check Atlas health and use the Atlas folder's troubleshooting tools: network resets, Windows component repair, Microsoft Store fixes, Safe Mode, service defaults and telemetry components."
+description: Check Atlas health and repair common problems.
+order: 26
+sidebar:
+  label: "Troubleshooting"
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+import IconArrow from '@/components/ui/IconArrow.astro';
+
+This page explains the tools in <CodeInline text="9. Troubleshooting" /> in the Atlas folder, at <CodeInline text="%windir%\AtlasDesktop" />.
+Start with the health check, then use the tool that matches your problem.
+
+## Check Atlas health
+
+<CodeInline text="9. Troubleshooting" /><IconArrow /><CodeInline text="Check Atlas Health.cmd" /> reports what Atlas installed on your PC.
+It also lists the recorded toggle choices and install tweaks that have changed since.
+It doesn't change anything.
+
+The check covers machine-wide settings and the settings of the account you run it from.
+Run it from the account whose settings you care about.
+
+A reported difference isn't always a fault.
+It may be a change you made yourself, in Windows or with another tool.
+Read the report before you change anything:
+
+- To apply a toggle choice again, run its file in the Atlas folder. The report names each one.
+- Review changed install tweaks one at a time, and decide whether you want them back.
+- Reinstalling Atlas doesn't run one-time tweaks again.
+
+If Atlas isn't installed, or the check can't run, the report says so.
+
+## Network
+
+<CodeInline text="9. Troubleshooting" /><IconArrow /><CodeInline text="Network" /> resets your network adapters:
+
+- <CodeInline text="Reset Network to Atlas Default.cmd" /> applies Atlas's network adapter settings again.
+- <CodeInline text="Reset Network to Windows Default.cmd" /> resets the network stack and adapters to the Windows defaults. This can take a minute.
+
+Restart afterwards.
+The Windows reset also clears IP settings, so note any static IP address or custom DNS servers you use first.
+
+## Repair Windows Components
+
+<CodeInline text="Repair Windows Components.cmd" /> repairs damaged Windows components and system files with DISM and System File Checker (SFC).
+It can take a long time, and needs an internet connection to download missing files.
+It doesn't undo Atlas's settings.
+Restart when it recommends.
+
+## Microsoft Store
+
+<CodeInline text="Fix MS Store Issues.cmd" /> runs StoreFixer to repair common Microsoft Store problems.
+
+When Microsoft Store can't update during **Get ready**, Atlas Manager tries the same repair among others.
+
+## Installer errors 2502 and 2503
+
+<CodeInline text="Fix Errors 2502 and 2503.cmd" /> fixes Windows Installer errors 2502 and 2503 by resetting the permissions of the Windows temporary folder.
+Try it when an app's installer fails with one of those errors.
+
+## File Explorer Visual C++ runtime error
+
+<CodeInline text="Fix File Explorer Visual C++ Runtime Error.cmd" /> fixes a blank **Microsoft Visual C++ Runtime Library** error from File Explorer.
+It removes a search setting that older Atlas releases left behind, then restarts File Explorer.
+
+## Safe Mode
+
+<CodeInline text="9. Troubleshooting" /><IconArrow /><CodeInline text="Safe Mode" /> sets how Windows starts next time:
+
+- <CodeInline text="Safe Mode.cmd" /> starts Windows with only essential drivers and services.
+- <CodeInline text="Safe Mode with Networking.cmd" /> adds network access.
+- <CodeInline text="Safe Mode with Command Prompt.cmd" /> starts to a command prompt instead of the desktop.
+- <CodeInline text="Exit Safe Mode.cmd" /> returns to a normal start.
+
+Each file recommends a restart.
+Windows keeps starting in Safe Mode until you run <CodeInline text="Exit Safe Mode.cmd" />, so run it from Safe Mode when you've finished.
+
+## Services
+
+<CodeInline text="Set services to defaults.cmd" /> restores the startup settings of the services Atlas manages to Atlas's defaults.
+Try it if a Windows feature stopped working after you changed services yourself.
+Restart when it asks.
+
+## Telemetry Components
+
+<CodeInline text="Telemetry Components.cmd" /> adds or removes Atlas's NoTelemetry package, which removes some Windows telemetry components.
+It asks which you want, then asks you to restart.
+
+Removing the package restores those components, which can help when you're tracking down a problem.
+If that fixes it, [report it](/docs/faq/report-a-problem/) so the Atlas team can look into it.
+Atlas's policies that turn off telemetry stay in place either way.
+
+## Reset this PC
+
+Atlas doesn't support **Reset this PC**.
+It can't reliably return a PC with Atlas to standard Windows.
+<CodeInline text="Reset this PC (read first).url" /> opens [Reverting Atlas](/docs/faq/reverting/), which explains how to reinstall Windows instead.
+
+## Still stuck?
+
+If these tools don't solve the problem, [report it](/docs/faq/report-a-problem/).
+In Atlas Manager, **Send a report** sends it privately to the Atlas team, and **Export diagnostics** creates a ZIP to share when you ask for help.
+
+<Callout type="tip" title="Before you reinstall">
+  Export diagnostics before you reinstall Windows or delete anything. The ZIP keeps the logs the
+  Atlas team needs to find the cause.
+</Callout>

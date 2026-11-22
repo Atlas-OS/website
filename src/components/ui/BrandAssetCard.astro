@@ -1,0 +1,51 @@
+---
+import Button from '@/components/ui/Button.astro';
+import Heading from '@/components/ui/Heading.astro';
+import Image from '@/components/ui/Image.astro';
+
+interface Props {
+  image: {
+    src: string;
+    alt: string;
+    class?: string;
+  };
+  title: string;
+  buttons?: Array<{
+    href: string;
+    label: string;
+    external?: boolean;
+  }>;
+  singleButton?: {
+    href: string;
+    label: string;
+    external?: boolean;
+  };
+  class?: string;
+}
+
+const { image, title, buttons = [], singleButton, class: className = '' } = Astro.props;
+---
+
+<div
+  class={`brand-asset-card not-prose flex flex-col items-center space-y-4 rounded-lg bg-fg/5 p-6 text-center shadow-[var(--shadow-surface)] transition-[box-shadow,opacity] duration-200 ${className}`}
+>
+  <Image src={image.src} alt={image.alt} class={image.class || 'w-32 h-32'} loading="lazy" />
+  <div class="w-full">
+    <Heading class="mbe-2 font-semibold">{title}</Heading>
+    {singleButton && (
+      <Button href={singleButton.href} external={singleButton.external} variant="secondary" size="sm">
+        {singleButton.label}
+      </Button>
+    )}
+    {buttons.length > 0 && (
+      <div class="flex flex-col gap-2">
+        {buttons.map((button) => (
+          <Button href={button.href} external={button.external} variant="secondary" size="sm" fw>
+            {button.label}
+          </Button>
+        ))}
+      </div>
+    )}
+    <slot />
+  </div>
+</div>

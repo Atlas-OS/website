@@ -1,0 +1,44 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  href: string;
+  icon: string;
+  title: string;
+  description: string;
+}
+
+const { href, icon, title, description } = Astro.props;
+
+const isExternal = href.startsWith('http://') || href.startsWith('https://');
+---
+
+<!-- The whole card navigates through its title link's overlay (`.docs-card`, docs.css). -->
+<div
+  class="community-link docs-surface docs-card not-prose group flex items-start gap-3 p-5"
+  data-component="community-link"
+>
+  <div class="docs-link-icon">
+    <Icon name={icon} class="h-5 w-5" aria-hidden="true" />
+  </div>
+  <div class="min-w-0 flex-1">
+    <p class="text-base font-semibold text-[var(--docs-text-primary)]">
+      <a
+        href={href}
+        target={isExternal ? '_blank' : undefined}
+        rel={isExternal ? 'noopener noreferrer' : undefined}
+        class="docs-card-link"
+      >
+        {title}
+      </a>
+    </p>
+    <p class="mbs-1 text-sm" style="color: var(--docs-text-secondary);">
+      {description}
+    </p>
+  </div>
+  <Icon
+    name={isExternal ? 'tabler:arrow-up-right' : 'tabler:arrow-right'}
+    class="h-4 w-4 flex-shrink-0 text-fg/45 transition-colors duration-200 group-hover:text-fg/75"
+    aria-hidden="true"
+  />
+</div>

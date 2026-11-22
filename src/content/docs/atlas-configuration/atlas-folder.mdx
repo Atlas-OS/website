@@ -1,0 +1,92 @@
+---
+title: "Atlas folder configuration"
+metaDescription: "The Atlas folder at %windir%\\AtlasDesktop: its sections, how its files work, what (default) means and the shortcuts it contains."
+description: Atlas folder structure and how its files work.
+order: 20
+sidebar:
+  label: "Atlas folder"
+---
+
+import AtlasFolderRestoreLink from '@/components/docs/AtlasFolderRestoreLink.astro';
+import Callout from '@/components/docs/Callout.astro';
+import CodeBlock from '@/components/docs/CodeBlock.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+
+The Atlas folder holds the files you use to change Atlas and Windows settings after installation.
+This page explains how it's organised and how its files work.
+
+Open it from the **Atlas** shortcut on your desktop or in the Start menu.
+The folder itself is at <CodeInline text="%windir%\AtlasDesktop" />; you can paste that path into File Explorer's address bar.
+If it's missing, follow <AtlasFolderRestoreLink />.
+
+## Folder structure
+
+<CodeBlock
+  code={`%windir%\\AtlasDesktop
+├── 1. Software
+├── 2. Drivers
+├── 3. General Configuration
+├── 4. Interface Tweaks
+├── 5. Windows Settings
+├── 6. Advanced Configuration
+├── 7. Security
+├── 8. Additional Tools
+└── 9. Troubleshooting`}
+/>
+
+| Section | What it holds | Details |
+| --- | --- | --- |
+| **1. Software** | Software installer, Microsoft Edge installer and remover, Python Store prompt removal | [Software](/docs/essential-setup/software/) |
+| **2. Drivers** | Driver update choice, driver updater, GPU driver tools | [Drivers](/docs/atlas-configuration/settings/#driver-updates) |
+| **3. General Configuration** | Windows Update, AI features, power, privacy, search and file sharing settings | [Basic settings](/docs/atlas-configuration/settings/) |
+| **4. Interface Tweaks** | Context menus, File Explorer, keyboard languages, flyouts, Start menu and visual effects | [Optional tweaks](/docs/atlas-configuration/tweaks/) |
+| **5. Windows Settings** | Shortcuts to Windows Settings pages | [Windows settings](/docs/atlas-configuration/windows/) |
+| **6. Advanced Configuration** | Boot settings, driver tools, Microsoft Store, Process Explorer, services and Toggle Windows Updates | [Advanced configuration](/docs/atlas-configuration/advanced/) |
+| **7. Security** | Microsoft Defender, processor protections and core isolation | [Security settings](/docs/atlas-configuration/security/) |
+| **8. Additional Tools** | Links to third-party system tools | [Additional tools](#8-additional-tools) |
+| **9. Troubleshooting** | Atlas's health check and repair tools | [Troubleshooting tools](/docs/atlas-configuration/troubleshooting/) |
+
+## How the files work
+
+Most files are pairs or small sets that turn one setting on or off, such as <CodeInline text="Enable Gallery.cmd" /> and <CodeInline text="Disable Gallery (default).cmd" />.
+Double-click the one you want.
+A file asks for administrator permission when it needs it, tells you what it changed, and says when to restart, sign out or restart File Explorer.
+
+<Callout type="tip" title="What (default) means">
+  A file name ending in <CodeInline text="(default)" /> marks the setting Atlas applies on a first
+  installation. It doesn't tell you which setting is active on your PC: your installation choices
+  and later changes decide that.
+</Callout>
+
+Atlas records the choice each file applies.
+When you update or reinstall Atlas, it applies your recorded choices again, and [Check Atlas health](/docs/atlas-configuration/troubleshooting/#check-atlas-health) reports any that have changed since.
+Atlas Toolbox can change many of the same settings.
+
+Updating Atlas replaces the Atlas folder.
+Keep your own files somewhere else.
+
+## Shortcuts in the folder
+
+The top of the Atlas folder also holds:
+
+- <CodeInline text="Atlas Documentation" />, which opens these docs.
+- <CodeInline text="Atlas Website" />, <CodeInline text="Atlas GitHub" />, <CodeInline text="Atlas Discussions" /> and <CodeInline text="Atlas Discord" />, for news, source code and community help.
+- <CodeInline text="Install AtlasOS Toolbox.cmd" />, which installs [Atlas Toolbox](/docs/toolbox/) if you didn't choose it during installation.
+
+Most sections also have a documentation shortcut that opens the matching page of these docs.
+
+## 8. Additional Tools
+
+<CodeInline text="8. Additional Tools" /> holds links to the download pages of free system tools.
+Atlas doesn't install them.
+
+- <CodeInline text="Autoruns" />: Microsoft Sysinternals' tool for viewing and managing programs that start with Windows.
+- <CodeInline text="Everything Search" />: fast file search by name.
+- <CodeInline text="HWInfo" /> and <CodeInline text="HWMonitor" />: temperatures, voltages, fan speeds and other hardware details.
+
+## 9. Troubleshooting
+
+<CodeInline text="9. Troubleshooting" /> holds <CodeInline text="Check Atlas Health.cmd" /> and tools that repair networking, Windows components and Microsoft Store.
+See [Troubleshooting tools](/docs/atlas-configuration/troubleshooting/).
+
+To remove Atlas or start again with standard Windows, follow [Reverting Atlas](/docs/faq/reverting/); Atlas doesn't support **Reset this PC**.

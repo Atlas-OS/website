@@ -1,0 +1,30 @@
+---
+title: "iTunes and Apple devices"
+metaDescription: Fix iTunes not recognising Apple devices on AtlasOS. Install Apple's USB driver or get drivers from Windows Update.
+description: Fix iTunes not recognising Apple devices.
+order: 32
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+
+If iTunes doesn't recognise your Apple device, the Apple USB driver is usually missing.
+This is most likely if you chose **Install drivers myself** when you installed Atlas.
+
+<Callout type="tip" title="Let Windows Update install drivers">
+  If many devices are missing drivers, you can let Windows Update install them.
+  See [Switch to automatic installation](/docs/essential-setup/drivers/#switch-to-automatic-installation) and [driver updates](/docs/atlas-configuration/settings/#driver-updates).
+</Callout>
+
+## Install the Apple USB driver
+
+1. Download the latest Apple USB driver from the [Microsoft Update Catalog](https://www.catalog.update.microsoft.com/Search.aspx?q=Apple%2C%20Inc.%20-%20USBDevice).
+   Choose the driver whose version starts with a three-digit number.
+2. Extract the downloaded file with File Explorer or 7-Zip.
+3. In the extracted folder, right-click the <CodeInline text=".inf" /> file and select **Install**.
+4. Reconnect your Apple device.
+
+## Next steps
+
+- **[Post-install FAQ](/docs/faq/post-install/):** more questions after installation.
+- **[Drivers guide](/docs/essential-setup/drivers/):** install other drivers.

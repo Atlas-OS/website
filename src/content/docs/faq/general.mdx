@@ -1,0 +1,159 @@
+---
+title: "General FAQ"
+metaDescription: "AtlasOS general FAQ: updates, checking your version, performance, compatibility, security, TPM, games, eclean and Microsoft Store."
+description: General AtlasOS questions.
+order: 29
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+
+Answers about AtlasOS features, updates, compatibility and security.
+
+## Keeping AtlasOS up to date
+
+Atlas Manager checks for new Atlas releases and shows them on Home.
+Whether it can update your PC depends on two things: your installed Atlas version and your Windows release.
+See [Update Atlas](/docs/upgrade/) for both.
+
+Atlas Toolbox is released separately; see [Atlas Toolbox](/docs/toolbox/).
+
+## Checking your AtlasOS version
+
+Open **Atlas Manager**.
+Home shows the installed version and, when Atlas Manager has a record of it, your installation history.
+
+The file name of a downloaded Atlas package tells you which package you have, not which version is installed.
+If Atlas Manager can't read your installation details, [report the problem](/docs/faq/report-a-problem/) before you update.
+
+## Performance
+
+### Will AtlasOS improve my gaming performance?
+
+Atlas reduces background activity and changes some power and scheduling settings.
+Any difference depends on your hardware, your games and what else runs on your PC.
+Compare results on your own PC before and after you change a setting.
+
+### What does AtlasOS change?
+
+Atlas applies privacy, usability and performance changes:
+
+- It turns off selected telemetry and data collection.
+- It removes selected built-in apps and turns off some background tasks and services.
+- It changes interface defaults and turns off Windows advertising.
+- It offers choices for power saving, processor protections, VBS and Microsoft Defender.
+
+See [what was removed from Windows](/docs/faq/installation/#what-was-removed-from-windows) for the full lists.
+
+## Compatibility
+
+### Can I use Microsoft Store apps?
+
+Yes.
+Atlas turns off automatic updates for Store apps, so update them in Microsoft Store under **Library** > **Get updates**.
+
+### Will my existing software work?
+
+Most Windows software works with Atlas.
+Some software needs Windows features that Atlas turns off, such as file sharing, location or background apps; you can turn them back on from the [Atlas folder](/docs/atlas-configuration/).
+
+### Can I use Windows Update?
+
+Yes.
+During installation you choose whether Windows installs updates automatically, and you can change that later; see [automatic Windows updates](/docs/atlas-configuration/settings/#automatic-windows-updates).
+Atlas keeps Windows on its current release, which gets security fixes until Microsoft ends support for it.
+
+## Enabling TPM
+
+Windows 11 requires **Trusted Platform Module (TPM) 2.0**.
+If Windows setup says your PC doesn't meet the requirements, check TPM in your BIOS or UEFI settings.
+
+<Callout type="warning" title="Proceed with caution">
+  Changing BIOS or UEFI settings incorrectly can make your PC unstable.
+  Change only settings you understand, and check your motherboard or PC maker's documentation if you're unsure.
+</Callout>
+
+### Steps
+
+1. **Open the BIOS or UEFI settings:** restart the PC and press the setup key shown in your manual or on the startup screen.
+   Common keys include <CodeInline text="DEL" />, <CodeInline text="F2" />, <CodeInline text="F10" />, <CodeInline text="F12" /> and <CodeInline text="ESC" />.
+2. **Find the TPM setting:** look in sections such as Security, Advanced, Trusted Computing or CPU Configuration.
+   Setting names include:
+   - <CodeInline text="TPM" />, <CodeInline text="TPM Device" /> or <CodeInline text="TPM State" />
+   - **Intel processors:** <CodeInline text="PTT" /> (Platform Trust Technology)
+   - **AMD processors:** <CodeInline text="fTPM" /> or <CodeInline text="AMD fTPM switch" />
+3. **Turn on TPM:** change it from <CodeInline text="Disabled" /> to <CodeInline text="Enabled" />, or to <CodeInline text="On" />, <CodeInline text="Available" /> or <CodeInline text="Firmware TPM" />.
+4. **Save and exit:** use Save Changes and Exit, often <CodeInline text="F10" />, then try installing Windows again.
+
+## Security and AtlasOS
+
+Atlas lets you choose whether to keep Microsoft Defender, [processor protections](/docs/atlas-configuration/security/#mitigations) and automatic Windows updates.
+Read each trade-off in the [security settings](/docs/atlas-configuration/security/) before you change a default.
+
+**Compared with unmodified Windows:** changing Windows changes the security baseline Microsoft tests.
+Review the [Atlas source](https://github.com/Atlas-OS/Atlas) and your installation choices before you install.
+
+**Older Atlas versions:** update to the latest release when you can.
+See [Before updating](/docs/upgrade/requirements/) to check whether Atlas Manager can update your version.
+
+## Resetting Atlas
+
+Use Microsoft's installation media to start fresh or remove Atlas.
+Don't rely on **Reset this PC** to undo Atlas's changes.
+
+- **To start fresh with Atlas:** follow [Before you install](/docs/install/requirements/) and install on a fresh Windows.
+- **To remove Atlas:** follow [Reverting Atlas](/docs/faq/reverting/).
+
+## Game troubleshooting
+
+### Roblox doesn't start
+
+Restart your PC and try again.
+If Roblox still fails, note the exact error and follow [Roblox's desktop troubleshooting guide](https://en.help.roblox.com/hc/en-us/articles/203312870-General-Desktop-Roblox-Issues), including its firewall and reinstall steps.
+Keep your PC's date and time accurate.
+
+### FIFA and EA SPORTS FC don't start
+
+Use the exact error message to find the matching steps in [EA's Javelin anticheat guide](https://help.ea.com/en/articles/platforms/pc-ea-anticheat/).
+Requirements vary by game; if the error asks for Secure Boot, follow [EA's Secure Boot guidance](https://help.ea.com/en/articles/technical-issues/secure-boot/).
+
+Change one security setting at a time.
+Choosing **Remove Microsoft Defender** during installation is different from turning off protection switches in Windows Security for the installation.
+To bring Microsoft Defender back, follow [Defender](/docs/atlas-configuration/security/#defender), restart and check protection in Windows Security.
+
+### Still having trouble?
+
+When you [ask for help or report a problem](/docs/faq/report-a-problem/), include the game and its version, the launcher, the exact error, your Windows and Atlas versions and your installation choices.
+Say whether the problem started after a game, driver, Windows or Atlas update.
+
+## AtlasOS and eclean
+
+[eclean](https://eclean.gg/) is a Windows maintenance app built by the team behind AtlasOS.
+Atlas changes Windows once, when you install it.
+eclean handles upkeep afterwards: cleaning junk files, managing startup apps and applying optimisations.
+It explains every change before it happens, and supported changes can be undone.
+
+You can install eclean during Atlas installation with **Install eclean**.
+It needs an account and an internet connection.
+
+### Do I need eclean to use AtlasOS?
+
+No.
+Atlas never requires, depends on or checks for eclean.
+
+### Does eclean work on AtlasOS?
+
+Yes.
+Atlas doesn't maintain anything after installation, and eclean is the tool we recommend for ongoing upkeep.
+The two are designed to work alongside each other.
+For built-in tools and other options, see [Maintenance](/docs/essential-setup/maintenance/).
+
+## Microsoft Store
+
+Microsoft Store works as it does on unmodified Windows.
+If it doesn't work, try these steps:
+
+1. Press **Win + R**, enter <CodeInline text="wsreset -i" /> and press **Enter**.
+2. Open Microsoft Store, go to **Library** and choose **Get updates**.
+
+If that doesn't help, run `Fix MS Store Issues.cmd` from the Atlas folder; see [troubleshooting tools](/docs/atlas-configuration/troubleshooting/).

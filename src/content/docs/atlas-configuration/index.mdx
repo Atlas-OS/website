@@ -1,0 +1,105 @@
+---
+title: "Atlas configuration"
+metaDescription: "Change Atlas after installation: the Atlas folder's settings, tweaks, security, advanced and troubleshooting tools, and what Atlas Manager does."
+description: Change your Atlas settings after installation.
+order: 19
+---
+
+import AtlasFolderRestoreLink from '@/components/docs/AtlasFolderRestoreLink.astro';
+import Callout from '@/components/docs/Callout.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+import DirectoryTree from '@/components/docs/DirectoryTree.astro';
+import QuickLinkCard from '@/components/docs/QuickLinkCard.astro';
+import QuickLinksGrid from '@/components/docs/QuickLinksGrid.astro';
+
+This section explains how to change Atlas and Windows settings after you install Atlas.
+Change only what you need; Atlas works without any of these changes.
+
+## Atlas Manager and the Atlas folder
+
+You use two places to manage Atlas after installation:
+
+- **Atlas Manager** shows your installed Atlas version and installation history, and updates or reinstalls Atlas. When you update or reinstall, **Choose again** lets you change your installation choices. Its **Settings** page has **Send a report** and **Export diagnostics**.
+- **The Atlas folder** holds a file for each setting you can change, such as Bluetooth, Windows updates or the context menu. Open it from the **Atlas** shortcut on your desktop or in the Start menu, or go to <CodeInline text="%windir%\AtlasDesktop" />.
+
+<Callout type="info" title="Missing Atlas folder?">
+  If you can't find the Atlas folder, follow <AtlasFolderRestoreLink />.
+</Callout>
+
+## The Atlas folder
+
+<DirectoryTree>
+%windir%\AtlasDesktop
+├── 1. Software
+├── 2. Drivers
+├── 3. General Configuration
+├── 4. Interface Tweaks
+├── 5. Windows Settings
+├── 6. Advanced Configuration
+├── 7. Security
+├── 8. Additional Tools
+└── 9. Troubleshooting
+</DirectoryTree>
+
+Run the file that names the action you want.
+Each file tells you when to restart or sign out.
+A file name ending in <CodeInline text="(default)" /> marks what Atlas applies on a first installation, not what's active on your PC.
+
+## Configuration pages
+
+<QuickLinksGrid columns={{ md: 2 }}>
+  <QuickLinkCard
+    href="/docs/atlas-configuration/atlas-folder/"
+    icon="tabler:folder"
+    title="Atlas folder"
+    description="How the folder is organised and how its files work"
+  />
+
+  <QuickLinkCard
+    href="/docs/atlas-configuration/settings/"
+    icon="tabler:settings"
+    title="Basic settings"
+    description="Windows updates, drivers, AI features, power, privacy and sharing"
+  />
+
+  <QuickLinkCard
+    href="/docs/atlas-configuration/tweaks/"
+    icon="tabler:sparkles"
+    title="Optional tweaks"
+    description="Context menus, File Explorer, keyboard languages and visual effects"
+  />
+
+  <QuickLinkCard
+    href="/docs/atlas-configuration/security/"
+    icon="tabler:shield"
+    title="Security settings"
+    description="Microsoft Defender, processor protections and core isolation"
+  />
+
+  <QuickLinkCard
+    href="/docs/atlas-configuration/advanced/"
+    icon="tabler:code"
+    title="Advanced options"
+    description="Boot settings, services and driver tools for experienced users"
+  />
+
+  <QuickLinkCard
+    href="/docs/atlas-configuration/windows/"
+    icon="tabler:brand-windows"
+    title="Windows settings"
+    description="Shortcuts to common Windows Settings pages"
+  />
+
+  <QuickLinkCard
+    href="/docs/atlas-configuration/troubleshooting/"
+    icon="tabler:first-aid-kit"
+    title="Troubleshooting tools"
+    description="Check Atlas health and repair common problems"
+  />
+</QuickLinksGrid>
+
+<Callout type="warning" title="Change settings with care">
+  Change only settings you understand, one at a time. A wrong setting can break a feature or make
+  Windows unstable. Read the setting's description first, or ask in
+  [Discord](https://discord.com/invite/atlasos-795710270000332800).
+</Callout>

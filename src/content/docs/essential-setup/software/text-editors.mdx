@@ -1,0 +1,67 @@
+---
+title: "Text editors and IDEs"
+metaDescription: "AtlasOS text editors: Notepad++, VS Code, VSCodium, Kate. Code and document editing."
+description: Recommended text editors and IDEs.
+order: 5
+sidebar:
+  label: "Text editors"
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeBlock from '@/components/docs/CodeBlock.astro';
+
+This page lists text editors and IDEs for programming and writing code.
+
+<Callout type="info" title="Writing documents?">
+  For word processing and documents, we suggest using [LibreOffice](https://www.libreoffice.org/) or
+  [OnlyOffice](https://www.onlyoffice.com/) instead of a text editor.
+</Callout>
+
+Windows has Notepad installed by default. If you want something more advanced, consider the options below.
+
+## Notepad++
+
+Notepad++ is more advanced than Notepad. It supports syntax highlighting and code editing, and you can customise it extensively.
+
+<CodeBlock
+  title="Install with winget:"
+  code="winget install -e --id Notepad++.Notepad++"
+/>
+
+[Download Notepad++](https://notepad-plus-plus.org/)
+
+## Visual Studio Code
+
+Visual Studio Code (VS Code) is a feature-rich editor at IDE level. It supports plugins and many programming languages.
+
+<CodeBlock
+  title="Install with winget:"
+  code="winget install -e --id Microsoft.VisualStudioCode"
+/>
+
+[Download Visual Studio Code](https://code.visualstudio.com/) (Microsoft Store also available)
+
+### VSCodium
+
+VSCodium is an open-source version of VS Code without Microsoft branding and telemetry.
+
+<CodeBlock
+  title="Install with winget:"
+  code="winget install -e --id VSCodium.VSCodium"
+/>
+
+## Kate
+
+Kate is a KDE multi-document editor with code folding, syntax highlighting, dynamic word wrap, embedded console, and plugins.
+
+<CodeBlock
+  title="Install with winget:"
+  code="winget install -e --id KDE.Kate"
+/>
+
+[Download Kate](https://apps.microsoft.com/store/detail/9nwmw7bb59hw) (Microsoft Store)
+
+## Next steps
+
+- **[Software overview](/docs/essential-setup/software/):** more recommended apps
+- **[Configure Atlas](/docs/atlas-configuration/):** customise your installation

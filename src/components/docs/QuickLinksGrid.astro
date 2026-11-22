@@ -1,0 +1,40 @@
+---
+interface Props {
+  columns?: { md?: 2 | 3; lg?: 3 };
+  gap?: '4' | '6';
+  marginY?: '6' | '8';
+}
+
+const { columns = { md: 2, lg: 3 }, gap = '4', marginY = '8' } = Astro.props;
+
+const columnClasses = {
+  md: { 2: 'md:grid-cols-2', 3: 'md:grid-cols-3' },
+  lg: { 3: 'lg:grid-cols-3' },
+} as const;
+const gapClasses = { '4': 'gap-4', '6': 'gap-6' } as const;
+const marginClasses = { '6': 'my-6', '8': 'my-8' } as const;
+---
+
+<div
+  class:list={[
+    'quick-links-grid not-prose -mbe-4 grid grid-cols-1 pe-2 pbe-4',
+    columns.md && columnClasses.md[columns.md],
+    columns.lg && columnClasses.lg[columns.lg],
+    gapClasses[gap],
+    marginClasses[marginY],
+  ]}
+>
+  <slot />
+</div>
+
+<style is:global>
+  .quick-links-grid {
+    contain: layout style;
+  }
+
+  :where(.prose) .quick-links-grid + h2:not(.not-prose):not(.not-prose *) {
+    margin-block-start: 3.25rem;
+    padding-block-start: 0;
+    border-block-start: none;
+  }
+</style>

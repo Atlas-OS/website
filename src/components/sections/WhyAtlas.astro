@@ -1,150 +1,159 @@
 ---
-import { Icon } from 'astro-icon/components';
-import SectionTitle from '@/components/common/SectionTitle.astro';
+/**
+ * Why choose AtlasOS: the heading holds its place on the left while the eight reasons pass on the
+ * right, each with a small scene from the hero's night (see why-atlas/WhyVignette.astro) in place of
+ * an icon. Open, like the Features vignettes above it: no panels, just the night behind them.
+ */
+import SectionHeading from '@/components/sections/common/SectionHeading.astro';
+import WhyVignette, { type WhyVignetteKind } from '@/components/sections/why-atlas/WhyVignette.astro';
+import { cssGlow, DAY_PATCH, NIGHT_PATCH } from '@/utils/glow';
+
+/** The patch of night behind each scene, as in Features. */
+const sceneGlow = [
+  `--scene-glow: ${cssGlow(NIGHT_PATCH, 0.34, 'ellipse 50% 50% at 50% 58%')}`,
+  `--scene-glow-day: ${cssGlow(DAY_PATCH, 0.62, 'ellipse 50% 50% at 50% 58%')}`,
+].join('; ');
+
+/*
+ * Each reason is a plain claim and a sentence or two that backs it, checked against the docs
+ * (what Atlas changes, the security and power settings, Windows releases, reverting).
+ */
+const reasons: Array<{ kind: WhyVignetteKind; title: string; description: string }> = [
+  {
+    kind: 'privacy',
+    title: 'Private by default',
+    description:
+      'Atlas turns off Windows telemetry and advertising, and sets policies that limit what Windows collects about you.',
+  },
+  {
+    kind: 'performance',
+    title: 'Less in the background',
+    description:
+      'Atlas turns off background tasks and services you don’t need, so more of your PC goes to what you’re doing. Stability and compatibility come first.',
+  },
+  {
+    kind: 'security',
+    title: 'Security on your terms',
+    description:
+      'Keep Microsoft Defender, processor protections and automatic updates, or turn them off. You choose during setup and can change your mind later.',
+  },
+  {
+    kind: 'usability',
+    title: 'A cleaner Windows',
+    description:
+      'Atlas removes preinstalled apps such as OneDrive and turns off Windows advertising. The parts of Windows your software relies on stay in place.',
+  },
+  {
+    kind: 'updates',
+    title: 'Stays up to date',
+    description:
+      'Windows keeps getting its monthly security updates. When an Atlas update needs a newer Windows release, Atlas Manager moves you to it.',
+  },
+  {
+    kind: 'devices',
+    title: 'For desktops and laptops',
+    description:
+      'Keep power saving on a laptop, or turn it off on a desktop. In internal testing on a Zephyrus laptop, Atlas gave up to 3 hours more battery life.',
+  },
+  {
+    kind: 'open',
+    title: 'Open source',
+    description:
+      'Every script and setting Atlas uses is public on GitHub under GPL-3.0, so you can read exactly what it changes before you install.',
+  },
+  {
+    kind: 'reversible',
+    title: 'Legal and reversible',
+    description:
+      'Atlas never redistributes Windows. It changes the copy you install from Microsoft. To go back, reinstall Windows from Microsoft’s installation media.',
+  },
+];
 ---
 
-<section class="relative mx-auto mt-32 mb-32 max-w-7xl px-4">
-  <div class="mb-16">
-    <SectionTitle>Why AtlasOS?</SectionTitle>
-    <h2 class="mb-6 text-4xl font-semibold tracking-tight text-white md:text-5xl">
-      Why choose <span class="text-primary">AtlasOS</span>?
-    </h2>
-    <p class="max-w-2xl leading-relaxed text-white/70">
-      A lightweight modification of Windows, designed for enthusiasts and anyone alike who desires a trusted, performant
-      experience without sacrificing functionality.
+<section class="why relative mx-auto mbe-32 max-w-7xl px-4" style={sceneGlow}>
+  <div class="why-intro">
+    <SectionHeading near="Why choose AtlasOS?" />
+    <p class="summit-lede" data-animate>
+      What Atlas changes in Windows, and what it leaves alone.
     </p>
   </div>
-  <div class="grid grid-cols-1 gap-0 md:grid-cols-2">
-    <div
-      class="relative py-10 pr-8 after:absolute after:right-0 after:bottom-0 after:left-0 after:h-px after:bg-gradient-to-r after:from-transparent after:via-white/10 after:to-transparent after:content-[''] md:pr-16 md:last:after:hidden md:odd:pr-16 md:odd:before:absolute md:odd:before:top-[20%] md:odd:before:right-0 md:odd:before:bottom-[20%] md:odd:before:w-px md:odd:before:bg-gradient-to-b md:odd:before:from-transparent md:odd:before:via-white/10 md:odd:before:to-transparent md:odd:before:content-[''] md:even:pl-16"
-    >
-      <div class="flex items-start">
-        <div class="mt-0.5 mr-6 flex h-9 w-9 min-w-9 items-center justify-center rounded bg-white/5">
-          <Icon name="tabler:spy-off" class="h-5 w-5 text-white/80" />
-        </div>
-        <div>
-          <h3 class="mb-3 text-xl font-semibold text-white">Enhanced privacy by design</h3>
-          <p class="leading-relaxed text-white/70">
-            Reduces Windows telemetry & data collection by disabling services & implementing privacy-focused policies
-            for minimal data sharing.
-          </p>
-        </div>
-      </div>
-    </div>
 
-    <div
-      class="relative py-10 pr-8 after:absolute after:right-0 after:bottom-0 after:left-0 after:h-px after:bg-gradient-to-r after:from-transparent after:via-white/10 after:to-transparent after:content-[''] md:pr-16 md:last:after:hidden md:odd:pr-16 md:odd:before:absolute md:odd:before:top-[20%] md:odd:before:right-0 md:odd:before:bottom-[20%] md:odd:before:w-px md:odd:before:bg-gradient-to-b md:odd:before:from-transparent md:odd:before:via-white/10 md:odd:before:to-transparent md:odd:before:content-[''] md:even:pl-16"
-    >
-      <div class="flex items-start">
-        <div class="mt-0.5 mr-6 flex h-9 w-9 min-w-9 items-center justify-center rounded bg-white/5">
-          <Icon name="tabler:gauge" class="h-5 w-5 text-white/80" />
+  <ul class="why-list">
+    {reasons.map((reason) => (
+      <li class="why-item" data-animate>
+        <div class="why-scene">
+          <WhyVignette kind={reason.kind} />
         </div>
-        <div>
-          <h3 class="mb-3 text-xl font-semibold text-white">Optimized performance</h3>
-          <p class="leading-relaxed text-white/70">
-            Implements meaningful enhancements for responsiveness & low latency without sacrificing stability or
-            compatibility.
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div
-      class="relative py-10 pr-8 after:absolute after:right-0 after:bottom-0 after:left-0 after:h-px after:bg-gradient-to-r after:from-transparent after:via-white/10 after:to-transparent after:content-[''] md:pr-16 md:last:after:hidden md:odd:pr-16 md:odd:before:absolute md:odd:before:top-[20%] md:odd:before:right-0 md:odd:before:bottom-[20%] md:odd:before:w-px md:odd:before:bg-gradient-to-b md:odd:before:from-transparent md:odd:before:via-white/10 md:odd:before:to-transparent md:odd:before:content-[''] md:even:pl-16"
-    >
-      <div class="flex items-start">
-        <div class="mt-0.5 mr-6 flex h-9 w-9 min-w-9 items-center justify-center rounded bg-white/5">
-          <Icon name="tabler:shield-check" class="h-5 w-5 text-white/80" />
-        </div>
-        <div>
-          <h3 class="mb-3 text-xl font-semibold text-white">Flexible security</h3>
-          <p class="leading-relaxed text-white/70">
-            Customize security settings like Defender & SmartScreen. Balance protection and performance to your
-            preference.
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div
-      class="relative py-10 pr-8 after:absolute after:right-0 after:bottom-0 after:left-0 after:h-px after:bg-gradient-to-r after:from-transparent after:via-white/10 after:to-transparent after:content-[''] md:pr-16 md:last:after:hidden md:odd:pr-16 md:odd:before:absolute md:odd:before:top-[20%] md:odd:before:right-0 md:odd:before:bottom-[20%] md:odd:before:w-px md:odd:before:bg-gradient-to-b md:odd:before:from-transparent md:odd:before:via-white/10 md:odd:before:to-transparent md:odd:before:content-[''] md:even:pl-16"
-    >
-      <div class="flex items-start">
-        <div class="mt-0.5 mr-6 flex h-9 w-9 min-w-9 items-center justify-center rounded bg-white/5">
-          <Icon name="tabler:feather" class="h-5 w-5 text-white/80" />
-        </div>
-        <div>
-          <h3 class="mb-3 text-xl font-semibold text-white">Streamlined usability</h3>
-          <p class="leading-relaxed text-white/70">
-            Removes bloatware & ads for a cleaner, faster interface configured for optimal user experience.
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div
-      class="relative py-10 pr-8 after:absolute after:right-0 after:bottom-0 after:left-0 after:h-px after:bg-gradient-to-r after:from-transparent after:via-white/10 after:to-transparent after:content-[''] md:pr-16 md:last:after:hidden md:odd:pr-16 md:odd:before:absolute md:odd:before:top-[20%] md:odd:before:right-0 md:odd:before:bottom-[20%] md:odd:before:w-px md:odd:before:bg-gradient-to-b md:odd:before:from-transparent md:odd:before:via-white/10 md:odd:before:to-transparent md:odd:before:content-[''] md:even:pl-16"
-    >
-      <div class="flex items-start">
-        <div class="mt-0.5 mr-6 flex h-9 w-9 min-w-9 items-center justify-center rounded bg-white/5">
-          <Icon name="tabler:refresh-alert" class="h-5 w-5 text-white/80" />
-        </div>
-        <div>
-          <h3 class="mb-3 text-xl font-semibold text-white">Stays up-to-date</h3>
-          <p class="leading-relaxed text-white/70">
-            Applies security patches and cumulative updates. Feature updates skipped to preserve optimizations.
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div
-      class="relative py-10 pr-8 after:absolute after:right-0 after:bottom-0 after:left-0 after:h-px after:bg-gradient-to-r after:from-transparent after:via-white/10 after:to-transparent after:content-[''] md:pr-16 md:last:after:hidden md:odd:pr-16 md:odd:before:absolute md:odd:before:top-[20%] md:odd:before:right-0 md:odd:before:bottom-[20%] md:odd:before:w-px md:odd:before:bg-gradient-to-b md:odd:before:from-transparent md:odd:before:via-white/10 md:odd:before:to-transparent md:odd:before:content-[''] md:even:pl-16"
-    >
-      <div class="flex items-start">
-        <div class="mt-0.5 mr-6 flex h-9 w-9 min-w-9 items-center justify-center rounded bg-white/5">
-          <Icon name="tabler:devices" class="h-5 w-5 text-white/80" />
-        </div>
-        <div>
-          <h3 class="mb-3 text-xl font-semibold text-white">For both desktops & laptops</h3>
-          <p class="leading-relaxed text-white/70">
-            Configure power-saving features for up to 3 hours extra battery life (internally tested on a Zephyrus
-            laptop).
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div
-      class="relative py-10 pr-8 md:pr-16 md:odd:pr-16 md:odd:before:absolute md:odd:before:top-[20%] md:odd:before:right-0 md:odd:before:bottom-[20%] md:odd:before:w-px md:odd:before:bg-gradient-to-b md:odd:before:from-transparent md:odd:before:via-white/10 md:odd:before:to-transparent md:odd:before:content-[''] md:even:pl-16"
-    >
-      <div class="flex items-start">
-        <div class="mt-0.5 mr-6 flex h-9 w-9 min-w-9 items-center justify-center rounded bg-white/5">
-          <Icon name="tabler:code" class="h-5 w-5 text-white/80" />
-        </div>
-        <div>
-          <h3 class="mb-3 text-xl font-semibold text-white">Open & transparent</h3>
-          <p class="leading-relaxed text-white/70">
-            Fully open-source using transparent, with many stargazers on GitHub. Audit and customize everything.
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div
-      class="relative py-10 pr-8 md:pr-16 md:odd:pr-16 md:odd:before:absolute md:odd:before:top-[20%] md:odd:before:right-0 md:odd:before:bottom-[20%] md:odd:before:w-px md:odd:before:bg-gradient-to-b md:odd:before:from-transparent md:odd:before:via-white/10 md:odd:before:to-transparent md:odd:before:content-[''] md:even:pl-16"
-    >
-      <div class="flex items-start">
-        <div class="mt-0.5 mr-6 flex h-9 w-9 min-w-9 items-center justify-center rounded bg-white/5">
-          <Icon name="tabler:scale" class="h-5 w-5 text-white/80" />
-        </div>
-        <div>
-          <h3 class="mb-3 text-xl font-semibold text-white">Legal & reversible</h3>
-          <p class="leading-relaxed text-white/70">
-            Complies with Microsoft's terms (no ISO redistribution). Peace of mind when using AtlasOS.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
+        <h3>{reason.title}</h3>
+        <p>{reason.description}</p>
+      </li>
+    ))}
+  </ul>
 </section>
+
+<style>
+  .why {
+    display: grid;
+    gap: 4rem;
+  }
+
+  .why-intro .summit-lede {
+    margin-block-start: 1.5rem;
+    max-width: 30rem;
+  }
+
+  .why-list {
+    display: grid;
+    gap: 3.5rem;
+  }
+  @media (min-width: 640px) {
+    .why-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 3.5rem 3rem;
+    }
+  }
+
+  /* A soft patch of night behind each scene, as in Features: a glow, never a box. */
+  .why-scene {
+    position: relative;
+    width: fit-content;
+    margin-block-end: 1.25rem;
+  }
+  .why-scene::before {
+    content: '';
+    position: absolute;
+    inset-block: -22% -4%;
+    inset-inline: -14%;
+    z-index: -1;
+    background: var(--scene-glow);
+  }
+
+  .why-item h3 {
+    margin-block-end: 0.5rem;
+    color: var(--color-fg);
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .why-item p {
+    max-width: 24rem;
+    color: var(--summit-text-muted);
+    line-height: 1.7;
+  }
+
+  /* Wide screens: the heading keeps its place while the reasons pass it. */
+  @media (min-width: 1024px) {
+    .why {
+      grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+      gap: 4rem;
+      align-items: start;
+    }
+    .why-intro {
+      position: sticky;
+      inset-block-start: 7rem;
+    }
+    .why-list {
+      gap: 4rem 4rem;
+    }
+  }
+</style>

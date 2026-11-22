@@ -1,0 +1,64 @@
+---
+title: "Reverting Atlas"
+metaDescription: "Remove Atlas with a clean Windows installation from Microsoft's media. Prepare backups, drivers and the right installation drive."
+description: Remove Atlas and return to standard Windows.
+order: 33
+---
+
+import Callout from '@/components/docs/Callout.astro';
+
+To remove Atlas, do a **clean installation of Windows from Microsoft's installation media**.
+**Reset this PC**, an in-place repair and deleting Atlas Manager don't undo all of Atlas's changes.
+
+<Callout type="warning" title="Use Microsoft's media">
+  An ISO or USB drive created by Atlas Manager installs Atlas too.
+  Use Microsoft's Windows media for this process, or Atlas setup starts again after Windows is installed.
+</Callout>
+
+If you want to keep Atlas and fix a problem, start with [troubleshooting](/docs/faq/installation/) or [report the problem](/docs/faq/report-a-problem/).
+To reinstall Atlas instead, follow the [installation guide](/docs/install/).
+
+## 1. Prepare your backup
+
+Copy personal files, game saves, app settings and any recovery keys you need to storage outside the installation drive.
+Open a few of the backed-up files to check them.
+A restore point doesn't replace this backup.
+
+Note your Windows edition and activation status in **Settings** > **System** > **Activation**.
+Reinstall the edition your licence covers, and keep access to any accounts and app licences you need afterwards.
+
+Download the network driver for your exact PC or motherboard from its maker's support page and save it separately.
+Choose the package that matches your Windows architecture; you don't need every listed version.
+See [network drivers](/docs/essential-setup/drivers/network/).
+
+## 2. Create Windows installation media
+
+Use [Microsoft's installation media guide](https://support.microsoft.com/en-us/windows/deployment/install-upgrade/create-installation-media-for-windows) and official downloads.
+Check **Settings** > **System** > **About** > **System type** to choose the right architecture.
+
+Use an empty USB drive that meets the tool's requirements.
+Creating installation media erases the drive, so keep your backup on another one.
+
+## 3. Start a clean installation
+
+Start the PC from the USB drive and follow the **clean installation** section of [Microsoft's reinstall guide](https://support.microsoft.com/en-us/windows/deployment/install-upgrade/reinstall-windows-with-the-installation-media).
+
+<Callout type="danger" title="Check the destination drive">
+  Deleting partitions erases their contents.
+  Identify the Windows drive by its size and details before you delete anything; a disk number alone doesn't identify it.
+  If you can't identify it with confidence, stop before you change partitions.
+</Callout>
+
+Disconnect your backup storage before you start.
+Where you can, disconnect other drives too, so you can't select the wrong one.
+Follow your PC maker's instructions for opening its boot menu.
+
+## 4. Complete Windows setup
+
+Follow the account, network and privacy prompts on screen.
+They vary by Windows edition and release, so follow the ones your installation media shows.
+
+At the desktop, check activation, install Windows updates and the drivers you need, then restore your files and apps.
+See [Microsoft's driver update instructions](https://support.microsoft.com/en-us/windows/hardware/drivers/automatically-get-recommended-and-updated-hardware-drivers).
+
+Your PC now runs standard Windows.

@@ -1,0 +1,609 @@
+---
+/**
+ * The Atlas range at night, as the stage the Atlas Manager window stands on.
+ *
+ * It sits behind the window inside `.manager-window`, a size container, and is measured in the
+ * window's own units (`--u` px per unit; the window spans x −400…400, y 0…604). The ranges run
+ * the full width of the page behind the window; the summit, moon and flag stand to its left (clear of
+ * the page's fixed Ask AI button), the camp to its right, and the near ground turns into the page's colour as the stage dissolves.
+ *
+ * Server-rendered SVG: complete without JavaScript, and static under reduced motion. The arrival
+ * (ranges settle, the moon rises behind the summit) starts when utils/hero-summit.ts sees the
+ * summit come into view; loops pause off screen.
+ */
+import SummitCamp from '@/components/sections/hero/SummitCamp.astro';
+import {
+  contourPaths,
+  FOG,
+  FOG_TILE,
+  HILL_PINES,
+  LANTERN_TRACK,
+  MOON,
+  PINES,
+  RIDGES,
+  SNOWCAPS,
+  stageFadeMask,
+  STAGE_VIEW,
+  STAGE_VIEWBOX,
+  SUMMIT,
+  WINDOW,
+} from '@/utils/hero-summit-geometry';
+
+const contours = contourPaths();
+const stageTop = -STAGE_VIEW.y;
+/** Stage box size and its fade into the page, all derived from the stage geometry. */
+const stageStyle = `--stage-top: ${stageTop}; --stage-h: ${STAGE_VIEW.height}; --stage-fade: ${stageFadeMask()}`;
+
+/** Place a box in stage units: x from the window's centre line, y from the window's top edge. */
+const place = (x: number, y: number, w: number, h: number) =>
+  `--x: ${Math.round(x * 10) / 10}; --y: ${Math.round(y * 10) / 10}; --w: ${Math.round(w * 10) / 10}; --h: ${Math.round(h * 10) / 10}`;
+
+const MOON_HALO = 240;
+const moonView = `${MOON.cx - MOON_HALO} ${MOON.cy - MOON_HALO} ${MOON_HALO * 2} ${MOON_HALO * 2}`;
+const moonBox = place(MOON.cx - MOON_HALO, MOON.cy - MOON_HALO, MOON_HALO * 2, MOON_HALO * 2);
+
+/** The flag's pole rises this far above the apex. */
+const FLAG_POLE = 46;
+const flagBox = place(SUMMIT.apex[0] - 2, SUMMIT.apex[1] - FLAG_POLE, 40, FLAG_POLE + 2);
+const lanternBox = place(LANTERN_TRACK.x, LANTERN_TRACK.y, LANTERN_TRACK.width, LANTERN_TRACK.height);
+
+/** Fog bands: three copies of a tile, so drifting left by one tile loops seamlessly. */
+const fogBands = {
+  far: { ...FOG.far, fill: '#7090C8', opacity: 0.1, drift: '300s' },
+  mid: { ...FOG.mid, fill: '#8FB0E6', opacity: 0.13, drift: '220s' },
+};
+const fogBox = (band: { top: number; height: number }) => place(STAGE_VIEW.x, band.top, FOG_TILE * 3, band.height);
+
+/** The window's own light, falling faintly on the fog just below it. */
+const reflectionBox = place(-WINDOW.width * 0.55, WINDOW.height - 8, WINDOW.width * 1.1, 120);
+---
+
+<div class="summit-stage" style={stageStyle} aria-hidden="true">
+  <!--
+    Two depths that rise into place on arrival (see the styles). Everything behind the summit is in
+    the back; the summit moves with everything in front of it, so the hills that hide its base never
+    uncover it.
+  -->
+  <div class="stage-depth stage-depth--back">
+    <!-- Horizon glow: the sky's own light, behind the moon and every range -->
+    <svg class="stage-layer" viewBox={STAGE_VIEWBOX} preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <radialGradient
+          id="stage-horizon"
+          cx="0"
+          cy="70"
+          r="1600"
+          gradientUnits="userSpaceOnUse"
+          gradientTransform="translate(0 52.5) scale(1 0.25)"
+        >
+          <stop offset="0" stop-color="#2D5196" stop-opacity="0.6"></stop>
+          <stop offset="0.55" stop-color="#22407A" stop-opacity="0.25"></stop>
+          <stop offset="1" stop-color="#22407A" stop-opacity="0"></stop>
+        </radialGradient>
+      </defs>
+      <ellipse cx="0" cy="70" rx="1600" ry="400" fill="url(#stage-horizon)"></ellipse>
+    </svg>
+
+    <!-- The moon: behind every range, so it rises from behind the far mountains -->
+    <div class="stage-shift">
+      <div class="stage-place stage-moon-rise" style={moonBox} data-summit-cue>
+        <svg class="stage-fill" viewBox={moonView}>
+          <defs>
+            <radialGradient id="stage-moon-halo" cx={MOON.cx} cy={MOON.cy} r={MOON_HALO} gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#A9CBFF" stop-opacity="0.4"></stop>
+              <stop offset="0.32" stop-color="#5E94F0" stop-opacity="0.14"></stop>
+              <stop offset="1" stop-color="#3A6FD0" stop-opacity="0"></stop>
+            </radialGradient>
+            <clipPath id="stage-moon-disc">
+              <circle cx={MOON.cx} cy={MOON.cy} r={MOON.r}></circle>
+            </clipPath>
+          </defs>
+          <circle cx={MOON.cx} cy={MOON.cy} r={MOON_HALO} fill="url(#stage-moon-halo)"></circle>
+          <circle cx={MOON.cx} cy={MOON.cy} r={MOON.r} fill="#DDEBFF"></circle>
+          <g clip-path="url(#stage-moon-disc)">
+            <circle cx={MOON.cx + 18} cy={MOON.cy + 13} r={MOON.r} fill="#C3D8F7"></circle>
+            <circle cx={MOON.cx + 12} cy={MOON.cy - 15} r="7.5" fill="#B5CDF2"></circle>
+            <circle cx={MOON.cx - 5} cy={MOON.cy + 17} r="5" fill="#B1C9EF"></circle>
+            <circle cx={MOON.cx + 25} cy={MOON.cy + 7} r="4" fill="#A9C3EC"></circle>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <!-- The far range: hazy, low contrast, etched with faint contours -->
+    <svg class="stage-layer" viewBox={STAGE_VIEWBOX} preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="stage-far-fill" x1="0" x2="0" y1="-40" y2="320" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#344F80"></stop>
+          <stop offset="1" stop-color="#25406E"></stop>
+        </linearGradient>
+        <linearGradient id="stage-contour" x1="0" x2="0" y1="-30" y2="240" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#C2DAFF" stop-opacity="0.13"></stop>
+          <stop offset="1" stop-color="#C2DAFF" stop-opacity="0"></stop>
+        </linearGradient>
+        <radialGradient id="stage-rim-far" cx={MOON.cx} cy={MOON.cy} r="1500" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#DDEBFF" stop-opacity="0.55"></stop>
+          <stop offset="0.5" stop-color="#9CC4FF" stop-opacity="0.2"></stop>
+          <stop offset="1" stop-color="#6E9DE8" stop-opacity="0.08"></stop>
+        </radialGradient>
+        <clipPath id="stage-far-clip">
+          <path d={RIDGES.far.shape}></path>
+        </clipPath>
+      </defs>
+      <path d={RIDGES.far.shape} fill="url(#stage-far-fill)"></path>
+      {SNOWCAPS.map((d) => (
+        <path d={d} fill="#7392C8" fill-opacity="0.4" />
+      ))}
+      <g clip-path="url(#stage-far-clip)" fill="none" stroke="url(#stage-contour)">
+        {contours.map((d) => (
+          <path d={d} stroke-width="1" vector-effect="non-scaling-stroke" />
+        ))}
+      </g>
+      <path
+        d={RIDGES.far.edge}
+        fill="none"
+        stroke="url(#stage-rim-far)"
+        stroke-width="1"
+        stroke-linejoin="round"
+        vector-effect="non-scaling-stroke"
+      ></path>
+    </svg>
+
+    <div class="stage-place stage-fog-band--far" style={fogBox(fogBands.far)}>
+      <svg
+        class="stage-fill stage-fog summit-loop"
+        style={`--drift: ${fogBands.far.drift}`}
+        viewBox={`0 ${fogBands.far.top} ${FOG_TILE * 3} ${fogBands.far.height}`}
+        preserveAspectRatio="none"
+      >
+        <defs>
+          <linearGradient id="stage-fog-far-fill" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0.35" stop-color={fogBands.far.fill} stop-opacity={fogBands.far.opacity} />
+            <stop offset="1" stop-color={fogBands.far.fill} stop-opacity="0" />
+          </linearGradient>
+        </defs>
+        <path id="stage-fog-far" d={fogBands.far.d} fill="url(#stage-fog-far-fill)"></path>
+        <use href="#stage-fog-far" x={FOG_TILE}></use>
+        <use href="#stage-fog-far" x={FOG_TILE * 2}></use>
+      </svg>
+    </div>
+
+    <!-- Back range -->
+    <svg class="stage-layer" viewBox={STAGE_VIEWBOX} preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <radialGradient id="stage-rim-back" cx={MOON.cx} cy={MOON.cy} r="1400" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#E6F1FF" stop-opacity="0.75"></stop>
+          <stop offset="0.45" stop-color="#9CC4FF" stop-opacity="0.28"></stop>
+          <stop offset="1" stop-color="#6E9DE8" stop-opacity="0.1"></stop>
+        </radialGradient>
+      </defs>
+      <path d={RIDGES.back.shape} fill="#1D3363"></path>
+      <path
+        d={RIDGES.back.edge}
+        fill="none"
+        stroke="url(#stage-rim-back)"
+        stroke-width="1"
+        stroke-linejoin="round"
+        vector-effect="non-scaling-stroke"
+      ></path>
+    </svg>
+  </div>
+
+  <div class="stage-depth stage-depth--front">
+    <!-- The summit: the Atlas mark, its slopes carried down into the hills, beside the window -->
+    <div class="stage-shift">
+      <div class="stage-fill">
+        <svg class="stage-layer" viewBox={STAGE_VIEWBOX} preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <radialGradient id="stage-rim-peak" cx={MOON.cx} cy={MOON.cy} r="300" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#F2F8FF"></stop>
+              <stop offset="0.45" stop-color="#A8CBFF" stop-opacity="0.6"></stop>
+              <stop offset="1" stop-color="#6E9DE8" stop-opacity="0.12"></stop>
+            </radialGradient>
+          </defs>
+          <!-- The mark's slopes run down into the hills: two faces, a snowcap, and the notch carved into them -->
+          <path d={SUMMIT.markLit} fill="#22427F"></path>
+          <path d={SUMMIT.markShade} fill="#193466"></path>
+          <path d={SUMMIT.capLit} fill="#7393CF"></path>
+          <path d={SUMMIT.capShade} fill="#4B69A7"></path>
+          <path d={SUMMIT.notch} fill="#081736" fill-opacity="0.7"></path>
+          <path
+            d={SUMMIT.notchCeiling}
+            fill="none"
+            stroke="#040C20"
+            stroke-opacity="0.55"
+            stroke-width="1"
+            stroke-linejoin="round"
+            vector-effect="non-scaling-stroke"
+          ></path>
+          <path
+            d={SUMMIT.notchFloor}
+            fill="none"
+            stroke="#B9D6FF"
+            stroke-opacity="0.38"
+            stroke-width="1"
+            vector-effect="non-scaling-stroke"
+          ></path>
+          <path
+            d={SUMMIT.markEdge}
+            fill="none"
+            stroke="url(#stage-rim-peak)"
+            stroke-width="1.5"
+            stroke-linejoin="round"
+            vector-effect="non-scaling-stroke"
+          ></path>
+        </svg>
+
+        <div class="stage-place stage-flag" style={flagBox} data-summit-flag>
+          <svg class="stage-fill" viewBox={`0 0 40 ${FLAG_POLE + 2}`}>
+            <rect x="0.7" y="0" width="2.6" height={FLAG_POLE + 2} rx="1.3" fill="#0B1630"></rect>
+            <circle cx="2" cy="1.5" r="2.2" fill="#0B1630"></circle>
+          </svg>
+          <div class="stage-flag__cloth">
+            <svg class="stage-flag__wave summit-loop" viewBox="0 0 30 18" preserveAspectRatio="none">
+              <path d="M0 0H30L23 9L30 18H0Z" fill="#2B9BFF"></path>
+              <path d="M0 0H30L27.9 2.7H0Z" fill="#8CCBFF"></path>
+            </svg>
+          </div>
+        </div>
+
+        <div class="stage-place" style={lanternBox}>
+          <span class="stage-lantern summit-loop"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="stage-place" style={fogBox(fogBands.mid)}>
+      <svg
+        class="stage-fill stage-fog stage-fog--reverse summit-loop"
+        style={`--drift: ${fogBands.mid.drift}`}
+        viewBox={`0 ${fogBands.mid.top} ${FOG_TILE * 3} ${fogBands.mid.height}`}
+        preserveAspectRatio="none"
+      >
+        <defs>
+          <linearGradient id="stage-fog-mid-fill" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0.35" stop-color={fogBands.mid.fill} stop-opacity={fogBands.mid.opacity} />
+            <stop offset="1" stop-color={fogBands.mid.fill} stop-opacity="0" />
+          </linearGradient>
+        </defs>
+        <path id="stage-fog-mid" d={fogBands.mid.d} fill="url(#stage-fog-mid-fill)"></path>
+        <use href="#stage-fog-mid" x={FOG_TILE}></use>
+        <use href="#stage-fog-mid" x={FOG_TILE * 2}></use>
+      </svg>
+    </div>
+
+    <!-- Hills, and the near range with pines -->
+    <svg class="stage-layer" viewBox={STAGE_VIEWBOX} preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <radialGradient id="stage-rim-near" cx={MOON.cx} cy={MOON.cy} r="1500" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#C9DFFF" stop-opacity="0.4"></stop>
+          <stop offset="0.5" stop-color="#7FAAF0" stop-opacity="0.16"></stop>
+          <stop offset="1" stop-color="#5F8BD8" stop-opacity="0.06"></stop>
+        </radialGradient>
+        <!--
+          The near ground turns into the page's own colour on its way down, so by the time the stage
+          fades out there is nothing left to tint the page: the land simply becomes the page.
+        -->
+        <linearGradient id="stage-near-fill" x1="0" x2="0" y1="560" y2="720" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#0B1428"></stop>
+          <stop offset="1" style="stop-color: var(--bg-primary)"></stop>
+        </linearGradient>
+      </defs>
+      <!-- Each row of pines stands just behind its ridge: drawn first, so the ridge hides their feet. -->
+      <path d={HILL_PINES} fill="#0F1F42"></path>
+      <path d={RIDGES.hills.shape} fill="#13264D"></path>
+      <path
+        d={RIDGES.hills.edge}
+        fill="none"
+        stroke="url(#stage-rim-near)"
+        stroke-width="1"
+        vector-effect="non-scaling-stroke"
+      ></path>
+      {PINES.map((d) => (
+        <path d={d} fill="#0B1428" />
+      ))}
+      <path d={RIDGES.near.shape} fill="url(#stage-near-fill)"></path>
+      <path
+        d={RIDGES.near.edge}
+        fill="none"
+        stroke="url(#stage-rim-near)"
+        stroke-width="1"
+        vector-effect="non-scaling-stroke"
+      ></path>
+    </svg>
+
+    <div class="stage-camp">
+      <SummitCamp />
+    </div>
+
+    <div class="stage-place stage-reflection" style={reflectionBox}></div>
+  </div>
+</div>
+
+<style>
+  /*
+   * `100cqw` is the window's width (`.manager-window` is the container), so one unit tracks the
+   * window at every size. The box is full-bleed, centred on the window, and reaches 260 units
+   * above its top edge and 280 below its bottom edge.
+   */
+  .summit-stage {
+    --u: calc(100cqw / 800);
+    position: absolute;
+    inset-inline-start: 50%;
+    inset-block-start: calc(var(--u) * var(--stage-top) * -1);
+    z-index: 0;
+    width: 100vw;
+    height: calc(var(--u) * var(--stage-h));
+    margin-inline-start: -50vw;
+    overflow: clip;
+    pointer-events: none;
+    user-select: none;
+    /*
+     * The whole stage fades out over its last 284 units on an eased alpha ramp, so the page's own
+     * background is the last thing showing: no colour to match, no step, no edge.
+     */
+    mask-image: var(--stage-fade);
+  }
+
+  .stage-layer,
+  .stage-fill {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .stage-place {
+    position: absolute;
+    inset-inline-start: calc(50% + var(--u) * var(--x));
+    inset-block-start: calc(var(--u) * (var(--y) + var(--stage-top)));
+    width: calc(var(--u) * var(--w));
+    height: calc(var(--u) * var(--h));
+  }
+
+  .stage-depth,
+  .stage-shift,
+  .stage-camp {
+    position: absolute;
+    inset: 0;
+  }
+
+  .stage-fog {
+    overflow: visible;
+  }
+
+  .stage-flag__cloth {
+    position: absolute;
+    inset-inline-start: calc(100% * 3.2 / 40);
+    inset-block-start: calc(100% * 1 / 48);
+    width: calc(100% * 30 / 40);
+    height: calc(100% * 18 / 48);
+    transform-origin: 0 50%;
+  }
+  .stage-flag__wave {
+    display: block;
+    width: 100%;
+    height: 100%;
+    transform-origin: 0 50%;
+  }
+
+  /*
+   * Easter egg (utils/hero-fireworks.ts): once its script is ready the flag takes clicks, with a
+   * little extra room around it. Clicking lowers the cloth down the pole (by `translate`, so it never
+   * fights the unfurl and flutter transforms) for the fireworks, then raises it again. Pressing the
+   * flag gathers the cloth in a little towards the pole (by `scale`, for the same reason).
+   */
+  :global([data-flag-ready]) .stage-flag {
+    pointer-events: auto;
+    cursor: pointer;
+  }
+  :global([data-flag-ready]) .stage-flag::before {
+    content: '';
+    position: absolute;
+    inset-block: -10px -4px;
+    inset-inline: -6px;
+  }
+  :global([data-flag-ready]) .stage-flag:active .stage-flag__cloth {
+    scale: 0.96;
+  }
+  :global([data-flag-lowered]) .stage-flag__cloth {
+    translate: 0 150%;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .stage-flag__cloth {
+      transition:
+        translate 700ms cubic-bezier(0.22, 1, 0.36, 1),
+        scale 160ms var(--motion-ease-out);
+    }
+    :global([data-flag-lowered]) .stage-flag__cloth {
+      transition:
+        translate 600ms cubic-bezier(0.55, 0, 0.75, 0.2),
+        scale 160ms var(--motion-ease-out);
+    }
+  }
+
+  /*
+   * The lantern's box is the bounding box of the summit's notch, and it moves by percentages of
+   * itself, so the route below is the same at every size. At rest it waits at the notch's peak.
+   */
+  .stage-lantern {
+    position: absolute;
+    inset: 0;
+    transform: translate(68.32%, 0%);
+  }
+  .stage-lantern::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: 0;
+    width: max(3px, calc(var(--u) * 5));
+    aspect-ratio: 1;
+    border-radius: 50%;
+    translate: -50% -50%;
+    background: oklch(0.937 0.06 81.6);
+    box-shadow:
+      0 0 5px 1px oklch(0.8565 0.1236 75.19 / 0.6),
+      0 0 14px 4px oklch(0.805 0.144 64.5 / 0.2);
+  }
+
+  .stage-reflection {
+    background: radial-gradient(ellipse 50% 60% at 50% 0%, oklch(0.797 0.103 259.9 / 0.18), transparent 100%);
+  }
+
+  /* Narrower desktops: the summit slides towards the window, partly behind its edge, leaving room for the camp. */
+  @media (max-width: 1439px) {
+    .stage-shift {
+      translate: calc(var(--u) * 90) 0;
+    }
+  }
+
+  /* Phones: the window fills the width, so the summit peeks over its top-left corner. */
+  @media (max-width: 767px) {
+    .stage-shift {
+      translate: calc(var(--u) * 250) calc(var(--u) * -64);
+    }
+    .stage-lantern,
+    .stage-fog-band--far {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /*
+     * Arrival. The stage fades in as one flattened image, so no range is ever see-through, while
+     * its two depths rise into place by transform alone: the back a little further than the front,
+     * for depth. The moonrise waits, paused on its first frame, until the summit is in view.
+     */
+    .summit-stage {
+      animation: stage-reveal 1100ms cubic-bezier(0.33, 1, 0.68, 1) backwards;
+    }
+    .stage-depth--back {
+      animation: stage-rise-back 2000ms cubic-bezier(0.23, 1, 0.32, 1) backwards;
+    }
+    .stage-depth--front {
+      animation: stage-rise-front 1800ms cubic-bezier(0.23, 1, 0.32, 1) 60ms backwards;
+    }
+    :global(html[data-motion]) .stage-moon-rise {
+      animation: stage-moonrise 2800ms cubic-bezier(0.23, 1, 0.32, 1) 700ms backwards paused;
+    }
+    :global(html[data-motion]) .stage-flag__cloth {
+      animation: stage-unfurl 900ms cubic-bezier(0.23, 1, 0.32, 1) 2500ms backwards paused;
+    }
+    :global(html[data-motion] [data-summit-play]) .stage-moon-rise,
+    :global(html[data-motion] [data-summit-play]) .stage-flag__cloth {
+      animation-play-state: running;
+    }
+
+    /* Ambient loops, all slow. */
+    .stage-fog {
+      animation: stage-drift var(--drift) linear infinite;
+    }
+    .stage-fog--reverse {
+      animation-direction: reverse;
+    }
+    .stage-flag__wave {
+      animation: stage-flutter 1.9s ease-in-out infinite;
+    }
+    .stage-lantern {
+      animation: summit-lantern 28s linear 3200ms infinite backwards;
+    }
+
+    :global([data-summit-paused]) .summit-loop {
+      animation-play-state: paused;
+    }
+  }
+
+  @keyframes stage-reveal {
+    from {
+      opacity: 0;
+    }
+  }
+
+  /* Both depths close down past the stage's foot, so rising never opens a gap inside the fade. */
+  @keyframes stage-rise-back {
+    from {
+      transform: translate3d(0, 3%, 0);
+    }
+  }
+
+  @keyframes stage-rise-front {
+    from {
+      transform: translate3d(0, 1.5%, 0);
+    }
+  }
+
+  @keyframes stage-moonrise {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 22%, 0);
+    }
+    30% {
+      opacity: 1;
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes stage-unfurl {
+    from {
+      opacity: 0;
+      transform: scaleX(0.15) skewY(14deg);
+    }
+  }
+
+  @keyframes stage-drift {
+    to {
+      transform: translate3d(-33.3333%, 0, 0);
+    }
+  }
+
+  @keyframes stage-flutter {
+    0%,
+    100% {
+      transform: skewY(0deg) scaleX(1);
+    }
+    22% {
+      transform: skewY(-6deg) scaleX(0.9);
+    }
+    48% {
+      transform: skewY(3deg) scaleX(1);
+    }
+    74% {
+      transform: skewY(-3deg) scaleX(0.94);
+    }
+  }
+
+  /* Traces the mark's notch: along the lower ledge, up to its peak, down and out along the upper ledge.
+     Keyframe times are proportional to each segment's length (see lanternRoute, which the tests pin). */
+  @keyframes summit-lantern {
+    0% {
+      opacity: 0;
+      transform: translate(0%, 100%);
+    }
+    5% {
+      opacity: 1;
+      transform: translate(0%, 100%);
+    }
+    38.42% {
+      transform: translate(100%, 100%);
+    }
+    59.78% {
+      transform: translate(68.32%, 0%);
+    }
+    68.76% {
+      transform: translate(55.01%, 42.01%);
+    }
+    81% {
+      opacity: 1;
+      transform: translate(18.38%, 42.01%);
+    }
+    86%,
+    100% {
+      opacity: 0;
+      transform: translate(18.38%, 42.01%);
+    }
+  }
+</style>

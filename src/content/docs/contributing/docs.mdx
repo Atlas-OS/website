@@ -1,0 +1,88 @@
+---
+title: "Contributing to documentation"
+metaDescription: "Contribute to the AtlasOS docs: local setup, Astro preview, house style and project structure."
+description: Contribute to AtlasOS documentation.
+order: 42
+sidebar:
+  label: "Documentation"
+---
+
+import Callout from '@/components/docs/Callout.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+
+This guide is for contributors who want to edit and preview the Atlas documentation locally.
+Read the [contribution guide](/docs/contributing/) first.
+
+Fork [Atlas-OS/website](https://github.com/Atlas-OS/website), then clone your fork with `git clone https://github.com/YOUR_USERNAME/website.git`.
+Replace `YOUR_USERNAME` with your GitHub username.
+
+## How the documentation is built
+
+The Atlas documentation is built with [Astro](https://docs.astro.build/), using MDX for content.
+The docs live in <CodeInline text="src/content/docs/" /> and use:
+
+- MDX files with frontmatter, such as `title`, `metaDescription`, `description`, `order` and `sidebar`
+- Astro components for page elements, such as Callout, CodeInline, Term and QuickLinkCard
+- A content collection schema defined in <CodeInline text="src/content.config.ts" />
+
+The folder structure sets each page's URL and its place in the sidebar.
+For example, `install/iso.mdx` becomes `/docs/install/iso/`, and every folder needs an `index.mdx`.
+The `order` field sorts pages within their section.
+
+<Callout type="tip">
+  Keep the [Astro documentation](https://docs.astro.build/) and [MDX documentation](https://mdxjs.com/) open while you work.
+</Callout>
+
+## Prerequisites
+
+The website needs [Bun](https://bun.sh/) 1.3.0 or later and [Node.js](https://nodejs.org/) 22.23.4 or later.
+The repository's README lists the scripts it provides.
+
+## Preview your changes
+
+The development server refreshes the page when you save a file.
+
+1. Install dependencies: <CodeInline text="bun install" />
+2. Start the development server: <CodeInline text="bun dev" />
+3. Open the URL shown in the console, usually <CodeInline text="http://localhost:4321" />
+4. Go to <CodeInline text="/docs" /> to see the documentation
+
+Before you open a pull request, run <CodeInline text="bun run build" /> to check that every page builds.
+
+## Writing style
+
+The documentation follows the [Atlas house style](https://github.com/Atlas-OS/Atlas/blob/main/docs/style.md). In short:
+
+- **Write in British English:** organise, behaviour, colour, and "licence" as the noun.
+- **Write timeless copy:** describe how Atlas behaves, not when it changed. Link to sources of truth, such as `supportedBuilds` and `updatableFrom` in `package/atlas.json`, instead of copying lists of versions.
+- **Name things the way Atlas does:** Atlas Manager is the only way to install Atlas. Call the `.atlaspkg` file the Atlas package. Show Atlas Manager's page names and buttons in bold, exactly as the app labels them, such as the **Get ready** page.
+- **Address the reader:** use "you" and the active voice. Write "Open Settings", not "Settings can be opened".
+- **Keep it short:** put one idea in each sentence, and keep paragraphs to two to five sentences on one topic.
+- **Use direct labels:** link text and headings name their destination or action. Write headings in sentence case.
+- **Use lists and tables:** use a list for three or more related items, and a table for reference data.
+- **Explain jargon:** define a term before you use it, or use the <CodeInline text="Term" /> component, which shows the definition when readers hover over it.
+
+Lead with the answer or the task.
+Put prerequisites before the first step and warnings before the action they apply to.
+Use numbered steps when order matters.
+Tell readers how to recognise success and what to do if the result differs.
+
+Check control names against the English (UK) interface and the [Atlas Manager writing guide](https://github.com/Atlas-OS/Atlas/blob/main/app/docs/writing.md).
+For a screenshot, capture the same screen and selection in both themes.
+Crop to the app window, describe the relevant controls in the alt text and keep the instructions usable without the image.
+
+In MDX source, start each sentence on a new line.
+This keeps diffs readable and makes long sentences easy to spot.
+
+Use "AtlasOS" for the product name in formal contexts, such as "AtlasOS documentation".
+Use "Atlas" in titles that name an action, such as "Install Atlas", and in running text, such as "the Atlas folder".
+
+## Project structure
+
+- <CodeInline text="src/content/docs/" />: documentation MDX files
+- <CodeInline text="src/components/docs/" />: documentation components
+- <CodeInline text="src/layouts/DocsLayout.astro" />: the docs page layout
+- <CodeInline text="src/pages/docs/" />: docs routing
+- <CodeInline text="astro.config.ts" />: redirects for pages that have moved
+
+If you move or rename a page, add a redirect from its old URL in `astro.config.ts`, because Atlas Manager, the Atlas package and desktop shortcuts link to docs pages.

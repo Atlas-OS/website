@@ -1,0 +1,98 @@
+---
+title: "Report a problem"
+metaDescription: "Send a private report to the Atlas team from Atlas Manager, or export a diagnostics ZIP to share when you ask for help. What's included and what's removed."
+description: Send a report or export diagnostics from Atlas Manager.
+order: 30
+---
+
+import Callout from '@/components/docs/Callout.astro';
+
+When something goes wrong with Atlas Manager or Atlas, you can send a report privately to the Atlas team, or export a diagnostics ZIP to share when you ask for help.
+This page explains both, and what the diagnostics contain.
+
+<Callout type="tip" title="Collect diagnostics before you retry">
+  Send a report or export diagnostics before you retry, clear Atlas Manager's data or reinstall Windows.
+  Retrying keeps earlier logs, but reinstalling Windows loses them.
+</Callout>
+
+## Where to find the buttons
+
+In Atlas Manager, open **Settings** and go to **Help and feedback**.
+It has **Send a report** and **Export diagnostics**.
+
+The same buttons appear under a problem, such as a failed check, installation, ISO or USB job.
+**Report a problem** on Home opens **Send a report**.
+
+## Send a report
+
+**Send a report** sends your message privately to the Atlas team.
+
+1. Answer **What would you like to send?** with **An issue** or **A suggestion**.
+2. Under **Your message**, describe what you were doing, what you expected and what happened.
+   Don't include passwords.
+3. Optionally, add **Contact details (optional)**, such as an email address or Discord username.
+4. Keep **Include diagnostics** on for an issue.
+   Atlas Manager collects them as the page opens; choose **Review ZIP** to see the ZIP before you send it.
+5. Select **I agree to send this report and any included diagnostics to the Atlas team**, then choose **Send report**.
+
+When the report arrives, Atlas Manager shows **Report received** and a reference.
+Keep the reference if you contact the Atlas team about the report.
+If you left contact details, the team may reply, but a reply isn't guaranteed.
+
+Reports go to the Atlas team at reports.atlasos.net and are deleted after 90 days.
+The team may use AI services from other companies to help investigate; these get your message and diagnostics, but not your contact details.
+
+If sending fails, your message stays on the page.
+Choose **Try again**, or send it from the [report website](https://reports.atlasos.net), which shows the same privacy notice.
+
+## Export diagnostics
+
+**Export diagnostics** saves a diagnostics ZIP on your PC.
+Use it when you report a bug on GitHub or ask for help in the community.
+Those places are public, so review the ZIP before you share it.
+
+1. Choose **Export diagnostics**.
+2. When Atlas Manager shows **Diagnostics ZIP created**, choose **Show in folder** to find it.
+
+ZIPs are saved in `%LOCALAPPDATA%\AtlasOS\App\Diagnostics`.
+Atlas Manager never deletes them, so remove them yourself when you no longer need them.
+Nothing is uploaded unless you send a report.
+
+### If Atlas Manager can't open
+
+Open PowerShell in the folder that contains `AtlasManager.exe` and run:
+
+```powershell
+.\AtlasManager.exe --export-diagnostics
+```
+
+### Export from the right account
+
+Export diagnostics from the account that had the problem.
+Other people's accounts aren't collected.
+
+## What the diagnostics contain
+
+The ZIP contains Atlas Manager's logs, Atlas's installation logs, logs from updating Windows and creating media, Atlas Manager's settings and an installation report.
+It doesn't contain programs, scripts, Windows images or memory dumps.
+
+Atlas removes your user name, PC name, email addresses and known passwords or keys from the ZIP.
+Error details, hardware models, app names and network addresses are kept, because they help find the cause.
+The logs on your PC aren't changed.
+
+Atlas can't recognise every kind of personal text, so review the ZIP before you share it publicly.
+
+## What to include
+
+Whichever way you report, say:
+
+- what you were doing, what you expected and what happened instead
+- roughly when it happened, with your time zone
+- whether it happens again when you retry
+- your Atlas and Windows versions, and the choices you made
+
+## Where else to get help
+
+- [GitHub Discussions](https://github.com/Atlas-OS/Atlas/discussions) and the [Atlas Discord community](https://discord.com/invite/atlasos-795710270000332800) for questions.
+- [Atlas GitHub issues](https://github.com/Atlas-OS/Atlas/issues) for public bug reports.
+  See [Report issues](/docs/contributing/reporting/) for what makes a useful report.

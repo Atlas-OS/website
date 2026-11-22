@@ -1,0 +1,76 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "dev",
+      "type": "shell",
+      "command": "bun",
+      "args": ["run", "dev"],
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "isBackground": true,
+      "runOptions": {
+        "runOn": "default"
+      }
+    },
+    {
+      "label": "build",
+      "type": "shell",
+      "command": "bun",
+      "args": ["run", "build"],
+      "problemMatcher": ["$tsc"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "preview",
+      "type": "shell",
+      "command": "bun",
+      "args": ["run", "preview"],
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "isBackground": true
+    },
+    {
+      "label": "lint",
+      "type": "shell",
+      "command": "bun",
+      "args": ["run", "lint"],
+      "problemMatcher": ["$eslint-stylish"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "format",
+      "type": "shell",
+      "command": "bun",
+      "args": ["run", "format"],
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "check",
+      "type": "shell",
+      "command": "bun",
+      "args": ["run", "check"],
+      "problemMatcher": ["$tsc"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    }
+  ]
+}

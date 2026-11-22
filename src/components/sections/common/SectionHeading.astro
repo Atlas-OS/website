@@ -1,0 +1,23 @@
+---
+/**
+ * A homepage section heading in the Summit language (see styles/summit.css). `near` is the line
+ * that matters, in moonlight; `far` is an optional first line recessed like the far ranges, for
+ * copy that is a genuine setup and payoff ("F**k Windows." / "Upgrade to Atlas."). One moonlit
+ * line is the default.
+ */
+interface Props {
+  near: string;
+  far?: string;
+  as?: 'h2' | 'h3';
+  align?: 'start' | 'center';
+  id?: string;
+  class?: string;
+}
+
+const { near, far, as: Tag = 'h2', align = 'start', id, class: className } = Astro.props;
+---
+
+<Tag id={id} class:list={['summit-title', { 'text-center': align === 'center' }, className]} data-animate>
+  {far && <span class="summit-title__far">{far}</span>}
+  <span class="summit-title__near">{near}</span>
+</Tag>

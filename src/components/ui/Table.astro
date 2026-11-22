@@ -1,0 +1,73 @@
+---
+interface Props {
+  headers: string[];
+  caption?: string;
+  class?: string;
+}
+
+const { headers, caption, class: className = '' } = Astro.props;
+---
+
+<div class={`not-prose table-wrapper my-6 ${className}`}>
+  <div class="table-container docs-surface overflow-x-auto">
+    <table class="docs-table w-full">
+      {caption && <caption class="sr-only">{caption}</caption>}
+      <thead>
+        <tr>
+          {headers.map((header) => (
+            <th scope="col">{header}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        <slot />
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<style>
+  .table-wrapper {
+    contain: layout style paint;
+    isolation: isolate;
+  }
+
+  .table-container {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in oklch, var(--color-fg) 10%, transparent) transparent;
+  }
+
+  .table-container::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .table-container::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .table-container::-webkit-scrollbar-thumb {
+    background-color: color-mix(in oklch, var(--color-fg) 10%, transparent);
+    border-radius: 3px;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .table-container::-webkit-scrollbar-thumb:hover {
+      background-color: color-mix(in oklch, var(--color-fg) 20%, transparent);
+    }
+  }
+
+  .table-container table {
+    min-width: 100%;
+  }
+
+  /* Figures in a column line up when every digit has the same width. */
+  .table-container :global(td) {
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (max-width: 640px) {
+    .table-container table {
+      min-width: 600px;
+    }
+  }
+</style>

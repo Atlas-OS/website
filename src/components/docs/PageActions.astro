@@ -1,0 +1,41 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  /** GitHub URL that opens this page's source file in the editor. */
+  editUrl: string;
+  /** Absolute URL of the Markdown rendition of this page. */
+  markdownUrl: string;
+}
+
+const { editUrl, markdownUrl } = Astro.props;
+
+const actionClass =
+  'inline-flex min-h-9 items-center gap-1.5 rounded-md px-2 text-sm text-[var(--docs-text-muted)] transition-colors duration-150 hover:text-[var(--docs-text-primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary';
+---
+
+<div
+  class="page-actions not-prose mbs-12 flex flex-wrap items-center gap-x-2 gap-y-1 border-bs border-fg/[0.06] pbs-4"
+  data-component="page-actions"
+  data-pagefind-ignore
+>
+  <a href={editUrl} target="_blank" rel="noopener noreferrer" class:list={[actionClass, '-ms-2']}>
+    <Icon name="tabler:brand-github" class="h-4 w-4 shrink-0" aria-hidden="true" />
+    Edit this page on GitHub
+  </a>
+
+  <span class="page-actions-divider" aria-hidden="true"></span>
+
+  <a href={markdownUrl} class={actionClass}>
+    <Icon name="tabler:file-text" class="h-4 w-4 shrink-0" aria-hidden="true" />
+    View as Markdown
+  </a>
+</div>
+
+<style>
+  .page-actions-divider {
+    width: 1px;
+    height: 1rem;
+    background: color-mix(in oklch, var(--color-fg) 10%, transparent);
+  }
+</style>

@@ -1,0 +1,70 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+import Button from '@/components/ui/Button.astro';
+import Text from '@/components/ui/Text.astro';
+import SiteImage from '@/components/ui/Image.astro';
+
+interface Props {
+  image: {
+    src: string;
+    alt: string;
+  };
+  downloadButtons: Array<{
+    href: string;
+    label: string;
+    external?: boolean;
+  }>;
+  description?: string;
+  credit?: string;
+  class?: string;
+}
+
+const { image, downloadButtons, description, credit, class: className = '' } = Astro.props;
+const previews = import.meta.glob<{ default: ImageMetadata }>(
+  '/public/assets/images/brand/wallpapers/**/preview-wallpaper-*.png'
+);
+const loadPreview = previews[`/public${image.src}`];
+const preview = await loadPreview?.();
+---
+
+<div class={`not-prose my-6 ${className}`}>
+  {description && (
+    <Text as="p" class="mbe-4 text-sm text-[var(--docs-text-secondary)]">
+      {description}
+    </Text>
+  )}
+  {credit && (
+    <Text as="p" class="mbe-4 text-xs text-[var(--docs-text-secondary)]">
+      {credit}
+    </Text>
+  )}
+  {preview ? (
+    <Image
+      src={preview.default}
+      alt={image.alt}
+      widths={[400, 768, 1280]}
+      sizes="(max-width: 768px) 100vw, 700px"
+      format="webp"
+      class="media-outline w-full rounded-lg"
+      loading="lazy"
+    />
+  ) : (
+    <SiteImage src={image.src} alt={image.alt} class="w-full rounded-lg" loading="lazy" outlined />
+  )}
+  <div class="mbs-4 grid grid-cols-2 gap-2 md:grid-cols-4">
+    {downloadButtons.map((button) => (
+      <Button
+        href={button.href}
+        download={button.href.startsWith('/')}
+        external={button.external}
+        variant="secondary"
+        size="sm"
+        fw
+      >
+        {button.label}
+      </Button>
+    ))}
+  </div>
+</div>

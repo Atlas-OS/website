@@ -1,0 +1,28 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  id?: string;
+  icon: string;
+  label: string;
+  controls?: string;
+  expanded?: boolean;
+  class?: string;
+}
+
+const { id, icon, label, controls, expanded, class: className = '' } = Astro.props;
+
+const buttonClasses = `nav-icon inline-flex disabled:pointer-events-none disabled:opacity-50 ${className}`;
+---
+
+<button
+  type="button"
+  id={id}
+  aria-label={label}
+  aria-controls={controls}
+  aria-expanded={expanded !== undefined ? expanded : undefined}
+  class={buttonClasses}
+>
+  <Icon name={icon} class="nav-icon__glyph" aria-hidden="true" />
+  {label && <span class="sr-only">{label}</span>}
+</button>

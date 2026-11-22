@@ -1,0 +1,563 @@
+---
+/**
+ * The campfire the Join community section gathers round: the hero's camp (SummitCamp.astro) in
+ * the same drawing language, built from utils/hero-camp-geometry.ts. Two tents glowing from
+ * inside, a fire in a ring of stones, two log seats facing each other across it, and the fire's
+ * light pooled on the ground and rising into the air towards the call to action above.
+ *
+ * The one orchestrated moment: when the scene comes into view the fire catches, flaring up from
+ * a spark the way the hero's camp relights, and its light blooms out. `data-lit` drives it from
+ * CSS; the script only sets the attribute. Without JavaScript, or with reduced motion, the fire is
+ * simply lit. Ambient loops (the flicker, the embers) are CSS and pause off screen.
+ */
+import { FIRE, FLAME_FRAMES, LOGS, SEAT, STONES, TENTS } from '@/utils/hero-camp-geometry';
+import {
+  EMBER_ORIGIN,
+  EMBERS,
+  FRONT_SEAT,
+  GROUND,
+  HILL,
+  LIGHT,
+  SCENE,
+  scenePercent,
+} from '@/utils/join-community-campfire';
+
+const view = SCENE.viewBox;
+const tents = [
+  {
+    key: 'big',
+    tent: TENTS.big,
+    side: '#1C3361',
+    front: '#33528F',
+    lining: '#C9783F',
+    liningNight: '#2B3352',
+    seam: '#1A2D55',
+    glowR: 26,
+  },
+  {
+    key: 'small',
+    tent: TENTS.small,
+    side: '#3B2F45',
+    front: '#93664A',
+    lining: '#D98A4C',
+    liningNight: '#3A3146',
+    seam: '#523629',
+    glowR: 19,
+  },
+];
+const stonesBehind = STONES.filter((stone) => stone.behind);
+const stonesFront = STONES.filter((stone) => !stone.behind);
+/** Both seats: the hero's, left of the fire with its cut end outwards, and its mirror on the right. */
+const seats = [
+  { from: SEAT.from, to: SEAT.to, end: SEAT.from, inner: 1 },
+  { from: FRONT_SEAT.to, to: FRONT_SEAT.from, end: FRONT_SEAT.to, inner: -1 },
+];
+
+const fireAt = scenePercent([FIRE.x, FIRE.y - 1]);
+const emberAt = scenePercent(EMBER_ORIGIN);
+const placement = [
+  `--fire-origin: ${fireAt.left}% ${fireAt.top}%`,
+  `--spill-foot: ${fireAt.top}%`,
+  `--scene-w: ${SCENE.width}`,
+  `--scene-ratio: ${SCENE.width} / ${SCENE.height}`,
+].join('; ');
+/** Each ember's box spans its climb: its foot on the origin, as wide and tall as the climb. */
+const embers = EMBERS.map(({ dx, rise, drift, duration, delay, size }) => {
+  const w = (rise / SCENE.width) * 100;
+  const h = (rise / SCENE.height) * 100;
+  const left = emberAt.left + (dx / SCENE.width) * 100 - w / 2;
+  const top = emberAt.top - h;
+  const r = (value: number) => Math.round(value * 100) / 100;
+  return [
+    `inset-inline-start: ${r(left)}%`,
+    `inset-block-start: ${r(top)}%`,
+    `width: ${r(w)}%`,
+    `height: ${r(h)}%`,
+    `--drift: ${Math.round(drift * 100)}%`,
+    `--duration: ${duration}s`,
+    `--delay: ${delay}s`,
+    `--size: ${size}`,
+  ].join('; ');
+});
+---
+
+<div class="campfire" style={placement} data-campfire>
+  <!-- The fire's light rising into the night, up onto the call to action above the scene -->
+  <div class="cf-spill" aria-hidden="true"></div>
+
+  <div class="cf-stage" aria-hidden="true">
+    <!-- The land: a low hill with pines behind the camp, and the ground it stands on -->
+    <svg class="cf-layer cf-land" viewBox={view}>
+      <defs>
+        <linearGradient id="cf-hill-rim" x1={SCENE.x} x2={SCENE.x + SCENE.width} gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#C9DFFF" stop-opacity="0.45"></stop>
+          <stop offset="0.55" stop-color="#7FAAF0" stop-opacity="0.18"></stop>
+          <stop offset="1" stop-color="#5F8BD8" stop-opacity="0.08"></stop>
+        </linearGradient>
+        <linearGradient
+          id="cf-ground-fill"
+          x1="0"
+          x2="0"
+          y1={GROUND.crest}
+          y2={SCENE.height}
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop offset="0" stop-color="#0B1428"></stop>
+          <stop offset="0.5" stop-color="#0B1428"></stop>
+          <stop offset="1" stop-color="#0B1428" stop-opacity="0"></stop>
+        </linearGradient>
+        <radialGradient id="cf-ground-rim" cx={FIRE.x} cy={FIRE.y} r="150" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#FFBE78" stop-opacity="0.55"></stop>
+          <stop offset="0.35" stop-color="#C7A2A0" stop-opacity="0.22"></stop>
+          <stop offset="1" stop-color="#9DBDF2" stop-opacity="0.1"></stop>
+        </radialGradient>
+      </defs>
+      <!-- The pines stand just behind the hill's crest: drawn first, so the hill hides their feet. -->
+      <path d={HILL.pines} fill="#0F1F42"></path>
+      <path d={HILL.shape} fill="#13264D"></path>
+      <path d={HILL.edge} fill="none" stroke="url(#cf-hill-rim)" stroke-width="0.6"></path>
+      <path d={GROUND.shape} fill="url(#cf-ground-fill)"></path>
+      <path d={GROUND.edge} fill="none" stroke="url(#cf-ground-rim)" stroke-width="0.6"></path>
+    </svg>
+
+    <!-- Firelight pooled on the ground and glowing in the air above the flames -->
+    <div class="cf-light">
+      <svg class="cf-layer cf-pool cf-loop" viewBox={view}>
+        <defs>
+          <radialGradient
+            id="cf-pool"
+            cx={LIGHT.pool.cx}
+            cy={LIGHT.pool.cy}
+            r={LIGHT.pool.rx}
+            gradientUnits="userSpaceOnUse"
+            gradientTransform={`translate(0 ${LIGHT.pool.cy * (1 - LIGHT.pool.ry / LIGHT.pool.rx)}) scale(1 ${LIGHT.pool.ry / LIGHT.pool.rx})`}
+          >
+            <stop offset="0" stop-color="#FFD28C" stop-opacity="0.9"></stop>
+            <stop offset="0.28" stop-color="#FF9F4A" stop-opacity="0.42"></stop>
+            <stop offset="0.55" stop-color="#7C6FB0" stop-opacity="0.12"></stop>
+            <stop offset="1" stop-color="#3B5BA8" stop-opacity="0"></stop>
+          </radialGradient>
+          <radialGradient
+            id="cf-air"
+            cx={LIGHT.air.cx}
+            cy={LIGHT.air.cy}
+            r={LIGHT.air.r}
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop offset="0" stop-color="#FFB35A" stop-opacity="0.34"></stop>
+            <stop offset="1" stop-color="#FF8A3D" stop-opacity="0"></stop>
+          </radialGradient>
+        </defs>
+        <ellipse
+          cx={LIGHT.pool.cx}
+          cy={LIGHT.pool.cy}
+          rx={LIGHT.pool.rx}
+          ry={LIGHT.pool.ry}
+          fill="url(#cf-pool)"
+        ></ellipse>
+        <circle cx={LIGHT.air.cx} cy={LIGHT.air.cy} r={LIGHT.air.r} fill="url(#cf-air)"></circle>
+      </svg>
+    </div>
+
+    <!--
+      Tents, the stones behind the fire, and the crossed logs. Every warm touch sits in a `cf-warm`
+      group over a night-toned base, so the fire catching only has to fade those groups in.
+    -->
+    <svg class="cf-layer" viewBox={view}>
+      <defs>
+        <linearGradient id="cf-doorway" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stop-color="#FFF3D2"></stop>
+          <stop offset="1" stop-color="#FF9F45"></stop>
+        </linearGradient>
+        {tents.map(({ key, tent, glowR }) => (
+          <radialGradient
+            id={`cf-glow-${key}`}
+            cx={tent.glow[0]}
+            cy={tent.glow[1]}
+            r={glowR}
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop offset="0" stop-color="#FFB76A" stop-opacity="0.75" />
+            <stop offset="0.5" stop-color="#FF9A4F" stop-opacity="0.28" />
+            <stop offset="1" stop-color="#FF9A4F" stop-opacity="0" />
+          </radialGradient>
+        ))}
+      </defs>
+
+      {tents.map(({ key, tent, side, front, lining, liningNight, seam }) => (
+        <g>
+          <path d={tent.groundsheet} fill="#08101E" />
+          <path d={tent.guys} fill="none" stroke="#9FB4D8" stroke-opacity="0.38" stroke-width="0.5" />
+          <path d={tent.pegs} fill="none" stroke="#C3CFE6" stroke-opacity="0.55" stroke-width="0.6" />
+          <path d={tent.side} fill={side} />
+          <path d={tent.front} fill={front} />
+          <path d={tent.doorway} fill="#131D38" />
+          <path d={tent.flap} fill={liningNight} />
+          <g class="cf-warm">
+            <path d={tent.front} fill={`url(#cf-glow-${key})`} />
+            <path d={tent.doorway} fill="url(#cf-doorway)" />
+            <path d={tent.flap} fill={lining} />
+          </g>
+          <g class="cf-night">
+            <path d={tent.front} fill="#0A1430" fill-opacity="0.45" />
+          </g>
+          <path d={tent.seams} fill="none" stroke={seam} stroke-opacity="0.85" stroke-width="0.7" />
+          <path
+            d={tent.ridge}
+            fill="none"
+            stroke="#9DBDF2"
+            stroke-opacity="0.4"
+            stroke-width="0.6"
+            stroke-linejoin="round"
+          />
+          <g class="cf-warm">
+            <path d={tent.rim} fill="none" stroke="#FFBE78" stroke-opacity="0.85" stroke-width="0.9" />
+          </g>
+        </g>
+      ))}
+
+      {stonesBehind.map((stone) => (
+        <ellipse cx={stone.x} cy={stone.y} rx={stone.rx} ry={stone.ry} fill="#283149" />
+      ))}
+      <g class="cf-warm">
+        {stonesBehind.map((stone) => (
+          <ellipse
+            cx={stone.hx}
+            cy={stone.hy}
+            rx={stone.rx * 0.6}
+            ry={stone.ry * 0.55}
+            fill="#E7A062"
+            fill-opacity="0.6"
+          />
+        ))}
+      </g>
+
+      {LOGS.map(({ from, to }) => (
+        <path
+          d={`M${from[0]} ${from[1]}L${to[0]} ${to[1]}`}
+          stroke="#4A2E22"
+          stroke-width="3.6"
+          stroke-linecap="round"
+        />
+      ))}
+      <g class="cf-warm" stroke-linecap="round">
+        {LOGS.map(({ from, to }) => (
+          <path
+            d={`M${from[0]} ${from[1] - 1.2}L${to[0]} ${to[1] - 1.2}`}
+            stroke="#FFB466"
+            stroke-opacity="0.75"
+            stroke-width="0.9"
+          />
+        ))}
+      </g>
+    </svg>
+
+    <!-- Four hand-drawn flame frames, shown one at a time -->
+    <div class="cf-fire">
+      {FLAME_FRAMES.map((frame, index) => (
+        <svg
+          class:list={['cf-layer cf-flame cf-loop', { 'cf-flame--lead': index === 0 }]}
+          style={`--frame: ${index}`}
+          viewBox={view}
+        >
+          <path d={frame.outer} fill="#FF7A2E" />
+          <path d={frame.middle} fill="#FFB03D" />
+          <path d={frame.inner} fill="#FFF1B8" />
+        </svg>
+      ))}
+    </div>
+
+    <!-- Stones in front of the fire, and the two seats -->
+    <svg class="cf-layer" viewBox={view}>
+      {stonesFront.map((stone) => (
+        <ellipse cx={stone.x} cy={stone.y} rx={stone.rx} ry={stone.ry} fill="#222A40" />
+      ))}
+      <g class="cf-warm">
+        {stonesFront.map((stone) => (
+          <path
+            d={`M${stone.x - stone.rx * 0.7} ${stone.y - stone.ry * 0.55}Q${stone.x} ${stone.y - stone.ry * 1.15} ${stone.x + stone.rx * 0.7} ${stone.y - stone.ry * 0.55}`}
+            fill="none"
+            stroke="#E9A86A"
+            stroke-opacity="0.55"
+            stroke-width="0.7"
+          />
+        ))}
+      </g>
+      {seats.map(({ from, to, end, inner }) => (
+        <g>
+          <path
+            d={`M${from[0]} ${from[1]}L${to[0]} ${to[1]}`}
+            stroke="#33241F"
+            stroke-width={SEAT.thickness}
+            stroke-linecap="round"
+          />
+          <g class="cf-warm">
+            <path
+              d={`M${from[0] + inner} ${from[1] - 1.9}L${to[0]} ${to[1] - 1.9}`}
+              stroke="#E7A160"
+              stroke-opacity="0.6"
+              stroke-width="1.1"
+              stroke-linecap="round"
+            />
+          </g>
+          <ellipse cx={end[0]} cy={end[1]} rx="1.8" ry="2.5" fill="#A87650" />
+          <ellipse cx={end[0]} cy={end[1]} rx="0.8" ry="1.2" fill="none" stroke="#6E4A33" stroke-width="0.4" />
+        </g>
+      ))}
+    </svg>
+
+    <div class="cf-embers">
+      {embers.map((style) => (
+        <span class="cf-ember cf-loop" style={style} />
+      ))}
+    </div>
+  </div>
+</div>
+
+<style>
+  .campfire {
+    /* The embers' spark and its glow. */
+    --ember: oklch(0.879 0.117 80.6);
+    --ember-glow: oklch(0.805 0.144 64.5);
+    position: relative;
+    width: min(100% + 2rem, 39rem);
+    margin-inline: auto;
+  }
+
+  /*
+   * The fire's warmth rising into the air, up past the scene's top edge and behind the buttons
+   * above it. It stands on the ground at the fire and only rises: its foot fades in over the
+   * tents, and its gradient reaches nothing before the box's other edges, so no edge ever shows.
+   * `in srgb` keeps the blend between its warm stops as it was drawn.
+   */
+  .cf-spill {
+    position: absolute;
+    inset-inline-start: 50%;
+    inset-block-start: var(--spill-foot);
+    z-index: -1;
+    width: 118%;
+    height: 175%;
+    translate: -50% -100%;
+    pointer-events: none;
+    background: radial-gradient(
+      50% 100% at 50% 100% in srgb,
+      oklch(0.807 0.138 61.9 / 0.22),
+      oklch(0.786 0.151 59.1 / 0.095) 38%,
+      oklch(0.77 0.156 54.8 / 0.03) 66%,
+      transparent
+    );
+    mask-image: linear-gradient(to top, transparent, black 30%);
+  }
+
+  .cf-stage {
+    --u: calc(100cqw / var(--scene-w));
+    position: relative;
+    aspect-ratio: var(--scene-ratio);
+    container-type: inline-size;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .cf-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  /*
+   * The land fades out in an oval round the camp, so the scene settles into the page with no edge
+   * or corner; the ground's own fill fades out downwards too (see the gradient above).
+   */
+  .cf-land {
+    mask-image: radial-gradient(
+      ellipse 50% 62% at 50% 64%,
+      black 52%,
+      color-mix(in oklch, black 60%, transparent) 72%,
+      transparent
+    );
+  }
+
+  .cf-light,
+  .cf-fire,
+  .cf-embers {
+    position: absolute;
+    inset: 0;
+  }
+  .cf-light {
+    mix-blend-mode: screen;
+  }
+
+  .cf-flame {
+    opacity: 0;
+  }
+  .cf-flame--lead {
+    opacity: 1;
+  }
+  .cf-night {
+    opacity: 0;
+  }
+
+  /* An ember's box spans its climb; the spark sits at its foot and the box travels up by its height. */
+  .cf-ember {
+    position: absolute;
+    opacity: 0;
+  }
+  .cf-ember::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 50%;
+    inset-block-end: 0;
+    width: max(1.5px, calc(var(--u) * var(--size)));
+    aspect-ratio: 1;
+    border-radius: 50%;
+    translate: -50% 50%;
+    background: var(--ember);
+    box-shadow: 0 0 3px color-mix(in oklch, var(--ember-glow) 80%, transparent);
+  }
+
+  /* ---- The fire catches ----------------------------------------------------------------------- */
+
+  /*
+   * Lit (the default): the fire flares up from a spark, then its light blooms out into the night.
+   * The flare moves, so it runs only while scroll motion is on (see below); the fades always run.
+   */
+  .cf-fire {
+    transform-origin: var(--fire-origin);
+    transition: opacity 180ms ease-out 120ms;
+  }
+  :global(html[data-motion]) .cf-fire {
+    transition:
+      transform 620ms cubic-bezier(0.34, 1.56, 0.64, 1) 120ms,
+      opacity 180ms ease-out 120ms;
+  }
+  .cf-warm,
+  .cf-light {
+    transition: opacity 700ms ease 200ms;
+  }
+  .cf-night {
+    transition: opacity 700ms ease 200ms;
+  }
+  .cf-spill {
+    transition: opacity 1400ms cubic-bezier(0.33, 1, 0.68, 1) 320ms;
+  }
+  .cf-embers {
+    transition: opacity 400ms ease 700ms;
+  }
+
+  /*
+   * Unlit: only while scroll motion is on (BaseLayout sets `html[data-motion]` before first paint)
+   * and the scene has not yet come into view. Without JavaScript, or with reduced motion, the
+   * attribute never appears and the fire is simply burning.
+   */
+  :global(html[data-motion]) .campfire:not([data-lit]) .cf-fire {
+    opacity: 0;
+    transform: scale(0.3, 0.12);
+  }
+  :global(html[data-motion]) .campfire:not([data-lit]) :is(.cf-warm, .cf-light, .cf-spill, .cf-embers) {
+    opacity: 0;
+  }
+  :global(html[data-motion]) .campfire:not([data-lit]) .cf-night {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* Each flame frame shows for a quarter of the cycle at about 9 fps: the camp's stepped flicker. */
+    .cf-flame {
+      animation: cf-frame 0.44s step-end calc((var(--frame) - 4) * 0.11s) infinite;
+    }
+    .cf-pool {
+      animation: cf-pool 0.44s step-end infinite;
+    }
+    .cf-ember {
+      animation: cf-ember var(--duration) cubic-bezier(0.33, 1, 0.68, 1) var(--delay) infinite;
+    }
+
+    .campfire[data-paused] .cf-loop {
+      animation-play-state: paused;
+    }
+  }
+
+  /* Reduced motion: a few sparks hang above the fire, caught mid-climb. */
+  @media (prefers-reduced-motion: reduce) {
+    .cf-ember:nth-child(-n + 3) {
+      opacity: 0.75;
+      transform: translate(calc(var(--drift) * 0.4), -40%);
+    }
+  }
+
+  @keyframes cf-frame {
+    0% {
+      opacity: 1;
+    }
+    25%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes cf-pool {
+    0% {
+      opacity: 1;
+    }
+    25% {
+      opacity: 0.86;
+    }
+    50% {
+      opacity: 0.95;
+    }
+    75% {
+      opacity: 0.9;
+    }
+  }
+
+  @keyframes cf-ember {
+    0% {
+      opacity: 0;
+      transform: translate(0, 0);
+    }
+    12% {
+      opacity: 1;
+    }
+    70% {
+      opacity: 0.6;
+    }
+    100% {
+      opacity: 0;
+      transform: translate(var(--drift), -100%);
+    }
+  }
+</style>
+
+<script>
+  import { pauseWhenOffscreen } from '@/utils/in-view';
+  import { onPageLoad } from '@/utils/page-lifecycle';
+
+  /** Light each campfire once most of it has scrolled into view; it stays lit. */
+  function lightWhenInView(signal: AbortSignal): void {
+    const fires = document.querySelectorAll<HTMLElement>('[data-campfire]:not([data-lit])');
+    if (fires.length === 0) return;
+    if (!('IntersectionObserver' in window)) {
+      for (const fire of fires) fire.setAttribute('data-lit', '');
+      return;
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.setAttribute('data-lit', '');
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.55 }
+    );
+    for (const fire of fires) observer.observe(fire);
+    signal.addEventListener('abort', () => observer.disconnect(), { once: true });
+  }
+
+  onPageLoad((signal) => {
+    lightWhenInView(signal);
+    pauseWhenOffscreen('[data-campfire]', signal);
+  });
+</script>

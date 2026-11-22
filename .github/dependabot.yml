@@ -1,0 +1,50 @@
+version: 2
+
+updates:
+  - package-ecosystem: bun
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: chore
+      include: scope
+    # A dependency joins the first group it matches, so the catch-all comes last.
+    groups:
+      astro:
+        patterns:
+          - astro
+          - '@astrojs/*'
+      cloudflare:
+        patterns:
+          - wrangler
+          - '@cloudflare/*'
+      lint-format:
+        patterns:
+          - eslint*
+          - '@eslint/*'
+          - typescript-eslint
+          - astro-eslint-parser
+          - prettier*
+      minor-and-patch:
+        patterns:
+          - '*'
+        update-types:
+          - minor
+          - patch
+    ignore:
+      # TypeScript 7 drops the JS API that astro check and typescript-eslint need.
+      - dependency-name: typescript
+        update-types:
+          - version-update:semver-major
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: chore
+      include: scope
+    groups:
+      github-actions:
+        patterns:
+          - '*'

@@ -1,0 +1,48 @@
+---
+title: "Report issues"
+metaDescription: "Write an Atlas bug report the team can act on: evidence, versions, reproduction steps and where to report."
+description: Write a bug report the team can act on.
+order: 45
+sidebar:
+  label: "Report issues"
+---
+
+import Callout from '@/components/docs/Callout.astro';
+
+This page is for testers and contributors who report bugs in Atlas, Atlas Manager or a test build.
+It covers what makes a report useful and where to send it.
+
+<Callout type="info" title="Collecting diagnostics">
+  [Report a problem](/docs/faq/report-a-problem/) explains how to [send a report](/docs/faq/report-a-problem/#send-a-report)
+  privately from Atlas Manager and how to [export diagnostics](/docs/faq/report-a-problem/#export-diagnostics)
+  for a public bug report.
+</Callout>
+
+## Keep the evidence
+
+Export diagnostics before you retry, clear app data or reinstall Windows.
+Export them as the affected Windows account, because other accounts' files aren't collected.
+
+## Check unmodified Windows
+
+For a suspected Atlas bug, check whether the same problem happens on unmodified Windows in the same environment.
+Use a separate PC or virtual machine, so you don't discard the evidence from the affected installation.
+
+## What to include
+
+- The Atlas version, the Atlas Manager version, and the Windows version and build.
+- The exact release or test build you used, with the SHA-256 hashes from its release notes if it lists them.
+- What you were doing, what you expected and what happened instead.
+- The exact error message, roughly when it happened (with your time zone), and whether it happens again.
+- Steps to reproduce it, including your choices, your driver choice and whether other accounts use the PC.
+- The diagnostics ZIP, and screenshots where they help.
+
+Review the ZIP before you post it publicly.
+Atlas removes your user name, PC name, email addresses and known passwords or keys, but keeps error details, hardware models and app names.
+
+## Where to report
+
+Open an [Atlas GitHub issue](https://github.com/Atlas-OS/Atlas/issues) and complete the issue template.
+For a test build, use the reporting channel named in its release notes.
+
+For questions about setting up Atlas, use [GitHub Discussions](https://github.com/Atlas-OS/Atlas/discussions) or the [Atlas Discord community](https://discord.com/invite/atlasos-795710270000332800).

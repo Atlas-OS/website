@@ -1,0 +1,98 @@
+/*
+ * The Summit design system: the language of the home hero's night on the Atlas range, shared by
+ * every homepage section so they read as one place. Values come from the scene itself.
+ *
+ * Light falls from the moon at the top left: edges facing it catch a cool rim, shadows fall down
+ * and right. Surfaces are deep night navy, never grey. Campfire amber is reserved for fire and
+ * warmth (the camp, the community section); everything else is moonlight and Atlas blue.
+ *
+ * Like the site's theme tokens, each colour that differs by day holds both values in
+ * `light-dark()` (day first), so the theme switches by `color-scheme` alone.
+ */
+
+:root {
+  /* Night: the deepest ground, the far ranges' haze, the moon (the sun by day), and Atlas blue. */
+  --summit-abyss: oklch(0.195 0.043 264.5);
+  --summit-haze: light-dark(oklch(0.648 0.059 262.1), oklch(0.595 0.065 262.6));
+  --summit-moon: light-dark(oklch(0.966 0.04 88.2), var(--summit-moonlight));
+  --summit-blue: oklch(0.712 0.157 249.6);
+
+  /* Moonlight in both themes, for light that falls on the night's photos and drawings. */
+  --summit-moonlight: oklch(0.936 0.031 257.2);
+  /* Moonlight caught on an edge: the base of the rims and the scenes' fine lines. */
+  --summit-moonlit: oklch(0.869 0.065 257);
+  /* The night's deepest shadow, cast by frames and windows. */
+  --summit-shadow: oklch(0.13 0.027 261.7);
+
+  /* Text on the night. */
+  --summit-text: color-mix(in oklch, var(--color-fg) 92%, transparent);
+  --summit-text-muted: color-mix(in oklch, var(--color-fg) 70%, transparent);
+  --summit-text-faint: color-mix(in oklch, var(--color-fg) 50%, transparent);
+  /* Headlines and figures lit from above: moonlight by night, deep ink to Atlas navy by day. */
+  --summit-lit: light-dark(oklch(0.22 0.046 263), oklch(1 0 none));
+  --summit-lit-end: light-dark(oklch(0.425 0.111 261.3), oklch(0.904 0.046 262.5));
+
+  /* Moonlit edges and surfaces (sunlit, in navy ink, by day). */
+  --summit-rim: light-dark(
+    color-mix(in oklch, var(--ink) 22%, transparent),
+    color-mix(in oklch, var(--summit-moonlit) 32%, transparent)
+  );
+  --summit-rim-faint: light-dark(
+    color-mix(in oklch, var(--ink) 10%, transparent),
+    oklch(0.794 0.083 260.4 / 0.12)
+  );
+  --summit-radius: 1rem;
+  --summit-radius-sm: 0.65rem;
+}
+
+/*
+ * Section heading in two atmospheres: an optional first line recessed like the far ranges, then
+ * the line that matters in moonlight. Use the far line only when the copy is a genuine setup and
+ * payoff; a single moonlit line is the default. See components/sections/common/SectionHeading.astro.
+ */
+.summit-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 1.6rem + 2.2vw, 3rem);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+.summit-title > span {
+  display: block;
+}
+.summit-title__far {
+  color: var(--summit-haze);
+}
+.summit-title__near {
+  padding-block-end: 0.08em;
+  /* `in srgb` keeps the blend between the two colours as it was drawn. */
+  background: linear-gradient(in srgb to bottom, var(--summit-lit) 30%, var(--summit-lit-end));
+  background-clip: text;
+  color: transparent;
+}
+
+/* Body copy that introduces a section, with its links underlined like the hero's. */
+.summit-lede {
+  max-width: 44rem;
+  color: var(--summit-text-muted);
+  line-height: 1.7;
+  text-wrap: pretty;
+}
+.summit-link,
+.summit-lede a {
+  color: color-mix(in oklch, var(--color-fg) 85%, transparent);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklch, var(--color-fg) 35%, transparent);
+  text-underline-offset: 3px;
+  transition:
+    color 160ms var(--motion-ease-out),
+    text-decoration-color 160ms var(--motion-ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .summit-link:hover,
+  .summit-lede a:hover {
+    color: var(--color-link);
+    text-decoration-color: currentColor;
+  }
+}

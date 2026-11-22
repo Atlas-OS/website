@@ -1,0 +1,242 @@
+---
+import { DOCS_ROOT, getDocsTree, normalizeDocsPath, type DocsNavItem } from '@/utils/docs';
+import SocialIconLink from '@/components/ui/SocialIconLink.astro';
+import { Icon } from 'astro-icon/components';
+import '@/styles/sidebar.css';
+
+interface Props {
+  currentSlug: string;
+}
+
+const currentPath = normalizeDocsPath(Astro.props.currentSlug);
+const sections = await getDocsTree();
+const home = sections.find((section) => section.href === DOCS_ROOT);
+const regularSections = sections.filter((section) => section.href !== DOCS_ROOT);
+
+const sectionIcons: Record<string, string> = {
+  '/docs/': 'tabler:home',
+  '/docs/install/': 'tabler:rocket',
+  '/docs/upgrade/': 'tabler:arrow-up',
+  '/docs/essential-setup/': 'tabler:cpu',
+  '/docs/atlas-configuration/': 'tabler:settings',
+  '/docs/faq/': 'tabler:help-circle',
+  '/docs/contributing/': 'tabler:code',
+  '/docs/toolbox/': 'tabler:tools',
+  '/docs/branding/': 'tabler:palette',
+};
+
+const isCurrent = (href: string) => href === currentPath;
+const containsCurrent = (items: DocsNavItem[]): boolean =>
+  items.some((item) => isCurrent(item.href) || (item.children ? containsCurrent(item.children) : false));
+const listId = (href: string) => `sidebar-list-${href.replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '')}`;
+---
+
+{sections.length > 0 && (
+  <>
+    <div
+      id="sidebar-backdrop"
+      class="pointer-events-none fixed inset-0 z-30 bg-black/50 opacity-0 backdrop-blur-sm transition-opacity duration-200 lg:hidden"
+      aria-hidden="true"
+    />
+
+    <aside
+      id="sidebar"
+      data-pagefind-ignore
+      class="fixed start-0 z-40 lg:translate-x-0 motion-safe:transition-transform motion-safe:duration-[250ms]"
+      style="inset-block-start: var(--site-header-height); width: min(var(--docs-sidebar-width), 86vw); height: calc(100dvh - var(--site-header-height));"
+      transition:persist="docs-sidebar"
+    >
+      <div class="flex h-full flex-col">
+        <div class="flex items-center justify-between border-be border-fg/[0.06] px-4 py-3 lg:hidden">
+          <h2 class="text-sm font-semibold text-fg">Documentation</h2>
+          <button id="sidebar-close-button" type="button" aria-label="Close sidebar" class="nav-icon -me-2 inline-flex">
+            <Icon name="tabler:x" is:inline class="nav-icon__glyph" aria-hidden="true" />
+          </button>
+        </div>
+
+        <div id="sidebar-scroll" class="flex-1 overflow-y-auto px-3 py-4">
+          <nav class="space-y-1" aria-label="Documentation navigation">
+            {home && (
+              <a
+                href={home.href}
+                data-astro-prefetch="viewport"
+                aria-current={isCurrent(home.href) ? 'page' : undefined}
+                class="sidebar-primary-link flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-sm font-semibold"
+              >
+                <span class="flex min-w-0 items-center gap-2">
+                  <Icon
+                    name={sectionIcons[home.href] ?? 'tabler:file-text'}
+                    is:inline
+                    class="sidebar-primary-icon h-4 w-4 shrink-0"
+                    aria-hidden="true"
+                  />
+                  <span class="truncate">{home.title}</span>
+                </span>
+                {home.badge && <span class="sidebar-badge">{home.badge}</span>}
+              </a>
+            )}
+
+            {regularSections.map((section) => {
+              const hasItems = section.items.length > 0;
+              const openOnHome = section.href === '/docs/install/';
+              const isOpen =
+                isCurrent(section.href) || containsCurrent(section.items) || (currentPath === DOCS_ROOT && openOnHome);
+              const sectionListId = listId(section.href);
+
+              return (
+                <section
+                  class:list={['sidebar-section', hasItems && !isOpen && 'is-collapsed']}
+                  data-sidebar-group={hasItems ? '' : undefined}
+                  data-sidebar-key={section.href}
+                  data-sidebar-default="closed"
+                  data-sidebar-open-on-home={openOnHome ? '' : undefined}
+                >
+                  <div class="group flex items-center gap-1 rounded-md transition-colors duration-200 hover:bg-fg/5">
+                    <a
+                      href={section.href}
+                      data-astro-prefetch="viewport"
+                      aria-current={isCurrent(section.href) ? 'page' : undefined}
+                      class="sidebar-primary-link flex min-w-0 flex-1 items-center justify-between gap-2 rounded-md px-2 py-1.5 text-sm font-semibold"
+                    >
+                      <span class="flex min-w-0 items-center gap-2">
+                        <Icon
+                          name={sectionIcons[section.href] ?? 'tabler:file-text'}
+                          is:inline
+                          class="sidebar-primary-icon h-4 w-4 shrink-0"
+                          aria-hidden="true"
+                        />
+                        <span class="truncate">{section.title}</span>
+                      </span>
+                      {section.badge && <span class="sidebar-badge">{section.badge}</span>}
+                    </a>
+                    {hasItems && (
+                      <button
+                        type="button"
+                        class="sidebar-toggle inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md text-fg/60 transition-colors duration-150 hover:text-fg"
+                        aria-label={`Toggle ${section.title} pages`}
+                        aria-expanded={isOpen}
+                        aria-controls={sectionListId}
+                      >
+                        <Icon
+                          name="tabler:chevron-down"
+                          is:inline
+                          is:inline
+                          class="sidebar-arrow pointer-events-none h-4 w-4 motion-safe:transition-transform motion-safe:duration-200"
+                          aria-hidden="true"
+                        />
+                      </button>
+                    )}
+                  </div>
+
+                  {hasItems && (
+                    <div class="sidebar-collapsible">
+                      <ul id={sectionListId} class="sidebar-list sidebar-rail">
+                        {section.items.map((item) => {
+                          const hasChildren = Boolean(item.children?.length);
+                          const itemOpen = isCurrent(item.href) || containsCurrent(item.children ?? []);
+                          const childListId = listId(item.href);
+
+                          return (
+                            <li
+                              class:list={['sidebar-item', hasChildren && !itemOpen && 'is-collapsed']}
+                              data-sidebar-group={hasChildren ? '' : undefined}
+                              data-sidebar-key={hasChildren ? item.href : undefined}
+                            >
+                              <div class="group flex items-center gap-1 rounded-md transition-colors duration-200 hover:bg-fg/5">
+                                <a
+                                  href={item.href}
+                                  data-astro-prefetch="viewport"
+                                  aria-current={isCurrent(item.href) ? 'page' : undefined}
+                                  class="sidebar-link flex flex-1 items-center rounded-md px-2 py-1.5 text-sm"
+                                >
+                                  <span class="flex w-full items-center justify-between gap-2">
+                                    <span class="truncate">{item.title}</span>
+                                    {item.badge && <span class="sidebar-badge sidebar-badge-sm">{item.badge}</span>}
+                                  </span>
+                                </a>
+
+                                {hasChildren && (
+                                  <button
+                                    type="button"
+                                    class="sidebar-toggle inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md text-fg/60 transition-colors duration-150 hover:text-fg"
+                                    aria-label={`Toggle ${item.title} pages`}
+                                    aria-expanded={itemOpen}
+                                    aria-controls={childListId}
+                                  >
+                                    <Icon
+                                      name="tabler:chevron-down"
+                                      is:inline
+                                      is:inline
+                                      class="sidebar-arrow pointer-events-none h-4 w-4 motion-safe:transition-transform motion-safe:duration-200"
+                                      aria-hidden="true"
+                                    />
+                                  </button>
+                                )}
+                              </div>
+
+                              {hasChildren && (
+                                <div class="sidebar-collapsible">
+                                  <ul id={childListId} class="sidebar-list sidebar-rail sidebar-rail-nested">
+                                    {item.children?.map((child) => (
+                                      <li>
+                                        <a
+                                          href={child.href}
+                                          data-astro-prefetch="viewport"
+                                          aria-current={isCurrent(child.href) ? 'page' : undefined}
+                                          class="sidebar-link sidebar-link-nested flex items-center rounded-md px-2 py-1.5 text-sm"
+                                        >
+                                          <span class="flex w-full items-center justify-between gap-2">
+                                            <span class="truncate">{child.title}</span>
+                                            {child.badge && (
+                                              <span class="sidebar-badge sidebar-badge-sm">{child.badge}</span>
+                                            )}
+                                          </span>
+                                        </a>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              )}
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  )}
+                </section>
+              );
+            })}
+          </nav>
+        </div>
+
+        <!-- Phones only: the links the docs navbar has no room for there -->
+        <div class="sidebar-drawer-footer lg:hidden">
+          <a
+            href="https://ko-fi.com/atlasos"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="sidebar-drawer-footer__link"
+          >
+            <Icon name="tabler:heart" is:inline class="h-4 w-4" aria-hidden="true" />
+            Support us
+          </a>
+          <div class="flex items-center">
+            <SocialIconLink href="https://github.com/Atlas-OS/Atlas" icon="tabler:brand-github" label="GitHub" />
+            <SocialIconLink
+              href="https://discord.com/invite/atlasos-795710270000332800"
+              icon="tabler:brand-discord"
+              label="Discord"
+            />
+            <SocialIconLink href="https://x.com/atlasos" icon="tabler:brand-x" label="X (Twitter)" />
+          </div>
+        </div>
+      </div>
+    </aside>
+  </>
+)}
+
+<script>
+  import { initSidebar } from '@/utils/sidebar';
+
+  document.addEventListener('astro:page-load', initSidebar);
+</script>

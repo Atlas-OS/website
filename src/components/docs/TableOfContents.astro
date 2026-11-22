@@ -1,0 +1,287 @@
+---
+import type { MarkdownHeading } from 'astro';
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  headings?: MarkdownHeading[];
+  /**
+   * `sidebar` renders the fixed column shown from the xl breakpoint;
+   * `inline` renders a collapsible list for narrower viewports, placed at the top of the article.
+   */
+  variant?: 'sidebar' | 'inline';
+}
+
+const { headings = [], variant = 'sidebar' } = Astro.props;
+const entries = headings.filter((heading) => heading.depth === 2 || heading.depth === 3);
+const showInline = variant === 'inline' && entries.length > 0;
+const showSidebar = variant === 'sidebar' && entries.length > 0;
+
+const linkClass =
+  'toc-link block min-h-8 w-full rounded-sm py-1 text-start text-sm transition-colors duration-150 hover:text-[var(--docs-text-primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary';
+---
+
+{showInline && (
+  <details class="toc-inline docs-surface not-prose mbe-8 xl:hidden" data-pagefind-ignore>
+    <summary class="flex min-h-11 cursor-pointer items-center justify-between gap-3 px-4 py-2.5 text-sm font-semibold text-[var(--docs-text-secondary)] active:opacity-70">
+      <span>On this page</span>
+      <Icon
+        name="tabler:chevron-down"
+        is:inline
+        class="toc-inline-icon h-4 w-4 shrink-0 text-[var(--docs-text-muted)] motion-safe:transition-transform motion-safe:duration-200"
+        aria-hidden="true"
+      />
+    </summary>
+    <nav aria-label="On this page" class="border-bs border-[var(--docs-surface-border)] px-4 py-3">
+      <ul class="space-y-1">
+        {entries.map((heading) => (
+          <li>
+            <a href={`#${heading.slug}`} class:list={[linkClass, heading.depth === 3 ? 'ps-4' : '']}>
+              {heading.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </details>
+)}
+
+{showSidebar && (
+  <aside id="toc" data-pagefind-ignore class="toc-column hidden min-w-0 xl:block">
+    <nav
+      class="toc-panel sticky overflow-y-auto px-2"
+      style="inset-block-start: calc(var(--site-header-height) + 1.5rem); max-height: calc(100vh - var(--site-header-height) - 3rem);"
+      aria-label="On this page"
+    >
+      <div class="space-y-4">
+        <h2 class="mbe-4 text-sm font-semibold text-[var(--docs-text-muted)]">On this page</h2>
+        <div class="toc-rail relative">
+          <!-- The marker fades in place; with motion it also slides to the active heading. -->
+          <div
+            id="toc-marker"
+            class="absolute start-0 w-[2px] rounded-full bg-primary opacity-0 transition-opacity duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] motion-safe:transition-[height,opacity,inset-block-start]"
+            style="inset-block-start: 0; height: 0;"
+          >
+            <div class="absolute inset-0 bg-primary/50 blur-[2px]" />
+          </div>
+
+          <ul class="space-y-2">
+            {entries.map((heading) => (
+              <li>
+                <a
+                  href={`#${heading.slug}`}
+                  class:list={[linkClass, heading.depth === 3 ? 'ps-6' : 'ps-4']}
+                  data-toc-link
+                >
+                  {heading.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="toc-utilities mbs-6 flex flex-col gap-2 border-bs border-fg/[0.06] pbs-4">
+          <button
+            type="button"
+            id="toc-copy-link"
+            class="toc-utility-link -mx-2 inline-flex min-h-9 items-center gap-2 rounded-md px-2 text-start text-sm text-[var(--docs-text-muted)] transition-colors duration-150 hover:text-[var(--docs-text-primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          >
+            <Icon name="tabler:copy" class="copy-code-icon h-4 w-4 shrink-0" aria-hidden="true" />
+            <Icon name="tabler:check" class="copy-code-check h-4 w-4 shrink-0" aria-hidden="true" />
+            <span data-copy-link-label>Copy link</span>
+          </button>
+          <a
+            href="https://github.com/Atlas-OS/website/issues"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="toc-utility-link -mx-2 inline-flex min-h-9 items-center gap-2 rounded-md px-2 text-sm text-[var(--docs-text-muted)] transition-colors duration-150 hover:text-[var(--docs-text-primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          >
+            <Icon name="tabler:message-report" class="h-4 w-4 shrink-0" aria-hidden="true" />
+            <span>Share feedback</span>
+          </a>
+        </div>
+        <span id="toc-copy-status" class="sr-only" role="status" aria-live="polite" />
+      </div>
+    </nav>
+  </aside>
+)}
+
+<style>
+  .toc-panel {
+    /* Keep the utilities clear of the floating "Ask AI" button. */
+    padding-block-end: 6rem;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in oklch, var(--color-fg) 10%, transparent) transparent;
+  }
+
+  .toc-panel::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .toc-panel::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .toc-panel::-webkit-scrollbar-thumb {
+    background-color: color-mix(in oklch, var(--color-fg) 10%, transparent);
+    border-radius: 3px;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .toc-panel::-webkit-scrollbar-thumb:hover {
+      background-color: color-mix(in oklch, var(--color-fg) 20%, transparent);
+    }
+  }
+
+  /* Faint rail the active marker travels along. */
+  .toc-rail::before {
+    content: '';
+    position: absolute;
+    inset-block: 0.25rem;
+    inset-inline-start: 0;
+    width: 2px;
+    border-radius: 999px;
+    background: color-mix(in oklch, var(--color-fg) 8%, transparent);
+  }
+
+  .toc-link {
+    color: var(--docs-text-muted);
+  }
+
+  .toc-link[aria-current='location'] {
+    color: var(--color-link);
+  }
+
+  /* The inline list opens and closes by easing its height (`::details-content`, docs.css). */
+  .toc-inline summary {
+    list-style: none;
+  }
+
+  .toc-inline summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .toc-inline[open] .toc-inline-icon {
+    transform: rotate(180deg);
+  }
+
+  #toc-copy-link .copy-code-check {
+    display: none;
+  }
+
+  #toc-copy-link[data-copied='true'] .copy-code-icon {
+    display: none;
+  }
+
+  #toc-copy-link[data-copied='true'] .copy-code-check {
+    display: block;
+  }
+</style>
+
+<script>
+  import { bindCopyButton } from '@/utils/clipboard';
+  import { onPageLoad } from '@/utils/page-lifecycle';
+
+  const SCROLL_OFFSET = 100;
+
+  /** Highlight the heading currently at the top of the viewport and move the marker beside it. */
+  function setupActiveHeading(signal: AbortSignal) {
+    const toc = document.getElementById('toc');
+    const marker = document.getElementById('toc-marker');
+    if (!toc || !marker) return;
+
+    const links = [...toc.querySelectorAll<HTMLAnchorElement>('[data-toc-link]')];
+    const headings = links
+      .map((link) => document.getElementById(decodeURIComponent(link.hash.slice(1))))
+      .filter((element): element is HTMLElement => element !== null);
+    if (headings.length === 0) return;
+
+    let offsets: number[] = [];
+    let activeId: string | null = null;
+    let frame = 0;
+
+    const measure = () => {
+      offsets = headings.map((heading) => heading.getBoundingClientRect().top + window.scrollY);
+    };
+
+    const update = () => {
+      frame = 0;
+      const position = window.scrollY + SCROLL_OFFSET;
+      let nextId: string | null = null;
+      for (let i = offsets.length - 1; i >= 0; i -= 1) {
+        if (position >= offsets[i]!) {
+          nextId = headings[i]!.id;
+          break;
+        }
+      }
+      if (nextId === activeId) return;
+      activeId = nextId;
+
+      let activeLink: HTMLAnchorElement | undefined;
+      for (const link of links) {
+        const isActive = decodeURIComponent(link.hash.slice(1)) === activeId;
+        if (isActive) {
+          link.setAttribute('aria-current', 'location');
+          activeLink = link;
+        } else {
+          link.removeAttribute('aria-current');
+        }
+      }
+
+      if (!activeLink || !marker.parentElement) {
+        marker.style.opacity = '0';
+        return;
+      }
+      const linkRect = activeLink.getBoundingClientRect();
+      const containerRect = marker.parentElement.getBoundingClientRect();
+      marker.style.insetBlockStart = `${linkRect.top - containerRect.top}px`;
+      marker.style.height = `${linkRect.height}px`;
+      marker.style.opacity = '1';
+    };
+
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+
+    measure();
+    update();
+    window.addEventListener('scroll', schedule, { passive: true, signal });
+    window.addEventListener(
+      'resize',
+      () => {
+        measure();
+        activeId = null;
+        schedule();
+      },
+      { signal }
+    );
+    signal.addEventListener('abort', () => cancelAnimationFrame(frame), { once: true });
+  }
+
+  function setupCopyLink(signal: AbortSignal) {
+    const button = document.getElementById('toc-copy-link');
+    if (!button) return;
+    const label = button.querySelector<HTMLElement>('[data-copy-link-label]');
+
+    bindCopyButton(button, {
+      getText: () => window.location.href,
+      status: document.getElementById('toc-copy-status'),
+      labels: { idle: 'Copy link', copied: 'Link copied', failed: 'Unable to copy link' },
+      announcements: { copied: 'Page link copied', failed: 'Unable to copy the page link' },
+      signal,
+    });
+
+    if (label) {
+      const observer = new MutationObserver(() => {
+        label.textContent = button.dataset.copied === 'true' ? 'Link copied' : 'Copy link';
+      });
+      observer.observe(button, { attributes: true, attributeFilter: ['data-copied'] });
+      signal.addEventListener('abort', () => observer.disconnect(), { once: true });
+    }
+  }
+
+  onPageLoad((signal) => {
+    setupActiveHeading(signal);
+    setupCopyLink(signal);
+  });
+</script>

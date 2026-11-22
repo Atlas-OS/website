@@ -1,0 +1,51 @@
+---
+import { stableId } from '@/utils/stable-id';
+
+interface Props {
+  /** The term or phrase to display (with dotted underline) */
+  term: string;
+  /** The definition shown in a popover when the term is pressed, tapped, or activated by keyboard */
+  definition: string;
+}
+
+const { term, definition } = Astro.props;
+// A title tooltip never appears on focus or touch, so the definition lives in a native popover instead.
+const id = stableId('term', term, definition);
+---
+
+<button
+  type="button"
+  class="cursor-help border-be border-dotted border-current/60 whitespace-nowrap transition-colors duration-150 hover:border-current focus-visible:rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--color-primary)]"
+  popovertarget={id}
+  style={`anchor-name: --${id}`}
+>
+  {term}
+</button>
+<span id={id} popover class="term-definition" style={`position-anchor: --${id}`}>
+  {definition}
+</span>
+
+<style>
+  .term-definition {
+    max-width: min(20rem, calc(100vw - 2rem));
+    padding-block: 0.5rem;
+    padding-inline: 0.75rem;
+    border: 1px solid var(--docs-surface-border);
+    border-radius: var(--docs-radius-md);
+    background: var(--docs-panel-bg);
+    color: inherit;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  /* Place the definition under its term; browsers without anchor positioning keep the centred popover. */
+  @supports (position-area: block-end) {
+    .term-definition {
+      inset: auto;
+      margin: 0;
+      margin-block-start: 0.375rem;
+      position-area: block-end span-inline-end;
+      position-try-fallbacks: flip-block, flip-inline;
+    }
+  }
+</style>

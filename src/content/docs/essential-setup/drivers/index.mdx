@@ -1,0 +1,122 @@
+---
+title: "Drivers guide"
+metaDescription: "Choose Windows Update or manual driver installation, identify your hardware, and find the right manufacturer drivers."
+description: Install drivers for AtlasOS.
+order: 1
+sidebar:
+  label: "Drivers"
+---
+
+import AtlasFolderRestoreLink from '@/components/docs/AtlasFolderRestoreLink.astro';
+import Callout from '@/components/docs/Callout.astro';
+import QuickLinkCard from '@/components/docs/QuickLinkCard.astro';
+import QuickLinksGrid from '@/components/docs/QuickLinksGrid.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+import IconArrow from '@/components/ui/IconArrow.astro';
+
+This guide helps you find and install the right drivers, including when a device is missing or doesn't work after installation.
+On the **Get ready** page, Atlas Manager asks how drivers should be installed.
+**Get drivers through Windows Update** suits most PCs.
+Choose **Install drivers myself** if you need a specific manufacturer driver or prefer to manage drivers yourself.
+
+## When to install drivers manually
+
+Use the device manufacturer's package when:
+
+- Windows Update has not found a working driver.
+- A laptop or prebuilt PC needs model-specific features.
+- You need a particular driver version to resolve a documented problem.
+
+Installing drivers yourself doesn't automatically improve performance or reduce resource usage.
+Install the packages your hardware needs, and review any optional companion software.
+
+## Find the right package
+
+1. Identify your exact PC or motherboard model. For an individual device, open **Device Manager**, then its **Properties → Details → Hardware Ids** if the name is unclear.
+2. Use the manufacturer's official support page. For laptops and prebuilt PCs, start with the PC manufacturer's model page.
+3. Match the package to your device and Windows architecture. Choose a supported Windows 11 driver and follow its installation instructions.
+4. Restart when requested, then test the device before installing another version.
+
+Avoid bulk driver-updater utilities, and don't download every version listed for a device.
+If you have no internet connection, copy the correct network driver from another PC. See [network drivers](/docs/essential-setup/drivers/network/).
+
+## Switch to automatic installation
+
+Open <CodeInline text="%windir%\AtlasDesktop" /><IconArrow /><CodeInline text="2. Drivers" /><IconArrow /><CodeInline text="Drivers from Windows Update" /> and run <CodeInline text="Enable Drivers from Windows Update.reg" />.
+Restart afterwards so Windows applies the driver policy.
+
+Then open **Settings → Windows Update** and check for updates.
+If you need more drivers, review **Advanced options → Optional updates**.
+To go back to installing drivers yourself, run <CodeInline text="Disable Drivers from Windows Update.reg" /> in the same folder.
+Either file changes how Windows Update handles drivers from then on, and neither uninstalls the drivers you have.
+
+See [Microsoft's driver-update guidance](https://support.microsoft.com/en-us/windows/hardware/drivers/automatically-get-recommended-and-updated-hardware-drivers) for the current Windows steps.
+
+If the Atlas folder is missing, follow <AtlasFolderRestoreLink />.
+
+## Which drivers do I need?
+
+Install only the drivers for hardware in your system:
+
+- **Graphics (GPU/iGPU):** Display output and gaming
+- **Audio:** Sound from speakers or headphones
+- **Wi-Fi/Network:** Internet connectivity
+- **Bluetooth:** Wireless peripherals (only if you use them)
+- **Chipset:** System stability and performance
+
+<Callout type="warning" title="Multiple graphics cards">
+  If you have both integrated and dedicated graphics, such as an Intel CPU with an NVIDIA GPU, install
+  drivers for both so you can switch between GPUs.
+</Callout>
+
+<Callout type="tip">
+  Restore network access first if you're offline. Otherwise, follow the PC or motherboard
+  manufacturer's installation order and restart instructions; there is no single order for every PC.
+</Callout>
+
+## Driver installation guides
+
+<QuickLinksGrid columns={{ md: 2 }}>
+  <QuickLinkCard
+    href="/docs/essential-setup/drivers/gpu/"
+    icon="tabler:device-desktop"
+    title="Graphics drivers"
+    description="NVIDIA, AMD, and Intel GPU drivers"
+  />
+
+  <QuickLinkCard
+    href="/docs/essential-setup/drivers/network/"
+    icon="tabler:network"
+    title="Network drivers"
+    description="Wi-Fi and Ethernet drivers for internet connectivity"
+  />
+
+  <QuickLinkCard
+    href="/docs/essential-setup/drivers/audio/"
+    icon="tabler:speakerphone"
+    title="Audio drivers"
+    description="Sound drivers for speakers and headphones"
+  />
+
+  <QuickLinkCard
+    href="/docs/essential-setup/drivers/chipset/"
+    icon="tabler:cpu"
+    title="Chipset drivers"
+    description="Find the chipset package for your platform"
+  />
+
+  <QuickLinkCard
+    href="/docs/essential-setup/drivers/other/"
+    icon="tabler:tools"
+    title="Other drivers"
+    description="Bluetooth, printer, and other device drivers"
+  />
+</QuickLinksGrid>
+
+## Next steps
+
+After installing drivers:
+
+- **[Optimise hardware](/docs/essential-setup/hardware/)** (optional): enable XMP/DOCP and Resizable BAR
+- **[Configure Atlas settings](/docs/atlas-configuration/):** customise your installation
+- **Explore [optional tweaks](/docs/atlas-configuration/tweaks/)** to personalise Windows

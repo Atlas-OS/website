@@ -1,0 +1,24 @@
+export const SITE_URL = 'https://atlasos.net' as const;
+
+export const SITE_NAME = 'AtlasOS' as const;
+
+export const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.png` as const;
+
+export const DEFAULT_META_DESCRIPTION =
+  'AtlasOS - An optimized Windows experience with stronger performance, better privacy, and cleaner defaults.' as const;
+
+export const ATLAS_API_URL = 'https://api.atlasos.net/' as const;
+
+export const ATLAS_GITHUB_LATEST_RELEASE_API_URL =
+  'https://api.github.com/repos/Atlas-OS/Atlas/releases/latest' as const;
+
+export const ATLAS_MANAGER_DOWNLOAD_URL =
+  'https://github.com/Atlas-OS/Atlas/releases/latest/download/AtlasManager.exe' as const;
+
+export const CONTACT_EMAIL = 'contact@atlasos.net' as const;
+
+export const SOCIAL_LINKS = {
+  github: 'https://github.com/Atlas-OS/Atlas',
+  discord: 'https://discord.com/invite/atlasos-795710270000332800',
+  x: 'https://x.com/atlasos',
+} as const;

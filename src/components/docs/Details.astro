@@ -1,0 +1,92 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  summary: string;
+  open?: boolean;
+}
+
+const { summary, open = false } = Astro.props;
+---
+
+<!-- Opens and closes by easing its height (`::details-content`, docs.css). -->
+<details class="details docs-surface not-prose my-4 overflow-clip" data-component="details" open={open}>
+  <summary
+    class="details-summary flex min-h-11 cursor-pointer items-center justify-between gap-3 rounded-[var(--docs-radius-md)] px-5 py-4 text-sm font-medium transition-colors hover:bg-fg/[0.04] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary active:opacity-70"
+    style="color: var(--docs-text-primary);"
+  >
+    <span>{summary}</span>
+    <Icon
+      name="tabler:chevron-down"
+      is:inline
+      class="details-summary-icon h-4 w-4 shrink-0 motion-safe:transition-transform motion-safe:duration-200"
+      style="color: var(--docs-text-muted);"
+      aria-hidden="true"
+    />
+  </summary>
+  <div class="details-content px-5 py-4" style="border-block-start: 1px solid var(--docs-surface-border);">
+    <slot />
+  </div>
+</details>
+
+<style is:global>
+  .details-summary {
+    list-style: none;
+  }
+
+  .details-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .details-summary::marker {
+    display: none;
+  }
+
+  .details[open] .details-summary-icon {
+    transform: rotate(180deg);
+  }
+
+  .details-content ul,
+  .details-content ol {
+    margin-block: 0.5rem 0;
+    margin-inline-start: 1.25rem;
+    padding-inline-start: 0;
+  }
+
+  .details-content li {
+    margin-block-end: 0.25rem;
+    color: var(--docs-text-secondary);
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+
+  .details-content p {
+    margin-block: 0 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--docs-text-secondary);
+  }
+
+  .details-content p:last-child {
+    margin-block-end: 0;
+  }
+
+  .details-content a {
+    color: var(--color-link);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .details-content a:hover {
+      opacity: 0.85;
+    }
+  }
+
+  .details-content ul {
+    list-style: disc;
+  }
+  .details-content ol {
+    list-style: decimal;
+  }
+</style>

@@ -1,0 +1,98 @@
+# Deploy AtlasOS website to Cloudflare Workers
+# Secrets: CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID (the preview cleanup in preview.yml
+# cannot pick an account non-interactively without it)
+# https://developers.cloudflare.com/fundamentals/api/get-started/create-token/
+
+name: Deploy to Cloudflare Workers
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate
+    uses: ./.github/workflows/ci.yml
+    # A called workflow gets the default GITHUB_TOKEN permissions unless the calling job sets them,
+    # and it can only narrow what it is given.
+    permissions:
+      contents: read
+    with:
+      upload-dist: true
+
+  deploy:
+    name: Deploy
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+
+    steps:
+      - name: Check dist artifact
+        if: needs.validate.outputs.dist-artifact == ''
+        run: |
+          echo "::error::The validate job did not upload a dist artifact."
+          exit 1
+
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+
+      - name: Setup Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '26'
+
+      - name: Cache dependencies
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: bun-${{ runner.os }}-
+
+      # Wrangler is a devDependency; the Worker bundle also needs the runtime dependencies.
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Download dist
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: ${{ needs.validate.outputs.dist-artifact }}
+          path: dist
+
+      # No wranglerVersion: the action uses the Wrangler version pinned in bun.lock.
+      - name: Deploy to Cloudflare Workers
+        id: deploy
+        uses: cloudflare/wrangler-action@953926a2e2182532811c01a25e53647d93bf07c0 # v4.1.3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy
+
+      - name: Deployment summary
+        if: success()
+        env:
+          BRANCH: ${{ github.ref_name }}
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
+        run: |
+          {
+            echo "## Deployment complete"
+            echo ""
+            echo "**Worker:** atlasos-website"
+            echo "**Branch:** $BRANCH"
+            # An `if` rather than `[ ... ] && echo`, which would fail the step when the URL is empty.
+            if [ -n "$DEPLOYMENT_URL" ]; then echo "**URL:** $DEPLOYMENT_URL"; fi
+          } >> "$GITHUB_STEP_SUMMARY"

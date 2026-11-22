@@ -1,0 +1,139 @@
+---
+title: "Advanced configuration"
+metaDescription: "Atlas advanced configuration: boot settings, driver tools, Microsoft Store, Process Explorer, services including NVIDIA Display Container and SysMain, and Toggle Windows Updates."
+description: Advanced configuration for experienced users.
+order: 22
+sidebar:
+  label: "Advanced options"
+---
+
+import AtlasFolderRestoreLink from '@/components/docs/AtlasFolderRestoreLink.astro';
+import Callout from '@/components/docs/Callout.astro';
+import CodeInline from '@/components/docs/CodeInline.astro';
+import IconArrow from '@/components/ui/IconArrow.astro';
+import Term from '@/components/docs/Term.astro';
+
+This page covers the <CodeInline text="6. Advanced Configuration" /> folder in the Atlas folder, at <CodeInline text="%windir%\AtlasDesktop" />.
+It's for experienced users who know how to undo a change.
+If the Atlas folder is missing, follow <AtlasFolderRestoreLink />.
+
+<Callout type="danger" title="Experienced users only">
+  Change these settings only if you understand their effects and know how to reverse them. A
+  wrong setting can cause compatibility problems or make Windows harder to recover.
+</Callout>
+
+## Boot configuration
+
+<CodeInline text="Boot Configuration" /> changes how Windows starts.
+Each file opens a menu with the Atlas default marked; restart afterwards to see the change.
+
+| File | What it changes | Atlas default |
+| --- | --- | --- |
+| <CodeInline text="Appearance" /><IconArrow /><CodeInline text="Boot Logo.cmd" /> | The Windows logo while Windows starts | On |
+| <CodeInline text="Appearance" /><IconArrow /><CodeInline text="New Boot Menu.cmd" /> | The graphical boot menu, instead of the text menu | Off |
+| <CodeInline text="Appearance" /><IconArrow /><CodeInline text="Spinning Animation.cmd" /> | The spinning dots while Windows starts | On |
+| <CodeInline text="Behavior" /><IconArrow /><CodeInline text="Always Go to Advanced Boot Options.cmd" /> | Opening the advanced boot options at every start | Off |
+| <CodeInline text="Behavior" /><IconArrow /><CodeInline text="Automatic Repair.cmd" /> | Windows Automatic Repair after failed starts | On |
+| <CodeInline text="Behavior" /><IconArrow /><CodeInline text="Editing Kernel Parameters on Startup.cmd" /> | Editing kernel parameters before Windows starts | Off |
+| <CodeInline text="Behavior" /><IconArrow /><CodeInline text="Highest Mode.cmd" /> | The highest graphics mode for boot screens | Off |
+
+<CodeInline text="View Current Values.cmd" /> shows the current boot configuration, so you can note the original values before changing anything.
+<CodeInline text="Explanations from Microsoft.url" /> opens Microsoft's `bcdedit /set` reference.
+Change one option at a time.
+
+## Driver configuration
+
+<Term term="Interrupt affinity" definition="Which processor cores handle a device's interrupts. Windows handles most driver activity on core 0 by default." /> decides which processor cores handle a device.
+Moving a busy device, such as a graphics card, away from core 0 can reduce latency on some PCs, but a poor assignment can reduce performance.
+
+<CodeInline text="Driver Configuration" /> holds links to third-party tools for this tuning.
+Atlas doesn't install or run them.
+
+- <CodeInline text="AutoGpuAffinity.url" /> benchmarks which core suits your graphics card's interrupts.
+- <CodeInline text="GoInterruptPolicy.url" /> and <CodeInline text="Interrupt Affinity Tool.url" /> set interrupt affinity for a device.
+- <CodeInline text="MSI Utility V3.url" /> switches devices to message-signalled interrupts (MSI mode).
+
+Record each setting before you change it, and test one change at a time.
+
+## Microsoft Store
+
+In <CodeInline text="Microsoft Store" />:
+
+- <CodeInline text="Disable Microsoft Store.cmd" /> removes Microsoft Store for every account on this PC. Run it only if you don't use Store apps.
+- <CodeInline text="Enable Microsoft Store (default).cmd" /> restores Microsoft Store for your account only. It may need an internet connection to download the Store from Microsoft.
+
+While Microsoft Store is removed this way, Atlas Manager's **Get ready** step skips Store app updates and says so.
+
+## Process Explorer
+
+[Process Explorer](https://learn.microsoft.com/sysinternals/downloads/process-explorer) is a Microsoft Sysinternals tool that shows which resources each program uses, in more detail than Task Manager.
+
+In <CodeInline text="Process Explorer" />:
+
+- <CodeInline text="Install Process Explorer.cmd" /> installs Process Explorer and makes it replace Task Manager.
+- <CodeInline text="Uninstall Process Explorer.cmd" /> removes it and restores Task Manager.
+
+## Services
+
+<CodeInline text="Services" /> holds a subfolder for each Windows or vendor service you can turn off.
+Atlas keeps all of them on.
+
+These are documented with the other basic settings:
+
+- [Bluetooth](/docs/atlas-configuration/settings/#bluetooth)
+- [Lanman Workstation (SMB)](/docs/atlas-configuration/settings/#lanman-workstation-smb)
+- [Network discovery](/docs/atlas-configuration/settings/#network-discovery)
+- [Printing](/docs/atlas-configuration/settings/#printing)
+
+To restore Atlas's service settings, run <CodeInline text="Set services to defaults.cmd" /> in <CodeInline text="9. Troubleshooting" />; see [Troubleshooting tools](/docs/atlas-configuration/troubleshooting/#services).
+
+### NVIDIA Display Container
+
+The NVIDIA Display Container LS service (`NVDisplay.ContainerLocalSystem`) runs with NVIDIA graphics drivers.
+The NVIDIA Control Panel and most other NVIDIA driver features need it.
+
+Turning it off is meant for stripped-down NVIDIA driver installations, and for people who rarely open the NVIDIA Control Panel.
+While it's off, the NVIDIA Control Panel and most NVIDIA driver features stop working.
+
+In <CodeInline text="Services" /><IconArrow /><CodeInline text="NVIDIA Display Container" />:
+
+- <CodeInline text="Disable NVIDIA Display Container LS.cmd" /> stops the service and stops it starting with Windows.
+- <CodeInline text="Enable NVIDIA Display Container LS (default).cmd" /> sets it to start automatically and starts it.
+
+The <CodeInline text="Context Menu" /> subfolder adds a quick switch to the desktop:
+
+- <CodeInline text="Add Container Context Menu.cmd" /> adds an **NVIDIA Container** menu to the desktop's right-click menu, with options to enable or disable the service.
+- <CodeInline text="Remove Container Context Menu (default).cmd" /> removes that menu.
+
+These files work only while the service is installed, so install your NVIDIA driver first.
+If you remove the NVIDIA driver, Atlas drops your recorded choice the next time you update or reinstall it.
+
+### Superfetch
+
+Superfetch, also called SysMain, preloads apps you use often so they open faster.
+It also runs ReadyBoost.
+
+In <CodeInline text="Services" /><IconArrow /><CodeInline text="Superfetch" />:
+
+- <CodeInline text="Disable SuperFetch.cmd" /> turns off SysMain and ReadyBoost. Windows then stops preloading apps, and ReadyBoost is unavailable.
+- <CodeInline text="Enable SuperFetch (default).cmd" /> turns them back on.
+
+Restart afterwards.
+
+## Toggle Windows Updates
+
+<CodeInline text="Toggle Windows Updates" /> holds <CodeInline text="Toggle Windows Updates.cmd" /> and a README.
+The file opens a menu with **Disable Windows Updates** and **Enable Windows Updates**, which change Windows Update's services, scheduled tasks and policies.
+
+<Callout type="warning" title="This can break Windows Update and Microsoft Store">
+  Disabling Windows Updates turns off Windows Update completely. Microsoft Store stops working, and
+  Xbox app updates may fail. Enabling it again usually restores them, but may not. To hold updates
+  for a while, use [Pause updates](/docs/atlas-configuration/settings/#pause-updates) instead.
+</Callout>
+
+Read the README before you run the file, and restart when it asks.
+
+## Next steps
+
+- [Basic settings](/docs/atlas-configuration/settings/): Windows updates, drivers, power and privacy settings.
+- [Troubleshooting tools](/docs/atlas-configuration/troubleshooting/): repair tools and Atlas's health check.

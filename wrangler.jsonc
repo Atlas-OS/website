@@ -1,0 +1,27 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "atlasos-website",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-11-18",
+  "compatibility_flags": ["nodejs_compat"],
+  "minify": true,
+  "browser": { "binding": "BROWSER", "remote": true },
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "html_handling": "force-trailing-slash",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/api/*", "/docs/*"]
+  },
+  "observability": { "enabled": true, "head_sampling_rate": 1 },
+  "kv_namespaces": [{ "binding": "MS_ISO_LINKS", "id": "5c778e1859c64276b5fe5b4291deb857" }],
+  // Hourly refresh of cached ISO links before they expire (`scheduled` in src/worker.ts).
+  // Cron Triggers only run the production deployment, never previews.
+  "triggers": { "crons": ["0 * * * *"] },
+  // PR previews (`wrangler preview`) inherit no bindings. Their ISO-link cache is a separate namespace
+  // so preview code never writes into the production cache.
+  "previews": {
+    "browser": { "binding": "BROWSER" },
+    "kv_namespaces": [{ "binding": "MS_ISO_LINKS", "id": "74b0a67cb294499885be805902c1a1a9" }]
+  }
+}
