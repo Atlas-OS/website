@@ -138,31 +138,70 @@ Most users should install the latest recommended AMD driver from AMD. RadeonSoft
 
 ### Radeon Software configuration
 
-1. Open Radeon Software by right-clicking on the desktop
-2. Accept the terms and click the Settings icon in the top-right
+Open **Start**, search for **AMD Software** and select the app.
+In **Gaming** > **Games**, select the game you want to tune.
 
-<Details summary="Graphics tab">
-- Wait for Vertical Refresh - Always Off
-- Texture Filtering Quality - Performance
-- Tessellation Mode - Override application settings
-- Maximum Tessellation Level - Off
+#### Competitive latency settings
+
+- **VSync.** Turn it off in the game's graphics settings when you prioritise input latency and can tolerate tearing. For OpenGL games, set **Wait for Vertical Refresh** to **Always Off** in the game profile. [AMD's VSync documentation](https://www.amd.com/en/resources/support-articles/faqs/DH-012.html) · [AMD's sync latency comparison](https://www.amd.com/en/products/software/adrenalin/software-enhancedsync.html)
+- **Frame generation.** Turn off **AMD Fluid Motion Frames** and any frame generation option in the game when tuning for input latency. Generated frames increase displayed FPS by inserting frames between the ones the game renders. [AMD's frame generation guide](https://www.amd.com/en/products/software/adrenalin/afmf.html)
+- **Radeon Chill.** Turn it off in competitive games. It varies FPS based on movement and disables driver-level **Radeon Anti-Lag** when enabled. [AMD's Anti-Lag and Chill guide](https://www.amd.com/en/resources/support-articles/faqs/DH3-033.html)
+- **Radeon Anti-Lag.** Use **Anti-Lag 2** in the game's settings if it offers it. Otherwise, try **Radeon Anti-Lag** in the game profile when the GPU is the bottleneck. [AMD Anti-Lag 2](https://gpuopen.com/anti-lag-2/) · [AMD's Anti-Lag and Chill guide](https://www.amd.com/en/resources/support-articles/faqs/DH3-033.html)
+
+If the GPU stays near full load and controls feel sluggish, try an in-game FPS limit your PC can hold with some GPU headroom.
+Compare the same scene with and without the limit.
+Use the game's input latency reading if it provides one.
+
+<Details summary="Increase rendered FPS">
+
+If the GPU limits your FPS, lower the game's render scale or use its upscaler before changing driver settings.
+Open **Advanced** in the game profile.
+
+- **Texture Filtering Quality.** Try **Performance** if you can trade texture quality for more FPS.
+- **Tessellation Mode.** To reduce geometry detail, choose **Override Application Settings** and lower **Maximum Tessellation Level**. Test the change in one game first.
+
+See [AMD's graphics settings guide](https://www.amd.com/en/resources/support-articles/faqs/DH3-012.html) for per-game profiles and advanced controls.
+
 </Details>
 
-<Details summary="Display tab">
-- AMD FreeSync - Off (recommended for competitive gaming; it can increase input latency due to extra processing)
-- GPU Scaling - Off
-- Color Depth - Value that matches your monitor's specifications
+<Details summary="Display settings">
+
+In Windows, open **Settings** > **System** > **Display** and select your monitor.
+Open **Advanced display** and pick the highest refresh rate available at your chosen resolution. [Microsoft's refresh rate guide](https://support.microsoft.com/en-gb/windows/hardware/display-graphics/change-the-refresh-rate-on-your-monitor-in-windows)
+
+In AMD Software, search for **Display Settings** to check FreeSync and GPU Scaling for your monitor.
+
+- **AMD FreeSync.** For smoother motion on a compatible display, try FreeSync with an in-game FPS limit just below the monitor's maximum refresh rate. Compare **On** and **Off** in the game's profile if responsiveness varies. [AMD's FreeSync guidance](https://www.amd.com/en/products/graphics/technologies/freesync.html)
+- **GPU Scaling.** Leave it off at native resolution. Enable it if you need to stretch a lower-resolution image or preserve its aspect ratio. [AMD's scaling guide](https://www.amd.com/en/resources/support-articles/faqs/DH3-019.html)
+
 </Details>
 
-3. Disable all settings in **Hotkeys** and **Preferences** tabs
-4. Configure your refresh rate and resolution by typing the following command in <CodeInline text="Win + R" />:
+<Details summary="Privacy, overlays and hotkeys">
 
-   <CodeBlock
-     title="Run in Win + R:"
-     code="rundll32 display.dll,ShowAdapterSettings 0"
-   />
+Search for **Preferences Settings** in AMD Software.
 
-5. Advanced users can disable residual AMD services and drivers such as **AMD Crash Defender**. Do not disable **AMD External Events Utility** if you use FreeSync/VRR or other AMD display features that depend on it.
+- **AMD User Experience Program.** If you're enrolled, select **Unsubscribe** to stop sharing usage data through the programme. [AMD's privacy information](https://www.amd.com/en/legal/privacy/user-experience-program.html)
+- **Game Adjustment Tracking and Notifications.** Turn it off to stop AMD Software using game performance and settings to make recommendations.
+- **In-Game Overlay.** Turn it off if you don't use the AMD overlay. [AMD's preferences guide](https://www.amd.com/en/resources/support-articles/faqs/DH3-001.html)
+
+Use **Hotkey Settings** to clear shortcuts you don't use or change ones that conflict with a game.
+To stop background recording, open **Record & Stream Settings** and turn off **Instant Replay** and **Record Desktop**. [AMD's recording settings](https://www.amd.com/en/resources/support-articles/faqs/DH3-023.html)
+
+</Details>
+
+<Details summary="Optional AMD services">
+
+Test the driver and display first, then change one service at a time in RadeonSoftwareSlimmer.
+The **AMD Crash Defender Service** adds crash diagnostics. Disable it only if you're willing to give up those diagnostics.
+Keep **AMD External Events Utility** enabled if you use FreeSync. [RadeonSoftwareSlimmer's service reference](https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/System-Services-and-Drivers)
+
+1. Open **Post Install** in RadeonSoftwareSlimmer and select **Load/Refresh Radeon Software Installed Components**.
+2. Open **System Services**, clear **Enabled** for **AMD Crash Defender Service** if it's listed, and select **Apply Changes**.
+3. Restart and check that games and display features still work as expected.
+
+To restore the service, select **Enabled**, select **Apply Changes** and restart.
+
+</Details>
 
 ### Disable Multi-Plane Overlay (MPO)
 
