@@ -10,8 +10,8 @@
     "directory": "./dist",
     "binding": "ASSETS",
     "html_handling": "force-trailing-slash",
-    "not_found_handling": "404-page",
-    "run_worker_first": ["/api/*", "/docs/*"]
+    // Unmatched paths also reach the Worker, where it serves the negotiated 404.
+    "run_worker_first": ["/", "/api/*", "/docs/*"]
   },
   "observability": { "enabled": true, "head_sampling_rate": 1 },
   "kv_namespaces": [{ "binding": "MS_ISO_LINKS", "id": "5c778e1859c64276b5fe5b4291deb857" }],

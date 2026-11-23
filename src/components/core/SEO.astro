@@ -1,5 +1,5 @@
 ---
-import { DEFAULT_META_DESCRIPTION, SITE_NAME, SITE_URL, SOCIAL_LINKS } from '@/constants';
+import { CONTACT_EMAIL, DEFAULT_META_DESCRIPTION, SITE_NAME, SITE_URL, SOCIAL_LINKS } from '@/constants';
 
 interface Props {
   title: string;
@@ -41,8 +41,15 @@ const graph: Array<Record<string, unknown>> = [
     '@id': organizationId,
     name: SITE_NAME,
     url: siteBase,
+    description: DEFAULT_META_DESCRIPTION,
     logo: { '@type': 'ImageObject', url: `${siteBase}/favicon.svg` },
     sameAs: Object.values(SOCIAL_LINKS),
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'general inquiries',
+      email: CONTACT_EMAIL,
+      url: `${siteBase}/contact/`,
+    },
   },
   {
     '@type': 'WebSite',

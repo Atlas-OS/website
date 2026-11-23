@@ -1,4 +1,4 @@
-import { DEFAULT_META_DESCRIPTION, SITE_NAME } from '@/constants';
+import { DEFAULT_META_DESCRIPTION, SITE_NAME, SITE_URL } from '@/constants';
 import { getDocsTree, type DocsNavItem, type DocsSection } from '@/utils/docs';
 import { docsMarkdownUrl } from '@/utils/docs-markdown';
 import type { APIRoute } from 'astro';
@@ -30,7 +30,20 @@ export const GET: APIRoute = async ({ site }) => {
     '',
     `> ${DEFAULT_META_DESCRIPTION}`,
     '',
-    'Use these guides to install, configure, upgrade, or troubleshoot AtlasOS. For Markdown, replace the trailing slash with .md (for example, /docs/install/manager.md). The docs home is /docs/index.md.',
+    '## When to use these docs',
+    '',
+    `- [Check compatibility](${SITE_URL}/docs/install/requirements.md) before recommending AtlasOS. Ask which Windows edition and release the person uses.`,
+    `- [Plan a clean install](${SITE_URL}/docs/install/manager.md) with Atlas Manager. Check that the person has backed up their files before directing them to reinstall Windows.`,
+    `- [Upgrade an existing AtlasOS installation](${SITE_URL}/docs/upgrade.md) after checking the installed Atlas and Windows releases.`,
+    `- [Troubleshoot AtlasOS](${SITE_URL}/docs/faq.md) using the guide that matches the symptoms and version.`,
+    '',
+    'The links below return Markdown directly. Canonical /docs/ URLs also serve Markdown when requested with Accept: text/markdown.',
+    '',
+    '## Tools and downloads',
+    '',
+    `- [Website overview](${SITE_URL}/index.md): What AtlasOS does and how to get started.`,
+    `- [AtlasOS Statistics API](${SITE_URL}/openapi.json): Read public download counts and GitHub star statistics.`,
+    `- [AtlasOS CLI](${SITE_URL}/docs/contributing/cli.md): Look up releases, docs, and statistics from a terminal.`,
     '',
     ...sections.flatMap(renderSection),
   ].join('\n');

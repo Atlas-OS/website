@@ -1,12 +1,11 @@
 ---
 import { Image } from 'astro:assets';
-import managerDark from '@/assets/atlas-manager-home-dark.png';
-import managerLight from '@/assets/atlas-manager-home-light.png';
 import ItsFOSSLogomark from '@/assets/itsfoss-logomark.svg';
 import PcGuideLogomark from '@/assets/pcguide-logomark.svg';
 import TechSpotLogomark from '@/assets/techspot-logomark.svg';
 import WePCLogomark from '@/assets/wepc-logomark.svg';
 import HeroBackdrop from '@/components/sections/hero/HeroBackdrop.astro';
+import ManagerPreview from '@/components/sections/hero/ManagerPreview.astro';
 import SummitStage from '@/components/sections/hero/SummitStage.astro';
 import Button from '@/components/ui/Button.astro';
 import { ATLAS_MANAGER_DOWNLOAD_URL } from '@/constants';
@@ -20,7 +19,7 @@ const releaseLabel = await latestReleaseLabel();
   <HeroBackdrop>
     <div class="hero-copy mx-auto max-w-4xl px-4 pbe-12 text-center" data-summit-avoid>
       <!-- The count as an open line, led by the Atlas flag that flies on the summit below. -->
-      <p class="hero-stat" data-animate>
+      <p class="hero-stat">
         <svg class="hero-stat__flag" viewBox="0 0 14 16" aria-hidden="true">
           <rect x="1" y="0.5" width="1.5" height="15" rx="0.75" class="hero-stat__pole"></rect>
           <path d="M2.5 1H13L10.6 4.4L13 7.8H2.5Z" fill="#2B9BFF"></path>
@@ -34,17 +33,14 @@ const releaseLabel = await latestReleaseLabel();
           AtlasOS downloads
         </span>
       </p>
-      <h1
-        data-animate
-        class="hero-title mbe-6 bg-linear-to-b from-fg to-blue-200 bg-clip-text font-semibold tracking-tight text-transparent"
-      >
+      <h1 class="hero-title mbe-6 bg-linear-to-b from-fg to-blue-200 bg-clip-text font-semibold tracking-tight text-transparent">
         Optimized Windows. <br /> Designed for enthusiasts.
       </h1>
-      <p data-animate class="mx-auto mbe-10 max-w-2xl leading-relaxed text-pretty text-fg/70">
+      <p class="mx-auto mbe-10 max-w-2xl leading-relaxed text-pretty text-fg/70">
         AtlasOS is a free, open-source Windows 11 modification. It cuts background activity, telemetry and ads, and
         keeps your apps and games working.
       </p>
-      <p id="atlas-release" class="mbe-4 text-sm text-fg/70" data-animate>
+      <p id="atlas-release" class="mbe-4 text-sm text-fg/70">
         {releaseLabel ? (
           <>
             The latest version is <span class="font-semibold text-fg">{releaseLabel}</span>
@@ -53,7 +49,7 @@ const releaseLabel = await latestReleaseLabel();
           'Download the latest version'
         )}
       </p>
-      <div class="flex flex-wrap items-center justify-center gap-4" data-animate>
+      <div class="flex flex-wrap items-center justify-center gap-4">
         <Button
           href={ATLAS_MANAGER_DOWNLOAD_URL}
           variant="primary"
@@ -74,7 +70,7 @@ const releaseLabel = await latestReleaseLabel();
           Star on GitHub
         </Button>
       </div>
-      <p class="mbs-4 text-sm text-fg/60" data-animate>
+      <p class="mbs-4 text-sm text-fg/60">
         For a clean install, choose Create an Atlas ISO in Atlas Manager.{' '}
         <a href="/docs/install/" class="text-[var(--color-link)] underline-offset-2 hover:text-fg hover:underline">
           Read the installation guide
@@ -85,6 +81,9 @@ const releaseLabel = await latestReleaseLabel();
     <div class="manager-showcase relative mx-auto max-w-7xl px-4 md:px-8">
       <div class="manager-stage">
         <div class="manager-window">
+          <a class="manager-preview" href="/docs/install/manager/" aria-label="Read the Atlas Manager guide">
+            <ManagerPreview />
+          </a>
           <SummitStage />
           <!-- Atlas Manager is new: a pennant in the summit flag's cloth, hung over the window's top edge. -->
           <p class="manager-pennant">
@@ -98,21 +97,6 @@ const releaseLabel = await latestReleaseLabel();
             </span>
             <span class="sr-only">New: Atlas Manager, a guided install from start to finish.</span>
           </p>
-          <a class="manager-preview" href="/docs/install/manager/" aria-label="Read the Atlas Manager guide">
-            {[managerDark, managerLight].map((src) => (
-              <Image
-                src={src}
-                widths={[450, 700, 966]}
-                sizes="(max-width: 767px) 92vw, (max-width: 1100px) 76vw, 800px"
-                format="avif"
-                loading="lazy"
-                fetchpriority="high"
-                data-preview-theme={src === managerLight ? 'light' : 'dark'}
-                alt="Atlas Manager Home with options to create an Atlas ISO or install Atlas on this PC."
-                class="block h-auto w-full"
-              />
-            ))}
-          </a>
         </div>
       </div>
     </div>
@@ -291,11 +275,6 @@ const releaseLabel = await latestReleaseLabel();
     outline: 2px solid var(--summit-blue);
     outline-offset: 6px;
   }
-  :global(html:not([data-theme='light'])) [data-preview-theme='light'],
-  :global(html[data-theme='light']) [data-preview-theme='dark'] {
-    display: none;
-  }
-
   /*
    * The pennant: the summit flag's cloth (Atlas blue, moonlit along its left edge) hung over the
    * window's top edge in the empty stretch of its title bar, clear of the window's buttons. The

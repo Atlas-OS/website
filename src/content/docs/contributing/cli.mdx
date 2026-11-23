@@ -1,0 +1,19 @@
+---
+title: AtlasOS CLI
+description: Look up AtlasOS releases, documentation and statistics from a terminal.
+order: 70
+---
+
+The AtlasOS CLI is a read-only tool for finding the latest release, locating an official guide, and checking project statistics. It requires Node.js 22 or newer and works on Windows, macOS, and Linux.
+
+Run the CLI directly with npm:
+
+```sh
+npx --yes https://atlasos.net/atlasos-cli-0.1.0.tgz release
+```
+
+Replace `release` with `docs` for links to the installation and upgrade guides or `stats` for download and GitHub star counts. Add `--json` to any command for machine-readable output.
+
+The `release` command prints the Atlas Manager download URL. To install AtlasOS, follow the [Atlas Manager guide](/docs/install/manager/).
+
+Use the [Statistics API schema](/openapi.json) if you need to call the stats endpoints from your own tool. The CLI source is in the [website repository](https://github.com/Atlas-OS/website/tree/main/cli).

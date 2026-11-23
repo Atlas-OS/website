@@ -705,31 +705,67 @@ async function refreshCachedLinks(env: Env): Promise<void> {
   }
 }
 
-/** Canonical article URLs can serve either representation. Asset URLs keep their normal cache keys. */
-async function serveDocs(request: Request, assets: Env['ASSETS']): Promise<Response> {
-  const url = new URL(request.url);
-  if (!url.pathname.endsWith('/') || !['GET', 'HEAD'].includes(request.method)) {
-    return assets.fetch(request);
-  }
-
+function prefersMarkdown(request: Request): boolean {
   const accept = request.headers.get('Accept') ?? '*/*';
-  const preferred = new Negotiator({ headers: { accept } }).mediaType([
-    'text/html',
-    'text/markdown',
-  ]);
-  let asset;
-  if (preferred === 'text/markdown') {
-    const markdownUrl = new URL(url);
-    markdownUrl.pathname =
-      url.pathname === '/docs/' ? '/docs/index.md' : url.pathname.slice(0, -1) + '.md';
-    const markdown = await assets.fetch(new Request(markdownUrl, request));
-    // Old guide URLs still need their redirects, and missing pages retain their HTTP status.
-    if (markdown.ok || markdown.status === 304) asset = markdown;
+  return (
+    new Negotiator({ headers: { accept } }).mediaType(['text/html', 'text/markdown']) ===
+    'text/markdown'
+  );
+}
+
+function markdownPath(pathname: string): string | undefined {
+  if (pathname === '/' || pathname === '/docs/') return `${pathname}index.md`;
+  if (pathname.startsWith('/docs/') && pathname.endsWith('/')) {
+    return pathname.slice(0, -1) + '.md';
   }
-  asset ??= await assets.fetch(request);
+}
+
+function varyOnAccept(asset: Response): Response {
   const response = new Response(asset.body, asset);
   response.headers.append('Vary', 'Accept');
   return response;
+}
+
+async function notFound(
+  request: Request,
+  assets: Env['ASSETS'],
+  markdown: boolean,
+): Promise<Response> {
+  const page = await assets.fetch(
+    new Request(new URL('/404/', request.url), { method: request.method }),
+  );
+  const headers = new Headers(page.headers);
+  headers.delete('Content-Length');
+  headers.delete('ETag');
+  headers.delete('Last-Modified');
+  headers.set('Cache-Control', 'no-store');
+  headers.set('X-Robots-Tag', 'noindex');
+  const body = markdown
+    ? '# Page not found\n\nThis AtlasOS page does not exist or has moved. See the [documentation](/docs/index.md) or the [Markdown index](/llms.txt).\n'
+    : page.body;
+  if (markdown) headers.set('Content-Type', 'text/markdown; charset=utf-8');
+  return varyOnAccept(
+    new Response(request.method === 'HEAD' ? null : body, { status: 404, headers }),
+  );
+}
+
+/** Serve variants from separate asset URLs so the static asset cache can distinguish them. */
+async function serveSite(request: Request, url: URL, assets: Env['ASSETS']): Promise<Response> {
+  if (request.method !== 'GET' && request.method !== 'HEAD') return assets.fetch(request);
+
+  const path = markdownPath(url.pathname);
+  const markdown = prefersMarkdown(request);
+  if (path && markdown) {
+    const markdownUrl = new URL(path, url);
+    markdownUrl.search = url.search;
+    const variant = await assets.fetch(new Request(markdownUrl, request));
+    // Canonical and legacy URLs still need their original redirects and status codes.
+    if (variant.ok || variant.status === 304) return varyOnAccept(variant);
+  }
+
+  const asset = await assets.fetch(request);
+  if (asset.status === 404) return notFound(request, assets, markdown);
+  return path ? varyOnAccept(asset) : asset;
 }
 
 /* ------------------------------------------------------------------------- */
@@ -738,7 +774,8 @@ async function serveDocs(request: Request, assets: Env['ASSETS']): Promise<Respo
 
 export default {
   async fetch(request, env, ctx) {
-    if (new URL(request.url).pathname.startsWith('/docs/')) return serveDocs(request, env.ASSETS);
+    const url = new URL(request.url);
+    if (!url.pathname.startsWith('/api/')) return serveSite(request, url, env.ASSETS);
     if (request.method === 'OPTIONS') {
       return new Response(null, { status: 204, headers: corsHeaders(request) });
     }
@@ -750,13 +787,13 @@ export default {
       });
     }
 
-    switch (new URL(request.url).pathname) {
+    switch (url.pathname) {
       case '/api/ms-iso/skus':
         return handleSkus(request);
       case '/api/ms-iso/links':
         return handleLinks(request, env, ctx);
       default:
-        return env.ASSETS.fetch(request);
+        return serveSite(request, url, env.ASSETS);
     }
   },
 

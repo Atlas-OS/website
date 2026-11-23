@@ -18,6 +18,12 @@
 /llms.txt
   Cache-Control: public, max-age=3600
 
+/index.md
+  Cache-Control: public, max-age=3600
+
+/
+  Link: </openapi.json>; rel="service-desc"; type="application/json"
+
 /docs/*.md
   Cache-Control: public, max-age=3600
 

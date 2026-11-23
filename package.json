@@ -23,7 +23,7 @@
   "browserslist": ["defaults", "not IE 11", "not dead"],
   "scripts": {
     "astro": "astro",
-    "build": "astro build",
+    "build": "astro build && npm pack ./cli --pack-destination dist",
     "check": "bun run types && astro check && tsc -p tsconfig.worker.json && tsc -p test/worker/tsconfig.json",
     "deploy": "bun run build && wrangler deploy",
     "deploy:ci": "wrangler deploy",

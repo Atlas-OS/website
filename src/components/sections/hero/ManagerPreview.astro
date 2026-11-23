@@ -1,0 +1,69 @@
+---
+import { getImage, Image } from 'astro:assets';
+import dark from '@/assets/atlas-manager-home-dark.png';
+import light from '@/assets/atlas-manager-home-light.png';
+
+interface Props {
+  preload?: boolean;
+}
+
+const { preload = false } = Astro.props;
+const sources = { dark, light };
+const options = {
+  widths: [360, 450, 700, 966],
+  sizes: '(max-width: 767px) 92vw, (max-width: 1100px) 76vw, 800px',
+  format: 'avif' as const,
+};
+const imageProps = {
+  ...options,
+  alt: 'Atlas Manager Home with options to create an Atlas ISO or install Atlas on this PC.',
+  loading: 'eager',
+  fetchpriority: 'high',
+  class: 'block h-auto w-full',
+} as const;
+const srcsets = preload
+  ? await Promise.all([dark, light].map(async (src) => (await getImage({ ...options, src })).srcSet.attribute))
+  : [];
+---
+
+{preload ? (
+  <script is:inline define:vars={{ srcsets, sizes: options.sizes }}>
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'image';
+    link.fetchPriority = 'high';
+    link.imageSizes = sizes;
+    link.imageSrcset = srcsets[document.documentElement.dataset.theme === 'light' ? 1 : 0];
+    document.head.append(link);
+  </script>
+) : (
+  <>
+    {Object.entries(sources).map(([theme, src]) => (
+      <template data-preview-theme={theme}>
+        <Image src={src} {...imageProps} />
+      </template>
+    ))}
+    <noscript>
+      <Image src={dark} {...imageProps} />
+    </noscript>
+    <script is:inline data-astro-rerun>
+      (() => {
+        const preview = document.currentScript.parentElement;
+        const render = () => {
+          const theme = document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
+          if (preview.dataset.activeTheme === theme) return;
+          const template = preview.querySelector(`template[data-preview-theme="${theme}"]`);
+          preview.querySelector('img')?.remove();
+          preview.append(template.content.cloneNode(true));
+          preview.dataset.activeTheme = theme;
+        };
+        // Templates keep the inactive image out of the network until the visitor switches theme.
+        render();
+        document.addEventListener('themechange', render);
+        document.addEventListener('astro:before-swap', () => document.removeEventListener('themechange', render), {
+          once: true,
+        });
+      })();
+    </script>
+  </>
+)}

@@ -394,7 +394,6 @@ html[data-motion] [data-animate] {
   transform: translateY(var(--motion-reveal-distance, 20px))
     scale(var(--motion-reveal-scale-start, 1));
   filter: blur(var(--motion-reveal-blur, 4px));
-  will-change: opacity, transform, filter;
   transition:
     opacity var(--motion-reveal-duration, var(--motion-duration-normal))
       var(--motion-reveal-ease, var(--motion-ease-out)),
@@ -409,7 +408,14 @@ html[data-motion] [data-animate].animate-in {
   opacity: 1;
   transform: translateY(0) scale(1);
   filter: blur(0);
-  will-change: auto;
+}
+
+@media (max-width: 767px) {
+  html[data-motion] [data-animate],
+  html[data-motion] [data-animate].animate-in {
+    transform: none;
+    filter: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

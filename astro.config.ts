@@ -71,7 +71,11 @@ const legacyAssetRedirects = Object.fromEntries<string>([
 export default defineConfig({
   site: 'https://atlasos.net',
   trailingSlash: 'always',
-  redirects: { ...legacyDocsRedirects, ...legacyAssetRedirects },
+  redirects: {
+    ...legacyDocsRedirects,
+    ...legacyAssetRedirects,
+    '/openapi.json': 'https://api.atlasos.net/openapi.json',
+  },
 
   fonts: [
     {

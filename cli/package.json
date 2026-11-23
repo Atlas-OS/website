@@ -1,0 +1,19 @@
+{
+  "name": "atlasos-cli",
+  "version": "0.1.0",
+  "description": "Look up official AtlasOS releases, documentation, and project statistics.",
+  "license": "CC-BY-NC-ND-4.0",
+  "homepage": "https://atlasos.net/docs/contributing/cli/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Atlas-OS/website.git",
+    "directory": "cli"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "atlasos": "./atlasos.mjs"
+  },
+  "files": ["atlasos.mjs"]
+}

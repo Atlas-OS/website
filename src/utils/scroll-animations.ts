@@ -32,10 +32,8 @@ export function initScrollAnimations(signal?: AbortSignal): void {
     return;
   }
 
-  const reveal = (batch: HTMLElement[]) => {
-    const ordered = batch
-      .map(element => ({ element, rect: element.getBoundingClientRect() }))
-      .sort((a, b) => a.rect.top - b.rect.top || a.rect.left - b.rect.left);
+  const reveal = (batch: { element: HTMLElement; rect: DOMRectReadOnly }[]) => {
+    const ordered = batch.sort((a, b) => a.rect.top - b.rect.top || a.rect.left - b.rect.left);
 
     ordered.forEach(({ element }, index) => {
       element.style.setProperty('--animate-delay', String(Math.min(index, MAX_STAGGER_STEPS)));
@@ -45,10 +43,10 @@ export function initScrollAnimations(signal?: AbortSignal): void {
 
   const observer = new IntersectionObserver(
     entries => {
-      const visible: HTMLElement[] = [];
+      const visible: { element: HTMLElement; rect: DOMRectReadOnly }[] = [];
       for (const entry of entries) {
         if (!entry.isIntersecting || !(entry.target instanceof HTMLElement)) continue;
-        visible.push(entry.target);
+        visible.push({ element: entry.target, rect: entry.boundingClientRect });
         observer.unobserve(entry.target);
       }
       if (visible.length > 0) reveal(visible);
