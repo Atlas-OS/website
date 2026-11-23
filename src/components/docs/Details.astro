@@ -12,7 +12,7 @@ const { summary, open = false } = Astro.props;
 <!-- Opens and closes by easing its height (`::details-content`, docs.css). -->
 <details class="details docs-surface not-prose my-4 overflow-clip" data-component="details" open={open}>
   <summary
-    class="details-summary flex min-h-11 cursor-pointer items-center justify-between gap-3 rounded-[var(--docs-radius-md)] px-5 py-4 text-sm font-medium transition-colors hover:bg-fg/[0.04] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary active:opacity-70"
+    class="details-summary flex min-h-11 cursor-pointer items-center justify-between gap-3 px-5 py-4 text-sm font-medium transition-colors hover:bg-fg/[0.04] active:opacity-70"
     style="color: var(--docs-text-primary);"
   >
     <span>{summary}</span>
@@ -32,6 +32,10 @@ const { summary, open = false } = Astro.props;
 <style is:global>
   .details-summary {
     list-style: none;
+  }
+
+  .details-summary:focus-visible {
+    outline-offset: -2px;
   }
 
   .details-summary::-webkit-details-marker {

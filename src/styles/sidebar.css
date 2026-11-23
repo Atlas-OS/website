@@ -199,8 +199,10 @@
   grid-template-rows: 1fr;
 }
 
-.sidebar-collapsible > * {
-  min-height: 0;
+/* Keep the list margins inside the animated track so they move with it. */
+.sidebar-collapsible-inner {
+  display: flow-root;
+  min-block-size: 0;
   overflow: clip;
 }
 
@@ -208,13 +210,18 @@
   grid-template-rows: 0fr;
 }
 
-.is-collapsed > .sidebar-collapsible > * {
-  margin-block: 0;
+.is-collapsed > .sidebar-collapsible > .sidebar-collapsible-inner {
   visibility: hidden;
 }
 
 .is-collapsed > .group .sidebar-arrow {
   transform: rotate(-90deg);
+}
+
+.sidebar-arrow,
+.sidebar-collapsible,
+.sidebar-collapsible-inner {
+  transition-property: none;
 }
 
 /* The collapse eases open and shut; the list hides only once it has finished closing. */
@@ -223,14 +230,18 @@
     transition: grid-template-rows var(--motion-duration-normal) var(--motion-ease-out);
   }
 
-  .is-collapsed > .sidebar-collapsible > * {
+  .sidebar-arrow {
+    transition: transform var(--motion-duration-normal) var(--motion-ease-out);
+  }
+
+  .is-collapsed > .sidebar-collapsible > .sidebar-collapsible-inner {
     transition: visibility 0s var(--motion-duration-normal);
   }
 }
 
 #sidebar:not(.initialized) .sidebar-arrow,
 #sidebar:not(.initialized) .sidebar-collapsible,
-#sidebar:not(.initialized) .sidebar-collapsible > * {
+#sidebar:not(.initialized) .sidebar-collapsible-inner {
   transition: none;
 }
 
