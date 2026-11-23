@@ -1,0 +1,71 @@
+---
+title: "Fix the Windows Home edition error"
+metaDescription: "Fix Atlas Manager's unsupported edition error on Windows 11 Home. Change to Windows 11 Pro or reinstall from an Atlas ISO, then install or update Atlas."
+description: Change from Windows 11 Home to a supported edition to install or update Atlas.
+order: 35
+sidebar:
+  label: "Windows Home edition error"
+---
+
+Use this guide if your PC runs Windows 11 Home and Atlas Manager says **Windows 11 Home, LTSC and Server editions aren't supported**.
+Atlas Manager checks your Windows edition even if you already have Atlas installed.
+
+## Check your Windows edition
+
+Open **Settings** > **System** > **Activation** and check the edition at the top of the page.
+If it shows **Windows 11 Home**, upgrade to Pro using a Pro product key or a digital licence from Microsoft Store.
+If your work or school provides Enterprise or Education, ask its IT team which edition and licence to use.
+
+If Windows already shows a supported edition, restart your PC and open Atlas Manager again.
+If the edition error returns, [send a report](/docs/faq/report-a-problem/) with the edition shown in Settings.
+See [Windows edition requirements](/docs/install/requirements/#windows-edition).
+
+## Upgrade Windows Home to Pro in Settings
+
+Changing editions through Settings keeps your files and installed apps.
+Back up important files first and check that Home is activated under **Activation state**.
+If Home needs activation, follow [Microsoft's activation instructions](https://support.microsoft.com/en-gb/windows/activation/activate-windows).
+
+### Use a Pro product key
+
+1. On **Activation**, expand **Upgrade your edition of Windows** if it appears.
+2. Next to **Change product key**, select **Change**.
+3. Enter your 25-character Windows Pro product key and select **Next**.
+4. Follow the prompts and restart when Windows asks.
+
+### Get Pro from Microsoft Store
+
+1. On **Activation**, expand **Upgrade your edition of Windows**.
+2. Select **Open Store**.
+3. Sign in to Microsoft Store with your Microsoft account and follow the prompts to buy and install the Pro upgrade.
+4. Restart when Windows asks.
+
+If Microsoft Store won't open or download the upgrade, see [Fix Microsoft Store and Xbox app downloads](/docs/faq/microsoft-store/).
+For help with either option, see [Microsoft's Home-to-Pro instructions](https://support.microsoft.com/en-gb/windows/deployment/install-upgrade/upgrade-windows-home-to-windows-pro).
+
+## Continue in Atlas Manager
+
+After Windows restarts, return to **Settings** > **System** > **Activation** and check that it shows **Windows 11 Pro** and that Windows is activated.
+If you already have Atlas, open Atlas Manager and check whether your installed version can update. [Before updating Atlas](/docs/upgrade/requirements/)
+
+- If Atlas Manager offers **Update to Atlas**, follow the [update instructions](/docs/upgrade/upgrade/).
+- If your Atlas version needs a fresh installation of Windows, follow the reinstall steps below.
+
+If you're installing Atlas for the first time, check the [fresh Windows requirements](/docs/install/requirements/#start-with-fresh-windows) before you continue.
+
+## Reinstall Windows as Pro
+
+Use this route if Windows can't change editions in Settings or Atlas requires a fresh installation.
+Have your Windows 11 Pro licence ready.
+Back up your files to a separate drive or cloud storage before you reinstall.
+
+Start from the installation USB to choose Pro on a PC that still runs Home.
+The [mounted ISO route](/docs/install/iso/#reinstall-without-a-usb-drive) uses the same edition that's already installed.
+
+1. Open Atlas Manager and choose **Create an Atlas ISO**.
+   On **Windows setup**, choose **Windows 11 Pro** under **Windows edition**. [Create an Atlas ISO](/docs/install/iso/)
+2. Write the ISO to a USB drive and start the PC from it. [Install from a USB drive](/docs/install/iso/#install-from-a-usb-drive)
+3. Select **Windows 11 Pro** if Windows Setup asks for an edition.
+   If it asks for a product key, use your Pro key.
+   If this PC already has a Pro digital licence, follow [Microsoft's reactivation instructions](https://support.microsoft.com/en-gb/windows/activation/activate-windows).
+4. After Windows Setup finishes, [finish installing Atlas](/docs/install/iso/#6-finish-installing-atlas).
