@@ -1,6 +1,6 @@
 ---
 title: "Create an Atlas ISO"
-metaDescription: "Use Atlas Manager to create a Windows 11 ISO with Atlas included, and write it to an installation USB drive."
+metaDescription: "Create a Windows 11 ISO with Atlas included. Install from Windows without a USB drive, or create a bootable installation USB."
 description: Create Windows installation media with Atlas Manager.
 order: 5
 sidebar:
@@ -11,8 +11,8 @@ import Callout from '@/components/docs/Callout.astro';
 import ManagerScreenshot from '@/components/docs/ManagerScreenshot.astro';
 
 An ISO is a file that contains Windows installation media.
-Atlas Manager can add Atlas to a copy of Microsoft's ISO and write that copy to a USB drive.
-Use it to reinstall Windows with Atlas on this PC or another one.
+Atlas Manager adds Atlas to a copy of Microsoft's ISO.
+Mount that copy in Windows to reinstall this PC, or write it to a USB drive to start a PC from it.
 
 Atlas installs on the destination PC after Windows setup and your first sign-in.
 That PC still needs an internet connection, Windows and Store updates, and the Windows Security step.
@@ -107,7 +107,50 @@ Choose **Create ISO** and keep Atlas Manager open.
 A checklist shows each stage, from **Checking your Windows ISO** to **Checking the new ISO**.
 Wait for **Your ISO is ready** before you use it.
 
-## 5. Create an installation USB
+## 5. Choose an installation path
+
+Both paths use the Atlas ISO you created in the previous step.
+
+- [Reinstall without a USB drive](#reinstall-without-a-usb-drive) if you can sign in to Windows on the PC you're reinstalling.
+- [Install from a USB drive](#install-from-a-usb-drive) if you want to start the PC from installation media, including when Windows won't start.
+
+### Reinstall without a USB drive
+
+Use this route on a PC that runs an edition Atlas supports.
+When you create the ISO, choose the same Windows edition, architecture and installation language as that PC.
+Check the [installation requirements](/docs/install/requirements/).
+
+<Callout type="danger" title="Back up your files first">
+  **Keep nothing** replaces your Windows installation and removes your files, apps and settings from it.
+  Back up your files to a separate drive or cloud storage and check that you can open them.
+  Save your network driver there too, along with your recovery key if you use BitLocker.
+  If you already have a `Windows.old` folder, back up any files you need from it too.
+  Setup can replace that folder.
+</Callout>
+
+1. In File Explorer, right-click the Atlas ISO you created and select **Mount**.
+   Mounting opens the ISO as a drive under **This PC**.
+2. Open that drive and run the `setup.exe` next to the `sources` folder.
+   Select **Yes** if Windows asks for permission.
+3. Follow Windows Setup until you reach **Ready to install**.
+   Select **Change what to keep**, choose **Keep nothing** (shown as **Nothing** on some screens), then select **Next**.
+4. Check that **Ready to install** shows your Windows edition and **Keep nothing**.
+   Select **Install** and let Windows restart as needed.
+
+If Setup can't run from Windows or can't continue with those choices, [install from a USB drive](#install-from-a-usb-drive).
+After Windows Setup finishes, [finish installing Atlas](#6-finish-installing-atlas).
+
+#### Recover files from Windows.old
+
+If Setup creates `Windows.old`, open your Windows drive in File Explorer and go to `Windows.old\Users`.
+Open the folder for your old account and copy any files you need to your new account or your backup drive.
+Windows removes most of these files after 10 days. [Microsoft's file recovery instructions](https://support.microsoft.com/en-us/windows/deployment/install-upgrade/retrieve-files-from-the-windows-old-folder-after-a-windows-upgrade)
+
+### Install from a USB drive
+
+<span id="5-create-an-installation-usb" />
+
+#### Create the installation USB
 
 Choose **Create installation USB** on the finished ISO screen.
 To use an ISO you already have, choose **Create a USB from an existing ISO** on the **Files** step.
@@ -127,19 +170,27 @@ To use an ISO you already have, choose **Create a USB from an existing ISO** on 
 Atlas Manager uses up to 32 GB of the drive and leaves the rest unused.
 The drive starts in UEFI mode, which Windows 11 requires.
 
-## 6. Install Windows and Atlas
+<span id="6-install-windows-and-atlas" />
 
-Back up the files on the PC you want to reinstall.
-Plug the USB drive into that PC and start it from the drive using its boot menu, often opened with F12, F11 or Esc as the PC starts.
-Check the destination drive carefully before you change partitions.
+#### Start the PC from the USB drive
 
-After Windows setup, sign in and choose a password for the local account.
-Atlas Manager opens.
+1. Back up the files on the PC you want to reinstall.
+2. Plug the USB drive into that PC and open its boot menu as it starts.
+   The key is often **F12**, **F11** or **Esc**.
+3. Select the USB drive and follow Windows Setup.
+   Check the destination drive carefully before you change partitions.
+
+After Windows Setup finishes, [finish installing Atlas](#6-finish-installing-atlas).
+
+## 6. Finish installing Atlas
+
+After Windows Setup finishes, sign in and set a password if Windows asks you to.
 Connect to the internet.
 If Windows can't find your network adapter, install the network driver you saved.
 
-Then follow the [installation guide](/docs/install/manager/) from **Get ready**.
-With **Finish setup before the desktop**, the **Your choices** step is skipped because your choices are already saved.
+When Atlas Manager opens, follow the [installation guide from Get ready](/docs/install/manager/#3-get-ready).
+If the app doesn't open on its own, [download and open Atlas Manager](/docs/install/manager/#2-open-atlas-manager) and make your choices during setup.
+With **Finish setup before the desktop**, Atlas Manager skips the **Your choices** step when it loads your saved choices from the ISO.
 Restart when installation finishes, then follow [First setup](/docs/install/setup/).
 
 ## If media creation fails
