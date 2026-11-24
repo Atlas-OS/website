@@ -44,18 +44,21 @@ A stage without a percentage may still be working.
 
 ## What if Windows Update fails?
 
-Read the message on the **Update Windows and Store apps** card before you retry.
+Read the message under **Windows and Microsoft Store updates** on the **Get ready** page before you retry.
+Fix the cause it names, then choose **Try again**.
 
 - **Connection problem:** use Wi-Fi or Ethernet that isn't metered, and sign in to the network if it asks.
   If you don't see any Wi-Fi networks, install your network driver first.
 - **Metered connection:** connect to an unmetered network, or turn off **Metered connection** in network settings.
 - **Updates started earlier are still running:** let them finish.
   Atlas Manager waits for them; don't end Windows servicing processes.
-- **Restart needed:** choose **Restart and continue**, then **Continue updates** after you sign in to the same account.
-- **Microsoft Store can't update apps:** Atlas Manager repairs Microsoft Store once by itself.
-  If that fails, choose **Repair Microsoft Store** to try again.
+- **An app is open:** close the app the message names, in Task Manager if it has no window.
+- **Microsoft Store isn't working:** Atlas Manager repairs Microsoft Store by itself.
+  If the repair fails, choose **Try repair again**.
   If Store downloads still fail, see [Fix Microsoft Store and Xbox app downloads](/docs/faq/microsoft-store/).
 - **Windows reports damage:** Atlas Manager repairs Windows' component store first, which can take half an hour or more.
+  If damage remains, choose **Restart and try again**.
+  If Windows is too damaged to update, back up your files and reinstall Windows with an [Atlas ISO](/docs/install/iso/).
 
 If it still fails, choose **Send a report**, or [export diagnostics](/docs/faq/report-a-problem/#export-diagnostics) to share when you ask for help.
 If Windows keeps asking for the same restart, check Windows Update for unfinished work instead of restarting again and again.
@@ -63,7 +66,7 @@ If Windows keeps asking for the same restart, check Windows Update for unfinishe
 ## Atlas Manager didn't open after restarting
 
 Open Atlas Manager yourself and choose **Continue setup** on Home.
-Then choose **Continue updates**; a check before the restart doesn't replace the next one.
+It carries on updating Windows where it stopped.
 
 Use the same Windows account you started with.
 If Atlas Manager can't continue, [report the problem](/docs/faq/report-a-problem/) before you clear its data.
@@ -100,8 +103,9 @@ The [configuration guide](/docs/atlas-configuration/) explains the controls in t
 ## Do I need to disconnect from the internet during Windows setup?
 
 No.
-Atlas Manager asks **How should drivers be installed?** before it updates Windows, and it needs the internet to update Windows and install Atlas.
-Choosing **Install drivers myself** doesn't remove drivers Windows already installed.
+Atlas Manager needs the internet to update Windows and install Atlas.
+To stop Windows Update installing drivers, choose **Change** beside **Drivers** on the **Get ready** page, then **Install drivers myself**, before Windows updates.
+That doesn't remove drivers Windows already installed.
 
 ## What if installation fails?
 
@@ -109,7 +113,7 @@ Choosing **Install drivers myself** doesn't remove drivers Windows already insta
    It says whether Atlas had started making changes.
 2. Choose **Send a report**, or export diagnostics, before you retry, clear app data or reinstall Windows.
    See [Report a problem](/docs/faq/report-a-problem/).
-3. Fix the cause it names, then choose **Try again**.
+3. Fix the cause it names, then choose the button it offers, such as **Try again** or **Go to Get ready**.
    If you opened a saved Atlas package, keep it; finishing the installation needs the same package.
 4. If Atlas Manager closed, open it again.
    Home offers to finish the installation that stopped.

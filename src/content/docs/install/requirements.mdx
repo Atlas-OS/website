@@ -36,10 +36,12 @@ If it shows Windows 11 Home, follow [Fix the Windows Home edition error](/docs/f
 ## Start with fresh Windows
 
 Install Atlas on a fresh installation of Windows from Microsoft's installation media, before you restore your apps and files.
-If Windows on your PC was installed at least a week ago or already has several apps, Atlas Manager warns that **Windows on this PC looks used**.
+If Windows on your PC was installed a week or more ago, or already has several apps, Home recommends reinstalling Windows with an Atlas ISO.
+**Install Atlas** then asks **Install Atlas on this PC?** before it starts.
 
-If you see this warning, back up your files and reinstall Windows first.
-Installing on a used PC is unsupported. Existing apps and settings may stop working, and removing OneDrive stops your files syncing.
+If you see this question, back up your files and reinstall Windows first.
+Installing on a used PC is unsupported.
+Existing apps and settings may stop working, and Atlas removes OneDrive, so files in it stop syncing.
 
 For a first install, we recommend [creating an Atlas ISO](/docs/install/iso/). Windows setup runs first, and Atlas Manager guides you through installing Atlas after sign-in.
 
@@ -67,7 +69,8 @@ Follow [Before updating](/docs/upgrade/requirements/) instead.
   Atlas Manager needs it to update Windows and download Atlas, and Atlas needs it while it installs software.
 - **A power supply.**
   Keep laptops plugged in until installation finishes.
-- **Free storage** for Windows updates and the installation files.
+- **Free storage** for Windows updates and the Atlas package.
+  Moving Windows to a newer release needs at least 6 GiB free on the Windows drive.
 - **No other antivirus software.**
   Antivirus apps other than Microsoft Defender can block installation, so uninstall them first.
 - **A USB drive**, if you're reinstalling Windows from USB.
@@ -75,17 +78,28 @@ Follow [Before updating](/docs/upgrade/requirements/) instead.
 
 ## What Atlas Manager checks
 
+**Check your PC**, on the **Get ready** page, runs these checks by itself.
+A check that needs attention says what to do, and offers the Windows setting that fixes it where there is one.
+
 | Check | What it needs |
 | --- | --- |
 | **Permission to install** | Atlas Manager runs with administrator permission. |
 | **User account** | UAC is on, and the account isn't the built-in Administrator or a work or school account. |
 | **Windows compatibility** | A supported edition and public release of Windows 11. |
-| **Windows updates** | No updates waiting to install. Atlas Manager installs them for you. |
-| **Pending restart** | Windows doesn't need a restart to finish earlier changes. |
+| **Windows updates** | No updates waiting to install; Atlas Manager installs them for you. |
+| **Pending restart** | No restart waiting to finish earlier changes; Atlas Manager restarts for you. |
 | **Other antivirus software** | No antivirus apps other than Microsoft Defender. |
 | **Internet connection** | A working connection. |
 | **Power supply** | The PC is plugged in. |
-| **Windows activation** | Shown for your information. It doesn't stop installation. |
+| **Windows activation** | Shown for your information; it doesn't stop installation. |
+
+When Atlas Manager [moves Windows to a newer release](/docs/upgrade/windows-release/), three more checks say whether the move can work, before anything starts.
+
+| Check | What it needs | If it fails |
+| --- | --- | --- |
+| **Windows 11 hardware** | TPM 2.0 and UEFI firmware, where Windows lets Atlas Manager read them. | **Create an Atlas ISO** to reinstall Windows. |
+| **Free space** | At least 6 GiB free on the Windows drive. | **Open Storage settings** to free up space; Atlas Manager checks again by itself. |
+| **Where updates come from** | Windows Update, not an organisation's update server. | Ask your organisation, or **Create an Atlas ISO** to reinstall Windows. |
 
 Keep Microsoft Defender's protection on while you prepare Windows.
 Atlas Manager tells you which switches to turn off when you reach its **Windows Security** step.

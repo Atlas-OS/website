@@ -13,7 +13,7 @@ Before starting, [check whether you can update](/docs/upgrade/requirements/) and
 
 1. Open Atlas Manager and choose **Yes** when Windows asks for permission.
 2. On Home, read **What's new in Atlas** for the release on offer, or choose **View release notes on GitHub**.
-   If Atlas Manager hasn't checked for updates yet, choose **Check again**.
+   If Atlas Manager couldn't check for updates, choose **Try again**.
 3. Choose the **Update to Atlas** button.
 
 If the update also moves Windows to a newer release, Home says the update has two parts: Windows first, then Atlas.
@@ -21,13 +21,9 @@ See [Move Windows to a newer release](/docs/upgrade/windows-release/).
 
 ## 2. Get ready
 
-**Get ready** works as it does for a first installation:
-
-1. Atlas Manager downloads the new release under **Installation files**.
-2. Fix anything marked in **PC checks**, then choose **Check again**.
-3. Answer **How should drivers be installed?**
-4. Choose **Check and install updates** to update Windows and Store apps.
-   Use **Restart and continue** when asked, then **Continue updates** after you sign in.
+**Get ready** works as it does for a first installation.
+It checks your PC, downloads the new release and updates Windows and Store apps by itself, restarting your PC when updates need it.
+Fix anything a check asks you to, and it moves on to **Your choices** when it's done.
 
 See [Get ready](/docs/install/manager/#3-get-ready) in the installation guide for details.
 
@@ -39,7 +35,7 @@ Under **Your choices on this PC now**, check which settings Atlas Manager found.
 - **Keep my choices** is the default and the quicker way.
   Atlas keeps every choice as your PC has it now and changes none of them.
   It asks only about a choice it can't tell from your PC.
-- **Choose again** takes you through every choice again, starting from how your PC is set up now.
+- **Choose again** asks every question again, starting from how your PC is set up now.
   Atlas Manager marks the answer your PC has with **On this PC now**, and says what each other answer changes.
   Atlas applies each answer as a new installation would.
 
@@ -57,8 +53,9 @@ If Atlas's record of your last installation doesn't match your PC, the screen sa
 ## 4. Windows Security and Install
 
 Turn off the four protection switches when Atlas Manager asks, as in the [installation guide](/docs/install/manager/#5-windows-security).
-On **Install**, the first row of the summary, **How Atlas updates**, shows your answer.
-Choose **Install Atlas**, keep your PC on, and restart when the update finishes.
+Atlas Manager skips this step when there's nothing to turn off.
+On **Install**, the first row of **Ready to install**, **How Atlas updates**, shows your answer.
+Choose **Install Atlas** and keep your PC on; it restarts when the update finishes.
 
 ## Check the result
 
@@ -88,8 +85,8 @@ If Atlas Manager asks for the Atlas package, choose **Open package file** and se
 ## If Windows reinstalled itself
 
 Sometimes Windows reinstalls itself while it moves to a newer release, which undoes some of Atlas's changes.
-Get ready then says **Windows reinstalled itself while it updated**, and Atlas puts its changes back with the choices you made before.
-There's nothing to choose in this installation.
+The Windows card on **Get ready** then says the new release reset some of Atlas's changes, and Atlas puts them back with the choices you made before.
+**Your choices** asks only for a choice Atlas has no record of.
 To change your choices afterwards, choose **Reinstall Atlas**, then select **Choose again**.
 
 ## If the update fails

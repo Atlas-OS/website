@@ -24,90 +24,90 @@ Creating the ISO doesn't install anything on the PC that makes it, or change you
   Atlas Manager can download it from Microsoft.
   If you bring your own ISO, use an unmodified Microsoft image for the destination PC (x64 or Arm64).
   It must contain a supported edition, such as Windows 11 Pro.
-- **An Atlas package**: Atlas Manager can download the latest one for you.
+- **An Atlas package**: Atlas Manager gets the latest one for you.
 - **Free space on a local NTFS or ReFS drive** for the new ISO and its working files.
-  Allow five times the size of the source ISO, plus twice the unpacked Atlas package size and another 4 GiB.
+  Atlas Manager shows how much it needs on the **Create** step.
 - **Administrator permission.**
-  Without it, the page offers only **Relaunch as administrator**.
-- **A USB drive** from 8 GiB to 2 TiB, if you want an installation USB.
+  Windows asks for it when you open ISO creation.
+- **A USB drive** sold as 16 GB or more, if you want an installation USB.
   Writing it erases the drive.
 
-## 1. Files
+## 1. Windows
+
+<span id="1-files" />
 
 On Home, choose **Create an Atlas ISO**.
-The flow has four steps: **Files**, **Windows setup**, **Your choices** and **Review**.
+The flow has three steps: **Windows**, **Setup** and **Create**.
 
-1. Under **Windows ISO**, choose **Download from Microsoft (recommended)**.
-   Check the language and architecture, then choose **Download Windows 11 from Microsoft** and select a location for the download.
-   If you already have a Windows ISO, select **Choose an ISO file** instead.
-2. Download the Atlas package the app offers, or select **Change** to use a saved package.
-3. Check the file name next to **Save as**.
-   Choose **Change** to save the new ISO somewhere else.
-4. Choose **Check files**.
+1. Answer **Which PC is this ISO for?** with **This PC** or **Another PC**.
+   Atlas Manager uses the answer to suggest the language, edition, account name and network drivers.
+2. Under **Windows ISO**, choose **Download from Microsoft**.
+   Atlas Manager saves Windows 11 to your Downloads folder, in the language and architecture shown under the button.
+   To get another language or architecture, choose **Change** first.
+   If you already have a Windows ISO, choose **Choose an ISO file** instead.
+3. Atlas Manager gets the latest Atlas package by itself.
+   To use a saved package, choose **Change** beside it.
 
-Atlas Manager checks the Windows release, the editions in the ISO and the free space.
+Atlas Manager checks the ISO and the package by itself.
 When the check passes, choose **Continue**.
+If it finds a problem, the message names it and offers the fix, such as **Download from Microsoft**.
 
 <ManagerScreenshot
-  screen="iso-files"
-  alt="The Files step offers a Microsoft download and a link to choose an ISO file."
-  caption="Start here whether you need Windows or already have an ISO."
+  screen="iso-windows"
+  alt="The Windows step, with This PC selected, Download from Microsoft under Windows ISO, and the latest Atlas package."
+  caption="Say which PC the ISO is for, then get Windows."
 />
 
-## 2. Windows setup
+## 2. Setup
 
-Check the **Windows edition**.
-If the ISO contains several editions, choose one you have a licence for or leave the choice until Windows setup.
-Read and accept the licence terms when prompted.
+The **Setup** step sets up Windows on the destination PC, and when you make your Atlas choices.
 
-Enter a **Local account name**.
-Windows creates a local account with this name. Choose its password the first time you sign in.
-Windows setup skips the Microsoft account and privacy screens and turns off optional data sharing and personalised offers.
-
-Under **How should drivers be installed?**, choose **Get drivers through Windows Update** or **Install drivers myself** for the destination PC.
-
-Answer **Which PC will you reinstall Windows on?**
-
-- **This PC** lets you choose **Include this PC's network drivers**, so Windows can go online straight after it's reinstalled.
-  Choose **Use installed drivers**, or **Check Windows Update first** to download matching drivers as well.
+- **Windows edition**: for **This PC**, the edition this PC has, if the ISO includes it; otherwise Windows Setup asks.
+  Choose **Change** to pick another.
+  Select **Accept the Windows licence terms, so Windows Setup doesn't ask** if you want to skip that screen.
+- **Local account name**: Windows creates a local account with this name, and you choose its password when you first sign in.
+  Windows Setup skips the Microsoft account and privacy screens.
+- **Drivers**: for **This PC**, **Include this PC's Wi-Fi and Ethernet drivers** is selected, so Windows can go online straight after it's reinstalled.
   Your Wi-Fi password isn't copied, so you reconnect after reinstalling.
-- **A different PC** includes no network drivers.
-  Keep that PC's network driver on separate storage in case Windows can't connect.
+  For another PC, keep its network driver on separate storage in case Windows can't connect.
+- **How should drivers be installed?**: **Get drivers through Windows Update (recommended)**, **Install drivers myself**, or **Choose after sign-in** to decide on the destination PC.
 
-## 3. Your choices
+Then answer **When do you want to make your Atlas choices?**
 
-Answer **How do you want to set up Atlas?**
-
-| Mode | What happens on the destination PC |
+| Answer | What happens on the destination PC |
 | --- | --- |
-| **Make Atlas choices after sign-in** | After you sign in, Atlas Manager opens and guides you through updates, your choices and installing Atlas. |
-| **Make Atlas choices now** | You make your choices here and Atlas Manager saves them in the ISO. After you sign in, it guides you through updates, then you install Atlas with these choices. |
-| **Finish setup before the desktop** | Your choices are saved in the ISO. After you sign in, Atlas Manager finishes updates and installation full-screen, before the Windows desktop opens. |
+| **After sign-in** | After you sign in, Atlas Manager opens and guides you through updates, your choices and installing Atlas. |
+| **Now** | You make your choices here and Atlas Manager saves them in the ISO. After you sign in, it updates Windows, then you install Atlas with these choices. |
+| **Now**, with **Finish before the desktop opens** selected | Your choices are saved in the ISO. After you sign in, Atlas Manager finishes updates and installation full-screen, before the Windows desktop opens. |
 
-With the second and third modes, you answer the [same questions as in a normal installation](/docs/install/manager/#4-your-choices) here.
-An older Atlas package may only offer **Make Atlas choices after sign-in**.
+With **Now**, you answer the [same questions as in a normal installation](/docs/install/manager/#4-your-choices) here.
+An older Atlas package may only offer **After sign-in**.
 
-**Finish setup before the desktop** still needs your attention: it asks for administrator permission, a network connection and the Windows Security step.
+**Finish before the desktop opens** still needs your attention: it asks for administrator permission, a network connection and the Windows Security step.
 Settings, Windows Security and Store apps work behind it.
 **Continue in Windows** lets you leave it whenever no update, installation, media job or restart countdown is running.
 
 <ManagerScreenshot
-  screen="iso-preferences"
-  alt="The three Atlas setup modes with Make Atlas choices after sign-in selected."
-  caption="Choose when to make your Atlas choices on this screen."
+  screen="iso-setup"
+  alt="The Setup step, with Include this PC's Wi-Fi and Ethernet drivers selected, the driver question, and After sign-in selected for the Atlas choices."
+  caption="Choose how drivers are installed and when to make your Atlas choices."
 />
 
-## 4. Review and create
+## 3. Create
 
-**Review ISO** shows one card for each step, with a **Change** link, and lists the editions the ISO includes.
-Only supported editions are included.
-If you left the edition choice until Windows setup, select an edition you have a licence for there.
+<span id="4-review-and-create" />
+
+The **Create** step shows where the new ISO goes, the space it needs and the space free.
+Each earlier step has a card with **Change**.
+If you left the edition to Windows Setup, select an edition you have a licence for there.
 
 Choose **Create ISO** and keep Atlas Manager open.
-A checklist shows each stage, from **Checking your Windows ISO** to **Checking the new ISO**.
+The progress bar lists each stage, from reading the Windows ISO to checking the new ISO.
 Wait for **Your ISO is ready** before you use it.
 
-## 5. Choose an installation path
+## 4. Choose an installation path
+
+<span id="5-choose-an-installation-path" />
 
 Both paths use the Atlas ISO you created in the previous step.
 
@@ -138,7 +138,7 @@ Check the [installation requirements](/docs/install/requirements/).
    Select **Install** and let Windows restart as needed.
 
 If Setup can't run from Windows or can't continue with those choices, [install from a USB drive](#install-from-a-usb-drive).
-After Windows Setup finishes, [finish installing Atlas](#6-finish-installing-atlas).
+After Windows Setup finishes, [finish installing Atlas](#5-finish-installing-atlas).
 
 #### Recover files from Windows.old
 
@@ -152,20 +152,21 @@ Windows removes most of these files after 10 days. [Microsoft's file recovery in
 
 #### Create the installation USB
 
-Choose **Create installation USB** on the finished ISO screen.
-To use an ISO you already have, choose **Create a USB from an existing ISO** on the **Files** step.
+Choose **Create a USB drive** on the finished ISO screen.
+To use an ISO you already have, choose **Create a USB drive from an existing ISO** on the **Windows** step.
+Atlas Manager uses the ISO you just created, or the newest Atlas ISO in your Downloads folder; choose **Change** to use another.
 
 <Callout type="danger" title="Back up the USB drive first">
   Writing the USB permanently erases every file and partition on the selected drive.
   Copy anything you want to keep to another drive before you continue.
 </Callout>
 
-1. Connect a USB drive, then choose **Refresh** and select it.
-2. Choose **Review USB** and check the drive's model, capacity, volumes and serial number.
-3. Select **I understand that everything on this USB drive will be erased**, then choose **Erase and create USB**.
-4. Keep the drive connected until **Your USB is ready**.
-   Atlas Manager checks every file it writes.
-5. Choose **Eject USB** before you unplug the drive.
+1. Connect the USB drive.
+   Atlas Manager lists drives as you connect them, and selects the drive when it's the only one it can use.
+2. Choose **Create USB drive**.
+   Check the drive's name and size in the question, then choose **Erase and create**.
+3. Keep the drive connected until **Your USB drive is ready**.
+   Atlas Manager checks every file it writes, then ejects the drive.
 
 Atlas Manager uses up to 32 GB of the drive and leaves the rest unused.
 The drive starts in UEFI mode, which Windows 11 requires.
@@ -180,9 +181,11 @@ The drive starts in UEFI mode, which Windows 11 requires.
 3. Select the USB drive and follow Windows Setup.
    Check the destination drive carefully before you change partitions.
 
-After Windows Setup finishes, [finish installing Atlas](#6-finish-installing-atlas).
+After Windows Setup finishes, [finish installing Atlas](#5-finish-installing-atlas).
 
-## 6. Finish installing Atlas
+## 5. Finish installing Atlas
+
+<span id="6-finish-installing-atlas" />
 
 After Windows Setup finishes, sign in and set a password if Windows asks you to.
 Connect to the internet.
@@ -190,12 +193,13 @@ If Windows can't find your network adapter, install the network driver you saved
 
 When Atlas Manager opens, follow the [installation guide from Get ready](/docs/install/manager/#3-get-ready).
 If the app doesn't open on its own, [download and open Atlas Manager](/docs/install/manager/#2-open-atlas-manager) and make your choices during setup.
-With **Finish setup before the desktop**, Atlas Manager skips the **Your choices** step when it loads your saved choices from the ISO.
+With **Finish before the desktop opens**, Atlas Manager skips the **Your choices** step and uses the choices saved in the ISO.
 Restart when installation finishes, then follow [First setup](/docs/install/setup/).
 
 ## If media creation fails
 
-A failed or cancelled job shows a bar with **Open log folder** and the diagnostic buttons.
+A failed job says what happened and offers **Try again**.
+When nothing on the page fixes it, **Send a report**, **Export diagnostics** and **Open log folder** appear under the message.
 Your original ISO stays unchanged.
 A USB drive that didn't finish can't be used to install Windows; create it again.
 
