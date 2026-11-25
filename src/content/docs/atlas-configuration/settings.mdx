@@ -124,15 +124,20 @@ Restart after either change.
 
 ### Power saving
 
-During installation, **Turn off power saving** switches your PC to the Atlas Power Scheme.
-It's a copy of the Balanced plan with four plugged-in settings changed, including never turning off the display.
-Battery settings stay as Balanced has them.
-If you leave the check box clear, Atlas uses Balanced.
+During installation, **Turn off power saving** switches your PC to the Atlas Power Scheme and stops Windows turning off devices to save power.
+The check box starts ticked.
+If you clear it, Atlas uses Balanced and leaves your devices' power settings as they are.
+
+The Atlas Power Scheme is a copy of your PC's Balanced plan with three plugged-in settings changed, including never turning off the display.
+Battery settings stay as Balanced has them, and so do the processor settings that drivers tune for your processor.
+
+Turning off power saving also clears **Allow the computer to turn off this device to save power** on every device in Device Manager that has it, such as USB controllers and network adapters.
+A device you connect later, or whose driver is reinstalled or updated, keeps its own setting until you run <CodeInline text="Disable Power-saving.cmd" /> again or update Atlas.
 
 To change it, open <CodeInline text="3. General Configuration" /><IconArrow /><CodeInline text="Power-saving" />:
 
-- <CodeInline text="Disable Power-saving.cmd" /> applies the Atlas Power Scheme. It matches **Turn off power saving**.
-- <CodeInline text="Default Power-saving (default).cmd" /> goes back to your previous power plan, or to Balanced if there isn't one, and deletes the Atlas plan.
+- <CodeInline text="Disable Power-saving.cmd" /> applies the Atlas Power Scheme and stops Windows turning off devices to save power. It matches **Turn off power saving**.
+- <CodeInline text="Default Power-saving (default).cmd" /> goes back to your previous power plan, or to Balanced if there isn't one, and deletes the Atlas plan. It also ticks **Allow the computer to turn off this device to save power** on every device that has it.
 
 Turning off power saving can raise power use and heat, and shorten battery life.
 The [power-saving policy](https://github.com/Atlas-OS/Atlas/blob/main/docs/power-saving-policy.md) lists each setting it changes.

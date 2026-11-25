@@ -88,8 +88,12 @@ Restart after turning FTH on or off.
 It can have a [noticeable performance cost](https://www.tomshardware.com/news/windows-11-gaming-benchmarks-performance-vbs-hvci-security), especially on older processors.
 
 During installation, the check box **Turn off virtualisation-based security (VBS)** turns off VBS and memory integrity.
-This removes an extra layer of Windows security, and may affect apps or games that require it.
+The check box starts ticked.
+This removes an extra layer of Windows security.
 Atlas leaves Credential Guard, LSA protection and kernel stack protection preferences as they are.
+
+Games that use some anti-cheats, such as Riot Vanguard and FACEIT, may not start until you turn memory integrity back on with <CodeInline text="Enable VBS.cmd" />.
+Riot explains this in [Error VAN: RESTRICTION: 5](https://support.riotgames.com/en-us/riot/penalties/error-van-restriction-5), and FACEIT in [Enabling Memory Integrity (HVCI)](https://support.faceit.com/hc/en-us/articles/8546882512284-Enabling-Memory-Integrity-HVCI).
 
 In <CodeInline text="7. Security" /><IconArrow /><CodeInline text="Core Isolation (VBS)" />:
 
