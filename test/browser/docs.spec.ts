@@ -1,4 +1,47 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
+
+const EMPTY_WALL = { updatedAt: null, monthly: [], oneOff: [] };
+
+function serveSupporters(page: Page, body: unknown, status = 200) {
+  return page.route('**/api/supporters', route =>
+    route.fulfill({ status, contentType: 'application/json', body: JSON.stringify(body) }),
+  );
+}
+
+// The docs home loads the supporter wall; never let the local Worker ask the real bot for it.
+test.beforeEach(async ({ page }) => {
+  await serveSupporters(page, EMPTY_WALL);
+});
+
+test('the docs home thanks supporters by name, members first with their tier', async ({ page }) => {
+  await serveSupporters(page, {
+    updatedAt: null,
+    monthly: [{ name: 'Sam Sample', tier: 'Gigabyte' }],
+    oneOff: [{ name: 'Jo Example' }, { name: '<b>Alex</b>' }],
+  });
+  await page.goto('/docs/');
+
+  const monthly = page.getByRole('region', { name: 'Monthly members' });
+  await expect(monthly.getByRole('listitem')).toHaveText(['Sam Sample, Gigabyte']);
+  await expect(monthly.locator('.supporter-wall__tier')).toHaveText('Gigabyte');
+  const oneOff = page.getByRole('region', { name: 'One-off supporters' });
+  await expect(oneOff.getByRole('listitem')).toHaveText(['Jo Example', '<b>Alex</b>']);
+  await expect(page.getByRole('link', { name: 'Support Atlas on Ko-fi' })).toHaveAttribute(
+    'href',
+    'https://ko-fi.com/atlasos',
+  );
+});
+
+test('without names the docs home keeps only the thank-you line and the button', async ({
+  page,
+}) => {
+  await serveSupporters(page, 'Bad Gateway', 502);
+  await page.goto('/docs/');
+  await expect(page.getByText('Names appear here when you make your support public')).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Support Atlas on Ko-fi' })).toBeVisible();
+  await page.waitForLoadState('networkidle');
+  await expect(page.locator('.supporter-wall__panel')).toHaveCount(0);
+});
 
 test('built docs search can load its WebAssembly and navigate to a match', async ({ page }) => {
   await page.goto('/docs/');
@@ -74,5 +117,17 @@ test.describe('without JavaScript', () => {
       page.getByRole('heading', { name: 'Version 2', exact: true }).first(),
     ).toBeVisible();
     await expect(page.locator('[data-tab-panel="v2"] a').first()).toBeVisible();
+  });
+
+  test('the supporter wall keeps its button and explains the missing names', async ({ page }) => {
+    await page.goto('/docs/');
+    await expect(page.getByRole('link', { name: 'Support Atlas on Ko-fi' })).toBeVisible();
+    // Playwright's text matching skips <noscript>, so check the note element and read its text.
+    const note = page.locator('[data-supporter-wall] .supporter-wall__note');
+    await expect(note).toBeVisible();
+    expect(await note.evaluate(element => element.textContent)).toBe(
+      "Supporters' names load with JavaScript.",
+    );
+    await expect(page.locator('.supporter-wall__panel')).toHaveCount(0);
   });
 });

@@ -445,6 +445,100 @@ describe('Browser Run session reuse', () => {
   });
 });
 
+describe('GET /api/supporters', () => {
+  const UPSTREAM = 'https://discordmetrics.atlasos.net/supporters';
+  const cacheKey = () => new Request(`${ORIGIN}/api/supporters`);
+  const EMPTY = { updatedAt: null, monthly: [], oneOff: [] };
+  const wall = {
+    updatedAt: '2026-11-26T12:00:00.000Z',
+    monthly: [{ name: 'Sam Sample', tier: 'Gigabyte' }],
+    oneOff: [{ name: 'Jo Example' }],
+  };
+
+  async function seedCache(body: unknown, fetchedAt: number) {
+    await (
+      await caches.open('supporter-wall')
+    ).put(
+      cacheKey(),
+      new Response(JSON.stringify(body), {
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'public, max-age=604800',
+          'X-Supporters-Fetched-At': String(fetchedAt),
+        },
+      }),
+    );
+  }
+
+  beforeEach(async () => {
+    await (await caches.open('supporter-wall')).delete(cacheKey());
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+  });
+
+  it("fetches the bot's list, cleans it and caches it for ten minutes", async () => {
+    fetchSpy.mockImplementation(() =>
+      Promise.resolve(
+        Response.json({
+          updatedAt: '2026-11-26T12:00:00Z',
+          monthly: [{ name: '  Sam   Sample ', tier: 'Gigabyte', amount: '5.00' }, { tier: 'Bit' }],
+          oneOff: [{ name: 'Jo Example', email: 'jo@example.com' }, { name: '<b>Bold</b>' }],
+        }),
+      ),
+    );
+
+    const response = await callWorker('/api/supporters');
+    expect(response.status).toBe(200);
+    expect(response.headers.get('Content-Type')).toBe('application/json; charset=utf-8');
+    expect(response.headers.get('Cache-Control')).toBe('public, max-age=300');
+    const text = await response.text();
+    expect(text).not.toMatch(/[<>]/);
+    expect(text).not.toContain('example.com');
+    expect(JSON.parse(text)).toEqual({
+      updatedAt: '2026-11-26T12:00:00.000Z',
+      monthly: [{ name: 'Sam Sample', tier: 'Gigabyte' }],
+      oneOff: [{ name: 'Jo Example' }, { name: '<b>Bold</b>' }],
+    });
+    expect(requestedUrl(fetchSpy.mock.calls[0]).href).toBe(UPSTREAM);
+
+    const again = await callWorker('/api/supporters');
+    expect(JSON.parse(await again.text())).toEqual(JSON.parse(text));
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('asks the bot again once the cached copy is ten minutes old', async () => {
+    await seedCache(EMPTY, Date.now() - 11 * 60 * 1000);
+    fetchSpy.mockImplementation(() => Promise.resolve(Response.json(wall)));
+
+    const response = await callWorker('/api/supporters');
+    expect(await response.json()).toEqual(wall);
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it.each([
+    ['an error status', () => Promise.resolve(new Response('Bad Gateway', { status: 502 }))],
+    ['a network failure', () => Promise.reject(new TypeError('Network down'))],
+    ['a body that is not JSON', () => Promise.resolve(new Response('<html>'))],
+    ['the wrong shape', () => Promise.resolve(Response.json({ supporters: ['Jo Example'] }))],
+  ])('serves the last good copy after %s', async (_case, upstream) => {
+    await seedCache(wall, Date.now() - 60 * 60 * 1000);
+    fetchSpy.mockImplementation(upstream);
+
+    const response = await callWorker('/api/supporters');
+    expect(response.status).toBe(200);
+    expect(response.headers.get('Cache-Control')).toBe('public, max-age=60');
+    expect(await response.json()).toEqual(wall);
+  });
+
+  it("serves an empty wall when the bot can't be reached and nothing is cached", async () => {
+    fetchSpy.mockImplementation(() => Promise.resolve(new Response('Not Found', { status: 404 })));
+
+    const response = await callWorker('/api/supporters');
+    expect(response.status).toBe(200);
+    expect(response.headers.get('Cache-Control')).toBe('public, max-age=60');
+    expect(await response.json()).toEqual(EMPTY);
+  });
+});
+
 describe('scheduled refresh', () => {
   it('refreshes recently requested links that expire soon and keeps English warm', async () => {
     const now = Date.now();

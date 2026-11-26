@@ -8,6 +8,10 @@
  *   GET /api/ms-iso/skus?arch=x64|arm64&sessionId=…   → language list proxied from Microsoft
  *   GET /api/ms-iso/links?arch=x64|arm64&skuId=…      → signed ISO URL resolved with Browser Run
  *
+ * It also serves the supporter wall on the docs home:
+ *
+ *   GET /api/supporters                                → public Ko-fi supporters from the Discord bot
+ *
  * An hourly Cron Trigger (`scheduled`) re-resolves cached links shortly before they expire: for
  * languages requested in the last few days, and always for English (United States).
  *
@@ -15,6 +19,12 @@
  */
 import Negotiator from 'negotiator';
 import puppeteer, { type Browser, type BrowserContext, type Page } from '@cloudflare/puppeteer';
+import {
+  emptySupporterWall,
+  parseSupporterWall,
+  supporterWallJson,
+  type SupporterWall,
+} from './utils/supporters';
 
 const MS_CONNECTOR_BASE = 'https://www.microsoft.com/software-download-connector/api';
 const MS_PROFILE_ID = '606624d44113';
@@ -705,6 +715,96 @@ async function refreshCachedLinks(env: Env): Promise<void> {
   }
 }
 
+/* ------------------------------------------------------------------------- */
+/* Supporter wall: public Ko-fi supporters, from the Discord bot             */
+/* ------------------------------------------------------------------------- */
+
+const SUPPORTERS_UPSTREAM = 'https://discordmetrics.atlasos.net/supporters';
+const SUPPORTERS_TIMEOUT_MS = 4_000;
+const SUPPORTERS_MAX_BYTES = 128 * 1024;
+/** A cached copy is served for this long before the bot is asked again. */
+const SUPPORTERS_FRESH_MS = 10 * 60 * 1000;
+/** The last good copy is kept this long, to serve while the bot can't be reached. */
+const SUPPORTERS_KEEP_SECONDS = 7 * 24 * 60 * 60;
+const SUPPORTERS_BROWSER_MAX_AGE = 300;
+const SUPPORTERS_FALLBACK_MAX_AGE = 60;
+const SUPPORTERS_FETCHED_AT = 'X-Supporters-Fetched-At';
+const SUPPORTERS_CACHE = 'supporter-wall';
+
+async function fetchSupporters(): Promise<SupporterWall | null> {
+  try {
+    const response = await fetch(SUPPORTERS_UPSTREAM, {
+      headers: { Accept: 'application/json' },
+      signal: AbortSignal.timeout(SUPPORTERS_TIMEOUT_MS),
+    });
+    if (!response.ok) {
+      logWarning('Supporter wall request failed.', { status: response.status });
+      return null;
+    }
+
+    const text = await response.text();
+    if (text.length > SUPPORTERS_MAX_BYTES) {
+      logWarning('Supporter wall response is too large.', { length: text.length });
+      return null;
+    }
+
+    const wall = parseSupporterWall(JSON.parse(text));
+    if (!wall) logWarning('Supporter wall response has an unexpected shape.', {});
+    return wall;
+  } catch (error) {
+    logWarning('Could not load the supporter wall.', { error: errorMessage(error) });
+    return null;
+  }
+}
+
+function supportersResponse(body: string, maxAge: number): Response {
+  return new Response(body, {
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Cache-Control': `public, max-age=${maxAge}`,
+      'X-Content-Type-Options': 'nosniff',
+    },
+  });
+}
+
+/**
+ * The bot's supporter list, checked and cleaned, cached in this colo for 10 minutes. When the bot
+ * can't be reached, the last good copy is served, or else an empty wall.
+ */
+async function handleSupporters(request: Request, ctx: ExecutionContext): Promise<Response> {
+  const cache = await caches.open(SUPPORTERS_CACHE);
+  const key = new Request(new URL('/api/supporters', request.url));
+  const cached = await cache.match(key).catch(() => undefined);
+  const fetchedAt = Number(cached?.headers.get(SUPPORTERS_FETCHED_AT));
+
+  if (cached && Date.now() - fetchedAt < SUPPORTERS_FRESH_MS) {
+    return supportersResponse(await cached.text(), SUPPORTERS_BROWSER_MAX_AGE);
+  }
+
+  const wall = await fetchSupporters();
+  if (wall) {
+    const body = supporterWallJson(wall);
+    const copy = new Response(body, {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Cache-Control': `public, max-age=${SUPPORTERS_KEEP_SECONDS}`,
+        [SUPPORTERS_FETCHED_AT]: String(Date.now()),
+      },
+    });
+    ctx.waitUntil(
+      cache
+        .put(key, copy)
+        .catch((error: unknown) =>
+          logWarning('Could not cache the supporter wall.', { error: errorMessage(error) }),
+        ),
+    );
+    return supportersResponse(body, SUPPORTERS_BROWSER_MAX_AGE);
+  }
+
+  const fallback = cached ? await cached.text() : supporterWallJson(emptySupporterWall());
+  return supportersResponse(fallback, SUPPORTERS_FALLBACK_MAX_AGE);
+}
+
 function prefersMarkdown(request: Request): boolean {
   const accept = request.headers.get('Accept') ?? '*/*';
   return (
@@ -792,6 +892,8 @@ export default {
         return handleSkus(request);
       case '/api/ms-iso/links':
         return handleLinks(request, env, ctx);
+      case '/api/supporters':
+        return handleSupporters(request, ctx);
       default:
         return serveSite(request, url, env.ASSETS);
     }

@@ -2,7 +2,7 @@
 import { CONTACT_EMAIL } from '@/constants';
 import DefaultLayout from '@/layouts/DefaultLayout.astro';
 
-const lastUpdated = 'October 16, 2026';
+const lastUpdated = 'November 26, 2026';
 
 const linkedData = [
   {
@@ -107,6 +107,14 @@ const linkedData = [
             linked service when someone follows the link.
           </li>
           <li>
+            If you support AtlasOS publicly on Ko-fi, your Ko-fi name is shown on the supporter wall at atlasos.net/docs
+            while your support is recent (see{' '}
+            <a class="text-primary hover:underline" href="#ko-fi-supporters">
+              Ko-fi Supporters
+            </a>
+            ).
+          </li>
+          <li>
             We do <strong class="text-fg/90">not</strong> sell data, use it for advertising, or use it to train AI
             models.
           </li>
@@ -185,13 +193,39 @@ const linkedData = [
           </li>
         </ul>
       </div>
-      <div class="space-y-3">
+      <div id="ko-fi-supporters" class="space-y-3">
         <h2 class="mbe-3 text-xl font-semibold text-fg">Ko-fi Supporters</h2>
         <p>
           When you support AtlasOS on Ko-fi, Ko-fi notifies Atlas and Atlas posts a thank-you message in the server with
-          the amount and, only if you made your support public on Ko-fi, your Ko-fi name and message. Ko-fi's
-          notification also includes other details, such as your email address; Atlas ignores them. None of this is
-          stored in Atlas's database.
+          the amount and, only if you made your support public on Ko-fi, your Ko-fi name and message.
+        </p>
+        <p>
+          If you made your support public, your Ko-fi name also appears on the{' '}
+          <strong class="text-fg/90">supporter wall</strong> at{' '}
+          <a class="text-primary hover:underline" href="/docs/#thank-you-to-our-supporters">
+            atlasos.net/docs
+          </a>{' '}
+          while your support is recent: monthly members are listed with their tier while their membership is active, and
+          other supporters for a year after their latest payment. For this, Atlas stores your Ko-fi name, whether you
+          support monthly or one-off, your membership tier, and the dates of your first and latest public payment. Staff
+          can also add your name by hand if you ask to be listed, for example if you supported before the wall existed.
+          Entries are kept after they stop being shown, until you ask us to delete them.
+        </p>
+        <p>
+          Atlas does not store amounts, messages, email addresses or transaction details. Ko-fi's notification includes
+          other details, such as your email address; Atlas ignores them. If your support is private, Atlas stores
+          nothing about it.
+        </p>
+        <p>
+          To be removed from the supporter wall, talk to a support representative in{' '}
+          <a class="text-primary hover:underline" href="https://atlasos.net/discord">
+            the AtlasOS Discord server
+          </a>{' '}
+          or email{' '}
+          <a class="text-primary hover:underline" href={`mailto:${CONTACT_EMAIL}`}>
+            {CONTACT_EMAIL}
+          </a>
+          . We can hide your name, which keeps it off the wall even if you support publicly again, or delete it.
         </p>
       </div>
       <div id="discord-log-channels" class="space-y-3">
@@ -353,10 +387,11 @@ const linkedData = [
           separately.
         </p>
         <p>
-          The command does not remove Discord copies, backups, application logs, Wrapped message links or references in
-          arbitrary text. Staff separately review these parts of your request and explain any retained records. There is
-          no automatic per-user exclusion from future collection. If you stay in or rejoin the server, Atlas starts
-          collecting the data described above again as you use it.
+          The command does not remove Discord copies, backups, application logs, Wrapped message links, supporter wall
+          entries (which are kept by Ko-fi name, not user ID) or references in arbitrary text. Staff separately review
+          these parts of your request and explain any retained records. There is no automatic per-user exclusion from
+          future collection. If you stay in or rejoin the server, Atlas starts collecting the data described above again
+          as you use it.
         </p>
         <p>
           Leaving the server does not delete your data automatically: your level is kept so it can be restored if you
