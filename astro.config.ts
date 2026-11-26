@@ -75,6 +75,8 @@ export default defineConfig({
     ...legacyDocsRedirects,
     ...legacyAssetRedirects,
     '/openapi.json': 'https://api.atlasos.net/openapi.json',
+    // The one Discord link Atlas publishes; a temporary redirect, so the invite it leads to can change.
+    '/discord/': { status: 302, destination: 'https://discord.gg/atlasos' },
   },
 
   fonts: [
